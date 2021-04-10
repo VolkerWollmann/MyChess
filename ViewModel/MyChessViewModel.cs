@@ -18,22 +18,29 @@ namespace MyChess.ViewModel
         public MyChessViewModel(Grid gameGrid)
         {
             GameGrid = gameGrid;
-            RowDefinition r1 = new RowDefinition();
-            GameGrid.RowDefinitions.Add(r1);
-            RowDefinition r2 = new RowDefinition();
-            r2.Height = new GridLength(100);
-            GameGrid.RowDefinitions.Add(r2);
+
+            RowDefinition menuRowDefinition = new RowDefinition();
+            menuRowDefinition.Height = GridLength.Auto;
+            GameGrid.RowDefinitions.Add(menuRowDefinition);
+
+            RowDefinition chessBoRowDefinitionRowDefinition = new RowDefinition();
+            GameGrid.RowDefinitions.Add(chessBoRowDefinitionRowDefinition);
+           
+            RowDefinition engineOutputRowDefinition = new RowDefinition();
+            engineOutputRowDefinition.Height = new GridLength(100);
+            GameGrid.RowDefinitions.Add(engineOutputRowDefinition);
 
             Menu = new ChessMenuUserControl();
             GameGrid.Children.Add(Menu);
+            Grid.SetRow(Menu, 0);
 
             ChessBoard = new ChessBoardUserControl();
             GameGrid.Children.Add(ChessBoard);
-            Grid.SetRow(ChessBoard, 0);
+            Grid.SetRow(ChessBoard, 1);
 
             EngineOutput = new EngineOutputControl();
             GameGrid.Children.Add(EngineOutput);
-            Grid.SetRow(EngineOutput, 1);
+            Grid.SetRow(EngineOutput, 2);
         }
     }
 }

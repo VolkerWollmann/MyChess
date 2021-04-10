@@ -14,6 +14,5 @@
                 <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" />
             </MenuItem>
         </Menu>
-        <TextBox AcceptsReturn="True" />
     </DockPanel>
 </UserControl>
