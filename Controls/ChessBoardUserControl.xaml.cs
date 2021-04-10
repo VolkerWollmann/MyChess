@@ -21,6 +21,30 @@ namespace MyChess.Controls
         public ChessBoardUserControl()
         {
             InitializeComponent();
+
+            int row;
+            int column;
+
+            for (row = 0; row < 8; row++)
+            {
+                RowDefinition r = new RowDefinition();
+                ChessBoardGrid.RowDefinitions.Add(r);
+            }
+
+            for (column = 0; column < 8; column++)
+            {
+                ColumnDefinition c = new ColumnDefinition();
+                ChessBoardGrid.ColumnDefinitions.Add(c);
+            }
+
+            for( row = 0; row < 8; row++)
+            for (column = 0; column < 8; column++)
+            {
+                ChessFieldUserControl field = new ChessFieldUserControl();
+                ChessBoardGrid.Children.Add(field);
+                Grid.SetRow(field, row);
+                Grid.SetColumn(field, column );
+            }
         }
     }
 }
