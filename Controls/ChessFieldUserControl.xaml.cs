@@ -18,9 +18,20 @@ namespace MyChess.Controls
     /// </summary>
     public partial class ChessFieldUserControl : UserControl
     {
-        public ChessFieldUserControl()
+        private int _Row;
+        private int _Column;
+        public ChessFieldUserControl(int row, int column)
         {
             InitializeComponent();
+            _Row = row;
+            _Column = column;
+
+            if ((_Row + _Column) % 2 == 0)
+                this.Background = new SolidColorBrush(Colors.Bisque);
+            else
+                this.Background = new SolidColorBrush(Colors.SandyBrown);
+
+            this.Caption.Text = ((char)(_Row+65)).ToString() + (_Column+1).ToString();
         }
     }
 }

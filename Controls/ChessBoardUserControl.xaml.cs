@@ -46,10 +46,10 @@ namespace MyChess.Controls
             for ( row = 0; row < 8; row++)
             for (column = 0; column < 8; column++)
             {
-                ChessFieldUserControl field = new ChessFieldUserControl();
+                ChessFieldUserControl field = new ChessFieldUserControl(row, column);
                 ChessBoardGrid.Children.Add(field);
 
-                Grid.SetRow(field, row);
+                Grid.SetRow(field, 7-row);
                 Grid.SetColumn(field, column );
                 
             }
