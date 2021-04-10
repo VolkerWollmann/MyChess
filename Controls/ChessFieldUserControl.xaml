@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MyChess.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Border BorderBrush="Black" BorderThickness="1">
+             d:DesignHeight="50" d:DesignWidth="50" Height="Auto" Width="Auto">
+    <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch" >
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
-            Field
+                Field
             </TextBlock>
-        </Border>
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

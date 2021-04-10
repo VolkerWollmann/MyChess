@@ -28,23 +28,38 @@ namespace MyChess.Controls
             for (row = 0; row < 8; row++)
             {
                 RowDefinition r = new RowDefinition();
+                r.Height = new GridLength(1, GridUnitType.Star);
                 ChessBoardGrid.RowDefinitions.Add(r);
             }
 
             for (column = 0; column < 8; column++)
             {
                 ColumnDefinition c = new ColumnDefinition();
+                c.Width = new GridLength(1, GridUnitType.Star);
                 ChessBoardGrid.ColumnDefinitions.Add(c);
             }
 
-            for( row = 0; row < 8; row++)
+            ColumnDefinition restColumn = new ColumnDefinition();
+            restColumn.Width = GridLength.Auto;
+            ChessBoardGrid.ColumnDefinitions.Add(restColumn);
+
+            for ( row = 0; row < 8; row++)
             for (column = 0; column < 8; column++)
             {
                 ChessFieldUserControl field = new ChessFieldUserControl();
                 ChessBoardGrid.Children.Add(field);
+
                 Grid.SetRow(field, row);
                 Grid.SetColumn(field, column );
+                
             }
+
+            TextBlock tb = new TextBlock();
+            tb.Text = "hase";
+            ChessBoardGrid.Children.Add(tb);
+            Grid.SetColumn(tb,8);
+            Grid.SetRow(tb,0);
+            Grid.SetRowSpan(tb,8);
         }
     }
 }
