@@ -27,9 +27,9 @@ namespace MyChess.Controls
             _Column = column;
 
             if ((_Row + _Column) % 2 == 0)
-                this.Background = new SolidColorBrush(Colors.Bisque);
-            else
                 this.Background = new SolidColorBrush(Colors.SandyBrown);
+            else
+                this.Background = new SolidColorBrush(Colors.Bisque);
 
             this.Caption.Text = ((char)(_Row+65)).ToString() + (_Column+1).ToString();
         }
