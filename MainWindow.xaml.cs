@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyChess.ViewModel;
 
 namespace MyChess
 {
@@ -23,6 +24,7 @@ namespace MyChess
         public MainWindow()
         {
             InitializeComponent();
+            ViewModelInitialize.InitializeViewModel(MyChessGameGrid);
         }
     }
 }
