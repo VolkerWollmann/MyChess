@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using MyChess.Common;
 using MyChess.Controls.Pieces;
 using MShapes = System.Windows.Shapes;
 
@@ -30,9 +31,9 @@ namespace MyChess.Controls
             this.Background = (Row + Column) % 2 == 0 ? new SolidColorBrush(Colors.SandyBrown) : new SolidColorBrush(Colors.Bisque);
         }
 
-        public void SetPiece()
+        public void SetPiece(ChessConstants.Piece piece)
         {
-            PawnUserControl pawn = new PawnUserControl();
+            UserControl pawn = PieceFactory.CreatePiece(piece);
 
             this.FieldStackPanel.Children.Add(pawn);
             DockPanel.SetDock(pawn, Dock.Bottom);

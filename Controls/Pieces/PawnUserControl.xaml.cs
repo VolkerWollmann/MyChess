@@ -10,17 +10,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyChess.Common;
 
 namespace MyChess.Controls.Pieces
 {
     /// <summary>
     /// Interaction logic for PawnUserControl.xaml
     /// </summary>
-    public partial class PawnUserControl : UserControl
+    public partial class PawnUserControl : UserControl, IPiece
     {
         public PawnUserControl()
         {
             InitializeComponent();
+        }
+
+        public ChessConstants.Piece GetPieceType()
+        {
+            return ChessConstants.Piece.Pawn;
+        }
+
+        public ChessConstants.Color GetColor()
+        {
+            return ChessConstants.Color.White;
         }
     }
 }

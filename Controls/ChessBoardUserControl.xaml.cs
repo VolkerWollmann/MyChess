@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MyChess.Common;
 
 namespace MyChess.Controls
 {
@@ -12,7 +13,7 @@ namespace MyChess.Controls
 
         public void SetPiece()
         {
-            Field[0,0].SetPiece();
+            Field[0,0].SetPiece(ChessConstants.Piece.Pawn);
         }
             
         public ChessBoardUserControl()
