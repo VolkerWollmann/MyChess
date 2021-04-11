@@ -26,8 +26,8 @@ namespace MyChess.ViewModel
 
             for (int i = 0; i < 8; i++)
             {
-                ChessBoard.SetPiece(1,i, new Pawn(ChessConstants.Color.White));
-
+                ChessBoard.SetPiece(1, i, new Pawn(ChessConstants.Color.White));
+                ChessBoard.SetPiece(6, i, new Pawn(ChessConstants.Color.Black));
             }
         }
 

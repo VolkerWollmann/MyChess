@@ -11,16 +11,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MyChess.Common;
-using MyChess.Model;
 
 namespace MyChess.Controls.Pieces
 {
     /// <summary>
-    /// Interaction logic for PawnUserControl.xaml
+    /// Interaction logic for RookUserControl.xaml
     /// </summary>
-    public partial class PawnUserControl : UserControl, IUserControlPiece
+    public partial class RookUserControl : UserControl, IUserControlPiece
     {
-        public PawnUserControl()
+        public RookUserControl()
         {
             InitializeComponent();
         }
@@ -32,7 +31,7 @@ namespace MyChess.Controls.Pieces
             return _Piece;
         }
 
-        public PawnUserControl(IPiece piece):this()
+        public RookUserControl(IPiece piece) : this()
         {
             _Piece = piece;
 

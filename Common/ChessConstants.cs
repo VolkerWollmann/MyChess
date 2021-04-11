@@ -11,7 +11,7 @@
             Pawn,
             Knight,
             Bishop,
-            Rock,
+            Rook,
             Queen,
             King
         }
