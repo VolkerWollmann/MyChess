@@ -20,7 +20,7 @@ namespace MyChess.ViewModel
 
         private void TestCommand(object sender, ChessMenuEventArgs e)
         {
-            EngineOutput.Text = "Command "  + e.Tag + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            EngineOutput.Text = "Command "  + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
 
         public MyChessViewModel(Grid gameGrid)
