@@ -8,6 +8,13 @@ namespace MyChess.Controls
     /// </summary>
     public partial class ChessBoardUserControl : UserControl
     {
+        ChessFieldUserControl[,] Field;
+
+        public void SetPiece()
+        {
+            Field[0,0].SetPiece();
+        }
+            
         public ChessBoardUserControl()
         {
             InitializeComponent();
@@ -30,10 +37,15 @@ namespace MyChess.Controls
             ColumnDefinition restColumn = new ColumnDefinition {Width = GridLength.Auto};
             ChessBoardGrid.ColumnDefinitions.Add(restColumn);
 
+            Field = new ChessFieldUserControl[8, 8];
+
             for ( row = 0; row < 8; row++)
             for (column = 0; column < 8; column++)
             {
                 ChessFieldUserControl field = new ChessFieldUserControl(row, column);
+
+                Field[row, column] = field;
+
                 ChessBoardGrid.Children.Add(field);
 
                 Grid.SetRow(field, 7-row);

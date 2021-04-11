@@ -20,6 +20,8 @@ namespace MyChess.ViewModel
         private void TestCommand(object sender, ChessMenuEventArgs e)
         {
             EngineOutput.Text = "Command "  + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+
+            ChessBoard.SetPiece();
         }
 
         public MyChessViewModel(Grid gameGrid)

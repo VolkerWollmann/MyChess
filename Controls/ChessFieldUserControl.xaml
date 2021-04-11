@@ -6,10 +6,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50" Height="Auto" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
     <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch" >
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
-            <TextBlock Name ="Caption" VerticalAlignment="Center" HorizontalAlignment="Center">
-                Field
-            </TextBlock>
+        <Grid Name="FieldGrid" VerticalAlignment="Center" HorizontalAlignment="Center" >
+           
         </Grid>
     </Border>
 </UserControl>
