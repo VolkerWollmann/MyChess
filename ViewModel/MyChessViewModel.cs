@@ -4,6 +4,7 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Controls;
+using MyChess.Helper;
 
 namespace MyChess.ViewModel
 {
@@ -17,9 +18,9 @@ namespace MyChess.ViewModel
 
         private readonly EngineOutputControl EngineOutput;
 
-        private void TestCommand(object sender, EventArgs e)
+        private void TestCommand(object sender, ChessMenuEventArgs e)
         {
-            EngineOutput.Text = "Hello" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            EngineOutput.Text = "Command "  + e.Tag + DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
 
         public MyChessViewModel(Grid gameGrid)

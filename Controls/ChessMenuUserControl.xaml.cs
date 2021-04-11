@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Constants;
+using MyChess.Helper;
 
 namespace MyChess.Controls
 {
@@ -10,13 +11,13 @@ namespace MyChess.Controls
     /// </summary>
     public partial class ChessMenuUserControl : UserControl
     {
-        private EventHandler EventHandler;
+        private EventHandler<ChessMenuEventArgs> EventHandler;
         public ChessMenuUserControl()
         {
             InitializeComponent();
         }
 
-        public void SetEventHandler(EventHandler eventHandler)
+        public void SetEventHandler(EventHandler<ChessMenuEventArgs> eventHandler)
         {
             EventHandler = eventHandler;
         }
@@ -26,11 +27,8 @@ namespace MyChess.Controls
 
             if (sender is MenuItem menuItem )
             {
-                if (menuItem.Name == ChessConstants.QuitCommand)
-                    Application.Current.Shutdown();
-
-                if (menuItem.Name == ChessConstants.Test1Comnand)
-                    EventHandler?.Invoke(this, new EventArgs());
+                ChessMenuEventArgs chessMenuEventArgs = new ChessMenuEventArgs((string)menuItem.Tag);
+                EventHandler?.Invoke(this, chessMenuEventArgs);
             }
             else
                 throw new NotImplementedException("Not implemented");
