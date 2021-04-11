@@ -10,21 +10,35 @@ namespace MyChess.Controls
     /// </summary>
     public partial class ChessMenuUserControl : UserControl
     {
+        private EventHandler EventHandler;
         public ChessMenuUserControl()
         {
             InitializeComponent();
         }
 
+        public void SetEventHandler(EventHandler eventHandler)
+        {
+            EventHandler = eventHandler;
+        }
+
         private void MenuCommand_Click(object sender, RoutedEventArgs e)
         {
 
-            if (sender is MenuItem mi )
+            if (sender is MenuItem menuItem )
             {
-                if ( mi.Name == ChessConstants.QuitCommand)
+                if (menuItem.Name == ChessConstants.QuitCommand)
                     Application.Current.Shutdown();
+
+                if (menuItem.Name == ChessConstants.Test1Comnand)
+                    EventHandler?.Invoke(this, new EventArgs());
             }
             else
                 throw new NotImplementedException("Not implemented");
+        }
+
+        internal void SetEventHandler()
+        {
+            throw new NotImplementedException();
         }
     }
 }

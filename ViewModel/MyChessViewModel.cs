@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Controls;
@@ -15,10 +16,16 @@ namespace MyChess.ViewModel
 
         private readonly EngineOutputControl EngineOutput;
 
+        private void TestCommand(object sender, EventArgs e)
+        {
+            ;
+        }
+
         public MyChessViewModel(Grid gameGrid)
         {
             GameGrid = gameGrid;
 
+            #region Board
             RowDefinition menuRowDefinition = new RowDefinition();
             menuRowDefinition.Height = GridLength.Auto;
             GameGrid.RowDefinitions.Add(menuRowDefinition);
@@ -41,6 +48,12 @@ namespace MyChess.ViewModel
             EngineOutput = new EngineOutputControl();
             GameGrid.Children.Add(EngineOutput);
             Grid.SetRow(EngineOutput, 2);
+            #endregion
+
+            #region Menu
+            Menu.SetEventHandler(TestCommand);
+            #endregion
+
         }
     }
 }

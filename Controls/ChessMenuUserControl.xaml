@@ -13,6 +13,10 @@
                 <Separator />
                 <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" />
             </MenuItem>
+            <MenuItem Header="_Test">
+                <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click"  />
+                
+            </MenuItem>
         </Menu>
     </DockPanel>
 </UserControl>
