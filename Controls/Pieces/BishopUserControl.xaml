@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MyChess.Controls.Pieces.RookUserControl"
+﻿<UserControl x:Class="MyChess.Controls.Pieces.BishopUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,8 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Rectangle Name="Figure" Height="40" Width="30" Fill="Khaki" Stroke="Black" StrokeThickness="2">
-
-        </Rectangle>
+        <Polygon Name="Figure" Points="0,40, 15,0, 30,40" Stroke="Black" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Bottom" StrokeThickness="2"/>
     </Grid>
 </UserControl>

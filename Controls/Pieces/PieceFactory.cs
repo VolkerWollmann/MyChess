@@ -11,7 +11,25 @@ namespace MyChess.Controls.Pieces
     {
         public static UserControl CreatePiece(IPiece piece)
         {
-            return new PawnUserControl(piece);
+            switch (piece.GetPieceType())
+            {
+                case ChessConstants.Piece.Pawn:
+                    return new PawnUserControl(piece);
+
+                case ChessConstants.Piece.Bishop:
+                    return new BishopUserControl(piece);
+
+                case ChessConstants.Piece.Rook:
+                    return new RookUserControl(piece);
+
+                case ChessConstants.Piece.Queen:
+                    return new QueenUserControl(piece);
+
+                case ChessConstants.Piece.King:
+                    return new KingUserControl(piece);
+            }
+
+            return null;
         }
     }
 }

@@ -24,11 +24,36 @@ namespace MyChess.ViewModel
         {
             EngineOutput.Text = "Command "  + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
+            // pawn
             for (int i = 0; i < 8; i++)
             {
                 ChessBoard.SetPiece(1, i, new Pawn(ChessConstants.Color.White));
                 ChessBoard.SetPiece(6, i, new Pawn(ChessConstants.Color.Black));
             }
+
+            // rook
+            ChessBoard.SetPiece(0, 0, new Rook(ChessConstants.Color.White));
+            ChessBoard.SetPiece(0, 7, new Rook(ChessConstants.Color.White));
+            
+            ChessBoard.SetPiece(7, 0, new Rook(ChessConstants.Color.Black));
+            ChessBoard.SetPiece(7, 7, new Rook(ChessConstants.Color.Black));
+
+            // bishop 
+            ChessBoard.SetPiece(0, 2, new Bishop(ChessConstants.Color.White));
+            ChessBoard.SetPiece(0, 5, new Bishop(ChessConstants.Color.White));
+
+            ChessBoard.SetPiece(7, 2, new Bishop(ChessConstants.Color.Black));
+            ChessBoard.SetPiece(7, 5, new Bishop(ChessConstants.Color.Black));
+
+            // queen
+            ChessBoard.SetPiece(0, 3, new Queen(ChessConstants.Color.White));
+            ChessBoard.SetPiece(7, 3, new Queen(ChessConstants.Color.Black));
+
+            // king
+            ChessBoard.SetPiece(0, 4, new King(ChessConstants.Color.White));
+            ChessBoard.SetPiece(7, 4, new King(ChessConstants.Color.Black));
+
+
         }
 
         public MyChessViewModel(Grid gameGrid)
