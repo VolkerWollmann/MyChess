@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Name="OutputText" VerticalAlignment="Top" HorizontalAlignment="Left">
             EngineOutputControl
         </TextBlock>
     </Grid>

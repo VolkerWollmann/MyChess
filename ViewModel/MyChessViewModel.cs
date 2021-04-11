@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ namespace MyChess.ViewModel
 
         private void TestCommand(object sender, EventArgs e)
         {
-            ;
+            EngineOutput.Text = "Hello" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
 
         public MyChessViewModel(Grid gameGrid)
