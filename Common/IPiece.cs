@@ -5,7 +5,7 @@ using MyChess.Common;
 
 namespace MyChess.Common
 {
-    interface IPiece
+    public interface IPiece
     {
         ChessConstants.Piece GetPieceType();
 

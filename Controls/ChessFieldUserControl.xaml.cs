@@ -31,7 +31,7 @@ namespace MyChess.Controls
             this.Background = (Row + Column) % 2 == 0 ? new SolidColorBrush(Colors.SandyBrown) : new SolidColorBrush(Colors.Bisque);
         }
 
-        public void SetPiece(ChessConstants.Piece piece)
+        public void SetPiece(IPiece piece)
         {
             UserControl pawn = PieceFactory.CreatePiece(piece);
 

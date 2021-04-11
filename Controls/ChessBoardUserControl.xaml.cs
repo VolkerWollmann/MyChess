@@ -11,9 +11,9 @@ namespace MyChess.Controls
     {
         ChessFieldUserControl[,] Field;
 
-        public void SetPiece()
+        public void SetPiece(int row, int column, IPiece piece)
         {
-            Field[0,0].SetPiece(ChessConstants.Piece.Pawn);
+            Field[row,column].SetPiece(piece);
         }
             
         public ChessBoardUserControl()

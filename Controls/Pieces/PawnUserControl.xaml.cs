@@ -11,14 +11,22 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MyChess.Common;
+using MyChess.Model;
 
 namespace MyChess.Controls.Pieces
 {
     /// <summary>
     /// Interaction logic for PawnUserControl.xaml
     /// </summary>
-    public partial class PawnUserControl : UserControl, IPiece
-    {
+    public partial class PawnUserControl : UserControl, IUserControlPiece
+    { 
+        private IPiece _Piece;
+
+        public IPiece GetPiece()
+        {
+             return _Piece;
+        }
+
         public PawnUserControl()
         {
             InitializeComponent();
@@ -32,6 +40,11 @@ namespace MyChess.Controls.Pieces
         public ChessConstants.Color GetColor()
         {
             return ChessConstants.Color.White;
+        }
+
+        public PawnUserControl(IPiece piece):this()
+        {
+            _Piece = piece;
         }
     }
 }

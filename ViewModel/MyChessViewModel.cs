@@ -2,8 +2,11 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using MyChess.Common;
 using MyChess.Controls;
+using MyChess.Controls.Pieces;
 using MyChess.Helper;
+using MyChess.Model;
 
 namespace MyChess.ViewModel
 {
@@ -21,7 +24,11 @@ namespace MyChess.ViewModel
         {
             EngineOutput.Text = "Command "  + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
-            ChessBoard.SetPiece();
+            for (int i = 0; i < 8; i++)
+            {
+                ChessBoard.SetPiece(1,i, new Pawn(ChessConstants.Color.White));
+
+            }
         }
 
         public MyChessViewModel(Grid gameGrid)
