@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using MyChess.Controls.Pieces;
 using MShapes = System.Windows.Shapes;
 
 namespace MyChess.Controls
@@ -30,11 +32,11 @@ namespace MyChess.Controls
 
         public void SetPiece()
         {
-            MShapes.Rectangle rectangle = new MShapes.Rectangle();
-            rectangle.Height = 20;
-            rectangle.Width = 20;
-            rectangle.Fill = System.Windows.Media.Brushes.SkyBlue;
-            this.FieldGrid.Children.Add(rectangle);
+            PawnUserControl pawn = new PawnUserControl();
+
+            this.FieldStackPanel.Children.Add(pawn);
+            DockPanel.SetDock(pawn, Dock.Bottom);
+            
         }
     }
 }

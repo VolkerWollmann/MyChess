@@ -6,8 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50" Height="Auto" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
     <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Stretch" >
-        <Grid Name="FieldGrid" VerticalAlignment="Center" HorizontalAlignment="Center" >
-           
+        <Grid Name="FieldGrid" >
+            <StackPanel Name="FieldStackPanel" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2,2,2,2" >
+               
+           </StackPanel>
         </Grid>
     </Border>
 </UserControl>
