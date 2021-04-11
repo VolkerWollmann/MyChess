@@ -35,10 +35,5 @@ namespace MyChess.Controls
             else
                 throw new NotImplementedException("Not implemented");
         }
-
-        internal void SetEventHandler()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
