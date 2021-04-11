@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Controls;
@@ -28,15 +27,14 @@ namespace MyChess.ViewModel
             GameGrid = gameGrid;
 
             #region Board
-            RowDefinition menuRowDefinition = new RowDefinition();
-            menuRowDefinition.Height = GridLength.Auto;
+
+            RowDefinition menuRowDefinition = new RowDefinition {Height = GridLength.Auto};
             GameGrid.RowDefinitions.Add(menuRowDefinition);
 
             RowDefinition chessBoRowDefinitionRowDefinition = new RowDefinition();
             GameGrid.RowDefinitions.Add(chessBoRowDefinitionRowDefinition);
-           
-            RowDefinition engineOutputRowDefinition = new RowDefinition();
-            engineOutputRowDefinition.Height = new GridLength(100);
+
+            RowDefinition engineOutputRowDefinition = new RowDefinition {Height = new GridLength(100)};
             GameGrid.RowDefinitions.Add(engineOutputRowDefinition);
 
             Menu = new ChessMenuUserControl();

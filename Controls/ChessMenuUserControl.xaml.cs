@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using MyChess.Constants;
 using MyChess.Helper;
 
 namespace MyChess.Controls

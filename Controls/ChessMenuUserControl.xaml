@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:MyChess.Controls"
-             xmlns:MyChessConstants="clr-namespace:MyChess.Constants"
+             xmlns:myChessConstants="clr-namespace:MyChess.Constants"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
@@ -13,10 +12,10 @@
             <MenuItem Header="_Game">
                 <MenuItem Header="_New" />
                 <Separator />
-                <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" Tag="{x:Static MyChessConstants:ChessConstants.QuitCommand}" />
+                <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" Tag="{x:Static myChessConstants:ChessConstants.QuitCommand}" />
             </MenuItem>
             <MenuItem Header="_Test">
-                <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click" Tag="{x:Static MyChessConstants:ChessConstants.Test1Command}" />
+                <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click" Tag="{x:Static myChessConstants:ChessConstants.Test1Command}" />
                 
             </MenuItem>
         </Menu>

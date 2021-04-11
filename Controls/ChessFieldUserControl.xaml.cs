@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MyChess.Controls
 {
@@ -18,20 +8,24 @@ namespace MyChess.Controls
     /// </summary>
     public partial class ChessFieldUserControl : UserControl
     {
-        private int _Row;
-        private int _Column;
+        public int Row
+        {
+            get;
+        }
+
+        public int Column
+        {
+            get;
+        }
         public ChessFieldUserControl(int row, int column)
         {
             InitializeComponent();
-            _Row = row;
-            _Column = column;
+            Row = row;
+            Column = column;
 
-            if ((_Row + _Column) % 2 == 0)
-                this.Background = new SolidColorBrush(Colors.SandyBrown);
-            else
-                this.Background = new SolidColorBrush(Colors.Bisque);
+            this.Background = (Row + Column) % 2 == 0 ? new SolidColorBrush(Colors.SandyBrown) : new SolidColorBrush(Colors.Bisque);
 
-            this.Caption.Text = ((char)(_Row+65)).ToString() + (_Column+1).ToString();
+            this.Caption.Text = ((char)(Row+65)).ToString() + (Column+1).ToString();
         }
     }
 }

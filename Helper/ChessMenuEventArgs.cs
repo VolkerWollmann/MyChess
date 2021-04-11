@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyChess.Helper
 {
     public class ChessMenuEventArgs : EventArgs
     {
-        public string Tag { get; private set; }
+        public string Tag { get; }
 
         public ChessMenuEventArgs(string tag) 
         {
