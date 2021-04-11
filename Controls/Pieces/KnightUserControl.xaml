@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="MyChess.Controls.Pieces.KnightUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyChess.Controls.Pieces"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="200">
+    <Grid>
+        <Polygon Name="Figure" Points="5,40, 5,20 0,20 15,0, 30,40" Stroke="Black" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Bottom" StrokeThickness="2"/>
+    </Grid>
+</UserControl>

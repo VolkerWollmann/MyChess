@@ -45,6 +45,13 @@ namespace MyChess.ViewModel
             ChessBoard.SetPiece(7, 2, new Bishop(ChessConstants.Color.Black));
             ChessBoard.SetPiece(7, 5, new Bishop(ChessConstants.Color.Black));
 
+            // knight
+            ChessBoard.SetPiece(0, 1, new Knight(ChessConstants.Color.White));
+            ChessBoard.SetPiece(0, 6, new Knight(ChessConstants.Color.White));
+
+            ChessBoard.SetPiece(7, 1, new Knight(ChessConstants.Color.Black));
+            ChessBoard.SetPiece(7, 6, new Knight(ChessConstants.Color.Black));
+
             // queen
             ChessBoard.SetPiece(0, 3, new Queen(ChessConstants.Color.White));
             ChessBoard.SetPiece(7, 3, new Queen(ChessConstants.Color.Black));

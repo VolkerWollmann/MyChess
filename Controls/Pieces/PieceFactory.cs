@@ -27,6 +27,9 @@ namespace MyChess.Controls.Pieces
 
                 case ChessConstants.Piece.King:
                     return new KingUserControl(piece);
+
+                case ChessConstants.Piece.Knight:
+                    return new KnightUserControl(piece);
             }
 
             return null;
