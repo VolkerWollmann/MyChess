@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Windows;
 using System.Windows.Controls;
 using MyChess.Common;
 
@@ -10,6 +11,34 @@ namespace MyChess.Controls
     public partial class ChessBoardUserControl : UserControl
     {
         ChessFieldUserControl[,] Field;
+
+        private ChessFieldUserControl StartField=null;
+        private ChessFieldUserControl EndField=null;
+
+
+        public void SetField(ChessFieldUserControl field)
+        {
+            if (StartField == null)
+            {
+                StartField = field;
+                StartField.SetFieldColor(ChessConstants.FieldColor.Start);
+            }
+            else if (EndField == null)
+            {
+                EndField = field;
+                EndField.SetFieldColor(ChessConstants.FieldColor.End);
+            }
+            else
+            {
+                StartField.SetFieldColor(ChessConstants.FieldColor.Standard);
+                EndField.SetFieldColor(ChessConstants.FieldColor.Standard);
+
+                StartField = null;
+                EndField = null;
+            }
+
+
+        }
 
         public void SetPiece(int row, int column, IPiece piece)
         {
@@ -43,7 +72,7 @@ namespace MyChess.Controls
             for ( row = 0; row < 8; row++)
             for (column = 0; column < 8; column++)
             {
-                ChessFieldUserControl field = new ChessFieldUserControl(row, column);
+                ChessFieldUserControl field = new ChessFieldUserControl(row, column, this );
 
                 Field[row, column] = field;
 

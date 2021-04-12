@@ -23,5 +23,12 @@
             White,
             Black
         }
+
+        public enum FieldColor
+        {
+            Standard,
+            Start,
+            End
+        }
     }
 }
