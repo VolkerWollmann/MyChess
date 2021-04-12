@@ -20,10 +20,10 @@ namespace MyChess.ViewModel
 
         private readonly EngineOutputControl EngineOutput;
 
-        private void TestCommand(object sender, ChessMenuEventArgs e)
-        {
-            EngineOutput.Text = "Command "  + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+        #region Commands
 
+        private void New()
+        {
             // pawn
             for (int i = 0; i < 8; i++)
             {
@@ -34,7 +34,7 @@ namespace MyChess.ViewModel
             // rook
             ChessBoard.SetPiece(0, 0, new Rook(ChessConstants.Color.White));
             ChessBoard.SetPiece(0, 7, new Rook(ChessConstants.Color.White));
-            
+
             ChessBoard.SetPiece(7, 0, new Rook(ChessConstants.Color.Black));
             ChessBoard.SetPiece(7, 7, new Rook(ChessConstants.Color.Black));
 
@@ -60,7 +60,34 @@ namespace MyChess.ViewModel
             ChessBoard.SetPiece(0, 4, new King(ChessConstants.Color.White));
             ChessBoard.SetPiece(7, 4, new King(ChessConstants.Color.Black));
 
+        }
 
+        private void Clear()
+        {
+            for(int row=0; row<8; row++)
+                for(int column=0; column<8;column++)
+                    ChessBoard.SetPiece(row,column, null);
+        }
+
+        #endregion
+        private void Command(object sender, ChessMenuEventArgs e)
+        {
+            EngineOutput.Text = "Command " + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            switch (e.Tag)
+            {
+                case ChessConstants.NewCommand:
+                    New();
+                    break;
+
+                case ChessConstants.ClearCommand:
+                    Clear();
+                    break;
+
+                case ChessConstants.QuitCommand:
+                    System.Windows.Application.Current.Shutdown();
+                    break;
+            }
+            
         }
 
         public MyChessViewModel(Grid gameGrid)
@@ -92,7 +119,7 @@ namespace MyChess.ViewModel
             #endregion
 
             #region Menu
-            Menu.SetEventHandler(TestCommand);
+            Menu.SetEventHandler(Command);
             #endregion
 
         }

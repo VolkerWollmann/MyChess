@@ -33,11 +33,15 @@ namespace MyChess.Controls
 
         public void SetPiece(IPiece piece)
         {
-            UserControl pawn = PieceFactory.CreatePiece(piece);
+            if (this.FieldStackPanel.Children.Count > 0)
+                this.FieldStackPanel.Children.RemoveAt(0);
 
-            this.FieldStackPanel.Children.Add(pawn);
-            DockPanel.SetDock(pawn, Dock.Bottom);
-            
+            if (piece != null)
+            {
+                UserControl pieceUserControl = PieceFactory.CreatePiece(piece);
+                this.FieldStackPanel.Children.Add(pieceUserControl);
+                DockPanel.SetDock(pieceUserControl, Dock.Bottom);
+            }
         }
     }
 }
