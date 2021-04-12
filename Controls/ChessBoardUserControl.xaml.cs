@@ -12,6 +12,8 @@ namespace MyChess.Controls
     {
         ChessFieldUserControl[,] Field;
 
+        private ChessComandUserControl ChessComandUserControl;
+
         private ChessFieldUserControl StartField=null;
         private ChessFieldUserControl EndField=null;
 
@@ -83,26 +85,11 @@ namespace MyChess.Controls
                 
             }
 
-            StackPanel sp = new StackPanel {Margin = new Thickness(2), Width = 100};
-            ChessBoardGrid.Children.Add(sp);
-            Grid.SetColumn(sp, 8);
-            Grid.SetRow(sp, 0);
-            Grid.SetRowSpan(sp,6);
-
-            TextBlock fromTitleTextBlock = new TextBlock {Text = "From:"};
-            sp.Children.Add(fromTitleTextBlock);
-
-            TextBlock fromFieldTextBlock = new TextBlock { Text = "E2" };
-            sp.Children.Add(fromFieldTextBlock);
-
-            TextBlock toTitleTextBlock = new TextBlock { Text = "To:" };
-            sp.Children.Add(toTitleTextBlock);
-
-
-            TextBlock toFieldTextBlock = new TextBlock { Text = "E4" };
-            sp.Children.Add(toFieldTextBlock);
-
-
+            ChessComandUserControl = new ChessComandUserControl();
+            ChessBoardGrid.Children.Add(ChessComandUserControl);
+            Grid.SetColumn(ChessComandUserControl, 8);
+            Grid.SetRow(ChessComandUserControl, 0);
+            Grid.SetRowSpan(ChessComandUserControl, 6);
 
         }
     }
