@@ -99,8 +99,8 @@ namespace MyChess.ViewModel
             RowDefinition menuRowDefinition = new RowDefinition {Height = GridLength.Auto};
             GameGrid.RowDefinitions.Add(menuRowDefinition);
 
-            RowDefinition chessBoRowDefinitionRowDefinition = new RowDefinition();
-            GameGrid.RowDefinitions.Add(chessBoRowDefinitionRowDefinition);
+            RowDefinition chessBoardRowDefinitionRowDefinition = new RowDefinition();
+            GameGrid.RowDefinitions.Add(chessBoardRowDefinitionRowDefinition);
 
             RowDefinition engineOutputRowDefinition = new RowDefinition {Height = new GridLength(100)};
             GameGrid.RowDefinitions.Add(engineOutputRowDefinition);

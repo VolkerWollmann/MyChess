@@ -54,11 +54,27 @@ namespace MyChess.Controls
                 
             }
 
-            TextBlock tb = new TextBlock {Text = "rabbit"};
-            ChessBoardGrid.Children.Add(tb);
-            Grid.SetColumn(tb,8);
-            Grid.SetRow(tb,0);
-            Grid.SetRowSpan(tb,8);
+            StackPanel sp = new StackPanel {Margin = new Thickness(2), Width = 100};
+            ChessBoardGrid.Children.Add(sp);
+            Grid.SetColumn(sp, 8);
+            Grid.SetRow(sp, 0);
+            Grid.SetRowSpan(sp,6);
+
+            TextBlock fromTitleTextBlock = new TextBlock {Text = "From:"};
+            sp.Children.Add(fromTitleTextBlock);
+
+            TextBlock fromFieldTextBlock = new TextBlock { Text = "E2" };
+            sp.Children.Add(fromFieldTextBlock);
+
+            TextBlock toTitleTextBlock = new TextBlock { Text = "To:" };
+            sp.Children.Add(toTitleTextBlock);
+
+
+            TextBlock toFieldTextBlock = new TextBlock { Text = "E4" };
+            sp.Children.Add(toFieldTextBlock);
+
+
+
         }
     }
 }
