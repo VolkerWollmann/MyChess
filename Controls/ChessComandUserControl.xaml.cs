@@ -22,5 +22,16 @@ namespace MyChess.Controls
         {
             InitializeComponent();
         }
+
+        public void SetStartField(string text)
+        {
+            this.StartField.Text = text;
+        }
+
+        public void SetEndField(string text)
+        {
+            this.EndField.Text = text;
+        }
+
     }
 }

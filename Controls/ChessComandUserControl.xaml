@@ -9,9 +9,9 @@
     <Grid>
         <StackPanel Margin="2,2,2,2">
             <TextBlock HorizontalAlignment="Center" >From:</TextBlock>
-            <TextBox HorizontalAlignment="Center">E2</TextBox>
+            <TextBox Name="StartField" HorizontalAlignment="Center">E2</TextBox>
             <TextBlock HorizontalAlignment="Center" >To:</TextBlock>
-            <TextBox HorizontalAlignment="Center">E4</TextBox>
+            <TextBox Name="EndField" HorizontalAlignment="Center">E4</TextBox>
             <TextBlock HorizontalAlignment="Center" ></TextBlock>
             <Button>Move</Button>
         </StackPanel>

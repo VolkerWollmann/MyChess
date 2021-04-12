@@ -24,16 +24,24 @@ namespace MyChess.Controls
             {
                 StartField = field;
                 StartField.SetFieldColor(ChessConstants.FieldColor.Start);
+
+                ChessComandUserControl.SetStartField(  (char)(StartField.Column + 65) + (StartField.Row+1).ToString() );
+
             }
             else if (EndField == null)
             {
                 EndField = field;
                 EndField.SetFieldColor(ChessConstants.FieldColor.End);
+
+                ChessComandUserControl.SetEndField((char)(EndField.Column + 65) + (EndField.Row+1).ToString());
             }
             else
             {
                 StartField.SetFieldColor(ChessConstants.FieldColor.Standard);
                 EndField.SetFieldColor(ChessConstants.FieldColor.Standard);
+
+                ChessComandUserControl.SetStartField("");
+                ChessComandUserControl.SetEndField("");
 
                 StartField = null;
                 EndField = null;
