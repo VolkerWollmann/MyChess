@@ -9,7 +9,7 @@ namespace MyChess.Controls
     /// <summary>
     /// Interaction logic for ChessBoard.xaml
     /// </summary>
-    public partial class ChessBoardUserControl : UserControl
+    public partial class ChessBoardUserControl
     {
         readonly ChessFieldUserControl[,] Field;
 

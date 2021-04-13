@@ -7,7 +7,7 @@ namespace MyChess.Controls.Pieces
     /// <summary>
     /// Interaction logic for BishopUserControl.xaml
     /// </summary>
-    public partial class BishopUserControl : UserControl, IUserControlPiece
+    public partial class BishopUserControl : IUserControlPiece
     {
         public BishopUserControl()
         {

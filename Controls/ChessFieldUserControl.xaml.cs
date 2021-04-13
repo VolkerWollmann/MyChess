@@ -10,7 +10,7 @@ namespace MyChess.Controls
     /// <summary>
     /// Interaction logic for ChessFieldUserControl.xaml
     /// </summary>
-    public partial class ChessFieldUserControl : UserControl
+    public partial class ChessFieldUserControl
     {
         public int Row
         {

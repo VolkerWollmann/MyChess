@@ -7,7 +7,7 @@ namespace MyChess.Controls.Pieces
     /// <summary>
     /// Interaction logic for PawnUserControl.xaml
     /// </summary>
-    public partial class PawnUserControl : UserControl, IUserControlPiece
+    public partial class PawnUserControl : IUserControlPiece
     {
         public PawnUserControl()
         {

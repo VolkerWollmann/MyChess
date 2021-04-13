@@ -8,7 +8,7 @@ namespace MyChess.Controls
     /// <summary>
     /// Interaction logic for ChessCommandUserControl.xaml
     /// </summary>
-    public partial class ChessCommandUserControl : UserControl
+    public partial class ChessCommandUserControl
     {
         private EventHandler<ChessMenuEventArgs> EventHandler;
         public ChessCommandUserControl()

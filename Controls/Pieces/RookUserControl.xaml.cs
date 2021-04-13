@@ -7,7 +7,7 @@ namespace MyChess.Controls.Pieces
     /// <summary>
     /// Interaction logic for RookUserControl.xaml
     /// </summary>
-    public partial class RookUserControl : UserControl, IUserControlPiece
+    public partial class RookUserControl : IUserControlPiece
     {
         public RookUserControl()
         {

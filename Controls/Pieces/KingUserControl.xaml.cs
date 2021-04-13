@@ -7,7 +7,7 @@ namespace MyChess.Controls.Pieces
     /// <summary>
     /// Interaction logic for KingUserControl.xaml
     /// </summary>
-    public partial class KingUserControl : UserControl, IUserControlPiece
+    public partial class KingUserControl : IUserControlPiece
     {
         public KingUserControl()
         {

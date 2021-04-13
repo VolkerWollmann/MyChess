@@ -6,7 +6,7 @@ namespace MyChess.Controls
     /// <summary>
     /// Interaction logic for EngineOutputControl.xaml
     /// </summary>
-    public partial class EngineOutputControl : UserControl
+    public partial class EngineOutputControl
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

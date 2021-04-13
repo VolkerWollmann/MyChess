@@ -12,7 +12,6 @@
 
         public enum Piece
         {
-            None,
             Pawn,
             Knight,
             Bishop,
