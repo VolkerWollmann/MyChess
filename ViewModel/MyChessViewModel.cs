@@ -24,13 +24,11 @@ namespace MyChess.ViewModel
 
         private void UpdateBoard()
         {
-            IPiece[,] board = ChessEngine.GetBoard();
-
-            for (int row = 0; row < ChessConstants.Length; row++)
-            for (int column = 0; column < ChessConstants.Length; column++)
+            Position.AllPositions().ForEach(position =>
             {
-                ChessBoard.SetPiece(row, column, board[row, column]);
-            }
+                ChessBoard.SetPiece(position, ChessEngine.GetPiece(position));
+            });
+            
 
             ChessBoard.SetField(null);
         }
@@ -54,7 +52,7 @@ namespace MyChess.ViewModel
             var move = ChessBoard.GetMove();
             if (move != null)
             {
-                ChessEngine.ExecuteMove(move.Item1, move.Item2, move.Item3, move.Item4);
+                ChessEngine.ExecuteMove(move);
                 UpdateBoard();
             }
         }

@@ -2,12 +2,12 @@
 {
     interface IChessEngine
     {
-        IPiece[,] GetBoard();
+        IPiece GetPiece(Position position);
 
         void New();
 
         void Clear();
 
-        public bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn);
+        public bool ExecuteMove(Move move);
     }
 }

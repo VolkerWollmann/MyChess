@@ -5,29 +5,17 @@ namespace MyChess.Model
 {
     public class ChessEngine : IChessEngine
     {
-        private readonly Piece[,] Board;
+        private readonly Board Board;
         public ChessConstants.Color ColorToMove { get; set; }
 
-        public IPiece[,] GetBoard()
+        public IPiece  GetPiece(Position position)
         {
-            return Board;
+            return Board[position];
         }
 
         public ChessEngine Copy()
         {
-            Piece[,] copiedboard = new Piece[8, 8];
-
-            for(int row=0; row<8; row++)
-            for (int column = 0; column < 8; column++)
-            {
-                copiedboard[row, column] = null;
-                if (Board[row, column] != null)
-                {
-                    copiedboard[row, column] = PieceFactory.Copy(Board[row,column]);
-                }
-            }
-
-            return new ChessEngine(copiedboard, ChessConstants.NextColor(ColorToMove));
+            return new ChessEngine(Board.Copy(), ChessConstants.NextColor(ColorToMove));
         }
 
 
@@ -36,60 +24,59 @@ namespace MyChess.Model
             // pawn
             for (int column = 0; column < 8; column++)
             {
-                Board[1, column] = new Pawn(ChessConstants.Color.White);
-                Board[6, column] = new Pawn(ChessConstants.Color.Black);
+                Position position = new Position(1, column);
+                Board[position] = new Pawn(ChessConstants.Color.White);
+
+                position.Row = 6;
+                Board[position] = new Pawn(ChessConstants.Color.Black);
                
             }
 
             // rook
-            Board[0, 0] = new Rook(ChessConstants.Color.White);
-            Board[0, 7] = new Rook(ChessConstants.Color.White);
-            Board[7, 0] = new Rook(ChessConstants.Color.Black);
-            Board[7, 7] = new Rook(ChessConstants.Color.Black);
+            Board[new Position(0, 0)] = new Rook(ChessConstants.Color.White);
+            Board[new Position(0, 7)] = new Rook(ChessConstants.Color.White);
+            Board[new Position(7, 0)] = new Rook(ChessConstants.Color.Black);
+            Board[new Position(7, 7)] = new Rook(ChessConstants.Color.Black);
 
 
             // bishop 
-            Board[0, 2] = new Bishop(ChessConstants.Color.White);
-            Board[0, 5] = new Bishop(ChessConstants.Color.White);
-            Board[7, 2] = new Bishop(ChessConstants.Color.Black);
-            Board[7, 5] = new Bishop(ChessConstants.Color.Black);
+            Board[new Position(0, 2)] = new Bishop(ChessConstants.Color.White);
+            Board[new Position(0, 5)] = new Bishop(ChessConstants.Color.White);
+            Board[new Position(7, 2)] = new Bishop(ChessConstants.Color.Black);
+            Board[new Position(7, 5)] = new Bishop(ChessConstants.Color.Black);
 
 
             // knight
-            Board[0, 1] = new Knight(ChessConstants.Color.White);
-            Board[0, 6] = new Knight(ChessConstants.Color.White);
-            Board[7, 1] = new Knight(ChessConstants.Color.Black);
-            Board[7, 6] = new Knight(ChessConstants.Color.Black);
+            Board[new Position(0, 1)] = new Knight(ChessConstants.Color.White);
+            Board[new Position(0, 6)] = new Knight(ChessConstants.Color.White);
+            Board[new Position(7, 1)] = new Knight(ChessConstants.Color.Black);
+            Board[new Position(7, 6)] = new Knight(ChessConstants.Color.Black);
 
 
             // queen
-            Board[0, 3] = new Queen(ChessConstants.Color.White);
-            Board[7, 3] = new Queen(ChessConstants.Color.Black);
+            Board[new Position(0, 3)] = new Queen(ChessConstants.Color.White);
+            Board[new Position(7, 3)] = new Queen(ChessConstants.Color.Black);
             
 
             // king
-            Board[0, 4] = new King(ChessConstants.Color.White);
-            Board[7, 4] = new King(ChessConstants.Color.Black);
+            Board[new Position(0, 4)] = new King(ChessConstants.Color.White);
+            Board[new Position(7, 4)] = new King(ChessConstants.Color.Black);
 
             ColorToMove = ChessConstants.Color.White;
         }
 
         public void Clear()
         {
-            for(int row=0; row<ChessConstants.Length; row++)
-            for (int column = 0; column < ChessConstants.Length; column++)
-            {
-                Board[row, column] = null;
-            }
+            Board.Clear();
         }
 
-        public bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn)
+        public bool ExecuteMove(Move move)
         {
-            if (Board[startRow, startColumn] == null)
+            if (Board[move.Start] == null)
                 return false;
 
-            Board[endRow, endColumn] = Board[startRow, startColumn];
-            Board[startRow, startColumn] = null;
+            Board[move.End] = Board[move.Start];
+            Board[move.Start] = null;
 
             ColorToMove = ChessConstants.NextColor(ColorToMove);
             
@@ -98,9 +85,9 @@ namespace MyChess.Model
 
         public ChessEngine()
         {
-            Board = new Piece[8, 8];
+            Board = new Board();
         }
-        private ChessEngine(Piece[,] board, ChessConstants.Color colorToMove)
+        private ChessEngine(Board board, ChessConstants.Color colorToMove)
         {
             Board = board;
             ColorToMove = colorToMove;

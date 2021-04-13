@@ -18,12 +18,12 @@ namespace MyChess.Controls
         private ChessFieldUserControl StartField;
         private ChessFieldUserControl EndField;
 
-        public Tuple<int, int, int, int> GetMove()
+        public Move GetMove()
         {
             if (StartField == null || EndField==null)
                 return null;
 
-            return new Tuple<int, int, int, int>(StartField.Row, StartField.Column, EndField.Row, EndField.Column);
+            return new Move(StartField.GetPosition(), EndField.GetPosition());
         }
 
         public void SetField(ChessFieldUserControl field)
@@ -73,9 +73,9 @@ namespace MyChess.Controls
             ChessCommandUserControl.SetEventHandler(eventHandler);
         }
 
-        public void SetPiece(int row, int column, IPiece piece)
+        public void SetPiece(Position position, IPiece piece)
         {
-            Field[row,column].SetPiece(piece);
+            Field[position.Row,position.Column].SetPiece(piece);
         }
             
         public ChessBoardUserControl()

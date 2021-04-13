@@ -22,6 +22,11 @@ namespace MyChess.Controls
             get;
         }
 
+        public Position GetPosition()
+        {
+            return new Position(Row, Column);
+        }
+
         private readonly ChessBoardUserControl ChessBoardUserControl;
 
         public ChessFieldUserControl(int row, int column, ChessBoardUserControl chessBoardUserControl)
