@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using MyChess.Common;
 
 namespace MyChess.Controls.Pieces
@@ -23,7 +22,7 @@ namespace MyChess.Controls.Pieces
         {
             _Piece = piece;
 
-            this.Figure.Fill = _Piece.GetColor() == ChessConstants.Color.White ? new SolidColorBrush(Colors.Khaki) : new SolidColorBrush(Colors.Black);
+            Figure.Fill = _Piece.GetColor() == ChessConstants.Color.White ? new SolidColorBrush(Colors.Khaki) : new SolidColorBrush(Colors.Black);
         }
     }
 }

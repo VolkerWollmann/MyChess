@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyChess.Common;
+﻿using MyChess.Common;
 using MyChess.Model.Pieces;
 
 namespace MyChess.Model
 {
     public class Board
     {
-        private readonly Piece[,] board;
+        private readonly Piece[,] Pieces;
 
         public Board()
         {
-            board = new Piece[8, 8];
+            Pieces = new Piece[8, 8];
         }
 
         public Piece this[Position position]
         {
-            get => board[position.Row, position.Column];
-            set => board[position.Row, position.Column] = value;
+            get => Pieces[position.Row, position.Column];
+            set => Pieces[position.Row, position.Column] = value;
         }
 
         public void Clear()

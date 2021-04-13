@@ -40,7 +40,7 @@ namespace MyChess.Controls
 
             SetFieldColor(ChessConstants.FieldColor.Standard);
 
-            this.MouseLeftButtonDown += OnMouseLeftButtonDown;
+            MouseLeftButtonDown += OnMouseLeftButtonDown;
 
         }
 
@@ -62,18 +62,18 @@ namespace MyChess.Controls
                     break;
             }
 
-            this.Background = fieldSolidColorBrush;
+            Background = fieldSolidColorBrush;
         }
 
         public void SetPiece(IPiece piece)
         {
-            if (this.FieldStackPanel.Children.Count > 0)
-                this.FieldStackPanel.Children.RemoveAt(0);
+            if (FieldStackPanel.Children.Count > 0)
+                FieldStackPanel.Children.RemoveAt(0);
 
             if (piece != null)
             {
                 UserControl pieceUserControl = PieceUserControlFactory.CreatePieceUserControl(piece);
-                this.FieldStackPanel.Children.Add(pieceUserControl);
+                FieldStackPanel.Children.Add(pieceUserControl);
                 DockPanel.SetDock(pieceUserControl, Dock.Bottom);
             }
         }

@@ -28,7 +28,7 @@
 
         public static Color NextColor(Color color)
         {
-            return color == ChessConstants.Color.White ? ChessConstants.Color.Black : ChessConstants.Color.White;
+            return color == Color.White ? Color.Black : Color.White;
         }
 
         public enum FieldColor

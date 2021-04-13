@@ -18,12 +18,12 @@ namespace MyChess.Controls
 
         public void SetStartField(string text)
         {
-            this.StartField.Text = text;
+            StartField.Text = text;
         }
 
         public void SetEndField(string text)
         {
-            this.EndField.Text = text;
+            EndField.Text = text;
         }
 
         public void SetEventHandler(EventHandler<ChessMenuEventArgs> eventHandler)
