@@ -26,6 +26,11 @@
             Black
         }
 
+        public static Color NextColor(Color color)
+        {
+            return color == ChessConstants.Color.White ? ChessConstants.Color.Black : ChessConstants.Color.White;
+        }
+
         public enum FieldColor
         {
             Standard,

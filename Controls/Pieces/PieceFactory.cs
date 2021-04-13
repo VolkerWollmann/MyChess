@@ -3,32 +3,20 @@ using MyChess.Common;
 
 namespace MyChess.Controls.Pieces
 {
-    public class PieceFactory
+    public class PieceUserControlFactory
     {
-        public static UserControl CreatePiece(IPiece piece)
+        public static UserControl CreatePieceUserControl(IPiece piece)
         {
-            switch (piece.GetPieceType())
+            return piece.GetPieceType() switch
             {
-                case ChessConstants.Piece.Pawn:
-                    return new PawnUserControl(piece);
-
-                case ChessConstants.Piece.Bishop:
-                    return new BishopUserControl(piece);
-
-                case ChessConstants.Piece.Rook:
-                    return new RookUserControl(piece);
-
-                case ChessConstants.Piece.Queen:
-                    return new QueenUserControl(piece);
-
-                case ChessConstants.Piece.King:
-                    return new KingUserControl(piece);
-
-                case ChessConstants.Piece.Knight:
-                    return new KnightUserControl(piece);
-            }
-
-            return null;
+                ChessConstants.Piece.Pawn => new PawnUserControl(piece),
+                ChessConstants.Piece.Bishop => new BishopUserControl(piece),
+                ChessConstants.Piece.Rook => new RookUserControl(piece),
+                ChessConstants.Piece.Queen => new QueenUserControl(piece),
+                ChessConstants.Piece.King => new KingUserControl(piece),
+                ChessConstants.Piece.Knight => new KnightUserControl(piece),
+                _ => null
+            };
         }
     }
 }

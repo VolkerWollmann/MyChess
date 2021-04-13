@@ -67,7 +67,7 @@ namespace MyChess.Controls
 
             if (piece != null)
             {
-                UserControl pieceUserControl = PieceFactory.CreatePiece(piece);
+                UserControl pieceUserControl = PieceUserControlFactory.CreatePieceUserControl(piece);
                 this.FieldStackPanel.Children.Add(pieceUserControl);
                 DockPanel.SetDock(pieceUserControl, Dock.Bottom);
             }

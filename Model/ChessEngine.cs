@@ -5,13 +5,31 @@ namespace MyChess.Model
 {
     public class ChessEngine : IChessEngine
     {
-        private readonly IPiece[,] Board = new IPiece[8, 8];
-        private ChessConstants.Color ColorToMove;
+        private readonly Piece[,] Board;
+        public ChessConstants.Color ColorToMove { get; set; }
 
         public IPiece[,] GetBoard()
         {
             return Board;
         }
+
+        public ChessEngine Copy()
+        {
+            Piece[,] copiedboard = new Piece[8, 8];
+
+            for(int row=0; row<8; row++)
+            for (int column = 0; column < 8; column++)
+            {
+                copiedboard[row, column] = null;
+                if (Board[row, column] != null)
+                {
+                    copiedboard[row, column] = PieceFactory.Copy(Board[row,column]);
+                }
+            }
+
+            return new ChessEngine(copiedboard, ChessConstants.NextColor(ColorToMove));
+        }
+
 
         public void New()
         {
@@ -73,9 +91,19 @@ namespace MyChess.Model
             Board[endRow, endColumn] = Board[startRow, startColumn];
             Board[startRow, startColumn] = null;
 
-            ColorToMove = ColorToMove == ChessConstants.Color.White ? ChessConstants.Color.Black : ChessConstants.Color.White;
+            ColorToMove = ChessConstants.NextColor(ColorToMove);
             
             return true;
+        }
+
+        public ChessEngine()
+        {
+            Board = new Piece[8, 8];
+        }
+        private ChessEngine(Piece[,] board, ChessConstants.Color colorToMove)
+        {
+            Board = board;
+            ColorToMove = colorToMove;
         }
     }
 }

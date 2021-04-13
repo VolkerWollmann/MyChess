@@ -21,10 +21,5 @@ namespace MyChess.Model.Pieces
             _Color = color;
             _Piece = piece;
         }
-
-        public Piece(IPiece piece):this(piece.GetColor(), piece.GetPieceType() )
-        {
-        }
-
     }
 }
