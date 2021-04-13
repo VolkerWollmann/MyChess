@@ -18,58 +18,37 @@ namespace MyChess.ViewModel
 
         private readonly ChessBoardUserControl ChessBoard;
 
+        private readonly ChessEngine ChessEngine;
+
         private readonly EngineOutputControl EngineOutput;
+
+
+        private void UpdateBoard()
+        {
+            IPiece[,] Board = ChessEngine.GetBoard();
+
+            for (int row = 0; row < ChessConstants.Length; row++)
+            for (int column = 0; column < ChessConstants.Length; column++)
+            {
+                ChessBoard.SetPiece(row, column, Board[row, column]);
+            }
+        }
 
         #region Commands
 
         private void New()
         {
-            // pawn
-            for (int i = 0; i < 8; i++)
-            {
-                ChessBoard.SetPiece(1, i, new Pawn(ChessConstants.Color.White));
-                ChessBoard.SetPiece(6, i, new Pawn(ChessConstants.Color.Black));
-            }
-
-            // rook
-            ChessBoard.SetPiece(0, 0, new Rook(ChessConstants.Color.White));
-            ChessBoard.SetPiece(0, 7, new Rook(ChessConstants.Color.White));
-
-            ChessBoard.SetPiece(7, 0, new Rook(ChessConstants.Color.Black));
-            ChessBoard.SetPiece(7, 7, new Rook(ChessConstants.Color.Black));
-
-            // bishop 
-            ChessBoard.SetPiece(0, 2, new Bishop(ChessConstants.Color.White));
-            ChessBoard.SetPiece(0, 5, new Bishop(ChessConstants.Color.White));
-
-            ChessBoard.SetPiece(7, 2, new Bishop(ChessConstants.Color.Black));
-            ChessBoard.SetPiece(7, 5, new Bishop(ChessConstants.Color.Black));
-
-            // knight
-            ChessBoard.SetPiece(0, 1, new Knight(ChessConstants.Color.White));
-            ChessBoard.SetPiece(0, 6, new Knight(ChessConstants.Color.White));
-
-            ChessBoard.SetPiece(7, 1, new Knight(ChessConstants.Color.Black));
-            ChessBoard.SetPiece(7, 6, new Knight(ChessConstants.Color.Black));
-
-            // queen
-            ChessBoard.SetPiece(0, 3, new Queen(ChessConstants.Color.White));
-            ChessBoard.SetPiece(7, 3, new Queen(ChessConstants.Color.Black));
-
-            // king
-            ChessBoard.SetPiece(0, 4, new King(ChessConstants.Color.White));
-            ChessBoard.SetPiece(7, 4, new King(ChessConstants.Color.Black));
-
+            ChessEngine.New();
+            UpdateBoard();
         }
 
         private void Clear()
         {
-            for(int row=0; row<8; row++)
-                for(int column=0; column<8;column++)
-                    ChessBoard.SetPiece(row,column, null);
+           ChessEngine.Clear();
+           UpdateBoard();
         }
 
-        #endregion
+        
         private void Command(object sender, ChessMenuEventArgs e)
         {
             EngineOutput.Text = "Command " + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -89,6 +68,7 @@ namespace MyChess.ViewModel
             }
             
         }
+        #endregion
 
         public MyChessViewModel(Grid gameGrid)
         {
@@ -116,6 +96,10 @@ namespace MyChess.ViewModel
             EngineOutput = new EngineOutputControl();
             GameGrid.Children.Add(EngineOutput);
             Grid.SetRow(EngineOutput, 2);
+            #endregion
+
+            #region Engine
+            ChessEngine = new ChessEngine();
             #endregion
 
             #region Menu

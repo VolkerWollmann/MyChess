@@ -7,6 +7,8 @@
         public const string ClearCommand = "ClearCommand";
         public const string Test1Command = "Test1Command";
 
+        public const int Length = 8;
+
         public enum Piece
         {
             None,
