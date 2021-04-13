@@ -32,6 +32,8 @@ namespace MyChess.ViewModel
             {
                 ChessBoard.SetPiece(row, column, Board[row, column]);
             }
+
+            ChessBoard.SetField(null);
         }
 
         #region Commands
@@ -48,6 +50,15 @@ namespace MyChess.ViewModel
            UpdateBoard();
         }
 
+        private void Move()
+        {
+            var move = ChessBoard.GetMove();
+            if (move != null)
+            {
+                ChessEngine.ExecuteMove(move.Item1, move.Item2, move.Item3, move.Item4);
+                UpdateBoard();
+            }
+        }
         
         private void Command(object sender, ChessMenuEventArgs e)
         {
@@ -60,6 +71,10 @@ namespace MyChess.ViewModel
 
                 case ChessConstants.ClearCommand:
                     Clear();
+                    break;
+
+                case ChessConstants.MoveCommand:
+                    Move();
                     break;
 
                 case ChessConstants.QuitCommand:
@@ -104,6 +119,7 @@ namespace MyChess.ViewModel
 
             #region Menu
             Menu.SetEventHandler(Command);
+            ChessBoard.SetEventHandler(Command);
             #endregion
 
         }

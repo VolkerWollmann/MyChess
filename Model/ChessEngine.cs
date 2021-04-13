@@ -64,6 +64,17 @@ namespace MyChess.Model
             }
         }
 
+        public bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn)
+        {
+            if (Board[startRow, startColumn] == null)
+                return false;
+
+            Board[endRow, endColumn] = Board[startRow, startColumn];
+            Board[startRow, startColumn] = null;
+
+            return true;
+        }
+
         public ChessEngine()
         {
 

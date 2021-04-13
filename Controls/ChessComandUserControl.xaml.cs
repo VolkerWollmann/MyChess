@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyChess.Helper;
 
 namespace MyChess.Controls
 {
@@ -18,6 +19,7 @@ namespace MyChess.Controls
     /// </summary>
     public partial class ChessComandUserControl : UserControl
     {
+        private EventHandler<ChessMenuEventArgs> EventHandler;
         public ChessComandUserControl()
         {
             InitializeComponent();
@@ -33,5 +35,16 @@ namespace MyChess.Controls
             this.EndField.Text = text;
         }
 
+        public void SetEventHandler(EventHandler<ChessMenuEventArgs> eventHandler)
+        {
+            EventHandler = eventHandler;
+        }
+
+        private void Button_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button) sender;
+            ChessMenuEventArgs chessMenuEventArgs = new ChessMenuEventArgs((string)b.Tag);
+            EventHandler(null, chessMenuEventArgs);
+        }
     }
 }

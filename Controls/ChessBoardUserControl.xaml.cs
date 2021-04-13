@@ -1,7 +1,9 @@
-﻿using System.Diagnostics.Eventing.Reader;
+﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Common;
+using MyChess.Helper;
 
 namespace MyChess.Controls
 {
@@ -17,28 +19,45 @@ namespace MyChess.Controls
         private ChessFieldUserControl StartField=null;
         private ChessFieldUserControl EndField=null;
 
+        public Tuple<int, int, int, int> GetMove()
+        {
+            if (StartField == null || EndField==null)
+                return null;
+
+            return new Tuple<int, int, int, int>(StartField.Row, StartField.Column, EndField.Row, EndField.Column);
+        }
 
         public void SetField(ChessFieldUserControl field)
         {
-            if (StartField == null)
-            {
-                StartField = field;
-                StartField.SetFieldColor(ChessConstants.FieldColor.Start);
+            bool reset = true;
 
-                ChessComandUserControl.SetStartField(  (char)(StartField.Column + 65) + (StartField.Row+1).ToString() );
+            if (field != null)
+            {
+                if (StartField == null)
+                {
+                    StartField = field;
+                    StartField.SetFieldColor(ChessConstants.FieldColor.Start);
+
+                    ChessComandUserControl.SetStartField((char) (StartField.Column + 65) +
+                                                         (StartField.Row + 1).ToString());
+                    reset = false;
+                }
+                else if (EndField == null)
+                {
+                    EndField = field;
+                    EndField.SetFieldColor(ChessConstants.FieldColor.End);
+
+                    ChessComandUserControl.SetEndField((char) (EndField.Column + 65) + (EndField.Row + 1).ToString());
+
+                    reset = false;
+                }
 
             }
-            else if (EndField == null)
+ 
+            if ( reset) 
             {
-                EndField = field;
-                EndField.SetFieldColor(ChessConstants.FieldColor.End);
-
-                ChessComandUserControl.SetEndField((char)(EndField.Column + 65) + (EndField.Row+1).ToString());
-            }
-            else
-            {
-                StartField.SetFieldColor(ChessConstants.FieldColor.Standard);
-                EndField.SetFieldColor(ChessConstants.FieldColor.Standard);
+                StartField?.SetFieldColor(ChessConstants.FieldColor.Standard);
+                EndField?.SetFieldColor(ChessConstants.FieldColor.Standard);
 
                 ChessComandUserControl.SetStartField("");
                 ChessComandUserControl.SetEndField("");
@@ -47,7 +66,12 @@ namespace MyChess.Controls
                 EndField = null;
             }
 
+        }
 
+
+        public void SetEventHandler(EventHandler<ChessMenuEventArgs> eventHandler)
+        {
+            ChessComandUserControl.SetEventHandler(eventHandler);
         }
 
         public void SetPiece(int row, int column, IPiece piece)
