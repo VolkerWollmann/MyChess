@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Accessibility;
-using MyChess.Common;
+﻿using MyChess.Common;
 
-
-namespace MyChess.Model
+namespace MyChess.Model.Pieces
 {
     public class Piece : IPiece
     {
-        private ChessConstants.Piece _Piece;
-        private ChessConstants.Color _Color;
+        private readonly ChessConstants.Piece _Piece;
+        private readonly ChessConstants.Color _Color;
         public ChessConstants.Piece GetPieceType()
         {
             return _Piece;

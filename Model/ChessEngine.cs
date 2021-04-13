@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyChess.Common;
+﻿using MyChess.Common;
+using MyChess.Model.Pieces;
 
 namespace MyChess.Model
 {
     public class ChessEngine : IChessEngine
     {
-        private IPiece[,] Board = new IPiece[8, 8];
+        private readonly IPiece[,] Board = new IPiece[8, 8];
 
         public IPiece[,] GetBoard()
         {
@@ -74,12 +72,5 @@ namespace MyChess.Model
 
             return true;
         }
-
-        public ChessEngine()
-        {
-
-        }
-
-        
     }
 }

@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using MyChess.Common;
 using MyChess.Controls;
-using MyChess.Controls.Pieces;
 using MyChess.Helper;
 using MyChess.Model;
 
@@ -18,19 +17,19 @@ namespace MyChess.ViewModel
 
         private readonly ChessBoardUserControl ChessBoard;
 
-        private readonly ChessEngine ChessEngine;
+        private readonly IChessEngine ChessEngine;
 
         private readonly EngineOutputControl EngineOutput;
 
 
         private void UpdateBoard()
         {
-            IPiece[,] Board = ChessEngine.GetBoard();
+            IPiece[,] board = ChessEngine.GetBoard();
 
             for (int row = 0; row < ChessConstants.Length; row++)
             for (int column = 0; column < ChessConstants.Length; column++)
             {
-                ChessBoard.SetPiece(row, column, Board[row, column]);
+                ChessBoard.SetPiece(row, column, board[row, column]);
             }
 
             ChessBoard.SetField(null);
@@ -78,7 +77,7 @@ namespace MyChess.ViewModel
                     break;
 
                 case ChessConstants.QuitCommand:
-                    System.Windows.Application.Current.Shutdown();
+                    Application.Current.Shutdown();
                     break;
             }
             

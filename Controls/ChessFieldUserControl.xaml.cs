@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MyChess.Common;
@@ -24,7 +22,7 @@ namespace MyChess.Controls
             get;
         }
 
-        private ChessBoardUserControl ChessBoardUserControl;
+        private readonly ChessBoardUserControl ChessBoardUserControl;
 
         public ChessFieldUserControl(int row, int column, ChessBoardUserControl chessBoardUserControl)
         {

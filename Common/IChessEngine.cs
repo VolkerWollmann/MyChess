@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyChess.Common
+﻿namespace MyChess.Common
 {
     interface IChessEngine
     {
@@ -11,5 +7,7 @@ namespace MyChess.Common
         void New();
 
         void Clear();
+
+        public bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn);
     }
 }
