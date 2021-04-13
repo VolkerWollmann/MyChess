@@ -6,6 +6,7 @@ namespace MyChess.Model
     public class ChessEngine : IChessEngine
     {
         private readonly IPiece[,] Board = new IPiece[8, 8];
+        private ChessConstants.Color ColorToMove;
 
         public IPiece[,] GetBoard()
         {
@@ -51,6 +52,8 @@ namespace MyChess.Model
             // king
             Board[0, 4] = new King(ChessConstants.Color.White);
             Board[7, 4] = new King(ChessConstants.Color.Black);
+
+            ColorToMove = ChessConstants.Color.White;
         }
 
         public void Clear()
@@ -70,6 +73,8 @@ namespace MyChess.Model
             Board[endRow, endColumn] = Board[startRow, startColumn];
             Board[startRow, startColumn] = null;
 
+            ColorToMove = ColorToMove == ChessConstants.Color.White ? ChessConstants.Color.Black : ChessConstants.Color.White;
+            
             return true;
         }
     }
