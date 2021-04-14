@@ -18,6 +18,8 @@ namespace MyChess.Model.Pieces
                         moves.Add(new Move(this.Position, newPosition));
                 }
 
+            // ToDo : Castle
+
             return moves;
         }
 

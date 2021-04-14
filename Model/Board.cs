@@ -25,6 +25,7 @@ namespace MyChess.Model
 
         public bool IsValidPosition(Position position, ChessConstants.Color color)
         {
+            // does not work for pawn
             if (position == null)
                 return false;
 
