@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces

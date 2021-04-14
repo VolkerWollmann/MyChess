@@ -6,12 +6,11 @@ namespace MyChess.Model.Pieces
     public class Piece : IEnginePiece
     {
         #region IPiece
-        private readonly ChessConstants.Piece _Piece;
-        private readonly ChessConstants.Color _Color;
-        public ChessConstants.Piece Type => _Piece;
 
-        public ChessConstants.Color Color => _Color;
-        
+        public ChessConstants.Piece Type { get; }
+
+        public ChessConstants.Color Color { get; }
+
         #endregion
 
         #region IEnginePiece
@@ -30,8 +29,8 @@ namespace MyChess.Model.Pieces
 
         public Piece(ChessConstants.Color color, ChessConstants.Piece piece)
         {
-            _Color = color;
-            _Piece = piece;
+            Color = color;
+            Type = piece;
         }
 
     }

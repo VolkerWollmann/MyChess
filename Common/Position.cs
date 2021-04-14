@@ -41,6 +41,9 @@ namespace MyChess.Common
 
         public Position GetDeltaPosition(int deltaRow, int deltaColumn)
         {
+            if (deltaRow == 0 && deltaColumn == 0)
+                return null;
+
             Position position = new Position(this.Row + deltaRow, this.Column + deltaColumn);
             if (!position.IsValidPosition())
                 return null;
