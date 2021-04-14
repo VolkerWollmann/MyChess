@@ -37,5 +37,21 @@
             Start,
             End
         }
+
+        public enum Situation
+        {
+            Normal,
+            Remis,
+            Patt
+        }
+
+        public enum Advantage
+        {
+            WhiteChecked,
+            BlackChecked,
+            Normal,
+            WhiteMate,
+            BlackMate
+        }
     }
 }
