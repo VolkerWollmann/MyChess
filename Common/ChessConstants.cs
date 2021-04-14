@@ -42,7 +42,8 @@
         {
             Normal,
             Remis,
-            Patt
+            Patt,
+            Victory
         }
 
         public enum Advantage
