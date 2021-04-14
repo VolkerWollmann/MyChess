@@ -26,6 +26,17 @@ namespace MyChess.Model
             }
         }
 
+        public bool IsValidPosition(Position position, ChessConstants.Color color)
+        {
+            if (position == null)
+                return false;
+
+            if (this[position].Color == color)
+                return false;
+
+            return true;
+        }
+
         public void Clear()
         {
             Position.AllPositions().ForEach(position => { this[position] = null; });

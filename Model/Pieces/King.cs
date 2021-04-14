@@ -15,11 +15,8 @@ namespace MyChess.Model.Pieces
                 {
                     Position newPosition = this.Position.GetDeltaPosition(row, column);
 
-                    if (newPosition != null)
-                    {
-                        if ((this.Board[newPosition] == null) || this.Board[newPosition].Color != this.Color)
-                            moves.Add(new Move(this.Position, newPosition));
-                    }
+                    if (this.Board.IsValidPosition(newPosition, this.Color))
+                        moves.Add(new Move(this.Position, newPosition));
                 }
 
             return moves;
