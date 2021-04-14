@@ -6,14 +6,14 @@ namespace MyChess.Model.Pieces
     {
         public static Piece Copy(Piece piece)
         {
-            return piece.GetPieceType() switch
+            return piece.Type switch
             {
-                ChessConstants.Piece.Pawn => new Pawn(piece.GetColor()),
-                ChessConstants.Piece.Bishop => new Bishop(piece.GetColor()),
-                ChessConstants.Piece.King => new King(piece.GetColor()),
-                ChessConstants.Piece.Knight => new Knight(piece.GetColor()),
-                ChessConstants.Piece.Queen => new Queen(piece.GetColor()),
-                ChessConstants.Piece.Rook => new Rook(piece.GetColor()),
+                ChessConstants.Piece.Pawn => new Pawn(piece.Color),
+                ChessConstants.Piece.Bishop => new Bishop(piece.Color),
+                ChessConstants.Piece.King => new King(piece.Color),
+                ChessConstants.Piece.Knight => new Knight(piece.Color),
+                ChessConstants.Piece.Queen => new Queen(piece.Color),
+                ChessConstants.Piece.Rook => new Rook(piece.Color),
                 _ => null
             };
         }

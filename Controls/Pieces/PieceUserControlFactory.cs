@@ -7,7 +7,7 @@ namespace MyChess.Controls.Pieces
     {
         public static UserControl CreatePieceUserControl(IPiece piece)
         {
-            return piece.GetPieceType() switch
+            return piece.Type switch
             {
                 ChessConstants.Piece.Pawn => new PawnUserControl(piece),
                 ChessConstants.Piece.Bishop => new BishopUserControl(piece),

@@ -2,7 +2,7 @@
 
 namespace MyChess.Common
 {
-    public class Position
+    public class Position 
     {
         public int Row;
         public int Column;
@@ -27,6 +27,25 @@ namespace MyChess.Common
             }
 
             return _allPositions;
+        }
+
+        public bool IsValidPosition()
+        {
+            return (Row >= 0) && (Row < ChessConstants.Length) && (Column >= 0) && (Column < ChessConstants.Length);
+        }
+
+        public bool AreEqual(Position position)
+        {
+            return this.Row == position.Row && this.Column == position.Column;
+        }
+
+        public Position GetDeltaPosition(int deltaRow, int deltaColumn)
+        {
+            Position position = new Position(this.Row + deltaRow, this.Column + deltaColumn);
+            if (!position.IsValidPosition())
+                return null;
+
+            return position;
         }
     }
 }

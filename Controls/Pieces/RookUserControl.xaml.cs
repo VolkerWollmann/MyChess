@@ -24,7 +24,7 @@ namespace MyChess.Controls.Pieces
         {
             _Piece = piece;
 
-            Figure.Fill = _Piece.GetColor() == ChessConstants.Color.White ? 
+            Figure.Fill = _Piece.Color == ChessConstants.Color.White ? 
                 new SolidColorBrush(Colors.Khaki) : 
                 new SolidColorBrush(Colors.Black);
         }

@@ -1,4 +1,7 @@
-﻿using MyChess.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Documents;
+using MyChess.Common;
 using MyChess.Model.Pieces;
 
 namespace MyChess.Model
@@ -15,13 +18,20 @@ namespace MyChess.Model
         public Piece this[Position position]
         {
             get => Pieces[position.Row, position.Column];
-            set => Pieces[position.Row, position.Column] = value;
+            set
+            {
+                Pieces[position.Row, position.Column] = value;
+                Pieces[position.Row, position.Column].Board = this;
+                Pieces[position.Row, position.Column].Position = position;
+            }
         }
 
         public void Clear()
         {
             Position.AllPositions().ForEach(position => { this[position] = null; });
         }
+
+        
 
         public Board Copy()
         {
