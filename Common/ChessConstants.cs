@@ -46,13 +46,13 @@
             Victory
         }
 
-        public enum Advantage
+        public enum Evaluation
         {
+            WhiteCheckMate,
             WhiteChecked,
-            BlackChecked,
             Normal,
-            WhiteMate,
-            BlackMate
+            BlackChecked,
+            BlackCheckMate
         }
     }
 }

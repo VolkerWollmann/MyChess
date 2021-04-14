@@ -4,21 +4,21 @@ namespace MyChess.Common
 {
     /// <summary>
     /// ![CDATA[
-    /// Order by Advantage, Value
-    ///         WhiteMate,
+    /// Order by Evaluation, Value
+    ///         WhiteCheckMate,
     ///         WhiteChecked,
     ///         Normal,
     ///                 Value : > 0 better for White
     ///                         = 0 equal
     ///                         > 0 better for Black
     ///         BlackChecked,
-    ///         BlackMate
+    ///         BlackCheckMate
     /// ]]>
     /// </summary>
     public class BoardRating
     {
         public Situation Situation;
-        public Advantage Advantage;
+        public Evaluation Evaluation;
         public int Value;
     }
 }
