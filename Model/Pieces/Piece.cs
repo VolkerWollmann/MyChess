@@ -1,8 +1,9 @@
-﻿using MyChess.Common;
+﻿using System.Collections.Generic;
+using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
-    public class Piece : IPiece
+    public class Piece : IEnginePiece
     {
         private readonly ChessConstants.Piece _Piece;
         private readonly ChessConstants.Color _Color;
@@ -14,6 +15,11 @@ namespace MyChess.Model.Pieces
         public ChessConstants.Color GetColor()
         {
             return _Color;
+        }
+
+        public virtual List<Move> GetMoves(Board board)
+        {
+            return new List<Move>();
         }
 
         public Piece(ChessConstants.Color color, ChessConstants.Piece piece)
