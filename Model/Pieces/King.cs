@@ -15,7 +15,7 @@ namespace MyChess.Model.Pieces
                     Position newPosition = this.Position.GetDeltaPosition(row, column);
 
                     if (this.Board.IsValidPosition(newPosition, this.Color))
-                        moves.Add(new Move(this.Position, newPosition));
+                        moves.Add(new Move(this.Position, newPosition, this));
                 }
 
             // ToDo : Castle

@@ -4,11 +4,15 @@
     {
         public Position Start;
         public Position End;
-
-        public Move(Position start, Position end)
+        public IPiece Piece;
+        
+        public Move(Position start, Position end, IPiece piece)
         {
             Start = start;
             End = end;
+            Piece = piece;
+
+
         }
 
     }

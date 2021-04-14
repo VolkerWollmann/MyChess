@@ -23,7 +23,7 @@ namespace MyChess.Controls
             if (StartField == null || EndField==null)
                 return null;
 
-            return new Move(StartField.GetPosition(), EndField.GetPosition());
+            return new Move(StartField.GetPosition(), EndField.GetPosition(), null);
         }
 
         public void SetField(ChessFieldUserControl field)

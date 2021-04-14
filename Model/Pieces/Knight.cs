@@ -15,14 +15,15 @@ namespace MyChess.Model.Pieces
             int[,] delta = new int[8,2]
             {
                 { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
-                { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 },
+                { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
             } ;
 
             for (int i = 0; i < 8; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(delta[i, 0], delta[i, 1]);
+
                 if (this.Board.IsValidPosition(newPosition, this.Color))
-                    moves.Add(new Move(this.Position, newPosition));
+                    moves.Add(new Move(this.Position, newPosition, this));
             }
 
             return moves;

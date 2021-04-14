@@ -15,7 +15,7 @@ namespace MyChess.Model.Pieces
                 Position newPosition = this.Position.GetDeltaPosition(-i, -i);
                 if (!this.Board.IsValidPosition(newPosition, this.Color))
                     break;
-                moves.Add(new Move(this.Position, newPosition));
+                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // left, up
@@ -24,7 +24,7 @@ namespace MyChess.Model.Pieces
                 Position newPosition = this.Position.GetDeltaPosition(-i, i);
                 if (!this.Board.IsValidPosition(newPosition, this.Color))
                     break;
-                moves.Add(new Move(this.Position, newPosition));
+                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // right, down
@@ -33,7 +33,7 @@ namespace MyChess.Model.Pieces
                 Position newPosition = this.Position.GetDeltaPosition(i, -i);
                 if (!this.Board.IsValidPosition(newPosition, this.Color))
                     break;
-                moves.Add(new Move(this.Position, newPosition));
+                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // right, up
@@ -42,7 +42,7 @@ namespace MyChess.Model.Pieces
                 Position newPosition = this.Position.GetDeltaPosition(i, i);
                 if (!this.Board.IsValidPosition(newPosition, this.Color))
                     break;
-                moves.Add(new Move(this.Position, newPosition));
+                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             return moves;

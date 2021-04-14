@@ -1,4 +1,5 @@
-﻿using MyChess.Common;
+﻿using System.Linq;
+using MyChess.Common;
 using MyChess.Model.Pieces;
 
 namespace MyChess.Model
@@ -27,7 +28,7 @@ namespace MyChess.Model
                 Position position = new Position(1, column);
                 Board[position] = new Pawn(ChessConstants.Color.White);
 
-                position.Row = 6;
+                position = new Position(6, column);
                 Board[position] = new Pawn(ChessConstants.Color.Black);
                
             }
@@ -83,6 +84,10 @@ namespace MyChess.Model
             return true;
         }
 
+        public void Test()
+        {
+            var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoves())).SelectMany( move => move).ToList();
+        }
         public ChessEngine()
         {
             Board = new Board();

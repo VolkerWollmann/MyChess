@@ -13,28 +13,28 @@ namespace MyChess.Model.Pieces
             {
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(1, -1);
-                if ( (newPosition != null ) && Board[newPosition] != null & Board[newPosition].Color != Color )
-                    moves.Add(new Move(this.Position, newPosition));
+                if ( (newPosition != null ) && Board[newPosition] != null && Board[newPosition].Color != Color )
+                    moves.Add(new Move(this.Position, newPosition, this));
 
                 // up
-                newPosition = this.Position.GetDeltaPosition(0, 1);
+                newPosition = this.Position.GetDeltaPosition(1, 0);
                 if ((newPosition != null) && Board[newPosition] == null )
-                    moves.Add(new Move(this.Position, newPosition));
+                    moves.Add(new Move(this.Position, newPosition, this));
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(1, 1);
-                if ((newPosition != null) && Board[newPosition] != null & Board[newPosition].Color != Color)
-                    moves.Add(new Move(this.Position, newPosition));
+                if ((newPosition != null) && Board[newPosition] != null && Board[newPosition].Color != Color)
+                    moves.Add(new Move(this.Position, newPosition, this));
 
                 // start with two
                 if (this.Position.Row == 1)
                 {
-                    newPosition = this.Position.GetDeltaPosition(0, 1);
-                    Position newPosition2 = this.Position.GetDeltaPosition(0, 2);
+                    newPosition = this.Position.GetDeltaPosition(1, 0);
+                    Position newPosition2 = this.Position.GetDeltaPosition(2, 0);
                     if ((newPosition != null) && Board[newPosition] == null &&  
                         (newPosition2 != null) && Board[newPosition2] == null )
                     {
-                        moves.Add(new Move(this.Position, newPosition));
+                        moves.Add(new Move(this.Position, newPosition, this));
                     }
                 }
 
@@ -46,27 +46,27 @@ namespace MyChess.Model.Pieces
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(-1, -1);
                 if ((newPosition != null) && Board[newPosition] != null & Board[newPosition].Color != Color)
-                    moves.Add(new Move(this.Position, newPosition));
+                    moves.Add(new Move(this.Position, newPosition, this));
 
                 // down
-                newPosition = this.Position.GetDeltaPosition(0, -1);
+                newPosition = this.Position.GetDeltaPosition(-1, 0);
                 if ((newPosition != null) && Board[newPosition] == null)
-                    moves.Add(new Move(this.Position, newPosition));
+                    moves.Add(new Move(this.Position, newPosition, this));
 
                 // beat right
-                newPosition = this.Position.GetDeltaPosition(1, -1);
+                newPosition = this.Position.GetDeltaPosition(-1, 1);
                 if ((newPosition != null) && Board[newPosition] != null & Board[newPosition].Color != Color)
-                    moves.Add(new Move(this.Position, newPosition));
+                    moves.Add(new Move(this.Position, newPosition, this));
 
                 // start with two
-                if (this.Position.Row == 1)
+                if (this.Position.Row == 6)
                 {
-                    newPosition = this.Position.GetDeltaPosition(0, -1);
-                    Position newPosition2 = this.Position.GetDeltaPosition(0, -2);
+                    newPosition = this.Position.GetDeltaPosition(-1, 0);
+                    Position newPosition2 = this.Position.GetDeltaPosition(-2, 0);
                     if ((newPosition != null) && Board[newPosition] == null &&
                         (newPosition2 != null) && Board[newPosition2] == null)
                     {
-                        moves.Add(new Move(this.Position, newPosition));
+                        moves.Add(new Move(this.Position, newPosition, this));
                     }
                 }
 

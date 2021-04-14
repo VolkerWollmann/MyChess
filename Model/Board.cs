@@ -1,4 +1,6 @@
-﻿using MyChess.Common;
+﻿using System.Collections.Generic;
+using System.Windows.Documents;
+using MyChess.Common;
 using MyChess.Model.Pieces;
 
 namespace MyChess.Model
@@ -29,10 +31,28 @@ namespace MyChess.Model
             if (position == null)
                 return false;
 
+            if (!position.IsValidPosition())
+                return false;
+
+            if (this[position] == null)
+                return true;
+
             if (this[position].Color == color)
                 return false;
 
             return true;
+        }
+
+        public List<Piece> GetAllPieces(ChessConstants.Color color)
+        {
+            List<Piece> pieces = new List<Piece>();
+            Position.AllPositions().ForEach(position =>
+            {
+                if ((this[position] != null) && this[position].Color == color)
+                    pieces.Add(this[position]);
+            });
+
+            return pieces;
         }
 
         public void Clear()
@@ -40,7 +60,6 @@ namespace MyChess.Model
             Position.AllPositions().ForEach(position => { this[position] = null; });
         }
 
-        
 
         public Board Copy()
         {

@@ -56,7 +56,13 @@ namespace MyChess.ViewModel
                 UpdateBoard();
             }
         }
-        
+
+        private void Test()
+        {
+            ChessEngine.Test();
+
+        }
+
         private void Command(object sender, ChessMenuEventArgs e)
         {
             EngineOutput.Text = "Command " + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -77,6 +83,11 @@ namespace MyChess.ViewModel
                 case ChessConstants.QuitCommand:
                     Application.Current.Shutdown();
                     break;
+
+                case ChessConstants.Test1Command:
+                    Test();
+                    break;
+
             }
             
         }

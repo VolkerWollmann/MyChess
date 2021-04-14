@@ -8,6 +8,8 @@
 
         void Clear();
 
+        void Test();
+
         public bool ExecuteMove(Move move);
     }
 }
