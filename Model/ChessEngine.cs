@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using MyChess.Common;
 using MyChess.Model.Pieces;
@@ -78,9 +79,12 @@ namespace MyChess.Model
 
             ColorToMove = ChessConstants.NextColorToMove(ColorToMove);
 
+            DateTime time1 = DateTime.Now;
             var allMoves = this.Board.GetAllPieces(ColorToMove).Select((piece => piece.GetMoves())).SelectMany(move2 => move2).ToList();
+            TimeSpan ts = DateTime.Now.Subtract(time1);
+            
 
-            _Message = "";
+            _Message = ts.ToString() + System.Environment.NewLine;
 
             foreach (Move move3 in allMoves)
             {
