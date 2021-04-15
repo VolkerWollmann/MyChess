@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Documents;
 using MyChess.Common;
 using MyChess.Model.Pieces;
@@ -80,7 +81,14 @@ namespace MyChess.Model
         public bool ExecuteMove(Move move)
         {
             if (this[move.Start] == null)
-                return false;
+            {
+                throw new Exception("Move not Existing piece.");
+            }
+
+            if (!move.End.IsValidPosition())
+            {
+                throw new Exception("Move to invalid position.");
+            }
 
             this[move.Start].ExecuteMove(move);
 
