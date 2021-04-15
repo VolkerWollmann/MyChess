@@ -15,72 +15,64 @@ namespace MyChess.Model.Pieces
             for (int row = 1; row <= ChessConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-row, 0);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // right
             for (int row = 1; row <= ChessConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(row, 0);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // down
             for (int column = 1; column <= ChessConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, -column);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // up
             for (int column = 1; column <= ChessConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, column);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // left, down
             for (int i = 1; i <= ChessConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, -i);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // left, up
             for (int i = 1; i <= ChessConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, i);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // right, down
             for (int i = 1; i <= ChessConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, -i);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             // right, up
             for (int i = 1; i <= ChessConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, i);
-                if (!this.Board.IsValidPosition(newPosition, this.Color))
+                if (!AddPosition(moves, newPosition))
                     break;
-                moves.Add(new Move(this.Position, newPosition, this));
             }
 
             return moves;

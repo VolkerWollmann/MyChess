@@ -20,9 +20,7 @@ namespace MyChess.Model.Pieces
             for (int i = 0; i < 8; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(delta[i, 0], delta[i, 1]);
-
-                if (this.Board.IsValidPosition(newPosition, this.Color))
-                    moves.Add(new Move(this.Position, newPosition, this));
+                AddPosition(moves, newPosition);
             }
 
             return moves;

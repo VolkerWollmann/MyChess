@@ -40,11 +40,30 @@ namespace MyChess.Model.Pieces
         public virtual bool ExecuteMove(Move move)
         {
             Board[move.End] = Board[move.Start];
+            Board[move.Start] = null;
 
             return true;
         }
 
         #endregion
+
+        /// <summary>
+        /// Adds position to to moves.
+        /// </summary>
+        /// <param name="moves">moves so far</param>
+        /// <param name="position"></param>
+        /// <returns>returns false, if this is last move in that direction</returns>
+        public bool AddPosition(List<Move> moves, Position position)
+        {
+            if (!this.Board.IsValidPosition(position, this.Color))
+                return false;
+
+            moves.Add(new Move(this.Position, position, this));
+            if (this.Board[position] != null)
+                return false;
+
+            return true;
+        }
 
         public Piece(ChessConstants.Color color, ChessConstants.Piece piece)
         {
