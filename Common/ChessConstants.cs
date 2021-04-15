@@ -43,16 +43,27 @@
             Normal,
             Remis,
             Patt,
+            WhiteChecked,
+            BlackChecked,
             Victory
         }
 
         public enum Evaluation
         {
             WhiteCheckMate,
-            WhiteChecked,
             Normal,
-            BlackChecked,
             BlackCheckMate
+        }
+
+        public enum MoveType
+        {
+            Normal,
+            Enpasant,
+            WhiteCastle,
+            WhiteCastleLong,
+            BlackCastle,
+            BlackCastleLong,
+            Promotion
         }
     }
 }

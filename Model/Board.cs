@@ -70,7 +70,7 @@ namespace MyChess.Model
                 copy[position] = null;
                 if (this[position] != null)
                 {
-                    copy[position] = PieceFactory.Copy(this[position]);
+                    copy[position] = this[position].Copy();
                 }
             });
 
