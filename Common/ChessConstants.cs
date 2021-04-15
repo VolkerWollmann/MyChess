@@ -58,6 +58,7 @@
         public enum MoveType
         {
             Normal,
+            PawnDoubleStep,
             EnpasantWhiteLeft,
             EnpasantWhiteRight,
             EnpasantBlackLeft,

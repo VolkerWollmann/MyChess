@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Documents;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
     public class Pawn : Piece
     {
+        public ChessConstants.MoveType PossibleMoveType { get; set; } = ChessConstants.MoveType.Normal;
+
         public override List<Move> GetMoves()
         {
             List<Move> moves = new List<Move>();
@@ -27,7 +31,7 @@ namespace MyChess.Model.Pieces
                 if ((newPosition != null) && Board[newPosition] != null && Board[newPosition].Color != Color)
                     moves.Add(new Move(this.Position, newPosition, this));
 
-                // start with two
+                // pwn double step
                 if (this.Position.Row == 1)
                 {
                     newPosition = this.Position.GetDeltaPosition(1, 0);
@@ -35,11 +39,23 @@ namespace MyChess.Model.Pieces
                     if ((newPosition != null) && Board[newPosition] == null &&  
                         (newPosition2 != null) && Board[newPosition2] == null )
                     {
-                        moves.Add(new Move(this.Position, newPosition, this));
+                        moves.Add(new Move(this.Position, newPosition, this, ChessConstants.MoveType.PawnDoubleStep));
                     }
                 }
 
-                // ToDo: en passant 
+                // enpasant 
+
+                if (PossibleMoveType == ChessConstants.MoveType.EnpasantWhiteLeft)
+                {
+                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, -1), this,
+                        ChessConstants.MoveType.EnpasantWhiteLeft));
+                }
+
+                if (PossibleMoveType == ChessConstants.MoveType.EnpasantWhiteRight)
+                {
+                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, +1), this,
+                        ChessConstants.MoveType.EnpasantWhiteRight));
+                }
 
             }
             else
@@ -67,11 +83,23 @@ namespace MyChess.Model.Pieces
                     if ((newPosition != null) && Board[newPosition] == null &&
                         (newPosition2 != null) && Board[newPosition2] == null)
                     {
-                        moves.Add(new Move(this.Position, newPosition, this));
+                        moves.Add(new Move(this.Position, newPosition, this, ChessConstants.MoveType.PawnDoubleStep));
                     }
                 }
 
-                // ToDo: en passant 
+                // enpasant 
+
+                if (PossibleMoveType == ChessConstants.MoveType.EnpasantBlackLeft)
+                {
+                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, +1), this,
+                        ChessConstants.MoveType.EnpasantBlackLeft));
+                }
+
+                if (PossibleMoveType == ChessConstants.MoveType.EnpasantBlackRight)
+                {
+                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, -1), this,
+                        ChessConstants.MoveType.EnpasantWhiteRight));
+                }
             }
 
             return moves;
@@ -79,17 +107,74 @@ namespace MyChess.Model.Pieces
 
         public override bool ExecuteMove(Move move)
         {
-            if (move.Type == ChessConstants.MoveType.Enpasant)
+            Board[move.End] = Board[move.Start];
+            if (move.End.Row == 7 || move.End.Row == 0)
             {
-                throw new NotImplementedException("Pawn move enpasant");
+                // promotion
+                Board[move.End] = new Queen(Color);
+            }
+
+            if (move.Type == ChessConstants.MoveType.PawnDoubleStep)
+            {
+                if (Color == ChessConstants.Color.White)
+                {
+                    List<Tuple<int, ChessConstants.MoveType>> mmx =
+                        new List<Tuple<int, ChessConstants.MoveType>>()
+                        {
+                            new Tuple<int, ChessConstants.MoveType>(-1, ChessConstants.MoveType.EnpasantBlackRight),
+                            new Tuple<int, ChessConstants.MoveType>(1, ChessConstants.MoveType.EnpasantBlackLeft),
+                        };
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + mmx[i].Item1);
+                        if (adjacentPawnPosition.IsValidPosition())
+                        {
+                            if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
+                            {
+                                if (adjacentPawn.Color == ChessConstants.Color.Black)
+                                    adjacentPawn.PossibleMoveType = mmx[i].Item2;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    List<Tuple<int, ChessConstants.MoveType>> mmx =
+                        new List<Tuple<int, ChessConstants.MoveType>>()
+                        {
+                            new Tuple<int, ChessConstants.MoveType>(-1, ChessConstants.MoveType.EnpasantWhiteLeft),
+                            new Tuple<int, ChessConstants.MoveType>(1, ChessConstants.MoveType.EnpasantWhiteRight),
+                        };
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + mmx[i].Item1);
+                        if (adjacentPawnPosition.IsValidPosition())
+                        {
+                            if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
+                            {
+                                if (adjacentPawn.Color == ChessConstants.Color.White)
+                                    adjacentPawn.PossibleMoveType = mmx[i].Item2;
+                            }
+                        }
+                    }
+                }
             }
             else
             {
-                Board[move.End] = Board[move.Start];
-                if (move.End.Row == 7 || move.End.Row == 0 )
+                switch (move.Type)
                 {
-                    // promotion
-                    Board[move.End] = new Queen(Color);
+                    case ChessConstants.MoveType.EnpasantWhiteLeft:
+                    case ChessConstants.MoveType.EnpasantWhiteRight:
+                        Board[new Position(move.End.Row - 1, move.End.Column)] = null;
+                        break;
+
+                    case ChessConstants.MoveType.EnpasantBlackLeft:
+                    case ChessConstants.MoveType.EnpasantBlackRight:
+                        Board[new Position(move.End.Row + 1, move.End.Column)] = null;
+                        break;
+
                 }
             }
 
