@@ -5,7 +5,7 @@ using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color} PossibleMoveType={PossibleMoveType}")]
+    [DebuggerDisplay("Type={Type}, Name = {Color} PMT={PossibleMoveType}")]
     public class Pawn : Piece
     {
         public ChessConstants.MoveType PossibleMoveType { get; set; } = ChessConstants.MoveType.Normal;
@@ -62,7 +62,7 @@ namespace MyChess.Model.Pieces
             {
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(-1, -1);
-                if ((newPosition != null) && Board[newPosition] != null & Board[newPosition].Color != Color)
+                if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
                     moves.Add(new Move(this.Position, newPosition, this));
 
                 // down
@@ -72,7 +72,7 @@ namespace MyChess.Model.Pieces
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(-1, 1);
-                if ((newPosition != null) && Board[newPosition] != null & Board[newPosition].Color != Color)
+                if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
                     moves.Add(new Move(this.Position, newPosition, this));
 
                 // start with two

@@ -30,7 +30,9 @@ namespace MyChess.Model.Pieces
             {
                 if (Color == ChessConstants.Color.White)
                 {
-                    var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.Black).Select((piece => piece.GetMoves()))
+                    var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.Black)
+                        .Where( piece => (piece.Type != ChessConstants.Piece.King))             // King cannot threaten castle, avoid for recursion
+                        .Select((piece => piece.GetMoves()))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
                     if (Rochades.Contains(ChessConstants.MoveType.WhiteCastle))

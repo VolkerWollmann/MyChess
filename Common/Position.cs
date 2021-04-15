@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MyChess.Common
 {
+    [DebuggerDisplay("Row={Row}, Column={Column}")]
     public class Position 
     {
         public int Row;
