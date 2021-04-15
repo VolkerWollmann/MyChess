@@ -35,6 +35,13 @@ namespace MyChess.Model.Pieces
             };
         }
 
+        public virtual bool ExecuteMove(Move move)
+        {
+            Board[move.End] = Board[move.Start];
+
+            return true;
+        }
+
         #endregion
 
         public Piece(ChessConstants.Color color, ChessConstants.Piece piece)
@@ -42,7 +49,6 @@ namespace MyChess.Model.Pieces
             Color = color;
             Type = piece;
         }
-
 
 
     }

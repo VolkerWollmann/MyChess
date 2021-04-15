@@ -11,6 +11,8 @@ namespace MyChess.Model.Pieces
 
         Position Position { get; set; }
 
+        public bool ExecuteMove(Move move);
+
         Piece Copy();
 
     }

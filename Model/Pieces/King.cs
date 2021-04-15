@@ -5,8 +5,9 @@ namespace MyChess.Model.Pieces
 {
     public class King : Piece
     {
-        private readonly List<ChessConstants.MoveType> Rochades;
+        private List<ChessConstants.MoveType> Rochades;
 
+        #region IEnginePiece
         public override List<Move> GetMoves()
         {
             List<Move> moves = new List<Move>();
@@ -29,6 +30,17 @@ namespace MyChess.Model.Pieces
         {
             return new King(Color, Rochades);
         }
+
+        public override bool ExecuteMove(Move move)
+        {
+            Board[move.End] = this;
+            Board[move.Start] = null;
+            Rochades = new List<ChessConstants.MoveType>() { };
+            
+            return true;
+        }
+
+        #endregion
 
         public King(ChessConstants.Color color) : base(color, ChessConstants.Piece.King)
         {

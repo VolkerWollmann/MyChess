@@ -76,5 +76,15 @@ namespace MyChess.Model
 
             return copy;
         }
+
+        public bool ExecuteMove(Move move)
+        {
+            if (this[move.Start] == null)
+                return false;
+
+            this[move.Start].ExecuteMove(move);
+
+            return true;
+        }
     }
 }

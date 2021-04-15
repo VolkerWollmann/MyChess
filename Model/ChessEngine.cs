@@ -73,15 +73,11 @@ namespace MyChess.Model
 
         public bool ExecuteMove(Move move)
         {
-            if (Board[move.Start] == null)
-                return false;
-
-            Board[move.End] = Board[move.Start];
-            Board[move.Start] = null;
+            bool result = Board.ExecuteMove(move);
 
             ColorToMove = ChessConstants.NextColor(ColorToMove);
             
-            return true;
+            return result;
         }
 
         public void Test()
