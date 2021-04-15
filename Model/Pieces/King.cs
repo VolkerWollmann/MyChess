@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using Microsoft.VisualBasic;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
     public class King : Piece
     {
-        private List<ChessConstants.MoveType> Rochades;
+        public List<ChessConstants.MoveType> Rochades;
 
         #region IEnginePiece
         public override List<Move> GetMoves()
@@ -23,7 +25,62 @@ namespace MyChess.Model.Pieces
                     moves.Add(new Move(this.Position, newPosition, this));
             }
 
-            // ToDo : Castle
+            // Castle
+
+            if (Rochades.Any())
+            {
+                if (Color == ChessConstants.Color.White)
+                {
+                    var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.Black).Select((piece => piece.GetMoves()))
+                        .SelectMany(move => move).Select(move => move.End).ToList();
+
+                    if (Rochades.Contains(ChessConstants.MoveType.WhiteCastle))
+                    {
+                        if (!(threatenedFields.Contains(new Position(0, 4)) ||
+                              threatenedFields.Contains(new Position(0, 5)) ||
+                              threatenedFields.Contains(new Position(0, 6))))
+                        {
+                            moves.Add(new Move(this.Position, new Position(0, 6), this, ChessConstants.MoveType.WhiteCastle));
+                        }
+                    }
+
+                    if (Rochades.Contains(ChessConstants.MoveType.WhiteCastleLong))
+                    {
+                        if (!(threatenedFields.Contains(new Position(0, 4)) ||
+                              threatenedFields.Contains(new Position(0, 3)) ||
+                              threatenedFields.Contains(new Position(0, 2))))
+                        {
+                            moves.Add(new Move(this.Position, new Position(0, 2), this, ChessConstants.MoveType.WhiteCastleLong));
+                        }
+                    }
+                }
+                else
+                {
+                    var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.White).Select((piece => piece.GetMoves()))
+                        .SelectMany(move => move).Select(move => move.End).ToList();
+
+                    if (Rochades.Contains(ChessConstants.MoveType.WhiteCastle))
+                    {
+                        if (!(threatenedFields.Contains(new Position(7, 4)) ||
+                              threatenedFields.Contains(new Position(7, 5)) ||
+                              threatenedFields.Contains(new Position(7, 6))))
+                        {
+                            moves.Add(new Move(this.Position, new Position(7, 6), this, ChessConstants.MoveType.BlackCastle));
+                        }
+                    }
+
+                    if (Rochades.Contains(ChessConstants.MoveType.WhiteCastleLong))
+                    {
+                        if (!(threatenedFields.Contains(new Position(7, 4)) ||
+                              threatenedFields.Contains(new Position(7, 3)) ||
+                              threatenedFields.Contains(new Position(7, 2))))
+                        {
+                            moves.Add(new Move(this.Position, new Position(7, 2), this, ChessConstants.MoveType.BlackCastleLong));
+                        }
+                    }
+                }
+
+            }
 
             return moves;
         }

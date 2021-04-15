@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
     public class Rook : Piece
     {
+        private bool hasMoved = false;
+
         public override List<Move> GetMoves()
         {
             List<Move> moves = new List<Move>();
@@ -47,6 +51,34 @@ namespace MyChess.Model.Pieces
 
             return moves;
         }
+
+        public override bool ExecuteMove(Move move)
+        {
+            Board[move.End] = this;
+            Board[move.Start] = null;
+
+            if (!hasMoved)
+            {
+                hasMoved = true;
+                if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessConstants.Piece.King)) is King myKing)
+                {
+                    if ((this.Position.Row == 0) || (this.Position.Column == 0))
+                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastleLong);
+
+                    if ((this.Position.Row == 0) || (this.Position.Column == 7))
+                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastle);
+
+                    if ((this.Position.Row == 0) || (this.Position.Column == 0))
+                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastleLong);
+
+                    if ((this.Position.Row == 0) || (this.Position.Column == 7))
+                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastle);
+                }
+            }
+
+            return true;
+        }
+
         public Rook(ChessConstants.Color color) : base(color, ChessConstants.Piece.Rook)
         {
 
