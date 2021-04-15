@@ -20,8 +20,11 @@ namespace MyChess.Model
             set
             {
                 Pieces[position.Row, position.Column] = value;
-                Pieces[position.Row, position.Column].Board = this;
-                Pieces[position.Row, position.Column].Position = position;
+                if (value != null)
+                {
+                    Pieces[position.Row, position.Column].Board = this;
+                    Pieces[position.Row, position.Column].Position = position;
+                }
             }
         }
 

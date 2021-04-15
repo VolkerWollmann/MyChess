@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using MyChess.Common;
 using MyChess.Model.Pieces;
 
@@ -76,15 +77,33 @@ namespace MyChess.Model
             bool result = Board.ExecuteMove(move);
 
             ColorToMove = ChessConstants.NextColorToMove(ColorToMove);
-            
+
+            var allMoves = this.Board.GetAllPieces(ColorToMove).Select((piece => piece.GetMoves())).SelectMany(move2 => move2).ToList();
+
+            _Message = "";
+
+            foreach (Move move3 in allMoves)
+            {
+                _Message = _Message + " " + move3.ToString() + System.Environment.NewLine;
+            }
             return result;
         }
 
         public void Test()
         {
-            var x = new Position("A1");
             var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoves())).SelectMany( move => move).ToList();
         }
+
+        private string _Message;
+
+        public string Message
+        {
+            get
+            {
+                return _Message;
+            }
+        }
+
         public ChessEngine()
         {
             Board = new Board();

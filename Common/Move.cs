@@ -2,7 +2,7 @@
 
 namespace MyChess.Common
 {
-    [DebuggerDisplay(" {PieceName()}: {Start.PositionString()} -> {End.PositionString()},  T: {Type}")]
+    [DebuggerDisplay("{ToString()}")]
     public class Move
     {
         public Position Start;
@@ -37,9 +37,13 @@ namespace MyChess.Common
         }
 
 
-        private string PieceName()
+        public override string ToString()
         {
-            return $"{Piece.Color.ToString().Substring(0,1),1} {Piece.Type.ToString(),-10}";
+            if (Piece != null)
+                return
+                    $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type.ToString(),-10} {Start.ToString()} -> {End.ToString()} T:{Type}";
+            else
+                return $"-           {Start.ToString()} -> {End.ToString()} T:{Type}";
         }
     }
 }

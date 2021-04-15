@@ -39,7 +39,7 @@ namespace MyChess.Model.Pieces
                     if ((newPosition != null) && Board[newPosition] == null &&  
                         (newPosition2 != null) && Board[newPosition2] == null )
                     {
-                        moves.Add(new Move(this.Position, newPosition, this, ChessConstants.MoveType.PawnDoubleStep));
+                        moves.Add(new Move(this.Position, newPosition2, this, ChessConstants.MoveType.PawnDoubleStep));
                     }
                 }
 
@@ -83,7 +83,7 @@ namespace MyChess.Model.Pieces
                     if ((newPosition != null) && Board[newPosition] == null &&
                         (newPosition2 != null) && Board[newPosition2] == null)
                     {
-                        moves.Add(new Move(this.Position, newPosition, this, ChessConstants.MoveType.PawnDoubleStep));
+                        moves.Add(new Move(this.Position, newPosition2, this, ChessConstants.MoveType.PawnDoubleStep));
                     }
                 }
 
@@ -108,6 +108,7 @@ namespace MyChess.Model.Pieces
         public override bool ExecuteMove(Move move)
         {
             Board[move.End] = Board[move.Start];
+            Board[move.Start] = null;
             if (move.End.Row == 7 || move.End.Row == 0)
             {
                 // promotion

@@ -1,4 +1,6 @@
-﻿namespace MyChess.Common
+﻿using System.Windows;
+
+namespace MyChess.Common
 {
     interface IChessEngine
     {
@@ -11,5 +13,8 @@
         void Test();
 
         public bool ExecuteMove(Move move);
+
+        public string Message { get; }
+
     }
 }

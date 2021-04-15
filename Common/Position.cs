@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyChess.Common
 {
-    [DebuggerDisplay("Row={Row}, Column={Column}")]
+    [DebuggerDisplay("{ToString()}")]
     public class Position 
     {
         public int Row;
@@ -29,7 +29,7 @@ namespace MyChess.Common
 
         }
 
-        public string PositionString()
+        public override string ToString()
         {
             return (char) (Column + 65) + (Row + 1).ToString();
         }

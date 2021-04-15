@@ -78,6 +78,7 @@ namespace MyChess.ViewModel
 
                 case ChessConstants.MoveCommand:
                     Move();
+                    EngineOutput.Text = ChessEngine.Message;
                     break;
 
                 case ChessConstants.QuitCommand:
