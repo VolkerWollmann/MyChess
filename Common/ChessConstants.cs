@@ -26,7 +26,7 @@
             Black
         }
 
-        public static Color NextColor(Color color)
+        public static Color NextColorToMove(Color color)
         {
             return color == Color.White ? Color.Black : Color.White;
         }

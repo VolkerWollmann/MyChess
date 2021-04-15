@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using Microsoft.VisualBasic;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
+    [DebuggerDisplay("Type={Type}, Name = {Color} Rochades={Rochades}")]
     public class King : Piece
     {
         public List<ChessConstants.MoveType> Rochades;
@@ -128,7 +127,7 @@ namespace MyChess.Model.Pieces
                     break;
             }
             
-            Rochades = new List<ChessConstants.MoveType>() { };
+            Rochades = new List<ChessConstants.MoveType>();
 
             return true;
         }

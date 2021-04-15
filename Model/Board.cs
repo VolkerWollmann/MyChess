@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Documents;
 using MyChess.Common;
 using MyChess.Model.Pieces;
 

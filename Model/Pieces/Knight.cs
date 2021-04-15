@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Windows.Documents;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
+    [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Knight : Piece
     {
         public override List<Move> GetMoves()
         {
             List<Move> moves = new List<Move>();
 
-            int[,] delta = new int[8,2]
+            int[,] delta = new int[,]
             {
                 { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
                 { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }

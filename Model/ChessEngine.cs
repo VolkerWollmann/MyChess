@@ -16,7 +16,7 @@ namespace MyChess.Model
 
         public ChessEngine Copy()
         {
-            return new ChessEngine(Board.Copy(), ChessConstants.NextColor(ColorToMove));
+            return new ChessEngine(Board.Copy(), ChessConstants.NextColorToMove(ColorToMove));
         }
 
 
@@ -75,7 +75,7 @@ namespace MyChess.Model
         {
             bool result = Board.ExecuteMove(move);
 
-            ColorToMove = ChessConstants.NextColor(ColorToMove);
+            ColorToMove = ChessConstants.NextColorToMove(ColorToMove);
             
             return result;
         }

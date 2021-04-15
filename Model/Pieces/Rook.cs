@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Windows.Controls;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
+    [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Rook : Piece
     {
-        private bool hasMoved = false;
+        private bool HasMoved;
 
         public override List<Move> GetMoves()
         {
@@ -57,9 +58,9 @@ namespace MyChess.Model.Pieces
             Board[move.End] = this;
             Board[move.Start] = null;
 
-            if (!hasMoved)
+            if (!HasMoved)
             {
-                hasMoved = true;
+                HasMoved = true;
                 if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessConstants.Piece.King)) is King myKing)
                 {
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))

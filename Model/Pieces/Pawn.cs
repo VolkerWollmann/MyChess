@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Windows.Documents;
+using System.Diagnostics;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
+    [DebuggerDisplay("Type={Type}, Name = {Color} PossibleMoveType={PossibleMoveType}")]
     public class Pawn : Piece
     {
         public ChessConstants.MoveType PossibleMoveType { get; set; } = ChessConstants.MoveType.Normal;

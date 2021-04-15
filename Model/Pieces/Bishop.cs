@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
 {
+    [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Bishop : Piece
     {
         public override List<Move> GetMoves()
