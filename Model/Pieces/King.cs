@@ -30,6 +30,12 @@ namespace MyChess.Model.Pieces
             {
                 if (Color == ChessConstants.Color.White)
                 {
+                    Position kingBishopField = new Position("F1");
+                    Position kingKnightField = new Position("G1");
+                    Position queenField = new Position("D1");
+                    Position queenBishopField = new Position("C1");
+                    Position queenKnightField = new Position("B1");
+
                     var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.Black)
                         .Where( piece => (piece.Type != ChessConstants.Piece.King))             // King cannot threaten castle, avoid for recursion
                         .Select((piece => piece.GetMoves()))
@@ -37,47 +43,75 @@ namespace MyChess.Model.Pieces
 
                     if (Rochades.Contains(ChessConstants.MoveType.WhiteCastle))
                     {
-                        if (!(threatenedFields.Contains(new Position(0, 4)) ||
-                              threatenedFields.Contains(new Position(0, 5)) ||
-                              threatenedFields.Contains(new Position(0, 6))))
+                        bool thread=false;
+                        for (int i = 4; i < 7; i++)
                         {
-                            moves.Add(new Move(this.Position, new Position(0, 6), this, ChessConstants.MoveType.WhiteCastle));
+                            Position field = new Position(0, i);
+                            thread = threatenedFields.Contains(field);
+                            if (thread)
+                                break;
                         }
+
+                        if ((!thread) && ((Board[kingBishopField] == null) && (Board[kingKnightField] == null)))
+                            moves.Add(new Move(this.Position, new Position("G1"), this, ChessConstants.MoveType.WhiteCastle));
                     }
 
                     if (Rochades.Contains(ChessConstants.MoveType.WhiteCastleLong))
                     {
-                        if (!(threatenedFields.Contains(new Position(0, 4)) ||
-                              threatenedFields.Contains(new Position(0, 3)) ||
-                              threatenedFields.Contains(new Position(0, 2))))
+                        bool thread = false;
+                        for (int i = 1; i <=5; i++)
                         {
-                            moves.Add(new Move(this.Position, new Position(0, 2), this, ChessConstants.MoveType.WhiteCastleLong));
+                            Position field = new Position(0, i);
+                            thread = threatenedFields.Contains(field);
+                            if (thread)
+                                break;
                         }
+
+                        if ((!thread) && ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null)))
+                            moves.Add(new Move(this.Position, new Position("C1"), this, ChessConstants.MoveType.WhiteCastleLong));
                     }
                 }
                 else
                 {
-                    var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.White).Select((piece => piece.GetMoves()))
+                    Position kingBishopField = new Position("F8");
+                    Position kingKnightField = new Position("G8");
+                    Position queenField = new Position("D8");
+                    Position queenBishopField = new Position("C8");
+                    Position queenKnightField = new Position("B8");
+
+                    var threatenedFields = this.Board.GetAllPieces(ChessConstants.Color.White)
+                        .Where(piece => (piece.Type != ChessConstants.Piece.King))             // King cannot threaten castle, avoid for recursion
+                        .Select((piece => piece.GetMoves()))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
-                    if (Rochades.Contains(ChessConstants.MoveType.WhiteCastle))
+                    if (Rochades.Contains(ChessConstants.MoveType.BlackCastle))
                     {
-                        if (!(threatenedFields.Contains(new Position(7, 4)) ||
-                              threatenedFields.Contains(new Position(7, 5)) ||
-                              threatenedFields.Contains(new Position(7, 6))))
+                        bool thread = false;
+                        for (int i = 4; i < 7; i++)
                         {
-                            moves.Add(new Move(this.Position, new Position(7, 6), this, ChessConstants.MoveType.BlackCastle));
+                            Position field = new Position(7, i);
+                            thread = threatenedFields.Contains(field);
+                            if (thread)
+                                break;
                         }
+
+                        if ((!thread) && ((Board[kingBishopField] == null) && (Board[kingKnightField] == null)))
+                            moves.Add(new Move(this.Position, new Position("G8"), this, ChessConstants.MoveType.BlackCastle));
                     }
 
-                    if (Rochades.Contains(ChessConstants.MoveType.WhiteCastleLong))
+                    if (Rochades.Contains(ChessConstants.MoveType.BlackCastleLong))
                     {
-                        if (!(threatenedFields.Contains(new Position(7, 4)) ||
-                              threatenedFields.Contains(new Position(7, 3)) ||
-                              threatenedFields.Contains(new Position(7, 2))))
+                        bool thread = false;
+                        for (int i = 1; i <= 5; i++)
                         {
-                            moves.Add(new Move(this.Position, new Position(7, 2), this, ChessConstants.MoveType.BlackCastleLong));
+                            Position field = new Position(7, i);
+                            thread = threatenedFields.Contains(field);
+                            if (thread)
+                                break;
                         }
+
+                        if ((!thread) && ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null)))
+                            moves.Add(new Move(this.Position, new Position("C8"), this, ChessConstants.MoveType.BlackCastleLong));
                     }
                 }
 
@@ -96,31 +130,31 @@ namespace MyChess.Model.Pieces
             switch (move.Type)
             {
                 case ChessConstants.MoveType.WhiteCastle:
-                    Board[new Position(0, 6)] = this;
-                    Board[new Position(0, 4)] = null;
-                    Board[new Position(0, 6)] = Board[new Position(0, 7)];
-                    Board[new Position(0, 7)] = null;
+                    Board["G1"] = this;
+                    Board["E1"] = null;
+                    Board["F1"] = Board["H1"];
+                    Board["H1"] = null;
                     break;
 
                 case ChessConstants.MoveType.WhiteCastleLong:
-                    Board[new Position(0, 2)] = this;
-                    Board[new Position(0, 4)] = null;
-                    Board[new Position(0, 3)] = Board[new Position(0, 0)];
-                    Board[new Position(0, 0)] = null;
+                    Board["C1"] = this;
+                    Board["E1"] = null;
+                    Board["D1"] = Board["A1"];
+                    Board["A1"] = null;
                     break;
 
                 case ChessConstants.MoveType.BlackCastle:
-                    Board[new Position(7, 6)] = this;
-                    Board[new Position(7, 4)] = null;
-                    Board[new Position(7, 6)] = Board[new Position(7, 7)];
-                    Board[new Position(7, 7)] = null;
+                    Board["G8"] = this;
+                    Board["E8"] = null;
+                    Board["F8"] = Board["H8"];
+                    Board["H8"] = null;
                     break;
 
                 case ChessConstants.MoveType.BlackCastleLong:
-                    Board[new Position(7, 2)] = this;
-                    Board[new Position(7, 4)] = null;
-                    Board[new Position(7, 3)] = Board[new Position(7, 0)];
-                    Board[new Position(7, 0)] = null;
+                    Board["C8"] = this;
+                    Board["E8"] = null;
+                    Board["D8"] = Board["A8"];
+                    Board["A8"] = null;
                     break;
 
                 default:

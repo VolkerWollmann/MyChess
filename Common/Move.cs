@@ -2,7 +2,7 @@
 
 namespace MyChess.Common
 {
-    [DebuggerDisplay("R:{Start.Row} C:{Start.Column} -> R:{End.Row} C:{End.Column}   P:{PieceName()} T: {Type}")]
+    [DebuggerDisplay(" {PieceName()}: {Start.PositionString()} -> {End.PositionString()},  T: {Type}")]
     public class Move
     {
         public Position Start;
@@ -18,7 +18,21 @@ namespace MyChess.Common
             Type = type;
         }
 
-        public Move(Position start, Position end, IPiece piece):this(start, end, piece, ChessConstants.MoveType.Normal)
+        public Move(Position start, Position end, IPiece piece) : this(start, end, piece, ChessConstants.MoveType.Normal)
+        {
+        }
+
+        public Move(string startString, string endString, IPiece piece, ChessConstants.MoveType type)
+        {
+            Start = new Position(startString);
+            End = new Position(endString);
+            Piece = piece;
+            Type = type;
+        }
+
+
+        public Move(string startString, string endString, IPiece piece) : 
+            this(startString, endString, piece, ChessConstants.MoveType.Normal)
         {
         }
 

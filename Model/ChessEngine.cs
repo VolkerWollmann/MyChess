@@ -34,34 +34,34 @@ namespace MyChess.Model
             }
 
             // rook
-            Board[new Position(0, 0)] = new Rook(ChessConstants.Color.White);
-            Board[new Position(0, 7)] = new Rook(ChessConstants.Color.White);
-            Board[new Position(7, 0)] = new Rook(ChessConstants.Color.Black);
-            Board[new Position(7, 7)] = new Rook(ChessConstants.Color.Black);
+            Board["A1"] = new Rook(ChessConstants.Color.White);
+            Board["H1"] = new Rook(ChessConstants.Color.White);
+            Board["A8"] = new Rook(ChessConstants.Color.Black);
+            Board["H8"] = new Rook(ChessConstants.Color.Black);
 
 
             // bishop 
-            Board[new Position(0, 2)] = new Bishop(ChessConstants.Color.White);
-            Board[new Position(0, 5)] = new Bishop(ChessConstants.Color.White);
-            Board[new Position(7, 2)] = new Bishop(ChessConstants.Color.Black);
-            Board[new Position(7, 5)] = new Bishop(ChessConstants.Color.Black);
+            Board["C1"] = new Bishop(ChessConstants.Color.White);
+            Board["F1"] = new Bishop(ChessConstants.Color.White);
+            Board["C8"] = new Bishop(ChessConstants.Color.Black);
+            Board["F8"] = new Bishop(ChessConstants.Color.Black);
 
 
             // knight
-            Board[new Position(0, 1)] = new Knight(ChessConstants.Color.White);
-            Board[new Position(0, 6)] = new Knight(ChessConstants.Color.White);
-            Board[new Position(7, 1)] = new Knight(ChessConstants.Color.Black);
-            Board[new Position(7, 6)] = new Knight(ChessConstants.Color.Black);
+            Board["B1"] = new Knight(ChessConstants.Color.White);
+            Board["G1"] = new Knight(ChessConstants.Color.White);
+            Board["B8"] = new Knight(ChessConstants.Color.Black);
+            Board["G8"] = new Knight(ChessConstants.Color.Black);
 
 
             // queen
-            Board[new Position(0, 3)] = new Queen(ChessConstants.Color.White);
-            Board[new Position(7, 3)] = new Queen(ChessConstants.Color.Black);
+            Board["D1"] = new Queen(ChessConstants.Color.White);
+            Board["D8"] = new Queen(ChessConstants.Color.Black);
             
 
             // king
-            Board[new Position(0, 4)] = new King(ChessConstants.Color.White);
-            Board[new Position(7, 4)] = new King(ChessConstants.Color.Black);
+            Board["E1"] = new King(ChessConstants.Color.White);
+            Board["E8"] = new King(ChessConstants.Color.Black);
 
             ColorToMove = ChessConstants.Color.White;
         }
@@ -82,6 +82,7 @@ namespace MyChess.Model
 
         public void Test()
         {
+            var x = new Position("A1");
             var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoves())).SelectMany( move => move).ToList();
         }
         public ChessEngine()

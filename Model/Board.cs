@@ -25,6 +25,21 @@ namespace MyChess.Model
             }
         }
 
+        public Piece this[string positionString]
+        {
+            get
+            {
+                Position position = new Position(positionString);
+                return this[position];
+            }
+
+            set
+            {
+                Position position = new Position(positionString);
+                this[position] = value;
+            }
+        }
+
         public bool IsValidPosition(Position position, ChessConstants.Color color)
         {
             // does not work for pawn

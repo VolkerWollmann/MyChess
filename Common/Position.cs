@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace MyChess.Common
 {
@@ -14,6 +16,24 @@ namespace MyChess.Common
             Row = row;
             Column = column;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="positionString"> A1 : Column=A(0) Row=1(0)</param>
+        public Position (string positionString)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(positionString);
+            Row = (int)(bytes[1] - 49);
+            Column = (int)(bytes[0] - 65);
+
+        }
+
+        public string PositionString()
+        {
+            return (char) (Column + 65) + (Row + 1).ToString();
+        }
+
 
         private static List<Position> _allPositions;
         public static List<Position> AllPositions()
