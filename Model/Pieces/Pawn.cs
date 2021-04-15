@@ -81,7 +81,7 @@ namespace MyChess.Model.Pieces
         {
             if (move.Type == ChessConstants.MoveType.Enpasant)
             {
-                throw new NotImplementedException("Pawn move enpassant");
+                throw new NotImplementedException("Pawn move enpasant");
             }
             else
             {

@@ -58,7 +58,10 @@
         public enum MoveType
         {
             Normal,
-            Enpasant,
+            EnpasantWhiteLeft,
+            EnpasantWhiteRight,
+            EnpasantBlackLeft,
+            EnpasantBlackRight,
             WhiteCastle,
             WhiteCastleLong,
             BlackCastle,
