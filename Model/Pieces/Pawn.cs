@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MyChess.Common;
 
 namespace MyChess.Model.Pieces
@@ -75,6 +76,26 @@ namespace MyChess.Model.Pieces
 
             return moves;
         }
+
+        public override bool ExecuteMove(Move move)
+        {
+            if (move.Type == ChessConstants.MoveType.Enpasant)
+            {
+                throw new NotImplementedException("Pawn move enpassant");
+            }
+            else
+            {
+                Board[move.End] = Board[move.Start];
+                if (move.End.Row == 7 || move.End.Row == 0 )
+                {
+                    // promotion
+                    Board[move.End] = new Queen(Color);
+                }
+            }
+
+            return true;
+        }
+
         public Pawn(ChessConstants.Color color): base(color, ChessConstants.Piece.Pawn)
         {
 
