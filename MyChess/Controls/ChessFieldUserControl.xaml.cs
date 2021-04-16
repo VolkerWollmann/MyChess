@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MyChess.Common;
 using MyChess.Controls.Pieces;
+using MyChessEngineCommon;
 using MShapes = System.Windows.Shapes;
 
 namespace MyChess.Controls
@@ -38,26 +39,26 @@ namespace MyChess.Controls
             ChessBoardUserControl = chessBoardUserControl;
 
 
-            SetFieldColor(ChessConstants.FieldColor.Standard);
+            SetFieldColor(ChessEngineConstants.FieldColor.Standard);
 
             MouseLeftButtonDown += OnMouseLeftButtonDown;
 
         }
 
-        public void SetFieldColor(ChessConstants.FieldColor fieldColor)
+        public void SetFieldColor(ChessEngineConstants.FieldColor fieldColor)
         {
             SolidColorBrush fieldSolidColorBrush = new SolidColorBrush(Colors.Bisque);
             switch (fieldColor)
             {
-                case ChessConstants.FieldColor.Standard:
+                case ChessEngineConstants.FieldColor.Standard:
                     fieldSolidColorBrush = (Row + Column) % 2 == 0 ? new SolidColorBrush(Colors.SandyBrown) : new SolidColorBrush(Colors.Bisque);
                     break;
 
-                case ChessConstants.FieldColor.Start:
+                case ChessEngineConstants.FieldColor.Start:
                     fieldSolidColorBrush = new SolidColorBrush(Colors.LightGreen);
                     break;
 
-                case ChessConstants.FieldColor.End:
+                case ChessEngineConstants.FieldColor.End:
                     fieldSolidColorBrush = new SolidColorBrush(Colors.LightPink);
                     break;
             }

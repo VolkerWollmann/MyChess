@@ -1,7 +1,7 @@
 ﻿using System;
-using static MyChess.Common.ChessConstants;
+using MyChessEngineCommon;
 
-namespace MyChess.Common
+namespace MyChessEngineCommon
 {
     /// <summary>
     /// ![CDATA[
@@ -18,8 +18,8 @@ namespace MyChess.Common
     /// </summary>
     public class BoardRating 
     {
-        public Situation Situation;
-        public Evaluation Evaluation;
+        public ChessEngineConstants.Situation Situation;
+        public ChessEngineConstants.Evaluation Evaluation;
         public int Value;
 
         /// <summary>
@@ -29,19 +29,19 @@ namespace MyChess.Common
         // < 0 This instance precedes obj in the sort order.
         // = 0 This instance occurs in the same position in the sort order as obj.
         // > 0 This instance follows obj in the sort order.
-        public int PartialCompare(BoardRating other, ChessConstants.Color color)
+        public int PartialCompare(BoardRating other, ChessEngineConstants.Color color)
         {
-            if (this.Evaluation == Evaluation.WhiteCheckMate)
+            if (this.Evaluation == ChessEngineConstants.Evaluation.WhiteCheckMate)
             {
-                if (other.Evaluation == Evaluation.WhiteCheckMate)
+                if (other.Evaluation == ChessEngineConstants.Evaluation.WhiteCheckMate)
                     return 0;
 
                 return 1;
             }
 
-            if (this.Evaluation == Evaluation.BlackCheckMate)
+            if (this.Evaluation == ChessEngineConstants.Evaluation.BlackCheckMate)
             {
-                if (other.Evaluation == Evaluation.BlackCheckMate)
+                if (other.Evaluation == ChessEngineConstants.Evaluation.BlackCheckMate)
                     return 0;
 
                 return -1;

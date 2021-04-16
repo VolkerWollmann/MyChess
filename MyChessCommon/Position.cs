@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using MyChessEngineCommon;
 
-namespace MyChess.Common
+namespace MyChessEngineCommon
 {
     [DebuggerDisplay("{ToString()}")]
     public class Position 
@@ -40,8 +41,8 @@ namespace MyChess.Common
             if (_allPositions == null)
             {
                 _allPositions = new List<Position>();
-                for (int row = 0; row < ChessConstants.Length; row++)
-                for (int column = 0; column < ChessConstants.Length; column++)
+                for (int row = 0; row < ChessEngineConstants.Length; row++)
+                for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
                     _allPositions.Add(new Position(row, column));
                 }
@@ -52,7 +53,7 @@ namespace MyChess.Common
 
         public bool IsValidPosition()
         {
-            return (Row >= 0) && (Row < ChessConstants.Length) && (Column >= 0) && (Column < ChessConstants.Length);
+            return (Row >= 0) && (Row < ChessEngineConstants.Length) && (Column >= 0) && (Column < ChessEngineConstants.Length);
         }
 
         public bool AreEqual(Position position)

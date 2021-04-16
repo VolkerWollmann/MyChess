@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
+using MyChess.Common;
 
-namespace MyChess.Common
+namespace MyChessEngineCommon
 {
     [DebuggerDisplay("{ToString()}")]
     public class Move
@@ -8,9 +9,9 @@ namespace MyChess.Common
         public Position Start;
         public Position End;
         public IPiece Piece;
-        public ChessConstants.MoveType Type;
+        public ChessEngineConstants.MoveType Type;
 
-        public Move(Position start, Position end, IPiece piece, ChessConstants.MoveType type)
+        public Move(Position start, Position end, IPiece piece, ChessEngineConstants.MoveType type)
         {
             Start = start;
             End = end;
@@ -18,11 +19,11 @@ namespace MyChess.Common
             Type = type;
         }
 
-        public Move(Position start, Position end, IPiece piece) : this(start, end, piece, ChessConstants.MoveType.Normal)
+        public Move(Position start, Position end, IPiece piece) : this(start, end, piece, ChessEngineConstants.MoveType.Normal)
         {
         }
 
-        public Move(string startString, string endString, IPiece piece, ChessConstants.MoveType type)
+        public Move(string startString, string endString, IPiece piece, ChessEngineConstants.MoveType type)
         {
             Start = new Position(startString);
             End = new Position(endString);
@@ -32,7 +33,7 @@ namespace MyChess.Common
 
 
         public Move(string startString, string endString, IPiece piece) : 
-            this(startString, endString, piece, ChessConstants.MoveType.Normal)
+            this(startString, endString, piece, ChessEngineConstants.MoveType.Normal)
         {
         }
 

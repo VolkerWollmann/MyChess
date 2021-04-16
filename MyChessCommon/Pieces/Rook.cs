@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using MyChess.Common;
+using MyChessEngineCommon;
 
 namespace MyChess.Model.Pieces
 {
@@ -15,7 +16,7 @@ namespace MyChess.Model.Pieces
             List<Move> moves = new List<Move>();
 
             // left
-            for (int row = 1; row <= ChessConstants.Length; row++)
+            for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-row, 0);
                 if (!AddPosition(moves, newPosition))
@@ -23,7 +24,7 @@ namespace MyChess.Model.Pieces
             }
 
             // right
-            for (int row = 1; row <= ChessConstants.Length; row++)
+            for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(row, 0);
                 if (!AddPosition(moves, newPosition))
@@ -31,7 +32,7 @@ namespace MyChess.Model.Pieces
             }
 
             // down
-            for (int column = 1; column <= ChessConstants.Length; column++)
+            for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, -column);
                 if (!AddPosition(moves, newPosition))
@@ -39,7 +40,7 @@ namespace MyChess.Model.Pieces
             }
 
             // up
-            for (int column = 1; column <= ChessConstants.Length; column++)
+            for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, column);
                 if (!AddPosition(moves, newPosition))
@@ -57,26 +58,26 @@ namespace MyChess.Model.Pieces
             if (!HasMoved)
             {
                 HasMoved = true;
-                if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessConstants.Piece.King)) is King myKing)
+                if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessEngineConstants.Piece.King)) is King myKing)
                 {
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastleLong);
+                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastleLong);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastle);
+                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastle);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastleLong);
+                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastleLong);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                        myKing.Rochades.Remove(ChessConstants.MoveType.WhiteCastle);
+                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastle);
                 }
             }
 
             return true;
         }
 
-        public Rook(ChessConstants.Color color) : base(color, ChessConstants.Piece.Rook)
+        public Rook(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.Piece.Rook)
         {
 
         }

@@ -1,6 +1,7 @@
 ﻿using MyChess.Common;
 using System.Collections.Generic;
 using System.Diagnostics;
+using MyChessEngineCommon;
 
 namespace MyChess.Model.Pieces
 {
@@ -12,7 +13,7 @@ namespace MyChess.Model.Pieces
             List<Move> moves = new List<Move>();
 
             // left
-            for (int row = 1; row <= ChessConstants.Length; row++)
+            for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-row, 0);
                 if (!AddPosition(moves, newPosition))
@@ -20,7 +21,7 @@ namespace MyChess.Model.Pieces
             }
 
             // right
-            for (int row = 1; row <= ChessConstants.Length; row++)
+            for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(row, 0);
                 if (!AddPosition(moves, newPosition))
@@ -28,7 +29,7 @@ namespace MyChess.Model.Pieces
             }
 
             // down
-            for (int column = 1; column <= ChessConstants.Length; column++)
+            for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, -column);
                 if (!AddPosition(moves, newPosition))
@@ -36,7 +37,7 @@ namespace MyChess.Model.Pieces
             }
 
             // up
-            for (int column = 1; column <= ChessConstants.Length; column++)
+            for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, column);
                 if (!AddPosition(moves, newPosition))
@@ -44,7 +45,7 @@ namespace MyChess.Model.Pieces
             }
 
             // left, down
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, -i);
                 if (!AddPosition(moves, newPosition))
@@ -52,7 +53,7 @@ namespace MyChess.Model.Pieces
             }
 
             // left, up
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, i);
                 if (!AddPosition(moves, newPosition))
@@ -60,7 +61,7 @@ namespace MyChess.Model.Pieces
             }
 
             // right, down
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, -i);
                 if (!AddPosition(moves, newPosition))
@@ -68,7 +69,7 @@ namespace MyChess.Model.Pieces
             }
 
             // right, up
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, i);
                 if (!AddPosition(moves, newPosition))
@@ -78,7 +79,7 @@ namespace MyChess.Model.Pieces
             return moves;
         }
 
-        public Queen(ChessConstants.Color color) : base(color, ChessConstants.Piece.Queen)
+        public Queen(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.Piece.Queen)
         {
 
         }

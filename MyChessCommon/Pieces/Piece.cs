@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using MyChess.Common;
+using MyChessEngineCommon;
 
 namespace MyChess.Model.Pieces
 {
@@ -9,9 +10,9 @@ namespace MyChess.Model.Pieces
     {
         #region IPiece
 
-        public ChessConstants.Piece Type { get; }
+        public ChessEngineConstants.Piece Type { get; }
 
-        public ChessConstants.Color Color { get; }
+        public ChessEngineConstants.Color Color { get; }
 
         #endregion
 
@@ -22,17 +23,23 @@ namespace MyChess.Model.Pieces
         }
 
         public Board Board{ get; set; }
+        Position IEnginePiece.Position
+        {
+            get => Position;
+            set => Position = value;
+        }
 
         public Position Position { get; set; }
+
         public virtual Piece Copy()
         {
             return Type switch
             {
-                ChessConstants.Piece.Pawn => new Pawn(Color),
-                ChessConstants.Piece.Bishop => new Bishop(Color),
-                ChessConstants.Piece.Knight => new Knight(Color),
-                ChessConstants.Piece.Queen => new Queen(Color),
-                ChessConstants.Piece.Rook => new Rook(Color),
+                ChessEngineConstants.Piece.Pawn => new Pawn(Color),
+                ChessEngineConstants.Piece.Bishop => new Bishop(Color),
+                ChessEngineConstants.Piece.Knight => new Knight(Color),
+                ChessEngineConstants.Piece.Queen => new Queen(Color),
+                ChessEngineConstants.Piece.Rook => new Rook(Color),
                 _ => null
             };
         }
@@ -65,7 +72,7 @@ namespace MyChess.Model.Pieces
             return true;
         }
 
-        public Piece(ChessConstants.Color color, ChessConstants.Piece piece)
+        public Piece(ChessEngineConstants.Color color, ChessEngineConstants.Piece piece)
         {
             Color = color;
             Type = piece;

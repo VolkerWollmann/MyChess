@@ -1,6 +1,8 @@
-﻿namespace MyChess.Common
+﻿using MyChess.Common;
+
+namespace MyChessEngineCommon
 {
-    interface IChessEngine
+    public interface IChessEngine
     {
         IPiece GetPiece(Position position);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MyChess.Common;
 using MyChess.Model.Pieces;
+using MyChessEngineCommon;
 
 namespace MyChess.Model
 {
@@ -44,7 +45,7 @@ namespace MyChess.Model
             }
         }
 
-        public bool IsValidPosition(Position position, ChessConstants.Color color)
+        public bool IsValidPosition(Position position, ChessEngineConstants.Color color)
         {
             // does not work for pawn
             if (position == null)
@@ -62,7 +63,7 @@ namespace MyChess.Model
             return true;
         }
 
-        public List<Piece> GetAllPieces(ChessConstants.Color color)
+        public List<Piece> GetAllPieces(ChessEngineConstants.Color color)
         {
             List<Piece> pieces = new List<Piece>();
             Position.AllPositions().ForEach(position =>
@@ -111,19 +112,19 @@ namespace MyChess.Model
 
         public BoardRating Rate()
         {
-            BoardRating rating = new BoardRating {Situation = ChessConstants.Situation.Normal, Value = 0};
+            BoardRating rating = new BoardRating {Situation = ChessEngineConstants.Situation.Normal, Value = 0};
 
-            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == ChessConstants.Piece.King) && (piece.Color == ChessConstants.Color.White)))
+            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == ChessEngineConstants.Piece.King) && (piece.Color == ChessEngineConstants.Color.White)))
             {
-                rating.Situation = ChessConstants.Situation.Victory;
-                rating.Evaluation = ChessConstants.Evaluation.WhiteCheckMate;
+                rating.Situation = ChessEngineConstants.Situation.Victory;
+                rating.Evaluation = ChessEngineConstants.Evaluation.WhiteCheckMate;
                 return rating;
             }
 
-            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == ChessConstants.Piece.King) && (piece.Color == ChessConstants.Color.Black)))
+            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == ChessEngineConstants.Piece.King) && (piece.Color == ChessEngineConstants.Color.Black)))
             {
-                rating.Situation = ChessConstants.Situation.Victory;
-                rating.Evaluation = ChessConstants.Evaluation.BlackCheckMate;
+                rating.Situation = ChessEngineConstants.Situation.Victory;
+                rating.Evaluation = ChessEngineConstants.Evaluation.BlackCheckMate;
                 return rating;
             }
 

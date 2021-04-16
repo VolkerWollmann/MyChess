@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using MyChess.Common;
+using MyChessEngineCommon;
 
 namespace MyChess.Model.Pieces
 {
@@ -12,7 +13,7 @@ namespace MyChess.Model.Pieces
             List<Move> moves = new List<Move>();
 
             // left, down
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, -i);
                 if (!AddPosition(moves, newPosition))
@@ -20,7 +21,7 @@ namespace MyChess.Model.Pieces
             }
 
             // left, up
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, i);
                 if (!AddPosition(moves, newPosition))
@@ -28,7 +29,7 @@ namespace MyChess.Model.Pieces
             }
 
             // right, down
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, -i);
                 if (!AddPosition(moves, newPosition))
@@ -36,7 +37,7 @@ namespace MyChess.Model.Pieces
             }
 
             // right, up
-            for (int i = 1; i <= ChessConstants.Length; i++)
+            for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, i);
                 if (!AddPosition(moves, newPosition))
@@ -45,7 +46,7 @@ namespace MyChess.Model.Pieces
 
             return moves;
         }
-        public Bishop(ChessConstants.Color color) : base(color, ChessConstants.Piece.Bishop)
+        public Bishop(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.Piece.Bishop)
         {
 
         }

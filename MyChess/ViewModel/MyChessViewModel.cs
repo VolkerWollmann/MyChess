@@ -4,8 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using MyChess.Common;
 using MyChess.Controls;
+using MyChess.GameCommon;
 using MyChess.Helper;
 using MyChess.Model;
+using MyChessEngineCommon;
 
 namespace MyChess.ViewModel
 {
@@ -68,24 +70,24 @@ namespace MyChess.ViewModel
             EngineOutput.Text = "Command " + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
             switch (e.Tag)
             {
-                case ChessConstants.NewCommand:
+                case ChessGameConstants.NewCommand:
                     New();
                     break;
 
-                case ChessConstants.ClearCommand:
+                case ChessGameConstants.ClearCommand:
                     Clear();
                     break;
 
-                case ChessConstants.MoveCommand:
+                case ChessGameConstants.MoveCommand:
                     Move();
                     EngineOutput.Text = ChessEngine.Message;
                     break;
 
-                case ChessConstants.QuitCommand:
+                case ChessGameConstants.QuitCommand:
                     Application.Current.Shutdown();
                     break;
 
-                case ChessConstants.Test1Command:
+                case ChessGameConstants.Test1Command:
                     Test();
                     EngineOutput.Text = ChessEngine.Message;
                     break;
