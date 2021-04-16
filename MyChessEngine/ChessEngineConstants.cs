@@ -36,7 +36,9 @@
     public enum Evaluation
     {
         WhiteCheckMate,
+        WhiteStaleMate,
         Normal,
+        BlackStaleMate,
         BlackCheckMate
     }
 
