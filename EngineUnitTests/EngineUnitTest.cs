@@ -1,13 +1,16 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MyChessEngine;
 
 namespace EngineUnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class EngineClassTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void CreateEngine()
         {
+            ChessEngine chessEngine = new ChessEngine();
+            Assert.IsNotNull(chessEngine);
         }
     }
 }
