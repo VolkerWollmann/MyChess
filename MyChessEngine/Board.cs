@@ -44,7 +44,7 @@ namespace MyChessEngine
             }
         }
 
-        public bool IsValidPosition(Position position, ChessEngineConstants.Color color)
+        public bool IsValidPosition(Position position, Color color)
         {
             // does not work for pawn
             if (position == null)
@@ -62,7 +62,7 @@ namespace MyChessEngine
             return true;
         }
 
-        public List<Piece> GetAllPieces(ChessEngineConstants.Color color)
+        public List<Piece> GetAllPieces(Color color)
         {
             List<Piece> pieces = new List<Piece>();
             Position.AllPositions().ForEach(position =>
@@ -111,19 +111,19 @@ namespace MyChessEngine
 
         public BoardRating Rate()
         {
-            BoardRating rating = new BoardRating {Situation = ChessEngineConstants.Situation.Normal, Value = 0};
+            BoardRating rating = new BoardRating {Situation = Situation.Normal, Value = 0};
 
-            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == ChessEngineConstants.PieceType.King) && (piece.Color == ChessEngineConstants.Color.White)))
+            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == PieceType.King) && (piece.Color == Color.White)))
             {
-                rating.Situation = ChessEngineConstants.Situation.Victory;
-                rating.Evaluation = ChessEngineConstants.Evaluation.WhiteCheckMate;
+                rating.Situation = Situation.Victory;
+                rating.Evaluation = Evaluation.WhiteCheckMate;
                 return rating;
             }
 
-            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == ChessEngineConstants.PieceType.King) && (piece.Color == ChessEngineConstants.Color.Black)))
+            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == PieceType.King) && (piece.Color == Color.Black)))
             {
-                rating.Situation = ChessEngineConstants.Situation.Victory;
-                rating.Evaluation = ChessEngineConstants.Evaluation.BlackCheckMate;
+                rating.Situation = Situation.Victory;
+                rating.Evaluation = Evaluation.BlackCheckMate;
                 return rating;
             }
 

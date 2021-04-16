@@ -38,26 +38,26 @@ namespace MyChess.Controls
             ChessBoardUserControl = chessBoardUserControl;
 
 
-            SetFieldColor(ChessEngineConstants.FieldColor.Standard);
+            SetFieldColor(FieldColor.Standard);
 
             MouseLeftButtonDown += OnMouseLeftButtonDown;
 
         }
 
-        public void SetFieldColor(ChessEngineConstants.FieldColor fieldColor)
+        public void SetFieldColor(FieldColor fieldColor)
         {
             SolidColorBrush fieldSolidColorBrush = new SolidColorBrush(Colors.Bisque);
             switch (fieldColor)
             {
-                case ChessEngineConstants.FieldColor.Standard:
+                case FieldColor.Standard:
                     fieldSolidColorBrush = (Row + Column) % 2 == 0 ? new SolidColorBrush(Colors.SandyBrown) : new SolidColorBrush(Colors.Bisque);
                     break;
 
-                case ChessEngineConstants.FieldColor.Start:
+                case FieldColor.Start:
                     fieldSolidColorBrush = new SolidColorBrush(Colors.LightGreen);
                     break;
 
-                case ChessEngineConstants.FieldColor.End:
+                case FieldColor.End:
                     fieldSolidColorBrush = new SolidColorBrush(Colors.LightPink);
                     break;
             }

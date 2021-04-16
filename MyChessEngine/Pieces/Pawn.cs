@@ -7,28 +7,28 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color} PMT={PossibleMoveType}")]
     public class Pawn : Piece
     {
-        public ChessEngineConstants.MoveType PossibleMoveType { get; set; } = ChessEngineConstants.MoveType.Normal;
+        public MoveType PossibleMoveType { get; set; } = MoveType.Normal;
 
-        public override List<Move> GetMoves()
+        public override MoveList GetMoveList()
         {
-            List<Move> moves = new List<Move>();
+            MoveList moveList = new MoveList();
 
-            if (Color == ChessEngineConstants.Color.White)
+            if (Color == Color.White)
             {
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(1, -1);
                 if ( (newPosition != null ) && Board[newPosition] != null && Board[newPosition].Color != Color )
-                    moves.Add(new Move(this.Position, newPosition, this));
+                    moveList.Add(new Move(this.Position, newPosition, this));
 
                 // up
                 newPosition = this.Position.GetDeltaPosition(1, 0);
                 if ((newPosition != null) && Board[newPosition] == null )
-                    moves.Add(new Move(this.Position, newPosition, this));
+                    moveList.Add(new Move(this.Position, newPosition, this));
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(1, 1);
                 if ((newPosition != null) && Board[newPosition] != null && Board[newPosition].Color != Color)
-                    moves.Add(new Move(this.Position, newPosition, this));
+                    moveList.Add(new Move(this.Position, newPosition, this));
 
                 // pwn double step
                 if (this.Position.Row == 1)
@@ -38,22 +38,22 @@ namespace MyChessEngine.Pieces
                     if ((newPosition != null) && Board[newPosition] == null &&  
                         (newPosition2 != null) && Board[newPosition2] == null )
                     {
-                        moves.Add(new Move(this.Position, newPosition2, this, ChessEngineConstants.MoveType.PawnDoubleStep));
+                        moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
                     }
                 }
 
                 // enpasant 
 
-                if (PossibleMoveType == ChessEngineConstants.MoveType.EnpasantWhiteLeft)
+                if (PossibleMoveType == MoveType.EnpasantWhiteLeft)
                 {
-                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, -1), this,
-                        ChessEngineConstants.MoveType.EnpasantWhiteLeft));
+                    moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, -1), this,
+                        MoveType.EnpasantWhiteLeft));
                 }
 
-                if (PossibleMoveType == ChessEngineConstants.MoveType.EnpasantWhiteRight)
+                if (PossibleMoveType == MoveType.EnpasantWhiteRight)
                 {
-                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, +1), this,
-                        ChessEngineConstants.MoveType.EnpasantWhiteRight));
+                    moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, +1), this,
+                        MoveType.EnpasantWhiteRight));
                 }
 
             }
@@ -62,17 +62,17 @@ namespace MyChessEngine.Pieces
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(-1, -1);
                 if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
-                    moves.Add(new Move(this.Position, newPosition, this));
+                    moveList.Add(new Move(this.Position, newPosition, this));
 
                 // down
                 newPosition = this.Position.GetDeltaPosition(-1, 0);
                 if ((newPosition != null) && Board[newPosition] == null)
-                    moves.Add(new Move(this.Position, newPosition, this));
+                    moveList.Add(new Move(this.Position, newPosition, this));
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(-1, 1);
                 if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
-                    moves.Add(new Move(this.Position, newPosition, this));
+                    moveList.Add(new Move(this.Position, newPosition, this));
 
                 // start with two
                 if (this.Position.Row == 6)
@@ -82,26 +82,26 @@ namespace MyChessEngine.Pieces
                     if ((newPosition != null) && Board[newPosition] == null &&
                         (newPosition2 != null) && Board[newPosition2] == null)
                     {
-                        moves.Add(new Move(this.Position, newPosition2, this, ChessEngineConstants.MoveType.PawnDoubleStep));
+                        moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
                     }
                 }
 
                 // enpasant 
 
-                if (PossibleMoveType == ChessEngineConstants.MoveType.EnpasantBlackLeft)
+                if (PossibleMoveType == MoveType.EnpasantBlackLeft)
                 {
-                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, +1), this,
-                        ChessEngineConstants.MoveType.EnpasantBlackLeft));
+                    moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, +1), this,
+                        MoveType.EnpasantBlackLeft));
                 }
 
-                if (PossibleMoveType == ChessEngineConstants.MoveType.EnpasantBlackRight)
+                if (PossibleMoveType == MoveType.EnpasantBlackRight)
                 {
-                    moves.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, -1), this,
-                        ChessEngineConstants.MoveType.EnpasantWhiteRight));
+                    moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, -1), this,
+                        MoveType.EnpasantWhiteRight));
                 }
             }
 
-            return moves;
+            return moveList;
         }
 
         public override bool ExecuteMove(Move move)
@@ -114,15 +114,15 @@ namespace MyChessEngine.Pieces
                 Board[move.End] = new Queen(Color);
             }
 
-            if (move.Type == ChessEngineConstants.MoveType.PawnDoubleStep)
+            if (move.Type == MoveType.PawnDoubleStep)
             {
-                if (Color == ChessEngineConstants.Color.White)
+                if (Color == Color.White)
                 {
-                    List<Tuple<int, ChessEngineConstants.MoveType>> mmx =
-                        new List<Tuple<int, ChessEngineConstants.MoveType>>()
+                    List<Tuple<int, MoveType>> mmx =
+                        new List<Tuple<int, MoveType>>()
                         {
-                            new Tuple<int, ChessEngineConstants.MoveType>(-1, ChessEngineConstants.MoveType.EnpasantBlackRight),
-                            new Tuple<int, ChessEngineConstants.MoveType>(1, ChessEngineConstants.MoveType.EnpasantBlackLeft),
+                            new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackRight),
+                            new Tuple<int, MoveType>(1, MoveType.EnpasantBlackLeft),
                         };
 
                     for (int i = 0; i < 2; i++)
@@ -132,7 +132,7 @@ namespace MyChessEngine.Pieces
                         {
                             if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
                             {
-                                if (adjacentPawn.Color == ChessEngineConstants.Color.Black)
+                                if (adjacentPawn.Color == Color.Black)
                                     adjacentPawn.PossibleMoveType = mmx[i].Item2;
                             }
                         }
@@ -140,11 +140,11 @@ namespace MyChessEngine.Pieces
                 }
                 else
                 {
-                    List<Tuple<int, ChessEngineConstants.MoveType>> mmx =
-                        new List<Tuple<int, ChessEngineConstants.MoveType>>()
+                    List<Tuple<int, MoveType>> mmx =
+                        new List<Tuple<int, MoveType>>()
                         {
-                            new Tuple<int, ChessEngineConstants.MoveType>(-1, ChessEngineConstants.MoveType.EnpasantWhiteLeft),
-                            new Tuple<int, ChessEngineConstants.MoveType>(1, ChessEngineConstants.MoveType.EnpasantWhiteRight),
+                            new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteLeft),
+                            new Tuple<int, MoveType>(1, MoveType.EnpasantWhiteRight),
                         };
 
                     for (int i = 0; i < 2; i++)
@@ -154,7 +154,7 @@ namespace MyChessEngine.Pieces
                         {
                             if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
                             {
-                                if (adjacentPawn.Color == ChessEngineConstants.Color.White)
+                                if (adjacentPawn.Color == Color.White)
                                     adjacentPawn.PossibleMoveType = mmx[i].Item2;
                             }
                         }
@@ -165,13 +165,13 @@ namespace MyChessEngine.Pieces
             {
                 switch (move.Type)
                 {
-                    case ChessEngineConstants.MoveType.EnpasantWhiteLeft:
-                    case ChessEngineConstants.MoveType.EnpasantWhiteRight:
+                    case MoveType.EnpasantWhiteLeft:
+                    case MoveType.EnpasantWhiteRight:
                         Board[new Position(move.End.Row - 1, move.End.Column)] = null;
                         break;
 
-                    case ChessEngineConstants.MoveType.EnpasantBlackLeft:
-                    case ChessEngineConstants.MoveType.EnpasantBlackRight:
+                    case MoveType.EnpasantBlackLeft:
+                    case MoveType.EnpasantBlackRight:
                         Board[new Position(move.End.Row + 1, move.End.Column)] = null;
                         break;
 
@@ -181,7 +181,7 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
-        public Pawn(ChessEngineConstants.Color color): base(color, ChessEngineConstants.PieceType.Pawn)
+        public Pawn(Color color): base(color, PieceType.Pawn)
         {
 
         }

@@ -7,7 +7,7 @@ namespace MyChessEngine
     public class ChessEngine : IChessEngine
     {
         private readonly Board Board;
-        public ChessEngineConstants.Color ColorToMove { get; set; }
+        public Color ColorToMove { get; set; }
 
         public IPiece  GetPiece(Position position)
         {
@@ -27,41 +27,41 @@ namespace MyChessEngine
             string[] blackPawnPositions = new[] { "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7" };
             for (int i = 0; i < 8; i++)
             {
-                Board[whitePawnPositions[i]] = new Pawn(ChessEngineConstants.Color.White);
-                Board[blackPawnPositions[i]] = new Pawn(ChessEngineConstants.Color.Black);
+                Board[whitePawnPositions[i]] = new Pawn(Color.White);
+                Board[blackPawnPositions[i]] = new Pawn(Color.Black);
             }
 
             // rook
-            Board["A1"] = new Rook(ChessEngineConstants.Color.White);
-            Board["H1"] = new Rook(ChessEngineConstants.Color.White);
-            Board["A8"] = new Rook(ChessEngineConstants.Color.Black);
-            Board["H8"] = new Rook(ChessEngineConstants.Color.Black);
+            Board["A1"] = new Rook(Color.White);
+            Board["H1"] = new Rook(Color.White);
+            Board["A8"] = new Rook(Color.Black);
+            Board["H8"] = new Rook(Color.Black);
 
 
             // bishop 
-            Board["C1"] = new Bishop(ChessEngineConstants.Color.White);
-            Board["F1"] = new Bishop(ChessEngineConstants.Color.White);
-            Board["C8"] = new Bishop(ChessEngineConstants.Color.Black);
-            Board["F8"] = new Bishop(ChessEngineConstants.Color.Black);
+            Board["C1"] = new Bishop(Color.White);
+            Board["F1"] = new Bishop(Color.White);
+            Board["C8"] = new Bishop(Color.Black);
+            Board["F8"] = new Bishop(Color.Black);
 
 
             // knight
-            Board["B1"] = new Knight(ChessEngineConstants.Color.White);
-            Board["G1"] = new Knight(ChessEngineConstants.Color.White);
-            Board["B8"] = new Knight(ChessEngineConstants.Color.Black);
-            Board["G8"] = new Knight(ChessEngineConstants.Color.Black);
+            Board["B1"] = new Knight(Color.White);
+            Board["G1"] = new Knight(Color.White);
+            Board["B8"] = new Knight(Color.Black);
+            Board["G8"] = new Knight(Color.Black);
 
 
             // queen
-            Board["D1"] = new Queen(ChessEngineConstants.Color.White);
-            Board["D8"] = new Queen(ChessEngineConstants.Color.Black);
+            Board["D1"] = new Queen(Color.White);
+            Board["D8"] = new Queen(Color.Black);
             
 
             // king
-            Board["E1"] = new King(ChessEngineConstants.Color.White);
-            Board["E8"] = new King(ChessEngineConstants.Color.Black);
+            Board["E1"] = new King(Color.White);
+            Board["E8"] = new King(Color.Black);
 
-            ColorToMove = ChessEngineConstants.Color.White;
+            ColorToMove = Color.White;
         }
 
         public void Clear()
@@ -75,7 +75,7 @@ namespace MyChessEngine
             DateTime time1 = DateTime.Now;
             Board copy = Board.Copy();
 
-            var allMoves = copy.GetAllPieces(ColorToMove).Select((piece => piece.GetMoves())).SelectMany(move2 => move2).ToList();
+            var allMoves = copy.GetAllPieces(ColorToMove).Select((piece => piece.GetMoveList().Moves)).SelectMany(move2 => move2).ToList();
 
             foreach (Move move in allMoves)
             {
@@ -107,7 +107,7 @@ namespace MyChessEngine
 
         public void Test()
         {
-            var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoves())).SelectMany( move => move).ToList();
+            var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoveList().Moves)).SelectMany( move => move).ToList();
             
             foreach (Move move3 in allMoves)
             {
@@ -124,7 +124,7 @@ namespace MyChessEngine
         {
             Board = new Board();
         }
-        private ChessEngine(Board board, ChessEngineConstants.Color colorToMove)
+        private ChessEngine(Board board, Color colorToMove)
         {
             Board = board;
             ColorToMove = colorToMove;

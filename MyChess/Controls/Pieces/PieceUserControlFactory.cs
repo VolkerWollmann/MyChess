@@ -9,12 +9,12 @@ namespace MyChess.Controls.Pieces
         {
             return piece.Type switch
             {
-                ChessEngineConstants.PieceType.Pawn => new PawnUserControl(piece),
-                ChessEngineConstants.PieceType.Bishop => new BishopUserControl(piece),
-                ChessEngineConstants.PieceType.Rook => new RookUserControl(piece),
-                ChessEngineConstants.PieceType.Queen => new QueenUserControl(piece),
-                ChessEngineConstants.PieceType.King => new KingUserControl(piece),
-                ChessEngineConstants.PieceType.Knight => new KnightUserControl(piece),
+                PieceType.Pawn => new PawnUserControl(piece),
+                PieceType.Bishop => new BishopUserControl(piece),
+                PieceType.Rook => new RookUserControl(piece),
+                PieceType.Queen => new QueenUserControl(piece),
+                PieceType.King => new KingUserControl(piece),
+                PieceType.Knight => new KnightUserControl(piece),
                 _ => null
             };
         }

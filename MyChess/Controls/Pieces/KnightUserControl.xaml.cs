@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media;
 using MyChess.Common;
 using MyChessEngine;
+using Color = MyChessEngine.Color;
 
 namespace MyChess.Controls.Pieces
 {
@@ -23,7 +24,7 @@ namespace MyChess.Controls.Pieces
         {
             _Piece = piece;
 
-            Figure.Fill = _Piece.Color == ChessEngineConstants.Color.White ? new SolidColorBrush(Colors.Khaki) : new SolidColorBrush(Colors.Black);
+            Figure.Fill = _Piece.Color == Color.White ? new SolidColorBrush(Colors.Khaki) : new SolidColorBrush(Colors.Black);
         }
     }
 }

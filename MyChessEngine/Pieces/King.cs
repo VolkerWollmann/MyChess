@@ -7,25 +7,25 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color} Rochades={Rochades}")]
     public class King : Piece
     {
-        public List<ChessEngineConstants.MoveType> Rochades;
+        public List<MoveType> Rochades;
 
         #region IEnginePiece
-        public override List<Move> GetMoves()
+        public override MoveList GetMoveList()
         {
-            List<Move> moves = new List<Move>();
+            MoveList moveList = new MoveList();
 
             for (int row = -1; row <= 1; row++)
             for (int column = -1; column <= 1; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(row, column);
-                AddPosition(moves, newPosition);
+                AddPosition(moveList, newPosition);
             }
 
             // Castle
 
             if (Rochades.Any())
             {
-                if (Color == ChessEngineConstants.Color.White)
+                if (Color == Color.White)
                 {
                     Position kingBishopField = new Position("F1");
                     Position kingKnightField = new Position("G1");
@@ -33,12 +33,12 @@ namespace MyChessEngine.Pieces
                     Position queenBishopField = new Position("C1");
                     Position queenKnightField = new Position("B1");
 
-                    var threatenedFields = this.Board.GetAllPieces(ChessEngineConstants.Color.Black)
-                        .Where( piece => (piece.Type != ChessEngineConstants.PieceType.King))             // King cannot threaten castle, avoid for recursion
-                        .Select((piece => piece.GetMoves()))
+                    var threatenedFields = this.Board.GetAllPieces(Color.Black)
+                        .Where( piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
+                        .Select((piece => piece.GetMoveList().Moves))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
-                    if (Rochades.Contains(ChessEngineConstants.MoveType.WhiteCastle))
+                    if (Rochades.Contains(MoveType.WhiteCastle))
                     {
                         bool thread=false;
                         for (int i = 4; i < 7; i++)
@@ -50,10 +50,10 @@ namespace MyChessEngine.Pieces
                         }
 
                         if ((!thread) && ((Board[kingBishopField] == null) && (Board[kingKnightField] == null)))
-                            moves.Add(new Move(this.Position, new Position("G1"), this, ChessEngineConstants.MoveType.WhiteCastle));
+                            moveList.Add(new Move(this.Position, new Position("G1"), this, MoveType.WhiteCastle));
                     }
 
-                    if (Rochades.Contains(ChessEngineConstants.MoveType.WhiteCastleLong))
+                    if (Rochades.Contains(MoveType.WhiteCastleLong))
                     {
                         bool thread = false;
                         for (int i = 1; i <=5; i++)
@@ -65,7 +65,7 @@ namespace MyChessEngine.Pieces
                         }
 
                         if ((!thread) && ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null)))
-                            moves.Add(new Move(this.Position, new Position("C1"), this, ChessEngineConstants.MoveType.WhiteCastleLong));
+                            moveList.Add(new Move(this.Position, new Position("C1"), this, MoveType.WhiteCastleLong));
                     }
                 }
                 else
@@ -76,12 +76,12 @@ namespace MyChessEngine.Pieces
                     Position queenBishopField = new Position("C8");
                     Position queenKnightField = new Position("B8");
 
-                    var threatenedFields = this.Board.GetAllPieces(ChessEngineConstants.Color.White)
-                        .Where(piece => (piece.Type != ChessEngineConstants.PieceType.King))             // King cannot threaten castle, avoid for recursion
-                        .Select((piece => piece.GetMoves()))
+                    var threatenedFields = this.Board.GetAllPieces(Color.White)
+                        .Where(piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
+                        .Select((piece => piece.GetMoveList().Moves))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
-                    if (Rochades.Contains(ChessEngineConstants.MoveType.BlackCastle))
+                    if (Rochades.Contains(MoveType.BlackCastle))
                     {
                         bool thread = false;
                         for (int i = 4; i < 7; i++)
@@ -93,10 +93,10 @@ namespace MyChessEngine.Pieces
                         }
 
                         if ((!thread) && ((Board[kingBishopField] == null) && (Board[kingKnightField] == null)))
-                            moves.Add(new Move(this.Position, new Position("G8"), this, ChessEngineConstants.MoveType.BlackCastle));
+                            moveList.Add(new Move(this.Position, new Position("G8"), this, MoveType.BlackCastle));
                     }
 
-                    if (Rochades.Contains(ChessEngineConstants.MoveType.BlackCastleLong))
+                    if (Rochades.Contains(MoveType.BlackCastleLong))
                     {
                         bool thread = false;
                         for (int i = 1; i <= 5; i++)
@@ -108,13 +108,13 @@ namespace MyChessEngine.Pieces
                         }
 
                         if ((!thread) && ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null)))
-                            moves.Add(new Move(this.Position, new Position("C8"), this, ChessEngineConstants.MoveType.BlackCastleLong));
+                            moveList.Add(new Move(this.Position, new Position("C8"), this, MoveType.BlackCastleLong));
                     }
                 }
 
             }
 
-            return moves;
+            return moveList;
         }
 
         public override Piece Copy()
@@ -126,28 +126,28 @@ namespace MyChessEngine.Pieces
         {
             switch (move.Type)
             {
-                case ChessEngineConstants.MoveType.WhiteCastle:
+                case MoveType.WhiteCastle:
                     Board["G1"] = this;
                     Board["E1"] = null;
                     Board["F1"] = Board["H1"];
                     Board["H1"] = null;
                     break;
 
-                case ChessEngineConstants.MoveType.WhiteCastleLong:
+                case MoveType.WhiteCastleLong:
                     Board["C1"] = this;
                     Board["E1"] = null;
                     Board["D1"] = Board["A1"];
                     Board["A1"] = null;
                     break;
 
-                case ChessEngineConstants.MoveType.BlackCastle:
+                case MoveType.BlackCastle:
                     Board["G8"] = this;
                     Board["E8"] = null;
                     Board["F8"] = Board["H8"];
                     Board["H8"] = null;
                     break;
 
-                case ChessEngineConstants.MoveType.BlackCastleLong:
+                case MoveType.BlackCastleLong:
                     Board["C8"] = this;
                     Board["E8"] = null;
                     Board["D8"] = Board["A8"];
@@ -160,29 +160,29 @@ namespace MyChessEngine.Pieces
                     break;
             }
             
-            Rochades = new List<ChessEngineConstants.MoveType>();
+            Rochades = new List<MoveType>();
 
             return true;
         }
 
         #endregion
 
-        public King(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.King)
+        public King(Color color) : base(color, PieceType.King)
         {
-            if (color == ChessEngineConstants.Color.White)
+            if (color == Color.White)
             {
-                Rochades = new List<ChessEngineConstants.MoveType>()
-                    {ChessEngineConstants.MoveType.WhiteCastle, ChessEngineConstants.MoveType.WhiteCastleLong};
+                Rochades = new List<MoveType>()
+                    {MoveType.WhiteCastle, MoveType.WhiteCastleLong};
             }
             else
             {
-                Rochades = new List<ChessEngineConstants.MoveType>()
-                    {ChessEngineConstants.MoveType.BlackCastle, ChessEngineConstants.MoveType.BlackCastleLong};
+                Rochades = new List<MoveType>()
+                    {MoveType.BlackCastle, MoveType.BlackCastleLong};
             }
         }
 
-        public King(ChessEngineConstants.Color color, List<ChessEngineConstants.MoveType> rochades) : base(color,
-            ChessEngineConstants.PieceType.King)
+        public King(Color color, List<MoveType> rochades) : base(color,
+            PieceType.King)
         {
             Rochades = rochades;
         }

@@ -9,15 +9,15 @@ namespace MyChessEngine.Pieces
     {
         private bool HasMoved;
 
-        public override List<Move> GetMoves()
+        public override MoveList GetMoveList()
         {
-            List<Move> moves = new List<Move>();
+            MoveList moveList = new MoveList();
 
             // left
             for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-row, 0);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -25,7 +25,7 @@ namespace MyChessEngine.Pieces
             for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(row, 0);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -33,7 +33,7 @@ namespace MyChessEngine.Pieces
             for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, -column);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -41,11 +41,11 @@ namespace MyChessEngine.Pieces
             for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, column);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
-            return moves;
+            return moveList;
         }
 
         public override bool ExecuteMove(Move move)
@@ -56,26 +56,26 @@ namespace MyChessEngine.Pieces
             if (!HasMoved)
             {
                 HasMoved = true;
-                if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessEngineConstants.PieceType.King)) is King myKing)
+                if (Board.GetAllPieces(Color).First(piece => (piece.Type == PieceType.King)) is King myKing)
                 {
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastleLong);
+                        myKing.Rochades.Remove(MoveType.WhiteCastleLong);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastle);
+                        myKing.Rochades.Remove(MoveType.WhiteCastle);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastleLong);
+                        myKing.Rochades.Remove(MoveType.WhiteCastleLong);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                        myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastle);
+                        myKing.Rochades.Remove(MoveType.WhiteCastle);
                 }
             }
 
             return true;
         }
 
-        public Rook(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.Rook)
+        public Rook(Color color) : base(color, PieceType.Rook)
         {
 
         }

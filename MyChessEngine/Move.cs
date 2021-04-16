@@ -9,9 +9,10 @@ namespace MyChessEngine
         public Position Start;
         public Position End;
         public IPiece Piece;
-        public ChessEngineConstants.MoveType Type;
+        public MoveType Type;
+        public BoardRating Rating { get; set; } = null;
 
-        public Move(Position start, Position end, IPiece piece, ChessEngineConstants.MoveType type)
+        public Move(Position start, Position end, IPiece piece, MoveType type)
         {
             Start = start;
             End = end;
@@ -19,11 +20,11 @@ namespace MyChessEngine
             Type = type;
         }
 
-        public Move(Position start, Position end, IPiece piece) : this(start, end, piece, ChessEngineConstants.MoveType.Normal)
+        public Move(Position start, Position end, IPiece piece) : this(start, end, piece, MoveType.Normal)
         {
         }
 
-        public Move(string startString, string endString, IPiece piece, ChessEngineConstants.MoveType type)
+        public Move(string startString, string endString, IPiece piece, MoveType type)
         {
             Start = new Position(startString);
             End = new Position(endString);
@@ -33,7 +34,7 @@ namespace MyChessEngine
 
 
         public Move(string startString, string endString, IPiece piece) : 
-            this(startString, endString, piece, ChessEngineConstants.MoveType.Normal)
+            this(startString, endString, piece, MoveType.Normal)
         {
         }
 

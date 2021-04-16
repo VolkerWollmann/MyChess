@@ -6,15 +6,15 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Bishop : Piece
     {
-        public override List<Move> GetMoves()
+        public override MoveList GetMoveList()
         {
-            List<Move> moves = new List<Move>();
+            MoveList moveList = new MoveList();
 
             // left, down
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, -i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -22,7 +22,7 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -30,7 +30,7 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, -i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -38,13 +38,13 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
-            return moves;
+            return moveList;
         }
-        public Bishop(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.Bishop)
+        public Bishop(Color color) : base(color, PieceType.Bishop)
         {
 
         }

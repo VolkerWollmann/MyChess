@@ -5,7 +5,7 @@ namespace MyChessEngine
 {
     public interface IEnginePiece : IPiece
     {
-        List<Move> GetMoves();
+        MoveList GetMoveList();
 
         Board Board { get; set; }
 

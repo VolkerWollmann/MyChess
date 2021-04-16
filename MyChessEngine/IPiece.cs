@@ -2,8 +2,8 @@
 {
     public interface IPiece
     {
-        ChessEngineConstants.PieceType Type { get; }
+        PieceType Type { get; }
 
-        ChessEngineConstants.Color Color { get; }
+        Color Color { get; }
     }
 }

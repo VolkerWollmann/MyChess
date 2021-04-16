@@ -6,15 +6,15 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Queen : Piece
     {
-        public override List<Move> GetMoves()
+        public override MoveList GetMoveList()
         {
-            List<Move> moves = new List<Move>();
+            MoveList moveList = new MoveList();
 
             // left
             for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-row, 0);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -22,7 +22,7 @@ namespace MyChessEngine.Pieces
             for (int row = 1; row <= ChessEngineConstants.Length; row++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(row, 0);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -30,7 +30,7 @@ namespace MyChessEngine.Pieces
             for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, -column);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -38,7 +38,7 @@ namespace MyChessEngine.Pieces
             for (int column = 1; column <= ChessEngineConstants.Length; column++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(0, column);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -46,7 +46,7 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, -i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -54,7 +54,7 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(-i, i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -62,7 +62,7 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, -i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
@@ -70,14 +70,14 @@ namespace MyChessEngine.Pieces
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(i, i);
-                if (!AddPosition(moves, newPosition))
+                if (!AddPosition(moveList, newPosition))
                     break;
             }
 
-            return moves;
+            return moveList;
         }
 
-        public Queen(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.Queen)
+        public Queen(Color color) : base(color, PieceType.Queen)
         {
 
         }

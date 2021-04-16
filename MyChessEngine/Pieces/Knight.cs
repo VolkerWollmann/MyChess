@@ -7,9 +7,9 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Knight : Piece
     {
-        public override List<Move> GetMoves()
+        public override MoveList GetMoveList()
         {
-            List<Move> moves = new List<Move>();
+            MoveList moveList = new MoveList();
 
             int[,] delta = new int[,]
             {
@@ -20,13 +20,13 @@ namespace MyChessEngine.Pieces
             for (int i = 0; i < 8; i++)
             {
                 Position newPosition = this.Position.GetDeltaPosition(delta[i, 0], delta[i, 1]);
-                AddPosition(moves, newPosition);
+                AddPosition(moveList, newPosition);
             }
 
-            return moves;
+            return moveList;
         }
 
-        public Knight(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.Knight)
+        public Knight(Color color) : base(color, PieceType.Knight)
         {
 
         }

@@ -8,16 +8,16 @@ namespace MyChessEngine.Pieces
     {
         #region IPiece
 
-        public ChessEngineConstants.PieceType Type { get; }
+        public PieceType Type { get; }
 
-        public ChessEngineConstants.Color Color { get; }
+        public Color Color { get; }
 
         #endregion
 
         #region IEnginePiece
-        public virtual List<Move> GetMoves()
+        public virtual MoveList GetMoveList()
         {
-            return new List<Move>();
+            return new MoveList();
         }
 
         public Board Board{ get; set; }
@@ -33,11 +33,11 @@ namespace MyChessEngine.Pieces
         {
             return Type switch
             {
-                ChessEngineConstants.PieceType.Pawn => new Pawn(Color),
-                ChessEngineConstants.PieceType.Bishop => new Bishop(Color),
-                ChessEngineConstants.PieceType.Knight => new Knight(Color),
-                ChessEngineConstants.PieceType.Queen => new Queen(Color),
-                ChessEngineConstants.PieceType.Rook => new Rook(Color),
+                PieceType.Pawn => new Pawn(Color),
+                PieceType.Bishop => new Bishop(Color),
+                PieceType.Knight => new Knight(Color),
+                PieceType.Queen => new Queen(Color),
+                PieceType.Rook => new Rook(Color),
                 _ => null
             };
         }
@@ -58,19 +58,19 @@ namespace MyChessEngine.Pieces
         /// <param name="moves">moves so far</param>
         /// <param name="position"></param>
         /// <returns>returns false, if this is last move in that direction</returns>
-        public bool AddPosition(List<Move> moves, Position position)
+        public bool AddPosition(MoveList moveList, Position position)
         {
             if (!this.Board.IsValidPosition(position, this.Color))
                 return false;
 
-            moves.Add(new Move(this.Position, position, this));
+            moveList.Add(new Move(this.Position, position, this));
             if (this.Board[position] != null)
                 return false;
 
             return true;
         }
 
-        public Piece(ChessEngineConstants.Color color, ChessEngineConstants.PieceType piece)
+        public Piece(Color color, PieceType piece)
         {
             Color = color;
             Type = piece;

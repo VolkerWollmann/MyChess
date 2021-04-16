@@ -35,7 +35,7 @@ namespace MyChess.Controls
                 if (StartField == null)
                 {
                     StartField = field;
-                    StartField.SetFieldColor(ChessEngineConstants.FieldColor.Start);
+                    StartField.SetFieldColor(FieldColor.Start);
 
                     ChessCommandUserControl.SetStartField((char) (StartField.Column + 65) +
                                                          (StartField.Row + 1).ToString());
@@ -44,7 +44,7 @@ namespace MyChess.Controls
                 else if (EndField == null)
                 {
                     EndField = field;
-                    EndField.SetFieldColor(ChessEngineConstants.FieldColor.End);
+                    EndField.SetFieldColor(FieldColor.End);
 
                     ChessCommandUserControl.SetEndField((char) (EndField.Column + 65) + (EndField.Row + 1).ToString());
 
@@ -55,8 +55,8 @@ namespace MyChess.Controls
  
             if ( reset) 
             {
-                StartField?.SetFieldColor(ChessEngineConstants.FieldColor.Standard);
-                EndField?.SetFieldColor(ChessEngineConstants.FieldColor.Standard);
+                StartField?.SetFieldColor(FieldColor.Standard);
+                EndField?.SetFieldColor(FieldColor.Standard);
 
                 ChessCommandUserControl.SetStartField("");
                 ChessCommandUserControl.SetEndField("");
