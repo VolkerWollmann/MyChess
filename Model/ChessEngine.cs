@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using MyChess.Common;
 using MyChess.Model.Pieces;
 
@@ -73,16 +72,22 @@ namespace MyChess.Model
             Board.Clear();
         }
 
-        public bool ExecuteMove(Move move)
+        private void CalculateMove()
         {
-            bool result = Board.ExecuteMove(move);
-
-            ColorToMove = ChessConstants.NextColorToMove(ColorToMove);
 
             DateTime time1 = DateTime.Now;
-            var allMoves = this.Board.GetAllPieces(ColorToMove).Select((piece => piece.GetMoves())).SelectMany(move2 => move2).ToList();
+            Board copy = Board.Copy();
+
+            var allMoves = copy.GetAllPieces(ColorToMove).Select((piece => piece.GetMoves())).SelectMany(move2 => move2).ToList();
+
+            foreach (Move move in allMoves)
+            {
+                Board copy2 = copy.Copy();
+                copy2.ExecuteMove(move);
+            }
+
             TimeSpan ts = DateTime.Now.Subtract(time1);
-            
+
 
             _Message = ts.ToString() + System.Environment.NewLine;
 
@@ -90,23 +95,33 @@ namespace MyChess.Model
             {
                 _Message = _Message + " " + move3.ToString() + System.Environment.NewLine;
             }
-            return result;
+        }
+
+        public bool ExecuteMove(Move move)
+        {
+            bool result = Board.ExecuteMove(move);
+
+            ColorToMove = ChessConstants.NextColorToMove(ColorToMove);
+
+            CalculateMove();
+
+            return true;
         }
 
         public void Test()
         {
             var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoves())).SelectMany( move => move).ToList();
+            
+            foreach (Move move3 in allMoves)
+            {
+                _Message = _Message + " " + move3.ToString() + System.Environment.NewLine;
+            }
+            
         }
 
         private string _Message;
 
-        public string Message
-        {
-            get
-            {
-                return _Message;
-            }
-        }
+        public string Message => _Message;
 
         public ChessEngine()
         {

@@ -87,6 +87,7 @@ namespace MyChess.ViewModel
 
                 case ChessConstants.Test1Command:
                     Test();
+                    EngineOutput.Text = ChessEngine.Message;
                     break;
 
             }

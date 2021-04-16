@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace MyChess.Common
+﻿namespace MyChess.Common
 {
     interface IChessEngine
     {

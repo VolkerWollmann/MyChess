@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MyChess.Common;
 using MyChess.Model.Pieces;
 
@@ -98,18 +99,35 @@ namespace MyChess.Model
         public bool ExecuteMove(Move move)
         {
             if (this[move.Start] == null)
-            {
                 throw new Exception("Move not Existing piece.");
-            }
 
             if (!move.End.IsValidPosition())
-            {
                 throw new Exception("Move to invalid position.");
-            }
 
             this[move.Start].ExecuteMove(move);
 
             return true;
+        }
+
+        public BoardRating Rate()
+        {
+            BoardRating rating = new BoardRating {Situation = ChessConstants.Situation.Normal, Value = 0};
+
+            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == ChessConstants.Piece.King) && (piece.Color == ChessConstants.Color.White)))
+            {
+                rating.Situation = ChessConstants.Situation.Victory;
+                rating.Evaluation = ChessConstants.Evaluation.WhiteCheckMate;
+                return rating;
+            }
+
+            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == ChessConstants.Piece.King) && (piece.Color == ChessConstants.Color.Black)))
+            {
+                rating.Situation = ChessConstants.Situation.Victory;
+                rating.Evaluation = ChessConstants.Evaluation.BlackCheckMate;
+                return rating;
+            }
+
+            return rating;
         }
     }
 }
