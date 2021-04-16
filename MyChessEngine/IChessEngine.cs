@@ -1,7 +1,4 @@
-﻿using MyChessEngine;
-using MyChessEngine.Pieces;
-
-namespace MyChessEngine
+﻿namespace MyChessEngine
 { 
     public interface IChessEngine
     {

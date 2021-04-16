@@ -23,8 +23,8 @@ namespace MyChessEngine
         public Position (string positionString)
         {
             byte[] bytes = Encoding.ASCII.GetBytes(positionString);
-            Row = (int)(bytes[1] - 49);
-            Column = (int)(bytes[0] - 65);
+            Row = bytes[1] - 49;
+            Column = bytes[0] - 65;
 
         }
 

@@ -88,11 +88,11 @@ namespace MyChessEngine
             TimeSpan ts = DateTime.Now.Subtract(time1);
 
 
-            _Message = ts.ToString() + System.Environment.NewLine;
+            _Message = ts.ToString() + Environment.NewLine;
 
             foreach (Move move3 in allMoves)
             {
-                _Message = _Message + " " + move3.ToString() + System.Environment.NewLine;
+                _Message = _Message + " " + move3 + Environment.NewLine;
             }
         }
 
@@ -113,7 +113,7 @@ namespace MyChessEngine
             
             foreach (Move move3 in allMoves)
             {
-                _Message = _Message + " " + move3.ToString() + System.Environment.NewLine;
+                _Message = _Message + " " + move3 + Environment.NewLine;
             }
             
         }

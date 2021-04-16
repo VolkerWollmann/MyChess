@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using MyChess.Common;
 using MyChess.Controls.Pieces;
 using MyChessEngine;
 using MShapes = System.Windows.Shapes;
