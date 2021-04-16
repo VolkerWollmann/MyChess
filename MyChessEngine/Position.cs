@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using MyChessEngineCommon;
 
-namespace MyChessEngineCommon
+namespace MyChessEngine
 {
     [DebuggerDisplay("{ToString()}")]
     public class Position 

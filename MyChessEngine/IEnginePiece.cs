@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine.Pieces;
 
-namespace MyChess.Model.Pieces
+namespace MyChessEngine
 {
     public interface IEnginePiece : IPiece
     {

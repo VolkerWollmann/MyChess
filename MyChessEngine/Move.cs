@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using MyChess.Common;
 
-namespace MyChessEngineCommon
+
+namespace MyChessEngine
 {
     [DebuggerDisplay("{ToString()}")]
     public class Move

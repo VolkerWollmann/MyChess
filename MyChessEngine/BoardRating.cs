@@ -1,7 +1,6 @@
-﻿using System;
-using MyChessEngineCommon;
+﻿using MyChessEngine;
 
-namespace MyChessEngineCommon
+namespace MyChessEngine
 {
     /// <summary>
     /// ![CDATA[

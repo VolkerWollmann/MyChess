@@ -1,10 +1,10 @@
-﻿namespace MyChessEngineCommon
+﻿namespace MyChessEngine
 {
     public class ChessEngineConstants
     {
         public const int Length = 8;
 
-        public enum Piece
+        public enum PieceType
         {
             Pawn,
             Knight,

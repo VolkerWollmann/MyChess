@@ -3,7 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MyChess.Common;
 using MyChess.Controls.Pieces;
-using MyChessEngineCommon;
+using MyChessEngine;
 using MShapes = System.Windows.Shapes;
 
 namespace MyChess.Controls

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine;
 
-namespace MyChess.Model.Pieces
+namespace MyChessEngine.Pieces
 {
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Rook : Piece
@@ -58,7 +57,7 @@ namespace MyChess.Model.Pieces
             if (!HasMoved)
             {
                 HasMoved = true;
-                if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessEngineConstants.Piece.King)) is King myKing)
+                if (Board.GetAllPieces(Color).First(piece => (piece.Type == ChessEngineConstants.PieceType.King)) is King myKing)
                 {
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
                         myKing.Rochades.Remove(ChessEngineConstants.MoveType.WhiteCastleLong);
@@ -77,7 +76,7 @@ namespace MyChess.Model.Pieces
             return true;
         }
 
-        public Rook(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.Piece.Rook)
+        public Rook(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.Rook)
         {
 
         }

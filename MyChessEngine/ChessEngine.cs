@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
-using MyChess.Common;
-using MyChess.Model.Pieces;
-using MyChessEngineCommon;
+using MyChessEngine.Pieces;
 
-namespace MyChess.Model
+namespace MyChessEngine
 {
     public class ChessEngine : IChessEngine
     {

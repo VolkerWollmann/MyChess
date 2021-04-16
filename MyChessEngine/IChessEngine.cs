@@ -1,7 +1,8 @@
-﻿using MyChess.Common;
+﻿using MyChessEngine;
+using MyChessEngine.Pieces;
 
-namespace MyChessEngineCommon
-{
+namespace MyChessEngine
+{ 
     public interface IChessEngine
     {
         IPiece GetPiece(Position position);

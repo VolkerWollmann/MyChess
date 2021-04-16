@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine;
 
 namespace MyChess.Controls.Pieces
 {
@@ -10,12 +10,12 @@ namespace MyChess.Controls.Pieces
         {
             return piece.Type switch
             {
-                ChessEngineConstants.Piece.Pawn => new PawnUserControl(piece),
-                ChessEngineConstants.Piece.Bishop => new BishopUserControl(piece),
-                ChessEngineConstants.Piece.Rook => new RookUserControl(piece),
-                ChessEngineConstants.Piece.Queen => new QueenUserControl(piece),
-                ChessEngineConstants.Piece.King => new KingUserControl(piece),
-                ChessEngineConstants.Piece.Knight => new KnightUserControl(piece),
+                ChessEngineConstants.PieceType.Pawn => new PawnUserControl(piece),
+                ChessEngineConstants.PieceType.Bishop => new BishopUserControl(piece),
+                ChessEngineConstants.PieceType.Rook => new RookUserControl(piece),
+                ChessEngineConstants.PieceType.Queen => new QueenUserControl(piece),
+                ChessEngineConstants.PieceType.King => new KingUserControl(piece),
+                ChessEngineConstants.PieceType.Knight => new KnightUserControl(piece),
                 _ => null
             };
         }

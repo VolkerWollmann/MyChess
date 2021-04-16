@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine;
 
 namespace MyChess.Controls.Pieces
 {

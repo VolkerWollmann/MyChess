@@ -1,9 +1,8 @@
-﻿using MyChess.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using MyChessEngineCommon;
+using MyChessEngine;
 
-namespace MyChess.Model.Pieces
+namespace MyChessEngine.Pieces
 {
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Queen : Piece
@@ -79,7 +78,7 @@ namespace MyChess.Model.Pieces
             return moves;
         }
 
-        public Queen(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.Piece.Queen)
+        public Queen(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.Queen)
         {
 
         }

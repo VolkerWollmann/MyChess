@@ -1,6 +1,8 @@
-﻿namespace MyChess.Common
+﻿using MyChessEngine;
+
+namespace MyChess.Common
 {
-    interface IUserControlPiece
+    public interface IUserControlPiece
     {
         IPiece GetPiece();
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyChess.GameCommon
+﻿namespace MyChess.Common
 {
     public class ChessGameConstants
     {

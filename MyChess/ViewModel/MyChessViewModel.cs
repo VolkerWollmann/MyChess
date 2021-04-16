@@ -4,10 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using MyChess.Common;
 using MyChess.Controls;
-using MyChess.GameCommon;
 using MyChess.Helper;
-using MyChess.Model;
-using MyChessEngineCommon;
+using MyChessEngine;
 
 namespace MyChess.ViewModel
 {

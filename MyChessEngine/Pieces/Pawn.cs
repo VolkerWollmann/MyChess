@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine;
 
-namespace MyChess.Model.Pieces
+namespace MyChessEngine.Pieces
 {
     [DebuggerDisplay("Type={Type}, Name = {Color} PMT={PossibleMoveType}")]
     public class Pawn : Piece
@@ -183,7 +182,7 @@ namespace MyChess.Model.Pieces
             return true;
         }
 
-        public Pawn(ChessEngineConstants.Color color): base(color, ChessEngineConstants.Piece.Pawn)
+        public Pawn(ChessEngineConstants.Color color): base(color, ChessEngineConstants.PieceType.Pawn)
         {
 
         }

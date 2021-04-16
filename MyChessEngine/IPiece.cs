@@ -1,10 +1,10 @@
-﻿using MyChessEngineCommon;
+﻿using MyChessEngine;
 
-namespace MyChess.Common
+namespace MyChessEngine
 {
     public interface IPiece
     {
-        ChessEngineConstants.Piece Type { get; }
+        ChessEngineConstants.PieceType Type { get; }
 
         ChessEngineConstants.Color Color { get; }
     }

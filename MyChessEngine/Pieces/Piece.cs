@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine;
 
-namespace MyChess.Model.Pieces
+namespace MyChessEngine.Pieces
 {
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Piece : IEnginePiece
     {
         #region IPiece
 
-        public ChessEngineConstants.Piece Type { get; }
+        public ChessEngineConstants.PieceType Type { get; }
 
         public ChessEngineConstants.Color Color { get; }
 
@@ -35,11 +34,11 @@ namespace MyChess.Model.Pieces
         {
             return Type switch
             {
-                ChessEngineConstants.Piece.Pawn => new Pawn(Color),
-                ChessEngineConstants.Piece.Bishop => new Bishop(Color),
-                ChessEngineConstants.Piece.Knight => new Knight(Color),
-                ChessEngineConstants.Piece.Queen => new Queen(Color),
-                ChessEngineConstants.Piece.Rook => new Rook(Color),
+                ChessEngineConstants.PieceType.Pawn => new Pawn(Color),
+                ChessEngineConstants.PieceType.Bishop => new Bishop(Color),
+                ChessEngineConstants.PieceType.Knight => new Knight(Color),
+                ChessEngineConstants.PieceType.Queen => new Queen(Color),
+                ChessEngineConstants.PieceType.Rook => new Rook(Color),
                 _ => null
             };
         }
@@ -72,7 +71,7 @@ namespace MyChess.Model.Pieces
             return true;
         }
 
-        public Piece(ChessEngineConstants.Color color, ChessEngineConstants.Piece piece)
+        public Piece(ChessEngineConstants.Color color, ChessEngineConstants.PieceType piece)
         {
             Color = color;
             Type = piece;

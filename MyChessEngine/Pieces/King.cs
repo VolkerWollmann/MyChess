@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using MyChess.Common;
-using MyChessEngineCommon;
+using MyChessEngine;
 
-namespace MyChess.Model.Pieces
+namespace MyChessEngine.Pieces
 {
     [DebuggerDisplay("Type={Type}, Name = {Color} Rochades={Rochades}")]
     public class King : Piece
@@ -36,7 +35,7 @@ namespace MyChess.Model.Pieces
                     Position queenKnightField = new Position("B1");
 
                     var threatenedFields = this.Board.GetAllPieces(ChessEngineConstants.Color.Black)
-                        .Where( piece => (piece.Type != ChessEngineConstants.Piece.King))             // King cannot threaten castle, avoid for recursion
+                        .Where( piece => (piece.Type != ChessEngineConstants.PieceType.King))             // King cannot threaten castle, avoid for recursion
                         .Select((piece => piece.GetMoves()))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
@@ -79,7 +78,7 @@ namespace MyChess.Model.Pieces
                     Position queenKnightField = new Position("B8");
 
                     var threatenedFields = this.Board.GetAllPieces(ChessEngineConstants.Color.White)
-                        .Where(piece => (piece.Type != ChessEngineConstants.Piece.King))             // King cannot threaten castle, avoid for recursion
+                        .Where(piece => (piece.Type != ChessEngineConstants.PieceType.King))             // King cannot threaten castle, avoid for recursion
                         .Select((piece => piece.GetMoves()))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
@@ -169,7 +168,7 @@ namespace MyChess.Model.Pieces
 
         #endregion
 
-        public King(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.Piece.King)
+        public King(ChessEngineConstants.Color color) : base(color, ChessEngineConstants.PieceType.King)
         {
             if (color == ChessEngineConstants.Color.White)
             {
@@ -184,7 +183,7 @@ namespace MyChess.Model.Pieces
         }
 
         public King(ChessEngineConstants.Color color, List<ChessEngineConstants.MoveType> rochades) : base(color,
-            ChessEngineConstants.Piece.King)
+            ChessEngineConstants.PieceType.King)
         {
             Rochades = rochades;
         }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyChess.Common;
-using MyChess.Model.Pieces;
-using MyChessEngineCommon;
+using MyChessEngine.Pieces;
 
-namespace MyChess.Model
+
+namespace MyChessEngine
 {
     public class Board
     {
@@ -114,14 +113,14 @@ namespace MyChess.Model
         {
             BoardRating rating = new BoardRating {Situation = ChessEngineConstants.Situation.Normal, Value = 0};
 
-            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == ChessEngineConstants.Piece.King) && (piece.Color == ChessEngineConstants.Color.White)))
+            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == ChessEngineConstants.PieceType.King) && (piece.Color == ChessEngineConstants.Color.White)))
             {
                 rating.Situation = ChessEngineConstants.Situation.Victory;
                 rating.Evaluation = ChessEngineConstants.Evaluation.WhiteCheckMate;
                 return rating;
             }
 
-            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == ChessEngineConstants.Piece.King) && (piece.Color == ChessEngineConstants.Color.Black)))
+            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == ChessEngineConstants.PieceType.King) && (piece.Color == ChessEngineConstants.Color.Black)))
             {
                 rating.Situation = ChessEngineConstants.Situation.Victory;
                 rating.Evaluation = ChessEngineConstants.Evaluation.BlackCheckMate;
