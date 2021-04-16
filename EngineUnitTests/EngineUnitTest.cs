@@ -20,7 +20,7 @@ namespace EngineUnitTests
         private MoveList CreateMoveList()
         {
             BoardRating whitMate1 = new BoardRating() { Evaluation = Evaluation.WhiteCheckMate };
-            BoardRating whitMate2 = new BoardRating() { Evaluation = Evaluation.WhiteCheckMate };
+            BoardRating whitMate2 = new BoardRating() { Evaluation = Evaluation.BlackStaleMate };
             BoardRating blackMate1 = new BoardRating() { Evaluation = Evaluation.BlackCheckMate };
             BoardRating blackMate2 = new BoardRating() { Evaluation = Evaluation.BlackCheckMate };
 
@@ -55,20 +55,34 @@ namespace EngineUnitTests
 
             Assert.IsNotNull(whiteBestMove.Rating.Evaluation == Evaluation.BlackCheckMate);
 
-            moveList.BubbleSort(Color.White);
+            moveList.BubbleSort();
             var ratingList = moveList.Moves.Select(move => move.Rating).ToList();
 
         }
 
         [TestMethod]
-        public void TestPartialOrdering()
+        public void TestBubbleSort()
         {
             MoveList moveList = CreateMoveList();
 
             var initialList = moveList.Moves.Select(move => move.Rating).ToList();
 
-            moveList.BubbleSort(Color.White);
+            moveList.BubbleSort();
             var orderedList = moveList.Moves.Select(move => move.Rating).ToList();
+        }
+
+        [TestMethod]
+        public void TestSort()
+        {
+            MoveList moveList = CreateMoveList();
+
+            var initialList = moveList.Moves.Select(move => move.Rating).ToList();
+
+            moveList.Sort(Color.White);
+            var orderedListWhite = moveList.Moves.Select(move => move.Rating).ToList();
+
+            moveList.Sort(Color.Black);
+            var orderedListBlack = moveList.Moves.Select(move => move.Rating).ToList();
         }
     }
 }
