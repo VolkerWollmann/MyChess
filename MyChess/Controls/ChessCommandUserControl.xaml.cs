@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Helper;
+using MyChess.Common;
 
 namespace MyChess.Controls
 {

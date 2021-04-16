@@ -10,13 +10,13 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Game">
-                <MenuItem Name="NewCommand" Header="_New" Click="MenuCommand_Click" Tag="NewCommand" />
-                <MenuItem Name="ClearCommand" Header="_Clear" Click="MenuCommand_Click" Tag="ClearCommand" />
+                <MenuItem Name="NewCommand" Header="_New" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.NewCommand}" />
+                <MenuItem Name="ClearCommand" Header="_Clear" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.ClearCommand}" />
                 <Separator />
-                <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" Tag="QuitCommand" />
+                <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.QuitCommand}" />
             </MenuItem>
             <MenuItem Header="_Test">
-                <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click" Tag="Test1Command" />
+                <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.Test1Command}" />
                 
             </MenuItem>
         </Menu>
