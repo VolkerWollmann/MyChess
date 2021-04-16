@@ -23,14 +23,12 @@ namespace MyChessEngine
         public void New()
         {
             // pawn
-            for (int column = 0; column < 8; column++)
+            string[] whitePawnPositions = new[] { "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"};
+            string[] blackPawnPositions = new[] { "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7" };
+            for (int i = 0; i < 8; i++)
             {
-                Position position = new Position(1, column);
-                Board[position] = new Pawn(ChessEngineConstants.Color.White);
-
-                position = new Position(6, column);
-                Board[position] = new Pawn(ChessEngineConstants.Color.Black);
-               
+                Board[whitePawnPositions[i]] = new Pawn(ChessEngineConstants.Color.White);
+                Board[blackPawnPositions[i]] = new Pawn(ChessEngineConstants.Color.Black);
             }
 
             // rook
