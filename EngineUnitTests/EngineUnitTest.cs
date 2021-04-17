@@ -101,17 +101,21 @@ namespace EngineUnitTests
 
             var orderedListWhite = ratingList.Select(rating => rating).ToList();
             orderedListWhite.Sort(boardRatingWhiteComparer);
+
+            LinkedList<BoardRating> lw = new LinkedList<BoardRating>(orderedListWhite);
+            var pairsWhite = lw.Select(e => new Tuple<BoardRating, BoardRating>(e, lw.Find(e)?.Next?.Value)).ToList();
+            Assert.IsTrue(pairsWhite.All(t => (t.Item2 == null) || boardRatingWhiteComparer.Compare(t.Item1,t.Item2)<=0));
+
             
-            for (int i = 0; i < orderedListWhite.Count - 1; i++)
-                Assert.IsTrue(boardRatingWhiteComparer.Compare(orderedListWhite[i], orderedListWhite[i + 1]) <= 0);
 
             BoardRatingComparer boardRatingBlackComparer = new BoardRatingComparer(Color.Black);
 
             var orderedListBlack = ratingList.Select(rating => rating).ToList();
             orderedListBlack.Sort(boardRatingBlackComparer);
 
-            for (int i = 0; i < orderedListBlack.Count - 1; i++)
-                Assert.IsTrue(boardRatingBlackComparer.Compare(orderedListBlack[i], orderedListBlack[i + 1]) <= 0);
+            LinkedList<BoardRating> lb = new LinkedList<BoardRating>(orderedListWhite);
+            var pairsBlack = lb.Select(e => new Tuple<BoardRating, BoardRating>(e, lb.Find(e)?.Next?.Value)).ToList();
+            Assert.IsTrue(pairsBlack.All(t => (t.Item2 == null) || boardRatingWhiteComparer.Compare(t.Item1, t.Item2) <= 0));
         }
     }
 }
