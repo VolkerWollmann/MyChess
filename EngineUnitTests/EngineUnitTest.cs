@@ -47,7 +47,7 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
-        public void TestRating()
+        public void MoveListPreOrder()
         {
             MoveList moveList = CreateMoveList();
             
@@ -55,34 +55,65 @@ namespace EngineUnitTests
 
             Assert.IsNotNull(whiteBestMove.Rating.Evaluation == Evaluation.BlackCheckMate);
 
-            moveList.BubbleSort();
+            moveList.Sort(Color.White);
             var ratingList = moveList.Moves.Select(move => move.Rating).ToList();
 
+            BoardRatingComparer boardRatingComparer = new BoardRatingComparer(Color.White);
+            for(int i=0; i<ratingList.Count-1; i++)
+                Assert.IsTrue(boardRatingComparer.Compare(ratingList[i], ratingList[i+1])<=0);
+
+        }
+
+        private List<BoardRating> CreateBoardRatingList()
+        {
+            List<BoardRating> result = new List<BoardRating>();
+            Random random = new Random();
+
+            BoardRating boardRating;
+            for (int i = 0; i <= 40; i++)
+            {
+                int split = random.Next(0, 100);
+                if (split <= 5)
+                    boardRating = new BoardRating() { Evaluation = Evaluation.WhiteCheckMate };
+                else if (split <= 10)
+                    boardRating = new BoardRating() { Evaluation = Evaluation.BlackCheckMate };
+                else if (split <= 15)
+                    boardRating = new BoardRating() { Evaluation = Evaluation.WhiteStaleMate };
+                else if (split <= 20)
+                    boardRating = new BoardRating() { Evaluation = Evaluation.BlackStaleMate };
+                else if (split <= 25)
+                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Value = 0 };
+                else
+                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Value = random.Next(-50, 50) };
+
+                result.Add(boardRating);
+            }
+
+            return result;
         }
 
         [TestMethod]
-        public void TestBubbleSort()
+        public void RatingPreOrder()
         {
-            MoveList moveList = CreateMoveList();
+            List<BoardRating> ratingList = CreateBoardRatingList();
 
-            var initialList = moveList.Moves.Select(move => move.Rating).ToList();
+            var initialList = ratingList.Select(rating => rating).ToList();
 
-            moveList.BubbleSort();
-            var orderedList = moveList.Moves.Select(move => move.Rating).ToList();
-        }
+            BoardRatingComparer boardRatingWhiteComparer = new BoardRatingComparer(Color.White);
 
-        [TestMethod]
-        public void TestSort()
-        {
-            MoveList moveList = CreateMoveList();
+            var orderedListWhite = ratingList.Select(rating => rating).ToList();
+            orderedListWhite.Sort(boardRatingWhiteComparer);
+            
+            for (int i = 0; i < ratingList.Count - 1; i++)
+                Assert.IsTrue(boardRatingWhiteComparer.Compare(orderedListWhite[i], orderedListWhite[i + 1]) <= 0);
 
-            var initialList = moveList.Moves.Select(move => move.Rating).ToList();
+            BoardRatingComparer boardRatingBlackComparer = new BoardRatingComparer(Color.White);
 
-            moveList.Sort(Color.White);
-            var orderedListWhite = moveList.Moves.Select(move => move.Rating).ToList();
+            var orderedListBlack = ratingList.Select(rating => rating).ToList();
+            orderedListBlack.Sort(boardRatingBlackComparer);
 
-            moveList.Sort(Color.Black);
-            var orderedListBlack = moveList.Moves.Select(move => move.Rating).ToList();
+            for (int i = 0; i < ratingList.Count - 1; i++)
+                Assert.IsTrue(boardRatingBlackComparer.Compare(orderedListBlack[i], orderedListBlack[i + 1]) <= 0);
         }
     }
 }

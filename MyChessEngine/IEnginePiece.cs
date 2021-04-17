@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MyChessEngine.Pieces;
+﻿using MyChessEngine.Pieces;
 
 namespace MyChessEngine
 {

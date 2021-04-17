@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 
 namespace MyChessEngine
 {
     public class MoveList
     {
-        private List<Move> _Moves = new List<Move>();
+        private readonly List<Move> _Moves = new List<Move>();
 
-        public List<Move> Moves
-        {
-            get
-            {
-                return _Moves;
-            }
-        }
+        public List<Move> Moves => _Moves;
 
         public void Add(Move move)
         {
@@ -42,12 +32,7 @@ namespace MyChessEngine
             return bestMove;
         }
 
-        public void BubbleSort()
-        {
-            ;
-        }
-
-
+        
         public void Sort(Color color)
         {
             _Moves.Sort(new MoveSorter(color));
