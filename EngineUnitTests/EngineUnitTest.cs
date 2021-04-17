@@ -70,7 +70,7 @@ namespace EngineUnitTests
             Random random = new Random();
 
             BoardRating boardRating;
-            for (int i = 0; i <= 40; i++)
+            for (int i = 0; i < 40; i++)
             {
                 int split = random.Next(0, 100);
                 if (split <= 5)
@@ -97,22 +97,20 @@ namespace EngineUnitTests
         {
             List<BoardRating> ratingList = CreateBoardRatingList();
 
-            var initialList = ratingList.Select(rating => rating).ToList();
-
             BoardRatingComparer boardRatingWhiteComparer = new BoardRatingComparer(Color.White);
 
             var orderedListWhite = ratingList.Select(rating => rating).ToList();
             orderedListWhite.Sort(boardRatingWhiteComparer);
             
-            for (int i = 0; i < ratingList.Count - 1; i++)
+            for (int i = 0; i < orderedListWhite.Count - 1; i++)
                 Assert.IsTrue(boardRatingWhiteComparer.Compare(orderedListWhite[i], orderedListWhite[i + 1]) <= 0);
 
-            BoardRatingComparer boardRatingBlackComparer = new BoardRatingComparer(Color.White);
+            BoardRatingComparer boardRatingBlackComparer = new BoardRatingComparer(Color.Black);
 
             var orderedListBlack = ratingList.Select(rating => rating).ToList();
             orderedListBlack.Sort(boardRatingBlackComparer);
 
-            for (int i = 0; i < ratingList.Count - 1; i++)
+            for (int i = 0; i < orderedListBlack.Count - 1; i++)
                 Assert.IsTrue(boardRatingBlackComparer.Compare(orderedListBlack[i], orderedListBlack[i + 1]) <= 0);
         }
     }
