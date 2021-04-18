@@ -32,7 +32,8 @@ namespace MyChessEngine
         StaleMate,
         WhiteChecked,
         BlackChecked,
-        Victory
+        WhiteVictory,
+        BlackVictory
     }
 
     public enum Evaluation

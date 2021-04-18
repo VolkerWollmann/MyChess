@@ -146,7 +146,7 @@ namespace MyChessEngine
 
             if (king == null)
             {
-                rating.Situation = Situation.Victory;
+                rating.Situation = color == Color.White ? Situation.BlackVictory  : Situation.WhiteVictory;
                 rating.Evaluation = color== Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
                 return rating;
             }
@@ -156,7 +156,7 @@ namespace MyChessEngine
                 rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
                 if (!GetMoveList(color).Moves.Any())
                 {
-                    rating.Situation = Situation.Victory;
+                    rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
                     rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
                     return rating;
                 }
