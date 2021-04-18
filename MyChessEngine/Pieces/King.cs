@@ -16,11 +16,11 @@ namespace MyChessEngine.Pieces
             MoveList moveList = new MoveList();
 
             for (int row = -1; row <= 1; row++)
-            for (int column = -1; column <= 1; column++)
-            {
-                Position newPosition = this.Position.GetDeltaPosition(row, column);
-                AddPosition(moveList, newPosition);
-            }
+                for (int column = -1; column <= 1; column++)
+                {
+                    Position newPosition = this.Position.GetDeltaPosition(row, column);
+                    AddPosition(moveList, newPosition);
+                }
 
             // Castle
 
@@ -28,45 +28,60 @@ namespace MyChessEngine.Pieces
             {
                 if (Color == Color.White)
                 {
+
                     Position kingBishopField = new Position("F1");
                     Position kingKnightField = new Position("G1");
                     Position queenField = new Position("D1");
                     Position queenBishopField = new Position("C1");
                     Position queenKnightField = new Position("B1");
 
-                    var threatenedFields = this.Board.GetAllPieces(Color.Black)
-                        .Where( piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
-                        .Select((piece => piece.GetMoveList().Moves))
-                        .SelectMany(move => move).Select(move => move.End).ToList();
 
-                    if (Rochades.Contains(MoveType.WhiteCastle))
+                    if ((Board[kingBishopField] == null) && (Board[kingKnightField] == null))
                     {
-                        bool thread=false;
-                        for (int i = 4; i < 7; i++)
-                        {
-                            Position field = new Position(0, i);
-                            thread = threatenedFields.Contains(field);
-                            if (thread)
-                                break;
-                        }
 
-                        if ((!thread) && ((Board[kingBishopField] == null) && (Board[kingKnightField] == null)))
-                            moveList.Add(new Move(this.Position, new Position("G1"), this, MoveType.WhiteCastle));
+                        var threatenedFields = this.Board.GetAllPieces(Color.Black)
+                            .Where(piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
+                            .Select((piece => piece.GetMoveList().Moves))
+                            .SelectMany(move => move).Select(move => move.End).ToList();
+
+                        if (Rochades.Contains(MoveType.WhiteCastle))
+                        {
+                            bool thread = false;
+                            for (int i = 4; i < 7; i++)
+                            {
+                                Position field = new Position(0, i);
+                                thread = threatenedFields.Contains(field);
+                                if (thread)
+                                    break;
+                            }
+
+                            if (!thread)
+                                moveList.Add(new Move(this.Position, new Position("G1"), this, MoveType.WhiteCastle));
+                        }
                     }
 
                     if (Rochades.Contains(MoveType.WhiteCastleLong))
                     {
-                        bool thread = false;
-                        for (int i = 1; i <=5; i++)
+                        if ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null))
                         {
-                            Position field = new Position(0, i);
-                            thread = threatenedFields.Contains(field);
-                            if (thread)
-                                break;
-                        }
+                            var threatenedFields = this.Board.GetAllPieces(Color.Black)
+                                .Where(piece =>
+                                    (piece.Type != PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                .Select((piece => piece.GetMoveList().Moves))
+                                .SelectMany(move => move).Select(move => move.End).ToList();
 
-                        if ((!thread) && ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null)))
-                            moveList.Add(new Move(this.Position, new Position("C1"), this, MoveType.WhiteCastleLong));
+                            bool thread = false;
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                Position field = new Position(0, i);
+                                thread = threatenedFields.Contains(field);
+                                if (thread)
+                                    break;
+                            }
+
+                            if ((!thread) )
+                                moveList.Add(new Move(this.Position, new Position("C1"), this, MoveType.WhiteCastleLong));
+                        }
                     }
                 }
                 else
@@ -77,39 +92,52 @@ namespace MyChessEngine.Pieces
                     Position queenBishopField = new Position("C8");
                     Position queenKnightField = new Position("B8");
 
-                    var threatenedFields = this.Board.GetAllPieces(Color.White)
+                    if ((Board[kingBishopField] == null) && (Board[kingKnightField] == null))
+                    {
+                        var threatenedFields = this.Board.GetAllPieces(Color.White)
                         .Where(piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
                         .Select((piece => piece.GetMoveList().Moves))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
-                    if (Rochades.Contains(MoveType.BlackCastle))
-                    {
-                        bool thread = false;
-                        for (int i = 4; i < 7; i++)
+                        if (Rochades.Contains(MoveType.BlackCastle))
                         {
-                            Position field = new Position(7, i);
-                            thread = threatenedFields.Contains(field);
-                            if (thread)
-                                break;
-                        }
+                            bool thread = false;
+                            for (int i = 4; i < 7; i++)
+                            {
+                                Position field = new Position(7, i);
+                                thread = threatenedFields.Contains(field);
+                                if (thread)
+                                    break;
+                            }
 
-                        if ((!thread) && ((Board[kingBishopField] == null) && (Board[kingKnightField] == null)))
-                            moveList.Add(new Move(this.Position, new Position("G8"), this, MoveType.BlackCastle));
+                            if ((!thread))
+                                moveList.Add(new Move(this.Position, new Position("G8"), this, MoveType.BlackCastle));
+                        }
                     }
 
                     if (Rochades.Contains(MoveType.BlackCastleLong))
                     {
-                        bool thread = false;
-                        for (int i = 1; i <= 5; i++)
+                        if ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null))
                         {
-                            Position field = new Position(7, i);
-                            thread = threatenedFields.Contains(field);
-                            if (thread)
-                                break;
-                        }
+                            bool thread = false;
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                var threatenedFields = this.Board.GetAllPieces(Color.White)
+                                    .Where(piece =>
+                                        (piece.Type !=
+                                         PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                    .Select((piece => piece.GetMoveList().Moves))
+                                    .SelectMany(move => move).Select(move => move.End).ToList();
 
-                        if ((!thread) && ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null)))
-                            moveList.Add(new Move(this.Position, new Position("C8"), this, MoveType.BlackCastleLong));
+                                Position field = new Position(7, i);
+                                thread = threatenedFields.Contains(field);
+                                if (thread)
+                                    break;
+                            }
+
+                            if ((!thread))
+                                moveList.Add(new Move(this.Position, new Position("C8"), this, MoveType.BlackCastleLong));
+                        }
                     }
                 }
 
@@ -160,7 +188,7 @@ namespace MyChessEngine.Pieces
                     Board[move.Start] = null;
                     break;
             }
-            
+
             Rochades = new List<MoveType>();
 
             return true;
@@ -195,7 +223,7 @@ namespace MyChessEngine.Pieces
 
             var threatenedFields = l.Select(move => move.End).ToList();
 
-            bool result =  threatenedFields.Any( position => position.AreEqual(Position));
+            bool result = threatenedFields.Any(position => position.AreEqual(Position));
 
             return result;
         }
