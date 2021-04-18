@@ -27,7 +27,7 @@
     {
         Normal,
         Remis,
-        Patt,
+        StaleMate,
         WhiteChecked,
         BlackChecked,
         Victory
@@ -57,10 +57,19 @@
         Promotion
     }
 
+   
+
+
     public class ChessEngineConstants
     {
         public const int Length = 8;
 
+        public const int King = 10000;
+        public const int Queen = 90;
+        public const int Rook = 50;
+        public const int Bishop = 35;
+        public const int Knight = 30;
+        public const int Pawn = 10;
         public static Color NextColorToMove(Color color)
         {
             return color == Color.White ? Color.Black : Color.White;

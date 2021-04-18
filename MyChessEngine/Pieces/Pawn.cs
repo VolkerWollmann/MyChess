@@ -181,6 +181,11 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
+        public override int GetWeight()
+        {
+            return (Color == Color.White) ? ChessEngineConstants.Pawn : -ChessEngineConstants.Pawn;
+        }
+
         public Pawn(Color color): base(color, PieceType.Pawn)
         {
 

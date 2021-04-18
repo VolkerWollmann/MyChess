@@ -43,6 +43,12 @@ namespace MyChessEngine.Pieces
 
             return moveList;
         }
+
+        public override int GetWeight()
+        {
+            return (Color == Color.White) ? ChessEngineConstants.Bishop : -ChessEngineConstants.Bishop;
+        }
+
         public Bishop(Color color) : base(color, PieceType.Bishop)
         {
 

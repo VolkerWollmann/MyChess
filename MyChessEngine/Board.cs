@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using MyChessEngine.Pieces;
 
 
@@ -109,24 +110,61 @@ namespace MyChessEngine
             return true;
         }
 
-        public BoardRating Rate()
+
+        private List<Position> GetThreatenedFields(Color color)
+        {
+            Color threatener = ChessEngineConstants.NextColorToMove(color);
+
+            List<Position> threatenedFields = new List<Position>();
+
+            return threatenedFields;
+        }
+
+        public MoveList GetMoveList(Color color)
+        {
+            // ToDo : Check for legal moves 
+            return GetBaseMoveList(color);
+        }
+
+        public MoveList GetBaseMoveList(Color color)
+        {
+            return new MoveList();
+        }
+
+        public BoardRating GetRating(Color color)
         {
             BoardRating rating = new BoardRating {Situation = Situation.Normal, Value = 0};
 
-            if (!Pieces.Cast<Piece>().ToList().Any( piece => (piece.Type == PieceType.King) && (piece.Color == Color.White)))
+            King king = (King)Pieces.Cast<Piece>().ToList()
+                .FirstOrDefault(piece => (piece.Type == PieceType.King) && (piece.Color == color));
+
+            if (king == null)
             {
                 rating.Situation = Situation.Victory;
-                rating.Evaluation = Evaluation.WhiteCheckMate;
+                rating.Evaluation = color== Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
                 return rating;
             }
 
-            if (!Pieces.Cast<Piece>().ToList().Any(piece => (piece.Type == PieceType.King) && (piece.Color == Color.Black)))
+            if (GetThreatenedFields(color).Contains(king.Position))
             {
-                rating.Situation = Situation.Victory;
-                rating.Evaluation = Evaluation.BlackCheckMate;
-                return rating;
+                rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
+                if (!GetMoveList(color).Moves.Any())
+                {
+                    rating.Situation = Situation.Victory;
+                    rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
+                    return rating;
+                }
             }
-
+            else
+            {
+                if (!GetMoveList(color).Moves.Any())
+                {
+                    rating.Situation = Situation.StaleMate;
+                    rating.Evaluation = color == Color.White ? Evaluation.WhiteStaleMate : Evaluation.BlackStaleMate;
+                    return rating;
+                }
+            }
+            
             return rating;
         }
     }

@@ -7,6 +7,35 @@ namespace MyChessEngine
     public class ChessEngine : IChessEngine
     {
         private readonly Board Board;
+       
+
+        private void CalculateMove()
+        {
+
+            DateTime time1 = DateTime.Now;
+            Board copy = Board.Copy();
+
+            var allMoves = copy.GetAllPieces(ColorToMove).Select((piece => piece.GetMoveList().Moves)).SelectMany(move2 => move2).ToList();
+
+            foreach (Move move in allMoves)
+            {
+                Board copy2 = copy.Copy();
+                copy2.ExecuteMove(move);
+            }
+
+            TimeSpan ts = DateTime.Now.Subtract(time1);
+
+
+            _Message = ts.ToString() + Environment.NewLine;
+
+            foreach (Move move3 in allMoves)
+            {
+                _Message = _Message + " " + move3 + Environment.NewLine;
+            }
+        }
+
+        #region IChessEngine
+
         public Color ColorToMove { get; set; }
 
         public IPiece  GetPiece(Position position)
@@ -69,29 +98,9 @@ namespace MyChessEngine
             Board.Clear();
         }
 
-        private void CalculateMove()
+        public BoardRating GetBoardRating()
         {
-
-            DateTime time1 = DateTime.Now;
-            Board copy = Board.Copy();
-
-            var allMoves = copy.GetAllPieces(ColorToMove).Select((piece => piece.GetMoveList().Moves)).SelectMany(move2 => move2).ToList();
-
-            foreach (Move move in allMoves)
-            {
-                Board copy2 = copy.Copy();
-                copy2.ExecuteMove(move);
-            }
-
-            TimeSpan ts = DateTime.Now.Subtract(time1);
-
-
-            _Message = ts.ToString() + Environment.NewLine;
-
-            foreach (Move move3 in allMoves)
-            {
-                _Message = _Message + " " + move3 + Environment.NewLine;
-            }
+            return Board.GetRating(ColorToMove);
         }
 
         public bool ExecuteMove(Move move)
@@ -99,8 +108,6 @@ namespace MyChessEngine
             Board.ExecuteMove(move);
 
             ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
-
-            CalculateMove();
 
             return true;
         }
@@ -116,9 +123,15 @@ namespace MyChessEngine
             
         }
 
+        public MoveList GetMoveList()
+        {
+            return Board.GetMoveList(ColorToMove);
+        }
+
         private string _Message;
 
         public string Message => _Message;
+        #endregion
 
         public ChessEngine()
         {

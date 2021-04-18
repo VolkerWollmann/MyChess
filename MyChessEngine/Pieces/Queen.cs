@@ -76,6 +76,10 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
+        public override int GetWeight()
+        {
+            return (Color == Color.White) ? ChessEngineConstants.Queen : -ChessEngineConstants.Queen;
+        }
         public Queen(Color color) : base(color, PieceType.Queen)
         {
 

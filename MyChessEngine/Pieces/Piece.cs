@@ -49,6 +49,11 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
+        public virtual int GetWeight()
+        {
+            return 0;
+        }
+
         #endregion
 
         /// <summary>

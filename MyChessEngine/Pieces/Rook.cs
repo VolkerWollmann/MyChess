@@ -74,6 +74,11 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
+        public override int GetWeight()
+        {
+            return (Color == Color.White) ? ChessEngineConstants.Rook : -ChessEngineConstants.Rook;
+        }
+
         public Rook(Color color) : base(color, PieceType.Rook)
         {
 

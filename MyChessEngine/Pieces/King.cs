@@ -181,6 +181,11 @@ namespace MyChessEngine.Pieces
             }
         }
 
+        public override int GetWeight()
+        {
+            return (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+        }
+
         public King(Color color, List<MoveType> rochades) : base(color,
             PieceType.King)
         {
