@@ -189,9 +189,9 @@ namespace MyChessEngine.Pieces
 
         public bool IsChecked()
         {
-            var l = this.Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
+            var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
                 .Select((piece => piece.GetMoveList().Moves))
-                .SelectMany(move => move).ToList();
+                .SelectMany(move => move);
 
             var threatenedFields = l.Select(move => move.End).ToList();
 

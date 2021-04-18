@@ -65,14 +65,21 @@ namespace MyChessEngine
             return true;
         }
 
+        private Dictionary<Color, List<Piece>> _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
+
         public List<Piece> GetAllPieces(Color color)
         {
+            if (_AllPiecesByColor.ContainsKey(color))
+                return _AllPiecesByColor[color];
+
             List<Piece> pieces = new List<Piece>();
             Position.AllPositions().ForEach(position =>
             {
                 if ((this[position] != null) && this[position].Color == color)
                     pieces.Add(this[position]);
             });
+
+            _AllPiecesByColor.Add(color, pieces);
 
             return pieces;
         }
