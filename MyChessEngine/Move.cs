@@ -11,6 +11,9 @@ namespace MyChessEngine
         public Position End;
         public IPiece Piece;
         public MoveType Type;
+
+        public bool IsAMove { get; private set; }
+        
         public BoardRating Rating { get; set; } = null;
 
         public Move(Position start, Position end, IPiece piece, MoveType type)
@@ -31,6 +34,17 @@ namespace MyChessEngine
             End = new Position(endString);
             Piece = piece;
             Type = type;
+            IsAMove = true;
+        }
+
+        private Move(BoardRating rating, bool isAMove)
+        {
+            Rating = rating;
+            IsAMove = isAMove;
+        }
+        public static Move CreateNoMove(BoardRating rating)
+        {
+            return new Move(rating, false);
         }
 
 
@@ -43,7 +57,7 @@ namespace MyChessEngine
         {
             if (Piece != null)
                 return
-                    $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type.ToString(),-10} {Start} -> {End} T:{Type}";
+                    $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End} T:{Type}";
             else
                 return $"-           {Start} -> {End} T:{Type}";
         }

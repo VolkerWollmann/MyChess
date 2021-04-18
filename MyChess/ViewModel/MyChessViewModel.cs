@@ -54,6 +54,12 @@ namespace MyChess.ViewModel
             {
                 ChessEngine.ExecuteMove(move);
                 UpdateBoard();
+                Move response = ChessEngine.CalculateMove();
+                ChessEngine.ExecuteMove(response);
+                UpdateBoard();
+
+                EngineOutput.Text = ChessEngine.Message;
+
             }
         }
 

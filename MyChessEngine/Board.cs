@@ -11,6 +11,8 @@ namespace MyChessEngine
     {
         private readonly Piece[,] Pieces;
 
+        public static int Counter;
+
         public Board()
         {
             Pieces = new Piece[8, 8];
@@ -140,6 +142,8 @@ namespace MyChessEngine
 
         public BoardRating GetRating(Color color)
         {
+            Counter++;
+
             BoardRating rating = new BoardRating ();
 
             King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
@@ -179,6 +183,26 @@ namespace MyChessEngine
             rating.Weight = boardWeight;
 
             return rating;
+        }
+
+        public Move CalculateMove(int depth, Color color)
+        {
+            if (depth <= 1)
+                return Move.CreateNoMove(GetRating(color));
+
+            var moveList = GetMoveList(color);
+            if (!moveList.Moves.Any())
+                return Move.CreateNoMove(GetRating(color));
+
+            foreach (Move move in moveList.Moves)
+            {
+                Board copy = this.Copy();
+                copy.ExecuteMove(move);
+                copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                move.Rating = copy.GetRating(color);
+            }
+
+            return moveList.GetBestMove(color);
         }
     }
 }

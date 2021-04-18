@@ -18,6 +18,8 @@
 
         public bool ExecuteMove(Move move);
 
+        Move CalculateMove(); 
+
         public string Message { get; }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -188,9 +189,11 @@ namespace MyChessEngine.Pieces
 
         public bool IsChecked()
         {
-            var threatenedFields = this.Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
+            var l = this.Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
                 .Select((piece => piece.GetMoveList().Moves))
-                .SelectMany(move => move).Select(move => move.End).ToList();
+                .SelectMany(move => move).ToList();
+
+            var threatenedFields = l.Select(move => move.End).ToList();
 
             bool result =  threatenedFields.Any( position => position.AreEqual(Position));
 

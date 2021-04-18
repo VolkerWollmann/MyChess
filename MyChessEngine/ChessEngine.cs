@@ -4,35 +4,11 @@ using MyChessEngine.Pieces;
 
 namespace MyChessEngine
 {
-    public class ChessEngine : IChessEngine
+    public partial class ChessEngine : IChessEngine
     {
         public readonly Board Board;
         
-        private void CalculateMove()
-        {
-
-            DateTime time1 = DateTime.Now;
-            Board copy = Board.Copy();
-
-            var allMoves = copy.GetAllPieces(ColorToMove).Select((piece => piece.GetMoveList().Moves)).SelectMany(move2 => move2).ToList();
-
-            foreach (Move move in allMoves)
-            {
-                Board copy2 = copy.Copy();
-                copy2.ExecuteMove(move);
-            }
-
-            TimeSpan ts = DateTime.Now.Subtract(time1);
-
-
-            _Message = ts.ToString() + Environment.NewLine;
-
-            foreach (Move move3 in allMoves)
-            {
-                _Message = _Message + " " + move3 + Environment.NewLine;
-            }
-        }
-
+        
         #region IChessEngine
 
         public Color ColorToMove { get; set; }
@@ -140,6 +116,21 @@ namespace MyChessEngine
         {
             Board = board;
             ColorToMove = colorToMove;
+        }
+
+        public Move CalculateMove()
+        {
+            DateTime s = DateTime.Now;
+
+            Board.Counter = 0;
+            Move move = Board.CalculateMove(4, ColorToMove);
+
+            TimeSpan ts = DateTime.Now.Subtract(s);
+
+            _Message = move + " " + ts + " " + move.Rating.Situation + " "
+                      + move.Rating.Evaluation + " " + move.Rating.Weight + " " + Board.Counter;
+
+            return move;
         }
     }
 }

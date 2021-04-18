@@ -97,7 +97,7 @@ namespace MyChessEngine.Pieces
                 if (PossibleMoveType == MoveType.EnpasantBlackRight)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, -1), this,
-                        MoveType.EnpasantWhiteRight));
+                        MoveType.EnpasantBlackRight));
                 }
             }
 
@@ -121,8 +121,8 @@ namespace MyChessEngine.Pieces
                     List<Tuple<int, MoveType>> mmx =
                         new List<Tuple<int, MoveType>>()
                         {
-                            new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackRight),
-                            new Tuple<int, MoveType>(1, MoveType.EnpasantBlackLeft),
+                            new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackLeft),
+                            new Tuple<int, MoveType>(1, MoveType.EnpasantBlackRight),
                         };
 
                     for (int i = 0; i < 2; i++)
@@ -143,8 +143,8 @@ namespace MyChessEngine.Pieces
                     List<Tuple<int, MoveType>> mmx =
                         new List<Tuple<int, MoveType>>()
                         {
-                            new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteLeft),
-                            new Tuple<int, MoveType>(1, MoveType.EnpasantWhiteRight),
+                            new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteRight),
+                            new Tuple<int, MoveType>(1, MoveType.EnpasantWhiteLeft),
                         };
 
                     for (int i = 0; i < 2; i++)
