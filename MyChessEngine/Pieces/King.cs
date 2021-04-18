@@ -188,7 +188,13 @@ namespace MyChessEngine.Pieces
 
         public bool IsChecked()
         {
-            return false;
+            var threatenedFields = this.Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
+                .Select((piece => piece.GetMoveList().Moves))
+                .SelectMany(move => move).Select(move => move.End).ToList();
+
+            bool result =  threatenedFields.Any( position => position.AreEqual(Position));
+
+            return result;
         }
 
         public King(Color color, List<MoveType> rochades) : base(color,

@@ -151,7 +151,7 @@ namespace MyChessEngine
                 return rating;
             }
 
-            if (king.IsChecked())
+            if (IsChecked(color))
             {
                 rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
                 if (!GetMoveList(color).Moves.Any())

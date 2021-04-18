@@ -123,7 +123,7 @@ namespace EngineUnitTests
         #region BoardRating
 
         [TestMethod]
-        public void TestStartBoard()
+        public void TestStartBoardRating()
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
@@ -141,7 +141,21 @@ namespace EngineUnitTests
 
         }
 
+        [TestMethod]
+        public void TestStartBoardRatingBlackMate()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            Board board = chessEngine.Board;
+
+            board["G6"] = new King(Color.White);
+            board["A8"] = new Rook(Color.White);
+            board["G8"] = new King(Color.Black);
+
+            BoardRating boardRating = board.GetRating(Color.Black);
+            Assert.AreEqual(boardRating.Situation,Situation.WhiteVictory);
+        }
+
         #endregion
 
-    }
+        }
 }
