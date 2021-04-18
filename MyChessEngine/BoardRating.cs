@@ -3,12 +3,19 @@ using System.Diagnostics;
 
 namespace MyChessEngine
 {
-    [DebuggerDisplay("Situation:{Situation} Evaluation:{Evaluation} Value:{Value}")]
+    [DebuggerDisplay("Situation:{Situation} Evaluation:{Evaluation} Weight:{Weight}")]
     public class BoardRating
     {
         public Situation Situation;
         public Evaluation Evaluation;
-        public int Value;
+        public int Weight;
+
+        public BoardRating()
+        {
+            Situation = Situation.Normal;
+            Evaluation = Evaluation.Normal;
+            Weight = 0;
+        }
 
     }
 
@@ -51,11 +58,11 @@ namespace MyChessEngine
 
             if ((xIndex == 4) && (yIndex == 4))
             {
-                if (x.Value > y.Value)
+                if (x.Weight > y.Weight)
                     return -1;
-                if (x.Value < y.Value)
+                if (x.Weight < y.Weight)
                     return 1;
-                if (x.Value == y.Value)
+                if (x.Weight == y.Weight)
                     return 0;
             }
 
@@ -92,11 +99,11 @@ namespace MyChessEngine
 
             if ((xIndex == 4) && (yIndex == 4))
             {
-                if (x.Value < y.Value)
+                if (x.Weight < y.Weight)
                     return -1;
-                if (x.Value > y.Value)
+                if (x.Weight > y.Weight)
                     return 1;
-                if (x.Value == y.Value)
+                if (x.Weight == y.Weight)
                     return 0;
             }
 

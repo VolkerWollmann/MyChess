@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color} Rochades={Rochades}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color} Postion={Position} Rochades={Rochades}")]
     public class King : Piece
     {
         public List<MoveType> Rochades;
@@ -184,6 +184,11 @@ namespace MyChessEngine.Pieces
         public override int GetWeight()
         {
             return (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+        }
+
+        public bool IsChecked()
+        {
+            return false;
         }
 
         public King(Color color, List<MoveType> rochades) : base(color,

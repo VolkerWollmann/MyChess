@@ -17,6 +17,7 @@ namespace EngineUnitTests
             Assert.IsNotNull(chessEngine);
         }
 
+        #region Move list order
         private MoveList CreateMoveList()
         {
             BoardRating whitMate1 = new BoardRating() { Evaluation = Evaluation.WhiteCheckMate };
@@ -24,10 +25,10 @@ namespace EngineUnitTests
             BoardRating blackMate1 = new BoardRating() { Evaluation = Evaluation.BlackCheckMate };
             BoardRating blackMate2 = new BoardRating() { Evaluation = Evaluation.BlackCheckMate };
 
-            BoardRating whiteFavor3 = new BoardRating() { Evaluation = Evaluation.Normal, Value = 3 };
-            BoardRating equal1 = new BoardRating() { Evaluation = Evaluation.Normal, Value = 0 };
-            BoardRating equal2 = new BoardRating() { Evaluation = Evaluation.Normal, Value = 0 };
-            BoardRating blackFavor3 = new BoardRating() { Evaluation = Evaluation.Normal, Value = -3 };
+            BoardRating whiteFavor3 = new BoardRating() { Evaluation = Evaluation.Normal, Weight = 3 };
+            BoardRating equal1 = new BoardRating() { Evaluation = Evaluation.Normal, Weight = 0 };
+            BoardRating equal2 = new BoardRating() { Evaluation = Evaluation.Normal, Weight = 0 };
+            BoardRating blackFavor3 = new BoardRating() { Evaluation = Evaluation.Normal, Weight = -3 };
 
             List<BoardRating> ratings = new List<BoardRating>()
                 {whitMate1, whitMate2, blackMate1, blackMate2, whiteFavor3, equal1, equal2, blackFavor3};
@@ -82,9 +83,9 @@ namespace EngineUnitTests
                 else if (split <= 20)
                     boardRating = new BoardRating() { Evaluation = Evaluation.BlackStaleMate };
                 else if (split <= 25)
-                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Value = 0 };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Weight = 0 };
                 else
-                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Value = random.Next(-50, 50) };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Weight = random.Next(-50, 50) };
 
                 result.Add(boardRating);
             }
@@ -117,5 +118,30 @@ namespace EngineUnitTests
             var pairsBlack = lb.Select(e => new Tuple<BoardRating, BoardRating>(e, lb.Find(e)?.Next?.Value)).ToList();
             Assert.IsTrue(pairsBlack.All(t => (t.Item2 == null) || boardRatingWhiteComparer.Compare(t.Item1, t.Item2) <= 0));
         }
+        #endregion
+
+        #region BoardRating
+
+        [TestMethod]
+        public void TestStartBoard()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.New();
+
+            Board board = chessEngine.Board;
+
+            foreach (Color color in ChessEngineConstants.BothColors)
+            {
+                BoardRating boardRating = board.GetRating(color);
+
+                Assert.IsTrue(boardRating.Situation == Situation.Normal);
+                Assert.IsTrue(boardRating.Evaluation == Evaluation.Normal);
+                Assert.AreEqual(boardRating.Weight, 0);
+            }
+
+        }
+
+        #endregion
+
     }
 }

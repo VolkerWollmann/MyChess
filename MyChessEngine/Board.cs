@@ -110,33 +110,39 @@ namespace MyChessEngine
             return true;
         }
 
-
-        private List<Position> GetThreatenedFields(Color color)
-        {
-            Color threatener = ChessEngineConstants.NextColorToMove(color);
-
-            List<Position> threatenedFields = new List<Position>();
-
-            return threatenedFields;
-        }
-
         public MoveList GetMoveList(Color color)
         {
-            // ToDo : Check for legal moves 
-            return GetBaseMoveList(color);
+            List<Move> baseMoveList = GetBaseMoveList(color);
+
+            MoveList moveList = new MoveList();
+
+            foreach (Move move in baseMoveList)
+            {
+                Board testBoard = this.Copy();
+                testBoard.ExecuteMove(move);
+                if (!testBoard.IsChecked(color))
+                    moveList.Add(move);
+            }
+
+            return moveList;
         }
 
-        public MoveList GetBaseMoveList(Color color)
+        private List<Move> GetBaseMoveList(Color color)
         {
-            return new MoveList();
+            return GetAllPieces(color).Select((piece => piece.GetMoveList().Moves)).SelectMany(move => move).ToList();
+        }
+
+        private bool IsChecked(Color color)
+        {
+            King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
+            return king?.IsChecked() ?? true ;
         }
 
         public BoardRating GetRating(Color color)
         {
-            BoardRating rating = new BoardRating {Situation = Situation.Normal, Value = 0};
+            BoardRating rating = new BoardRating ();
 
-            King king = (King)Pieces.Cast<Piece>().ToList()
-                .FirstOrDefault(piece => (piece.Type == PieceType.King) && (piece.Color == color));
+            King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
 
             if (king == null)
             {
@@ -145,7 +151,7 @@ namespace MyChessEngine
                 return rating;
             }
 
-            if (GetThreatenedFields(color).Contains(king.Position))
+            if (king.IsChecked())
             {
                 rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
                 if (!GetMoveList(color).Moves.Any())
@@ -164,7 +170,14 @@ namespace MyChessEngine
                     return rating;
                 }
             }
-            
+
+            int boardWeight = 0;
+
+            GetAllPieces(Color.White).ForEach(piece => { boardWeight += piece.GetWeight();});
+            GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.GetWeight();});
+
+            rating.Weight = boardWeight;
+
             return rating;
         }
     }

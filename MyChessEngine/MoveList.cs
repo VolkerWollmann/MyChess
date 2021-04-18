@@ -20,23 +20,22 @@ namespace MyChessEngine
 
             IComparer<Move> comparer = new MoveSorter(color);
 
-            if ((bestMove == null ) || (_Moves.Count <= 1))
+            if ((bestMove == null) || (_Moves.Count <= 1))
                 return bestMove;
 
             for (int i = 1; i < _Moves.Count; i++)
             {
-                if (comparer.Compare(bestMove,_Moves[i]) < 0)
+                if (comparer.Compare(bestMove, _Moves[i]) < 0)
                     bestMove = _Moves[i];
             }
 
             return bestMove;
         }
 
-        
+
         public void Sort(Color color)
         {
             _Moves.Sort(new MoveSorter(color));
         }
     }
-
 }

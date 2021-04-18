@@ -1,4 +1,6 @@
-﻿namespace MyChessEngine
+﻿using System.Collections.Generic;
+
+namespace MyChessEngine
 {
     public enum PieceType
     {
@@ -70,6 +72,9 @@
         public const int Bishop = 35;
         public const int Knight = 30;
         public const int Pawn = 10;
+
+        public static List<Color> BothColors = new List<Color> { Color.White, Color.Black };
+
         public static Color NextColorToMove(Color color)
         {
             return color == Color.White ? Color.Black : Color.White;

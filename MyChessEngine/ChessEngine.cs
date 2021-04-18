@@ -6,9 +6,8 @@ namespace MyChessEngine
 {
     public class ChessEngine : IChessEngine
     {
-        private readonly Board Board;
-       
-
+        public readonly Board Board;
+        
         private void CalculateMove()
         {
 
