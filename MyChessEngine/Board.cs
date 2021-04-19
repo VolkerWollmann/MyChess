@@ -66,13 +66,6 @@ namespace MyChessEngine
 
         public IsValidPositionReturns IsValidPosition(Position position, Color color)
         {
-            // does not work for pawn
-            if (position == null)
-                return IsValidPositionReturns.NoPosition;
-
-            if (!position.IsValidPosition())
-                return IsValidPositionReturns.NoPosition;
-
             Piece piece = this[position];
             if (piece == null)
                 return IsValidPositionReturns.EmptyField;

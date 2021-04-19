@@ -33,7 +33,8 @@ namespace MyChessEngine.Pieces
                 for (int column = -1; column <= 1; column++)
                 {
                     Position newPosition = this.Position.GetDeltaPosition(row, column);
-                    AddPosition(moveList, newPosition);
+                    if (newPosition != null)
+                        AddPosition(moveList, newPosition);
                 }
 
             // Castle
