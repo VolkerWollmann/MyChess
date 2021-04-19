@@ -134,19 +134,19 @@ namespace MyChessEngine.Pieces
                     {
                         if ((Board[_blackQueenField] == null) && (Board[_blackQueenBishopField] == null) && (Board[_blackQueenKnightField] == null))
                         {
+                            if (threatenedFields == null)
+                            {
+                                threatenedFields = this.Board.GetAllPieces(Color.White)
+                                    .Where(piece =>
+                                        (piece.Type !=
+                                         PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                    .Select((piece => piece.GetMoveList().Moves))
+                                    .SelectMany(move => move).Select(move => move.End).ToList();
+                            }
+
                             bool thread = false;
                             for (int i = 1; i <= 5; i++)
                             {
-                                if(threatenedFields == null)
-                                {
-                                    threatenedFields = this.Board.GetAllPieces(Color.White)
-                                        .Where(piece =>
-                                            (piece.Type !=
-                                             PieceType.King)) // King cannot threaten castle, avoid for recursion
-                                        .Select((piece => piece.GetMoveList().Moves))
-                                        .SelectMany(move => move).Select(move => move.End).ToList();
-                                }
-
                                 Position field = new Position(7, i);
                                 thread = threatenedFields.Contains(field);
                                 if (thread)
