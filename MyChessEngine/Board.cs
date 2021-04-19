@@ -18,6 +18,21 @@ namespace MyChessEngine
             Pieces = new Piece[8, 8];
         }
 
+        public Piece this[int row, int column]
+        {
+            get => Pieces[row, column];
+            set
+            {
+                Pieces[row, column] = value;
+                if (value != null)
+                {
+                    Pieces[row,column].Board = this;
+                    Pieces[row,column].Position = new Position(row,column);
+                }
+            }
+        }
+    
+
         public Piece this[Position position]
         {
             get => Pieces[position.Row, position.Column];
@@ -99,11 +114,12 @@ namespace MyChessEngine
         {
             Board copy = new Board();
 
-            Position.AllPositions().ForEach(position =>
+            for(int i=0; i< ChessEngineConstants.Length; i++)
+            for (int j = 0; j < ChessEngineConstants.Length; j++)
             {
-                if (this[position] != null)
-                    copy[position] = this[position].Copy();
-            });
+                Piece piece = this[i,j];
+                copy[i,j] = piece?.Copy();
+            }
 
             return copy;
         }
