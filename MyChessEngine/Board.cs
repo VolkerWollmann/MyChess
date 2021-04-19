@@ -79,8 +79,9 @@ namespace MyChessEngine
             List<Piece> pieces = new List<Piece>();
             Position.AllPositions().ForEach(position =>
             {
-                if ((this[position] != null) && this[position].Color == color)
-                    pieces.Add(this[position]);
+                Piece piece = this[position];
+                if ((piece != null) && piece.Color == color)
+                    pieces.Add(piece);
             });
 
             _AllPiecesByColor.Add(color, pieces);
