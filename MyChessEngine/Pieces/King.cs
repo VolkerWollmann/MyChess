@@ -10,17 +10,17 @@ namespace MyChessEngine.Pieces
     {
         public MoveType Rochades;
 
-        static readonly Position _whiteKingBishopField = new Position("F1");
-        static readonly Position _whiteKingKnightField = new Position("G1");
-        static readonly Position _whiteQueenField = new Position("D1");
-        static readonly Position _whiteQueenBishopField = new Position("C1");
-        static readonly Position _whiteQueenKnightField = new Position("B1");
+        static readonly Position WhiteKingBishopField = new Position("F1");
+        static readonly Position WhiteKingKnightField = new Position("G1");
+        static readonly Position WhiteQueenField = new Position("D1");
+        static readonly Position WhiteQueenBishopField = new Position("C1");
+        static readonly Position WhiteQueenKnightField = new Position("B1");
 
-        static readonly Position _blackKingBishopField = new Position("F8");
-        static readonly Position _blackKingKnightField = new Position("G8");
-        static readonly Position _blackQueenField = new Position("D8");
-        static readonly Position _blackQueenBishopField = new Position("C8");
-        static readonly Position _blackQueenKnightField = new Position("B8");
+        static readonly Position BlackKingBishopField = new Position("F8");
+        static readonly Position BlackKingKnightField = new Position("G8");
+        static readonly Position BlackQueenField = new Position("D8");
+        static readonly Position BlackQueenBishopField = new Position("C8");
+        static readonly Position BlackQueenKnightField = new Position("B8");
 
         #region IEnginePiece
         public override MoveList GetMoveList()
@@ -45,7 +45,7 @@ namespace MyChessEngine.Pieces
                 {
                     if ((Rochades & MoveType.WhiteCastle) > 0)
                     {
-                        if ((Board[_whiteKingBishopField] == null) && (Board[_whiteKingKnightField] == null))
+                        if ((Board[WhiteKingBishopField] == null) && (Board[WhiteKingKnightField] == null))
                         {
 
                             if (threatenedFields == null)
@@ -74,7 +74,7 @@ namespace MyChessEngine.Pieces
 
                     if ((Rochades & MoveType.WhiteCastleLong) != 0)
                     {
-                        if ((Board[_whiteQueenField] == null) && (Board[_whiteQueenBishopField] == null) && (Board[_whiteQueenKnightField] == null))
+                        if ((Board[WhiteQueenField] == null) && (Board[WhiteQueenBishopField] == null) && (Board[WhiteQueenKnightField] == null))
                         {
                             if (threatenedFields == null)
                             {
@@ -104,7 +104,7 @@ namespace MyChessEngine.Pieces
                 {
                     if ((Rochades & MoveType.BlackCastle) != 0)
                     {
-                        if ((Board[_blackKingBishopField] == null) && (Board[_blackKingKnightField] == null))
+                        if ((Board[BlackKingBishopField] == null) && (Board[BlackKingKnightField] == null))
                         {
                             if (threatenedFields == null)
                             {
@@ -132,7 +132,7 @@ namespace MyChessEngine.Pieces
 
                     if ((Rochades & MoveType.BlackCastleLong) != 0)
                     {
-                        if ((Board[_blackQueenField] == null) && (Board[_blackQueenBishopField] == null) && (Board[_blackQueenKnightField] == null))
+                        if ((Board[BlackQueenField] == null) && (Board[BlackQueenBishopField] == null) && (Board[BlackQueenKnightField] == null))
                         {
                             if (threatenedFields == null)
                             {
