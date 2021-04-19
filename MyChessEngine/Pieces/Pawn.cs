@@ -22,25 +22,27 @@ namespace MyChessEngine.Pieces
 
                 // up
                 newPosition = this.Position.GetDeltaPosition(1, 0);
-                if ((newPosition != null) && Board[newPosition] == null )
+                if ((newPosition != null) && Board[newPosition] == null)
+                {
                     moveList.Add(new Move(this.Position, newPosition, this));
+                    if (this.Position.Row == 1)
+                    {
+                        // pwn double step
+                        if (this.Position.Row == 1)
+                        {
+                            Position newPosition2 = this.Position.GetDeltaPosition(2, 0);
+                            if ((newPosition2 != null) && Board[newPosition2] == null)
+                            {
+                                moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
+                            }
+                        }
+                    }
+                }
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(1, 1);
                 if ((newPosition != null) && Board[newPosition] != null && Board[newPosition].Color != Color)
                     moveList.Add(new Move(this.Position, newPosition, this));
-
-                // pwn double step
-                if (this.Position.Row == 1)
-                {
-                    newPosition = this.Position.GetDeltaPosition(1, 0);
-                    Position newPosition2 = this.Position.GetDeltaPosition(2, 0);
-                    if ((newPosition != null) && Board[newPosition] == null &&  
-                        (newPosition2 != null) && Board[newPosition2] == null )
-                    {
-                        moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
-                    }
-                }
 
                 // enpasant 
 
@@ -67,24 +69,21 @@ namespace MyChessEngine.Pieces
                 // down
                 newPosition = this.Position.GetDeltaPosition(-1, 0);
                 if ((newPosition != null) && Board[newPosition] == null)
+                {
                     moveList.Add(new Move(this.Position, newPosition, this));
+                    // start with two
+                    if (this.Position.Row == 6)
+                    {
+                        Position newPosition2 = this.Position.GetDeltaPosition(-2, 0);
+                        if ((newPosition2 != null) && (Board[newPosition2] == null))
+                            moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
+                    }
+                }
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(-1, 1);
                 if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
                     moveList.Add(new Move(this.Position, newPosition, this));
-
-                // start with two
-                if (this.Position.Row == 6)
-                {
-                    newPosition = this.Position.GetDeltaPosition(-1, 0);
-                    Position newPosition2 = this.Position.GetDeltaPosition(-2, 0);
-                    if ((newPosition != null) && Board[newPosition] == null &&
-                        (newPosition2 != null) && Board[newPosition2] == null)
-                    {
-                        moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
-                    }
-                }
 
                 // enpasant 
 
