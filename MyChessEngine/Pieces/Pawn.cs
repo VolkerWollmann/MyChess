@@ -104,6 +104,21 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
+        static List<Tuple<int, MoveType>> possibleBlackEnpasants =
+            new List<Tuple<int, MoveType>>()
+            {
+                new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackLeft),
+                new Tuple<int, MoveType>(1, MoveType.EnpasantBlackRight),
+            };
+
+        static List<Tuple<int, MoveType>> possibleWhiteEnpasants =
+            new List<Tuple<int, MoveType>>()
+            {
+                new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteRight),
+                new Tuple<int, MoveType>(1, MoveType.EnpasantWhiteLeft),
+            };
+
+
         public override bool ExecuteMove(Move move)
         {
             Board[move.End] = Board[move.Start];
@@ -118,44 +133,31 @@ namespace MyChessEngine.Pieces
             {
                 if (Color == Color.White)
                 {
-                    List<Tuple<int, MoveType>> mmx =
-                        new List<Tuple<int, MoveType>>()
-                        {
-                            new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackLeft),
-                            new Tuple<int, MoveType>(1, MoveType.EnpasantBlackRight),
-                        };
-
                     for (int i = 0; i < 2; i++)
                     {
-                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + mmx[i].Item1);
+                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + possibleBlackEnpasants[i].Item1);
                         if (adjacentPawnPosition.IsValidPosition())
                         {
                             if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
                             {
                                 if (adjacentPawn.Color == Color.Black)
-                                    adjacentPawn.PossibleMoveType = mmx[i].Item2;
+                                    adjacentPawn.PossibleMoveType = possibleBlackEnpasants[i].Item2;
                             }
                         }
                     }
                 }
                 else
                 {
-                    List<Tuple<int, MoveType>> mmx =
-                        new List<Tuple<int, MoveType>>()
-                        {
-                            new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteRight),
-                            new Tuple<int, MoveType>(1, MoveType.EnpasantWhiteLeft),
-                        };
 
                     for (int i = 0; i < 2; i++)
                     {
-                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + mmx[i].Item1);
+                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + possibleWhiteEnpasants[i].Item1);
                         if (adjacentPawnPosition.IsValidPosition())
                         {
                             if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
                             {
                                 if (adjacentPawn.Color == Color.White)
-                                    adjacentPawn.PossibleMoveType = mmx[i].Item2;
+                                    adjacentPawn.PossibleMoveType = possibleWhiteEnpasants[i].Item2;
                             }
                         }
                     }

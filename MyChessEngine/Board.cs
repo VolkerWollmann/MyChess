@@ -56,10 +56,11 @@ namespace MyChessEngine
             if (!position.IsValidPosition())
                 return false;
 
-            if (this[position] == null)
+            Piece piece = this[position];
+            if (piece == null)
                 return true;
 
-            if (this[position].Color == color)
+            if (piece.Color == color)
                 return false;
 
             return true;

@@ -64,7 +64,7 @@ namespace MyChessEngine.Pieces
         /// <summary>
         /// Adds position to to moves.
         /// </summary>
-        /// <param name="moves">moves so far</param>
+        /// <param name="moveList">moves so far</param>
         /// <param name="position"></param>
         /// <returns>returns false, if this is last move in that direction</returns>
         public bool AddPosition(MoveList moveList, Position position)
