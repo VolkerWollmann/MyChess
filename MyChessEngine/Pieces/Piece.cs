@@ -30,13 +30,6 @@ namespace MyChessEngine.Pieces
 
         public virtual Piece Copy()
         {
-            if (this is Rook rook)
-                return new Rook(Color, rook.HasMoved);
-            if (this is Pawn pawn)
-                return new Pawn(Color, pawn.PossibleMoveType);
-            if (this is King king)
-                return new King(Color, king.Rochades);
-            
             return Type switch
             {
                 PieceType.Bishop => new Bishop(Color),
