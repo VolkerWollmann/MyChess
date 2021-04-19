@@ -17,8 +17,12 @@ namespace MyChessEngine.Pieces
             {
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(1, -1);
-                if ( (newPosition != null ) && Board[newPosition] != null && Board[newPosition].Color != Color )
-                    moveList.Add(new Move(this.Position, newPosition, this));
+                if (newPosition != null)
+                {
+                    Piece pieceToBeat = Board[newPosition];
+                    if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
+                        moveList.Add(new Move(this.Position, newPosition, this));
+                }
 
                 // up
                 newPosition = this.Position.GetDeltaPosition(1, 0);
@@ -41,8 +45,12 @@ namespace MyChessEngine.Pieces
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(1, 1);
-                if ((newPosition != null) && Board[newPosition] != null && Board[newPosition].Color != Color)
-                    moveList.Add(new Move(this.Position, newPosition, this));
+                if (newPosition != null)
+                {
+                    Piece pieceToBeat = Board[newPosition];
+                    if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
+                        moveList.Add(new Move(this.Position, newPosition, this));
+                }
 
                 // enpasant 
 
@@ -63,8 +71,12 @@ namespace MyChessEngine.Pieces
             {
                 // beat left
                 Position newPosition = this.Position.GetDeltaPosition(-1, -1);
-                if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
-                    moveList.Add(new Move(this.Position, newPosition, this));
+                if (newPosition != null)
+                {
+                    Piece pieceToBeat = Board[newPosition];
+                    if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
+                        moveList.Add(new Move(this.Position, newPosition, this));
+                }
 
                 // down
                 newPosition = this.Position.GetDeltaPosition(-1, 0);
@@ -82,9 +94,12 @@ namespace MyChessEngine.Pieces
 
                 // beat right
                 newPosition = this.Position.GetDeltaPosition(-1, 1);
-                if ((newPosition != null) && (Board[newPosition] != null) && Board[newPosition].Color != Color)
-                    moveList.Add(new Move(this.Position, newPosition, this));
-
+                if (newPosition != null)
+                {
+                    Piece pieceToBeat = Board[newPosition];
+                    if ((pieceToBeat != null) && (pieceToBeat.Color != Color) )
+                        moveList.Add(new Move(this.Position, newPosition, this));
+                }
                 // enpasant 
 
                 if (PossibleMoveType == MoveType.EnpasantBlackLeft)
