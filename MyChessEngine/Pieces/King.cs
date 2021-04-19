@@ -10,6 +10,18 @@ namespace MyChessEngine.Pieces
     {
         public List<MoveType> Rochades;
 
+        static Position _whiteKingBishopField = new Position("F1");
+        static Position _whiteKingKnightField = new Position("G1");
+        static Position _whiteQueenField = new Position("D1");
+        static Position _whiteQueenBishopField = new Position("C1");
+        static Position _whiteQueenKnightField = new Position("B1");
+
+        static Position _blackKingBishopField = new Position("F8");
+        static Position _blackKingKnightField = new Position("G8");
+        static Position _blackQueenField = new Position("D8");
+        static Position _blackQueenBishopField = new Position("C8");
+        static Position _blackQueenKnightField = new Position("B8");
+
         #region IEnginePiece
         public override MoveList GetMoveList()
         {
@@ -29,14 +41,10 @@ namespace MyChessEngine.Pieces
                 if (Color == Color.White)
                 {
 
-                    Position kingBishopField = new Position("F1");
-                    Position kingKnightField = new Position("G1");
-                    Position queenField = new Position("D1");
-                    Position queenBishopField = new Position("C1");
-                    Position queenKnightField = new Position("B1");
+                    
 
 
-                    if ((Board[kingBishopField] == null) && (Board[kingKnightField] == null))
+                    if ((Board[_whiteKingBishopField] == null) && (Board[_whiteKingKnightField] == null))
                     {
 
                         var threatenedFields = this.Board.GetAllPieces(Color.Black)
@@ -62,7 +70,7 @@ namespace MyChessEngine.Pieces
 
                     if (Rochades.Contains(MoveType.WhiteCastleLong))
                     {
-                        if ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null))
+                        if ((Board[_whiteQueenField] == null) && (Board[_whiteQueenBishopField] == null) && (Board[_whiteQueenKnightField] == null))
                         {
                             var threatenedFields = this.Board.GetAllPieces(Color.Black)
                                 .Where(piece =>
@@ -86,13 +94,7 @@ namespace MyChessEngine.Pieces
                 }
                 else
                 {
-                    Position kingBishopField = new Position("F8");
-                    Position kingKnightField = new Position("G8");
-                    Position queenField = new Position("D8");
-                    Position queenBishopField = new Position("C8");
-                    Position queenKnightField = new Position("B8");
-
-                    if ((Board[kingBishopField] == null) && (Board[kingKnightField] == null))
+                    if ((Board[_blackKingBishopField] == null) && (Board[_blackKingKnightField] == null))
                     {
                         var threatenedFields = this.Board.GetAllPieces(Color.White)
                         .Where(piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
@@ -117,7 +119,7 @@ namespace MyChessEngine.Pieces
 
                     if (Rochades.Contains(MoveType.BlackCastleLong))
                     {
-                        if ((Board[queenField] == null) && (Board[queenBishopField] == null) && (Board[queenKnightField] == null))
+                        if ((Board[_blackQueenField] == null) && (Board[_blackQueenBishopField] == null) && (Board[_blackQueenKnightField] == null))
                         {
                             bool thread = false;
                             for (int i = 1; i <= 5; i++)
@@ -215,6 +217,7 @@ namespace MyChessEngine.Pieces
             return (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
         }
 
+        
         public bool IsChecked()
         {
             var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
