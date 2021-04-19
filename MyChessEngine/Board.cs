@@ -130,8 +130,12 @@ namespace MyChessEngine
             return true;
         }
 
+        private readonly Dictionary<Color, MoveList> _AllMovesByColor = new Dictionary<Color, MoveList>();
         public MoveList GetMoveList(Color color)
         {
+            if (_AllMovesByColor.ContainsKey(color))
+                return _AllMovesByColor[color];
+
             List<Move> baseMoveList = GetBaseMoveList(color);
 
             MoveList moveList = new MoveList();
@@ -143,6 +147,8 @@ namespace MyChessEngine
                 if (!testBoard.IsChecked(color))
                     moveList.Add(move);
             }
+
+            _AllMovesByColor[color] = moveList;
 
             return moveList;
         }
@@ -158,7 +164,7 @@ namespace MyChessEngine
             return king?.IsChecked() ?? true ;
         }
 
-        public BoardRating GetRating(Color color)
+        public BoardRating GetRating(Color color, bool thereIsAMove)
         {
             Counter++;
 
@@ -176,7 +182,7 @@ namespace MyChessEngine
             if (IsChecked(color))
             {
                 rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
-                if (!GetMoveList(color).Moves.Any())
+                if ((!thereIsAMove) && (!GetMoveList(color).Moves.Any()))
                 {
                     rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
                     rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
@@ -185,7 +191,7 @@ namespace MyChessEngine
             }
             else
             {
-                if (!GetMoveList(color).Moves.Any())
+                if ((!thereIsAMove) && (!GetMoveList(color).Moves.Any()))
                 {
                     rating.Situation = Situation.StaleMate;
                     rating.Evaluation = color == Color.White ? Evaluation.WhiteStaleMate : Evaluation.BlackStaleMate;
@@ -203,21 +209,31 @@ namespace MyChessEngine
             return rating;
         }
 
+        public BoardRating GetRating(Color color)
+        {
+            return GetRating(color, false);
+        }
+
         public Move CalculateMove(int depth, Color color)
         {
             if (depth <= 1)
                 return Move.CreateNoMove(GetRating(color));
 
-            var moveList = GetMoveList(color);
-            if (!moveList.Moves.Any())
-                return Move.CreateNoMove(GetRating(color));
+            var moves = GetBaseMoveList(color);
+            MoveList moveList = new MoveList();
 
-            foreach (Move move in moveList.Moves)
+            bool thereIsAMove = false;
+            foreach (Move move in moves)
             {
                 Board copy = this.Copy();
                 copy.ExecuteMove(move);
-                copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
-                move.Rating = copy.GetRating(color);
+                if (!copy.IsChecked(color))
+                {
+                    moveList.Add(move);
+                    thereIsAMove = true;
+                    copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                    move.Rating = copy.GetRating(color, thereIsAMove);
+                }
             }
 
             return moveList.GetBestMove(color);

@@ -23,7 +23,18 @@ namespace MyChess.Controls
             if (StartField == null || EndField==null)
                 return null;
 
-            return new Move(StartField.GetPosition(), EndField.GetPosition(), null);
+            if ((StartField.Row == 0) && (StartField.Column == 4) &&
+                (EndField.Row == 0) && (StartField.Column == 6))
+            {
+                return new Move(StartField.GetPosition(), EndField.GetPosition(), null, MoveType.WhiteCastle);
+            }
+            else if ((StartField.Row == 0) && (StartField.Column == 4) &&
+                         (EndField.Row == 0) && (StartField.Column == 3))
+            {
+                return new Move(StartField.GetPosition(), EndField.GetPosition(), null, MoveType.WhiteCastleLong);
+            }
+            else
+                return new Move(StartField.GetPosition(), EndField.GetPosition(), null);
         }
 
         public void SetField(ChessFieldUserControl field)

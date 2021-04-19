@@ -59,9 +59,9 @@ namespace MyChessEngine
             if ((xIndex == 4) && (yIndex == 4))
             {
                 if (x.Weight > y.Weight)
-                    return -1;
-                if (x.Weight < y.Weight)
                     return 1;
+                if (x.Weight < y.Weight)
+                    return -1;
                 if (x.Weight == y.Weight)
                     return 0;
             }

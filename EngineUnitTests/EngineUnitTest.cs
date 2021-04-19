@@ -173,6 +173,21 @@ namespace EngineUnitTests
             Assert.IsNotNull(move);
         }
 
+        [TestMethod]
+        public void CalculatePawnBeat()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            Board board = chessEngine.Board;
+
+            board["E1"] = new King(Color.White);
+            board["E4"] = new Pawn(Color.White);
+            board["G8"] = new King(Color.Black);
+            board["D5"] = new Pawn(Color.Black);
+
+            Move move = chessEngine.CalculateMove();
+            Assert.IsTrue(move.End.AreEqual(new Position("D5")));
+        }
+
         #endregion
     }
 }
