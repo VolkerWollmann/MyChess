@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MyChessEngine
 {
@@ -45,6 +46,7 @@ namespace MyChessEngine
         BlackCheckMate
     }
 
+    [Flags]
     public enum MoveType
     {
         Normal=1,

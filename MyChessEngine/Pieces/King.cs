@@ -8,7 +8,7 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Color = {Color} Postion={Position} Rochades={Rochades}")]
     public class King : Piece
     {
-        public List<MoveType> Rochades;
+        public MoveType Rochades;
 
         static readonly Position _whiteKingBishopField = new Position("F1");
         static readonly Position _whiteKingKnightField = new Position("G1");
@@ -36,7 +36,7 @@ namespace MyChessEngine.Pieces
 
             // Castle
 
-            if (Rochades.Any())
+            if (Rochades != MoveType.Normal )
             {
                 if (Color == Color.White)
                 {
@@ -48,7 +48,7 @@ namespace MyChessEngine.Pieces
                             .Select((piece => piece.GetMoveList().Moves))
                             .SelectMany(move => move).Select(move => move.End).ToList();
 
-                        if (Rochades.Contains(MoveType.WhiteCastle))
+                        if ((Rochades & MoveType.WhiteCastle) >0)
                         {
                             bool thread = false;
                             for (int i = 4; i < 7; i++)
@@ -64,7 +64,7 @@ namespace MyChessEngine.Pieces
                         }
                     }
 
-                    if (Rochades.Contains(MoveType.WhiteCastleLong))
+                    if ((Rochades & MoveType.WhiteCastleLong) != 0)
                     {
                         if ((Board[_whiteQueenField] == null) && (Board[_whiteQueenBishopField] == null) && (Board[_whiteQueenKnightField] == null))
                         {
@@ -97,7 +97,7 @@ namespace MyChessEngine.Pieces
                         .Select((piece => piece.GetMoveList().Moves))
                         .SelectMany(move => move).Select(move => move.End).ToList();
 
-                        if (Rochades.Contains(MoveType.BlackCastle))
+                        if ((Rochades & MoveType.BlackCastle ) != 0)
                         {
                             bool thread = false;
                             for (int i = 4; i < 7; i++)
@@ -113,7 +113,7 @@ namespace MyChessEngine.Pieces
                         }
                     }
 
-                    if (Rochades.Contains(MoveType.BlackCastleLong))
+                    if ((Rochades & MoveType.BlackCastleLong) != 0)
                     {
                         if ((Board[_blackQueenField] == null) && (Board[_blackQueenBishopField] == null) && (Board[_blackQueenKnightField] == null))
                         {
@@ -187,7 +187,7 @@ namespace MyChessEngine.Pieces
                     break;
             }
 
-            Rochades = new List<MoveType>();
+            Rochades = MoveType.Normal;
 
             return true;
         }
@@ -198,13 +198,11 @@ namespace MyChessEngine.Pieces
         {
             if (color == Color.White)
             {
-                Rochades = new List<MoveType>()
-                    {MoveType.WhiteCastle, MoveType.WhiteCastleLong};
+                Rochades = MoveType.Normal |MoveType.WhiteCastle | MoveType.WhiteCastleLong;
             }
             else
             {
-                Rochades = new List<MoveType>()
-                    {MoveType.BlackCastle, MoveType.BlackCastleLong};
+                Rochades = MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong;
             }
         }
 
@@ -221,7 +219,7 @@ namespace MyChessEngine.Pieces
             return result;
         }
 
-        public King(Color color, List<MoveType> rochades) : base(color,
+        public King(Color color, MoveType rochades) : base(color,
             PieceType.King)
         {
             Rochades = rochades;
