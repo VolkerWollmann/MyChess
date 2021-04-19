@@ -104,14 +104,14 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        static List<Tuple<int, MoveType>> possibleBlackEnpasants =
+        static readonly List<Tuple<int, MoveType>> possibleBlackEnpasants =
             new List<Tuple<int, MoveType>>()
             {
                 new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackLeft),
                 new Tuple<int, MoveType>(1, MoveType.EnpasantBlackRight),
             };
 
-        static List<Tuple<int, MoveType>> possibleWhiteEnpasants =
+        static readonly List<Tuple<int, MoveType>> possibleWhiteEnpasants =
             new List<Tuple<int, MoveType>>()
             {
                 new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteRight),
@@ -182,12 +182,6 @@ namespace MyChessEngine.Pieces
 
             return true;
         }
-
-        public override int GetWeight()
-        {
-            return (Color == Color.White) ? ChessEngineConstants.Pawn : -ChessEngineConstants.Pawn;
-        }
-
 
         public Pawn(Color color, MoveType possibleMoveType) : base(color, PieceType.Pawn)
         {

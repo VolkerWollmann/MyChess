@@ -10,17 +10,17 @@ namespace MyChessEngine.Pieces
     {
         public List<MoveType> Rochades;
 
-        static Position _whiteKingBishopField = new Position("F1");
-        static Position _whiteKingKnightField = new Position("G1");
-        static Position _whiteQueenField = new Position("D1");
-        static Position _whiteQueenBishopField = new Position("C1");
-        static Position _whiteQueenKnightField = new Position("B1");
+        static readonly Position _whiteKingBishopField = new Position("F1");
+        static readonly Position _whiteKingKnightField = new Position("G1");
+        static readonly Position _whiteQueenField = new Position("D1");
+        static readonly Position _whiteQueenBishopField = new Position("C1");
+        static readonly Position _whiteQueenKnightField = new Position("B1");
 
-        static Position _blackKingBishopField = new Position("F8");
-        static Position _blackKingKnightField = new Position("G8");
-        static Position _blackQueenField = new Position("D8");
-        static Position _blackQueenBishopField = new Position("C8");
-        static Position _blackQueenKnightField = new Position("B8");
+        static readonly Position _blackKingBishopField = new Position("F8");
+        static readonly Position _blackKingKnightField = new Position("G8");
+        static readonly Position _blackQueenField = new Position("D8");
+        static readonly Position _blackQueenBishopField = new Position("C8");
+        static readonly Position _blackQueenKnightField = new Position("B8");
 
         #region IEnginePiece
         public override MoveList GetMoveList()
@@ -208,12 +208,6 @@ namespace MyChessEngine.Pieces
             }
         }
 
-        public override int GetWeight()
-        {
-            return (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
-        }
-
-        
         public bool IsChecked()
         {
             var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))

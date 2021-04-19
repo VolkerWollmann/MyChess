@@ -54,9 +54,11 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
-        public virtual int GetWeight()
+        private int weight = 0;
+        public int Weight
         {
-            return 0;
+            get { return weight; }
+            private set { weight = value; }
         }
 
         #endregion
@@ -83,6 +85,33 @@ namespace MyChessEngine.Pieces
         {
             Color = color;
             Type = piece;
+            switch (Type)
+            {
+                case PieceType.Rook:
+                    weight = (Color == Color.White) ? ChessEngineConstants.Rook : -ChessEngineConstants.Rook;
+                    break;
+
+                case PieceType.Bishop:
+                    weight = (Color == Color.White) ? ChessEngineConstants.Bishop : -ChessEngineConstants.Bishop;
+                    break;
+
+                case PieceType.King:
+                    weight = (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+                    break;
+
+                case PieceType.Knight:
+                    weight = (Color == Color.White) ? ChessEngineConstants.Knight : -ChessEngineConstants.Knight;
+                    break;
+
+                case PieceType.Pawn:
+                    weight = (Color == Color.White) ? ChessEngineConstants.Pawn : -ChessEngineConstants.Pawn;
+                    break;
+
+                case PieceType.Queen:
+                    weight = (Color == Color.White) ? ChessEngineConstants.Queen : -ChessEngineConstants.Queen;
+                    break;
+
+            }
         }
 
 

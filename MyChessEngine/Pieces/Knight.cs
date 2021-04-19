@@ -6,7 +6,7 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Knight : Piece
     {
-        static int[,] delta = new int[,]
+        static readonly int[,] delta = new int[,]
         {
             { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
             { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
@@ -23,11 +23,6 @@ namespace MyChessEngine.Pieces
             }
 
             return moveList;
-        }
-
-        public override int GetWeight()
-        {
-            return (Color == Color.White) ? ChessEngineConstants.Knight: -ChessEngineConstants.Knight;
         }
 
         public Knight(Color color) : base(color, PieceType.Knight)

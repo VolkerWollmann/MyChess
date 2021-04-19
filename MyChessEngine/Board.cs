@@ -66,7 +66,7 @@ namespace MyChessEngine
             return true;
         }
 
-        private Dictionary<Color, List<Piece>> _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
+        private readonly Dictionary<Color, List<Piece>> _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
 
         public List<Piece> GetAllPieces(Color color)
         {
@@ -185,8 +185,8 @@ namespace MyChessEngine
 
             int boardWeight = 0;
 
-            GetAllPieces(Color.White).ForEach(piece => { boardWeight += piece.GetWeight();});
-            GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.GetWeight();});
+            GetAllPieces(Color.White).ForEach(piece => { boardWeight += piece.Weight;});
+            GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.Weight;});
 
             rating.Weight = boardWeight;
 

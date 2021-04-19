@@ -14,7 +14,7 @@ namespace MyChessEngine
 
         Piece Copy();
 
-        int GetWeight();
+        int Weight { get; }
 
     }
 }
