@@ -25,6 +25,8 @@ namespace MyChessEngine.Pieces
         #region IEnginePiece
         public override MoveList GetMoveList()
         {
+            List<Position> threatenedFields = null;
+            
             MoveList moveList = new MoveList();
 
             for (int row = -1; row <= 1; row++)
@@ -40,16 +42,21 @@ namespace MyChessEngine.Pieces
             {
                 if (Color == Color.White)
                 {
-                    if ((Board[_whiteKingBishopField] == null) && (Board[_whiteKingKnightField] == null))
+                    if ((Rochades & MoveType.WhiteCastle) > 0)
                     {
-
-                        var threatenedFields = this.Board.GetAllPieces(Color.Black)
-                            .Where(piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
-                            .Select((piece => piece.GetMoveList().Moves))
-                            .SelectMany(move => move).Select(move => move.End).ToList();
-
-                        if ((Rochades & MoveType.WhiteCastle) >0)
+                        if ((Board[_whiteKingBishopField] == null) && (Board[_whiteKingKnightField] == null))
                         {
+
+                            if (threatenedFields == null)
+                            {
+                                threatenedFields = this.Board.GetAllPieces(Color.Black)
+                                    .Where(piece =>
+                                        (piece.Type !=
+                                         PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                    .Select((piece => piece.GetMoveList().Moves))
+                                    .SelectMany(move => move).Select(move => move.End).ToList();
+                            }
+
                             bool thread = false;
                             for (int i = 4; i < 7; i++)
                             {
@@ -68,11 +75,15 @@ namespace MyChessEngine.Pieces
                     {
                         if ((Board[_whiteQueenField] == null) && (Board[_whiteQueenBishopField] == null) && (Board[_whiteQueenKnightField] == null))
                         {
-                            var threatenedFields = this.Board.GetAllPieces(Color.Black)
-                                .Where(piece =>
-                                    (piece.Type != PieceType.King)) // King cannot threaten castle, avoid for recursion
-                                .Select((piece => piece.GetMoveList().Moves))
-                                .SelectMany(move => move).Select(move => move.End).ToList();
+                            if (threatenedFields == null)
+                            {
+                                threatenedFields = this.Board.GetAllPieces(Color.Black)
+                                    .Where(piece =>
+                                        (piece.Type !=
+                                         PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                    .Select((piece => piece.GetMoveList().Moves))
+                                    .SelectMany(move => move).Select(move => move.End).ToList();
+                            }
 
                             bool thread = false;
                             for (int i = 1; i <= 5; i++)
@@ -90,15 +101,20 @@ namespace MyChessEngine.Pieces
                 }
                 else
                 {
-                    if ((Board[_blackKingBishopField] == null) && (Board[_blackKingKnightField] == null))
+                    if ((Rochades & MoveType.BlackCastle) != 0)
                     {
-                        var threatenedFields = this.Board.GetAllPieces(Color.White)
-                        .Where(piece => (piece.Type != PieceType.King))             // King cannot threaten castle, avoid for recursion
-                        .Select((piece => piece.GetMoveList().Moves))
-                        .SelectMany(move => move).Select(move => move.End).ToList();
-
-                        if ((Rochades & MoveType.BlackCastle ) != 0)
+                        if ((Board[_blackKingBishopField] == null) && (Board[_blackKingKnightField] == null))
                         {
+                            if (threatenedFields == null)
+                            {
+                                threatenedFields = this.Board.GetAllPieces(Color.White)
+                                    .Where(piece =>
+                                        (piece.Type !=
+                                         PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                    .Select((piece => piece.GetMoveList().Moves))
+                                    .SelectMany(move => move).Select(move => move.End).ToList();
+                            }
+
                             bool thread = false;
                             for (int i = 4; i < 7; i++)
                             {
@@ -120,12 +136,15 @@ namespace MyChessEngine.Pieces
                             bool thread = false;
                             for (int i = 1; i <= 5; i++)
                             {
-                                var threatenedFields = this.Board.GetAllPieces(Color.White)
-                                    .Where(piece =>
-                                        (piece.Type !=
-                                         PieceType.King)) // King cannot threaten castle, avoid for recursion
-                                    .Select((piece => piece.GetMoveList().Moves))
-                                    .SelectMany(move => move).Select(move => move.End).ToList();
+                                if(threatenedFields == null)
+                                {
+                                    threatenedFields = this.Board.GetAllPieces(Color.White)
+                                        .Where(piece =>
+                                            (piece.Type !=
+                                             PieceType.King)) // King cannot threaten castle, avoid for recursion
+                                        .Select((piece => piece.GetMoveList().Moves))
+                                        .SelectMany(move => move).Select(move => move.End).ToList();
+                                }
 
                                 Position field = new Position(7, i);
                                 thread = threatenedFields.Contains(field);
