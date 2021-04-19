@@ -40,10 +40,6 @@ namespace MyChessEngine.Pieces
             {
                 if (Color == Color.White)
                 {
-
-                    
-
-
                     if ((Board[_whiteKingBishopField] == null) && (Board[_whiteKingKnightField] == null))
                     {
 

@@ -47,17 +47,17 @@ namespace MyChessEngine
 
     public enum MoveType
     {
-        Normal,
-        PawnDoubleStep,
-        EnpasantWhiteLeft,
-        EnpasantWhiteRight,
-        EnpasantBlackLeft,
-        EnpasantBlackRight,
-        WhiteCastle,
-        WhiteCastleLong,
-        BlackCastle,
-        BlackCastleLong,
-        Promotion
+        Normal=1,
+        PawnDoubleStep=2,
+        EnpasantWhiteLeft=4,
+        EnpasantWhiteRight=8,
+        EnpasantBlackLeft=16,
+        EnpasantBlackRight=32,
+        WhiteCastle=64,
+        WhiteCastleLong=128,
+        BlackCastle=256,
+        BlackCastleLong=512,
+        Promotion=1024
     }
 
    

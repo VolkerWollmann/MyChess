@@ -186,7 +186,13 @@ namespace MyChessEngine.Pieces
             return (Color == Color.White) ? ChessEngineConstants.Pawn : -ChessEngineConstants.Pawn;
         }
 
-        public Pawn(Color color): base(color, PieceType.Pawn)
+
+        public Pawn(Color color, MoveType possibleMoveType) : base(color, PieceType.Pawn)
+        {
+            PossibleMoveType = possibleMoveType;
+        }
+
+        public Pawn(Color color): this(color, MoveType.Normal)
         {
 
         }

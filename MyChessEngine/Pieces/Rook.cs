@@ -6,7 +6,7 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Rook : Piece
     {
-        private bool HasMoved;
+        public bool HasMoved;
 
         public override MoveList GetMoveList()
         {
@@ -79,7 +79,12 @@ namespace MyChessEngine.Pieces
             return (Color == Color.White) ? ChessEngineConstants.Rook : -ChessEngineConstants.Rook;
         }
 
-        public Rook(Color color) : base(color, PieceType.Rook)
+        public Rook(Color color, bool hasMoved) : base(color, PieceType.Rook)
+        {
+            HasMoved = hasMoved;
+        }
+
+        public Rook(Color color) : this(color, false)
         {
 
         }
