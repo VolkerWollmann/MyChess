@@ -6,15 +6,15 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Knight : Piece
     {
+        static int[,] delta = new int[,]
+        {
+            { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
+            { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
+        };
+
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();
-
-            int[,] delta = new int[,]
-            {
-                { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
-                { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
-            } ;
 
             for (int i = 0; i < 8; i++)
             {
