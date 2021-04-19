@@ -60,7 +60,13 @@ namespace MyChessEngine
         Promotion=1024
     }
 
-   
+    public enum IsValidPositionReturns
+    {
+        NoPosition,
+        EmptyField,
+        EnemyBeatPosition,
+        OwnBeatPosition
+    }
 
 
     public class ChessEngineConstants

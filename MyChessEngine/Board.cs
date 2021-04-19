@@ -47,23 +47,26 @@ namespace MyChessEngine
             }
         }
 
-        public bool IsValidPosition(Position position, Color color)
+
+
+        public IsValidPositionReturns IsValidPosition(Position position, Color color)
         {
             // does not work for pawn
             if (position == null)
-                return false;
+                return IsValidPositionReturns.NoPosition;
 
             if (!position.IsValidPosition())
-                return false;
+                return IsValidPositionReturns.NoPosition;
 
             Piece piece = this[position];
             if (piece == null)
-                return true;
+                return IsValidPositionReturns.EmptyField;
 
-            if (piece.Color == color)
-                return false;
+            if (piece.Color != color)
+                return IsValidPositionReturns.EnemyBeatPosition;
 
-            return true;
+            // do not beat own pieces
+            return IsValidPositionReturns.NoPosition;
         }
 
         private readonly Dictionary<Color, List<Piece>> _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
