@@ -101,11 +101,8 @@ namespace MyChessEngine
 
             Position.AllPositions().ForEach(position =>
             {
-                copy[position] = null;
                 if (this[position] != null)
-                {
                     copy[position] = this[position].Copy();
-                }
             });
 
             return copy;
