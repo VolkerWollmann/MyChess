@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.VisualBasic;
 using MyChessEngine.Pieces;
 
 
@@ -27,12 +25,12 @@ namespace MyChessEngine
                 Pieces[row, column] = value;
                 if (value != null)
                 {
-                    Pieces[row,column].Board = this;
-                    Pieces[row,column].Position = new Position(row,column);
+                    Pieces[row, column].Board = this;
+                    Pieces[row, column].Position = new Position(row, column);
                 }
             }
         }
-    
+
 
         public Piece this[Position position]
         {
@@ -108,11 +106,11 @@ namespace MyChessEngine
         {
             Board copy = new Board();
 
-            for(int i=0; i< ChessEngineConstants.Length; i++)
+            for (int i = 0; i < ChessEngineConstants.Length; i++)
             for (int j = 0; j < ChessEngineConstants.Length; j++)
             {
-                Piece piece = this[i,j];
-                copy[i,j] = piece?.Copy();
+                Piece piece = this[i, j];
+                copy[i, j] = piece?.Copy();
             }
 
             return copy;
@@ -132,6 +130,7 @@ namespace MyChessEngine
         }
 
         private readonly Dictionary<Color, MoveList> _AllMovesByColor = new Dictionary<Color, MoveList>();
+
         public MoveList GetMoveList(Color color)
         {
             if (_AllMovesByColor.ContainsKey(color))
@@ -161,22 +160,22 @@ namespace MyChessEngine
 
         private bool IsChecked(Color color)
         {
-            King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
-            return king?.IsChecked() ?? true ;
+            King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
+            return king?.IsChecked() ?? true;
         }
 
         public BoardRating GetRating(Color color)
         {
             Counter++;
 
-            BoardRating rating = new BoardRating ();
+            BoardRating rating = new BoardRating();
 
-            King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
+            King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
 
             if (king == null)
             {
-                rating.Situation = color == Color.White ? Situation.BlackVictory  : Situation.WhiteVictory;
-                rating.Evaluation = color== Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
+                rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
+                rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
                 rating.Weight = (color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
                 return rating;
             }
@@ -203,8 +202,8 @@ namespace MyChessEngine
 
             int boardWeight = 0;
 
-            GetAllPieces(Color.White).ForEach(piece => { boardWeight += piece.Weight;});
-            GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.Weight;});
+            GetAllPieces(Color.White).ForEach(piece => { boardWeight += piece.Weight; });
+            GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.Weight; });
 
             rating.Weight = boardWeight;
 
@@ -213,7 +212,7 @@ namespace MyChessEngine
 
         public Move CalculateMove(int depth, Color color)
         {
-            King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
+            King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
 
             var moves = GetMoveList(color);
             if ((depth <= 1) || (king == null) || (!moves.Moves.Any()))
@@ -228,13 +227,19 @@ namespace MyChessEngine
                 if (!copy.IsChecked(color))
                 {
                     Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
-                    if ((move.Rating == null) ||(new BoardRatingComparer(color).Compare(move.Rating, resultMove.Rating) > 0 ))
+                    if ((move.Rating == null) ||
+                        (new BoardRatingComparer(color).Compare(move.Rating, resultMove.Rating) > 0))
                         move.Rating = resultMove.Rating;
                     result.Add(move);
                 }
             }
 
             return result.GetBestMove(color);
+        }
+
+        public Move CalculateMove2(int depth, Color color)
+        {
+            return CalculateMove(depth, color);
         }
     }
 }

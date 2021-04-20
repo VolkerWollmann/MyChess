@@ -6,7 +6,7 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Knight : Piece
     {
-        static readonly int[,] delta = new int[,]
+        static readonly int[,] Delta = new int[,]
         {
             { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
             { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
@@ -18,7 +18,7 @@ namespace MyChessEngine.Pieces
 
             for (int i = 0; i < 8; i++)
             {
-                Position newPosition = this.Position.GetDeltaPosition(delta[i, 0], delta[i, 1]);
+                Position newPosition = this.Position.GetDeltaPosition(Delta[i, 0], Delta[i, 1]);
                 if (newPosition != null)
                     AddPosition(moveList, newPosition);
             }

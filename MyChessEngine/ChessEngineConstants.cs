@@ -51,10 +51,10 @@ namespace MyChessEngine
     {
         Normal=1,
         PawnDoubleStep=2,
-        EnpasantWhiteLeft=4,
-        EnpasantWhiteRight=8,
-        EnpasantBlackLeft=16,
-        EnpasantBlackRight=32,
+        EnpassantWhiteLeft=4,
+        EnpassantWhiteRight=8,
+        EnpassantBlackLeft=16,
+        EnpassantBlackRight=32,
         WhiteCastle=64,
         WhiteCastleLong=128,
         BlackCastle=256,
@@ -68,6 +68,12 @@ namespace MyChessEngine
         EmptyField,
         EnemyBeatPosition,
         OwnBeatPosition
+    }
+
+    public enum EngineType
+    {
+        EngineType1,
+        EngineType2
     }
 
 

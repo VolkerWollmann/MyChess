@@ -12,9 +12,9 @@ namespace MyChessEngine
         public IPiece Piece;
         public MoveType Type;
 
-        public bool IsAMove { get; private set; } = true;
+        public bool IsAMove { get; } = true;
         
-        public BoardRating Rating { get; set; } = null;
+        public BoardRating Rating { get; set; }
 
         public Move(Position start, Position end, IPiece piece, MoveType type)
         {

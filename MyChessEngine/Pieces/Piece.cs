@@ -50,12 +50,7 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
-        private int weight = 0;
-        public int Weight
-        {
-            get { return weight; }
-            private set { weight = value; }
-        }
+        public int Weight { get; }
 
         #endregion
 
@@ -85,27 +80,27 @@ namespace MyChessEngine.Pieces
             switch (Type)
             {
                 case PieceType.Rook:
-                    weight = (Color == Color.White) ? ChessEngineConstants.Rook : -ChessEngineConstants.Rook;
+                    Weight = (Color == Color.White) ? ChessEngineConstants.Rook : -ChessEngineConstants.Rook;
                     break;
 
                 case PieceType.Bishop:
-                    weight = (Color == Color.White) ? ChessEngineConstants.Bishop : -ChessEngineConstants.Bishop;
+                    Weight = (Color == Color.White) ? ChessEngineConstants.Bishop : -ChessEngineConstants.Bishop;
                     break;
 
                 case PieceType.King:
-                    weight = (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+                    Weight = (Color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
                     break;
 
                 case PieceType.Knight:
-                    weight = (Color == Color.White) ? ChessEngineConstants.Knight : -ChessEngineConstants.Knight;
+                    Weight = (Color == Color.White) ? ChessEngineConstants.Knight : -ChessEngineConstants.Knight;
                     break;
 
                 case PieceType.Pawn:
-                    weight = (Color == Color.White) ? ChessEngineConstants.Pawn : -ChessEngineConstants.Pawn;
+                    Weight = (Color == Color.White) ? ChessEngineConstants.Pawn : -ChessEngineConstants.Pawn;
                     break;
 
                 case PieceType.Queen:
-                    weight = (Color == Color.White) ? ChessEngineConstants.Queen : -ChessEngineConstants.Queen;
+                    Weight = (Color == Color.White) ? ChessEngineConstants.Queen : -ChessEngineConstants.Queen;
                     break;
 
             }

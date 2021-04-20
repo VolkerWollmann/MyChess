@@ -4,11 +4,11 @@ using MyChessEngine.Pieces;
 
 namespace MyChessEngine
 {
-    public partial class ChessEngine : IChessEngine
+    public class ChessEngine : IChessEngine
     {
+        private readonly EngineType EngineType = EngineType.EngineType1;
         public readonly Board Board;
-        
-        
+
         #region IChessEngine
 
         public Color ColorToMove { get; set; }
@@ -108,8 +108,9 @@ namespace MyChessEngine
         public string Message => _Message;
         #endregion
 
-        public ChessEngine()
+        public ChessEngine(EngineType engineType)
         {
+            EngineType = engineType;
             Board = new Board();
         }
         private ChessEngine(Board board, Color colorToMove)
@@ -123,7 +124,7 @@ namespace MyChessEngine
             DateTime s = DateTime.Now;
 
             Board.Counter = 0;
-            Move move = Board.CalculateMove(4, ColorToMove);
+            var move = EngineType == EngineType.EngineType1 ? Board.CalculateMove(4, ColorToMove) : Board.CalculateMove2(4, ColorToMove);
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 

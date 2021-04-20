@@ -13,7 +13,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CreateEngine()
         {
-            ChessEngine chessEngine = new ChessEngine();
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
             Assert.IsNotNull(chessEngine);
         }
 
@@ -34,7 +34,7 @@ namespace EngineUnitTests
             List<BoardRating> ratings = new List<BoardRating>()
                 {whitMate1, whitMate2, blackMate1, blackMate2, whiteFavor3, equal1, equal2, blackFavor3};
 
-            ratings = RandomListAccess.GetShuffledList<BoardRating>(ratings);
+            ratings = RandomListAccess.GetShuffledList(ratings);
 
             int i = 1;
             MoveList moveList = new MoveList();
@@ -71,10 +71,10 @@ namespace EngineUnitTests
             List<BoardRating> result = new List<BoardRating>();
             Random random = new Random();
 
-            BoardRating boardRating;
             for (int i = 0; i < 40; i++)
             {
                 int split = random.Next(0, 100);
+                BoardRating boardRating;
                 if (split <= 5)
                     boardRating = new BoardRating() {Evaluation = Evaluation.WhiteCheckMate};
                 else if (split <= 10)
@@ -129,7 +129,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckStartBoardRating()
         {
-            ChessEngine chessEngine = new ChessEngine();
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
             chessEngine.New();
 
             Board board = chessEngine.Board;
@@ -148,7 +148,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckBoardRatingBlackMate()
         {
-            ChessEngine chessEngine = new ChessEngine();
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
             Board board = chessEngine.Board;
 
             board["G6"] = new King(Color.White);
@@ -166,7 +166,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOpeningMove()
         {
-            ChessEngine chessEngine = new ChessEngine();
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
             chessEngine.New();
 
             Move move = chessEngine.CalculateMove();
@@ -176,7 +176,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculatePawnBeat()
         {
-            ChessEngine chessEngine = new ChessEngine();
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
             Board board = chessEngine.Board;
 
             board["E1"] = new King(Color.White, MoveType.Normal);
@@ -191,7 +191,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOneMoveMate()
         {
-            ChessEngine chessEngine = new ChessEngine();
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
             Board board = chessEngine.Board;
 
             board["G6"] = new King(Color.White, MoveType.Normal );
@@ -201,6 +201,8 @@ namespace EngineUnitTests
             board["A1"] = new Rook(Color.White);
 
             Move move = chessEngine.CalculateMove();
+
+            Assert.IsTrue(move.End.AreEqual(new Position("A8")));
             
         }
 

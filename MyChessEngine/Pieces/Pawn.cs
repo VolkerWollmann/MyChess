@@ -7,7 +7,7 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color} PMT={PossibleMoveType}")]
     public class Pawn : Piece
     {
-        public MoveType PossibleMoveType { get; set; } = MoveType.Normal;
+        public MoveType PossibleMoveType { get; set; }
 
         public override MoveList GetMoveList()
         {
@@ -54,16 +54,16 @@ namespace MyChessEngine.Pieces
 
                 // enpasant 
 
-                if (PossibleMoveType == MoveType.EnpasantWhiteLeft)
+                if (PossibleMoveType == MoveType.EnpassantWhiteLeft)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, -1), this,
-                        MoveType.EnpasantWhiteLeft));
+                        MoveType.EnpassantWhiteLeft));
                 }
 
-                if (PossibleMoveType == MoveType.EnpasantWhiteRight)
+                if (PossibleMoveType == MoveType.EnpassantWhiteRight)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, +1), this,
-                        MoveType.EnpasantWhiteRight));
+                        MoveType.EnpassantWhiteRight));
                 }
 
             }
@@ -102,34 +102,34 @@ namespace MyChessEngine.Pieces
                 }
                 // enpasant 
 
-                if (PossibleMoveType == MoveType.EnpasantBlackLeft)
+                if (PossibleMoveType == MoveType.EnpassantBlackLeft)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, +1), this,
-                        MoveType.EnpasantBlackLeft));
+                        MoveType.EnpassantBlackLeft));
                 }
 
-                if (PossibleMoveType == MoveType.EnpasantBlackRight)
+                if (PossibleMoveType == MoveType.EnpassantBlackRight)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, -1), this,
-                        MoveType.EnpasantBlackRight));
+                        MoveType.EnpassantBlackRight));
                 }
             }
 
             return moveList;
         }
 
-        static readonly List<Tuple<int, MoveType>> possibleBlackEnpasants =
+        static readonly List<Tuple<int, MoveType>> PossibleBlackEnpassants =
             new List<Tuple<int, MoveType>>()
             {
-                new Tuple<int, MoveType>(-1, MoveType.EnpasantBlackLeft),
-                new Tuple<int, MoveType>(1, MoveType.EnpasantBlackRight),
+                new Tuple<int, MoveType>(-1, MoveType.EnpassantBlackLeft),
+                new Tuple<int, MoveType>(1, MoveType.EnpassantBlackRight),
             };
 
-        static readonly List<Tuple<int, MoveType>> possibleWhiteEnpasants =
+        static readonly List<Tuple<int, MoveType>> PossibleWhiteEnpassants =
             new List<Tuple<int, MoveType>>()
             {
-                new Tuple<int, MoveType>(-1, MoveType.EnpasantWhiteRight),
-                new Tuple<int, MoveType>(1, MoveType.EnpasantWhiteLeft),
+                new Tuple<int, MoveType>(-1, MoveType.EnpassantWhiteRight),
+                new Tuple<int, MoveType>(1, MoveType.EnpassantWhiteLeft),
             };
 
 
@@ -149,14 +149,10 @@ namespace MyChessEngine.Pieces
                 {
                     for (int i = 0; i < 2; i++)
                     {
-                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + possibleBlackEnpasants[i].Item1);
+                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + PossibleBlackEnpassants[i].Item1);
                         if (adjacentPawnPosition.IsValidPosition())
                         {
-                            if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
-                            {
-                                if (adjacentPawn.Color == Color.Black)
-                                    adjacentPawn.PossibleMoveType = possibleBlackEnpasants[i].Item2;
-                            }
+                            if (Board[adjacentPawnPosition] is Pawn {Color: Color.Black} adjacentPawn) adjacentPawn.PossibleMoveType = PossibleBlackEnpassants[i].Item2;
                         }
                     }
                 }
@@ -165,14 +161,10 @@ namespace MyChessEngine.Pieces
 
                     for (int i = 0; i < 2; i++)
                     {
-                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + possibleWhiteEnpasants[i].Item1);
+                        Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + PossibleWhiteEnpassants[i].Item1);
                         if (adjacentPawnPosition.IsValidPosition())
                         {
-                            if (Board[adjacentPawnPosition] is Pawn adjacentPawn)
-                            {
-                                if (adjacentPawn.Color == Color.White)
-                                    adjacentPawn.PossibleMoveType = possibleWhiteEnpasants[i].Item2;
-                            }
+                            if (Board[adjacentPawnPosition] is Pawn {Color: Color.White} adjacentPawn) adjacentPawn.PossibleMoveType = PossibleWhiteEnpassants[i].Item2;
                         }
                     }
                 }
@@ -181,13 +173,13 @@ namespace MyChessEngine.Pieces
             {
                 switch (move.Type)
                 {
-                    case MoveType.EnpasantWhiteLeft:
-                    case MoveType.EnpasantWhiteRight:
+                    case MoveType.EnpassantWhiteLeft:
+                    case MoveType.EnpassantWhiteRight:
                         Board[new Position(move.End.Row - 1, move.End.Column)] = null;
                         break;
 
-                    case MoveType.EnpasantBlackLeft:
-                    case MoveType.EnpasantBlackRight:
+                    case MoveType.EnpassantBlackLeft:
+                    case MoveType.EnpassantBlackRight:
                         Board[new Position(move.End.Row + 1, move.End.Column)] = null;
                         break;
 
