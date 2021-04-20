@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Color = {Color} Postion={Position} Rochades={KingMoves}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color} Postion={Position} Moves={KingMoves}")]
     public class King : Piece
     {
         public MoveType KingMoves;
@@ -239,10 +239,10 @@ namespace MyChessEngine.Pieces
             return result;
         }
 
-        public King(Color color, MoveType rochades) : base(color,
+        public King(Color color, MoveType kingmoves) : base(color,
             PieceType.King)
         {
-            KingMoves = rochades;
+            KingMoves = kingmoves;
         }
     }
 }

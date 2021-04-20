@@ -25,7 +25,7 @@ namespace MyChessEngine
 
             for (int i = 1; i < _Moves.Count; i++)
             {
-                if (comparer.Compare(bestMove, _Moves[i]) < 0)
+                if (comparer.Compare(bestMove, _Moves[i]) > 0)
                     bestMove = _Moves[i];
             }
 
