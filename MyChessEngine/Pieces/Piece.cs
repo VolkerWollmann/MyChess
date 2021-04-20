@@ -2,7 +2,7 @@
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color}")]
+    [DebuggerDisplay("T={Type}, C={Color}")]
     public class Piece : IEnginePiece
     {
         #region IPiece

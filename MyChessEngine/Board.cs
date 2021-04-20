@@ -76,7 +76,7 @@ namespace MyChessEngine
             return IsValidPositionReturns.NoPosition;
         }
 
-        private readonly Dictionary<Color, List<Piece>> _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
+        private Dictionary<Color, List<Piece>> _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
 
         public List<Piece> GetAllPieces(Color color)
         {
@@ -94,6 +94,13 @@ namespace MyChessEngine
             _AllPiecesByColor.Add(color, pieces);
 
             return pieces;
+        }
+
+
+        public void ClearOptimizationVariables()
+        {
+            _AllPiecesByColor = new Dictionary<Color, List<Piece>>();
+            _AllMovesByColor = new Dictionary<Color, MoveList>();
         }
 
         public void Clear()
@@ -129,7 +136,7 @@ namespace MyChessEngine
             return true;
         }
 
-        private readonly Dictionary<Color, MoveList> _AllMovesByColor = new Dictionary<Color, MoveList>();
+        private Dictionary<Color, MoveList> _AllMovesByColor = new Dictionary<Color, MoveList>();
 
         public MoveList GetMoveList(Color color)
         {

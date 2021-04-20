@@ -124,6 +124,7 @@ namespace MyChessEngine
             DateTime s = DateTime.Now;
 
             Board.Counter = 0;
+            Board.ClearOptimizationVariables();
             var move = EngineType == EngineType.EngineType1 ? Board.CalculateMove(4, ColorToMove) : Board.CalculateMove2(4, ColorToMove);
 
             TimeSpan ts = DateTime.Now.Subtract(s);

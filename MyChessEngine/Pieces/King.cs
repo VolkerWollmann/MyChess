@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Color = {Color} Position={Position} Moves={KingMoves}")]
+    [DebuggerDisplay("T={Type}, C={Color} Position={Position} Moves={KingMoves}")]
     public class King : Piece
     {
         public MoveType KingMoves;
