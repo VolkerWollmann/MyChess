@@ -179,9 +179,9 @@ namespace EngineUnitTests
             ChessEngine chessEngine = new ChessEngine();
             Board board = chessEngine.Board;
 
-            board["E1"] = new King(Color.White);
+            board["E1"] = new King(Color.White, MoveType.Normal);
             board["E4"] = new Pawn(Color.White);
-            board["G8"] = new King(Color.Black);
+            board["G8"] = new King(Color.Black, MoveType.Normal);
             board["D5"] = new Pawn(Color.Black);
 
             Move move = chessEngine.CalculateMove();
