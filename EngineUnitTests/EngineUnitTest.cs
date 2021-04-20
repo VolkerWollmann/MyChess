@@ -189,6 +189,23 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void CheckStaleMate()
+        {
+            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
+            Board board = chessEngine.Board;
+
+            board["H3"] = new King(Color.White, MoveType.Normal);
+            board["H2"] = new Pawn(Color.White);
+            board["H4"] = new Pawn(Color.White);
+            board["H5"] = new Pawn(Color.Black);
+            board["H8"] = new King(Color.Black, MoveType.Normal);
+            board["G8"] = new Rook(Color.Black);
+
+            Move move = chessEngine.CalculateMove();
+            Assert.IsTrue(move.Rating.Evaluation == Evaluation.WhiteStaleMate);
+        }
+
+        [TestMethod]
         public void CalculateOneMoveMate()
         {
             ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
