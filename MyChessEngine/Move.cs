@@ -12,7 +12,7 @@ namespace MyChessEngine
         public IPiece Piece;
         public MoveType Type;
 
-        public bool IsAMove { get; private set; }
+        public bool IsAMove { get; private set; } = true;
         
         public BoardRating Rating { get; set; } = null;
 

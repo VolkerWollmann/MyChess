@@ -188,6 +188,22 @@ namespace EngineUnitTests
             Assert.IsTrue(move.End.AreEqual(new Position("D5")));
         }
 
+        [TestMethod]
+        public void CalculateOneMoveMate()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            Board board = chessEngine.Board;
+
+            board["G6"] = new King(Color.White, MoveType.Normal);
+            board["E4"] = new Pawn(Color.White);
+            board["G8"] = new King(Color.Black, MoveType.Normal);
+            board["D5"] = new Pawn(Color.Black);
+            board["A1"] = new Rook(Color.White);
+
+            Move move = chessEngine.CalculateMove();
+            
+        }
+
         #endregion
     }
 }

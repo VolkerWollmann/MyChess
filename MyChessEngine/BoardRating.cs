@@ -67,10 +67,10 @@ namespace MyChessEngine
             }
 
             if (xIndex > yIndex)
-                return -1;
+                return 1;
 
             if (xIndex < yIndex)
-                return 1;
+                return -1;
 
             return 0;
         }
@@ -100,18 +100,18 @@ namespace MyChessEngine
             if ((xIndex == 4) && (yIndex == 4))
             {
                 if (x.Weight < y.Weight)
-                    return -1;
-                if (x.Weight > y.Weight)
                     return 1;
+                if (x.Weight > y.Weight)
+                    return -1;
                 if (x.Weight == y.Weight)
                     return 0;
             }
 
             if (xIndex > yIndex)
-                return -1;
+                return 1;
 
             if (xIndex < yIndex)
-                return 1;
+                return -1;
 
             return 0;
         }
