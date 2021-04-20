@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Color = {Color} Postion={Position} Rochades={Rochades}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color} Postion={Position} Rochades={KingMoves}")]
     public class King : Piece
     {
-        public MoveType Rochades;
+        public MoveType KingMoves;
 
         static readonly Position WhiteKingBishopField = new Position("F1");
         static readonly Position WhiteKingKnightField = new Position("G1");
@@ -39,11 +39,11 @@ namespace MyChessEngine.Pieces
 
             // Castle
 
-            if (Rochades != MoveType.Normal )
+            if (KingMoves != MoveType.Normal )
             {
                 if (Color == Color.White)
                 {
-                    if ((Rochades & MoveType.WhiteCastle) > 0)
+                    if ((KingMoves & MoveType.WhiteCastle) > 0)
                     {
                         if ((Board[WhiteKingBishopField] == null) && (Board[WhiteKingKnightField] == null))
                         {
@@ -72,7 +72,7 @@ namespace MyChessEngine.Pieces
                         }
                     }
 
-                    if ((Rochades & MoveType.WhiteCastleLong) != 0)
+                    if ((KingMoves & MoveType.WhiteCastleLong) != 0)
                     {
                         if ((Board[WhiteQueenField] == null) && (Board[WhiteQueenBishopField] == null) && (Board[WhiteQueenKnightField] == null))
                         {
@@ -102,7 +102,7 @@ namespace MyChessEngine.Pieces
                 }
                 else
                 {
-                    if ((Rochades & MoveType.BlackCastle) != 0)
+                    if ((KingMoves & MoveType.BlackCastle) != 0)
                     {
                         if ((Board[BlackKingBishopField] == null) && (Board[BlackKingKnightField] == null))
                         {
@@ -130,7 +130,7 @@ namespace MyChessEngine.Pieces
                         }
                     }
 
-                    if ((Rochades & MoveType.BlackCastleLong) != 0)
+                    if ((KingMoves & MoveType.BlackCastleLong) != 0)
                     {
                         if ((Board[BlackQueenField] == null) && (Board[BlackQueenBishopField] == null) && (Board[BlackQueenKnightField] == null))
                         {
@@ -166,7 +166,7 @@ namespace MyChessEngine.Pieces
 
         public override Piece Copy()
         {
-            return new King(Color, Rochades);
+            return new King(Color, KingMoves);
         }
 
         public override bool ExecuteMove(Move move)
@@ -207,7 +207,7 @@ namespace MyChessEngine.Pieces
                     break;
             }
 
-            Rochades = MoveType.Normal;
+            KingMoves = MoveType.Normal;
 
             return true;
         }
@@ -218,11 +218,11 @@ namespace MyChessEngine.Pieces
         {
             if (color == Color.White)
             {
-                Rochades = MoveType.Normal |MoveType.WhiteCastle | MoveType.WhiteCastleLong;
+                KingMoves = MoveType.Normal |MoveType.WhiteCastle | MoveType.WhiteCastleLong;
             }
             else
             {
-                Rochades = MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong;
+                KingMoves = MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong;
             }
         }
 
@@ -242,7 +242,7 @@ namespace MyChessEngine.Pieces
         public King(Color color, MoveType rochades) : base(color,
             PieceType.King)
         {
-            Rochades = rochades;
+            KingMoves = rochades;
         }
     }
 }

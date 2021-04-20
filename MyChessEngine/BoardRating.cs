@@ -50,7 +50,7 @@ namespace MyChessEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <returns></returns>
+        /// <returns>-1 for x greater y</returns>
         public int CompareWhite(BoardRating x, BoardRating y)
         {
             int xIndex = WhiteDictionary[x.Evaluation];
@@ -59,18 +59,18 @@ namespace MyChessEngine
             if ((xIndex == 4) && (yIndex == 4))
             {
                 if (x.Weight > y.Weight)
-                    return 1;
-                if (x.Weight < y.Weight)
                     return -1;
+                if (x.Weight < y.Weight)
+                    return 1;
                 if (x.Weight == y.Weight)
                     return 0;
             }
 
             if (xIndex > yIndex)
-                return 1;
+                return -1;
 
             if (xIndex < yIndex)
-                return -1;
+                return 1;
 
             return 0;
         }
@@ -91,7 +91,7 @@ namespace MyChessEngine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <returns></returns>
+        /// <returns>-1 for x greater y</returns>
         public int CompareBlack(BoardRating x, BoardRating y)
         {
             int xIndex = BlackDictionary[x.Evaluation];
@@ -100,18 +100,18 @@ namespace MyChessEngine
             if ((xIndex == 4) && (yIndex == 4))
             {
                 if (x.Weight < y.Weight)
-                    return 1;
-                if (x.Weight > y.Weight)
                     return -1;
+                if (x.Weight > y.Weight)
+                    return 1;
                 if (x.Weight == y.Weight)
                     return 0;
             }
 
             if (xIndex > yIndex)
-                return 1;
+                return -1;
 
             if (xIndex < yIndex)
-                return -1;
+                return 1;
 
             return 0;
         }

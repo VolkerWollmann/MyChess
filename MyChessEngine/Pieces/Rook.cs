@@ -58,16 +58,16 @@ namespace MyChessEngine.Pieces
                 if (Board.GetAllPieces(Color).First(piece => (piece.Type == PieceType.King)) is King myKing)
                 {
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                        myKing.Rochades &= ( MoveType.WhiteCastle | MoveType.Normal);
+                        myKing.KingMoves &= ( MoveType.WhiteCastle | MoveType.Normal);
 
                     if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                        myKing.Rochades &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                        myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
 
                     if ((this.Position.Row == 7) || (this.Position.Column == 0))
-                        myKing.Rochades &= (MoveType.BlackCastle | MoveType.Normal);
+                        myKing.KingMoves &= (MoveType.BlackCastle | MoveType.Normal);
 
                     if ((this.Position.Row == 7) || (this.Position.Column == 7))
-                        myKing.Rochades &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                        myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
                 }
             }
 

@@ -21,10 +21,10 @@ namespace EngineUnitTests
 
         private MoveList CreateMoveList()
         {
-            BoardRating whitMate1 = new BoardRating() {Evaluation = Evaluation.WhiteCheckMate};
-            BoardRating whitMate2 = new BoardRating() {Evaluation = Evaluation.BlackStaleMate};
-            BoardRating blackMate1 = new BoardRating() {Evaluation = Evaluation.BlackCheckMate};
-            BoardRating blackMate2 = new BoardRating() {Evaluation = Evaluation.BlackCheckMate};
+            BoardRating whitMate1 = new BoardRating() {Situation= Situation.BlackVictory, Evaluation = Evaluation.WhiteCheckMate};
+            BoardRating whitMate2 = new BoardRating() { Situation = Situation.StaleMate, Evaluation = Evaluation.BlackStaleMate};
+            BoardRating blackMate1 = new BoardRating() { Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate};
+            BoardRating blackMate2 = new BoardRating() { Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate};
 
             BoardRating whiteFavor3 = new BoardRating() {Evaluation = Evaluation.Normal, Weight = 3};
             BoardRating equal1 = new BoardRating() {Evaluation = Evaluation.Normal, Weight = 0};

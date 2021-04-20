@@ -37,7 +37,7 @@ namespace MyChessEngine.Pieces
                 PieceType.Queen => new Queen(Color),
                 PieceType.Pawn => new Pawn(Color, ((Pawn)this).PossibleMoveType),
                 PieceType.Rook => new Rook(Color, ((Rook)this).HasMoved),
-                PieceType.King => new King(Color, ((King)this).Rochades),
+                PieceType.King => new King(Color, ((King)this).KingMoves),
             _ => null 
             };
         }
