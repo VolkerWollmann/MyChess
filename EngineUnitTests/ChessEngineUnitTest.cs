@@ -8,7 +8,7 @@ using MyChessEngine.Pieces;
 namespace EngineUnitTests
 {
     [TestClass]
-    public class EngineClassTests
+    public class ChessEngineUnitTests
     {
         [TestMethod]
         public void CreateEngine()
