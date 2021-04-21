@@ -1,4 +1,7 @@
-﻿namespace MyChessEngine
+﻿using System.Runtime.CompilerServices;
+using MyChessEngine.Pieces;
+
+namespace MyChessEngine
 { 
     public interface IChessEngine
     {
@@ -10,6 +13,15 @@
 
         void Clear();
 
+        Piece this[string position]
+        {
+            get;
+            set;
+        }
+
+
+
+        BoardRating GetRating(Color color);
         void Test();
 
         MoveList GetMoveList();

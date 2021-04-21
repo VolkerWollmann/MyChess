@@ -13,7 +13,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CreateEngine()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
+            ChessEngine chessEngine = new ChessEngine();
             Assert.IsNotNull(chessEngine);
         }
 
@@ -129,14 +129,12 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckStartBoardRating()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
+            ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
-
-            Board board = chessEngine.Board;
 
             foreach (Color color in ChessEngineConstants.BothColors)
             {
-                BoardRating boardRating = board.GetRating(color);
+                BoardRating boardRating = chessEngine.GetRating(color);
 
                 Assert.IsTrue(boardRating.Situation == Situation.Normal);
                 Assert.IsTrue(boardRating.Evaluation == Evaluation.Normal);
@@ -148,14 +146,14 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckBoardRatingBlackMate()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
-            Board board = chessEngine.Board;
+            ChessEngine chessEngine = new ChessEngine();
 
-            board["G6"] = new King(Color.White);
-            board["A8"] = new Rook(Color.White);
-            board["G8"] = new King(Color.Black);
 
-            BoardRating boardRating = board.GetRating(Color.Black);
+            chessEngine["G6"] = new King(Color.White);
+            chessEngine["A8"] = new Rook(Color.White);
+            chessEngine["G8"] = new King(Color.Black);
+
+            BoardRating boardRating = chessEngine.GetRating(Color.Black);
             Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
         }
 
@@ -166,7 +164,7 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOpeningMove()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
+            ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
 
             Move move = chessEngine.CalculateMove();
@@ -176,13 +174,13 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculatePawnBeat()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
-            Board board = chessEngine.Board;
+            ChessEngine chessEngine = new ChessEngine();
 
-            board["E1"] = new King(Color.White, MoveType.Normal);
-            board["E4"] = new Pawn(Color.White);
-            board["G8"] = new King(Color.Black, MoveType.Normal);
-            board["D5"] = new Pawn(Color.Black);
+
+            chessEngine["E1"] = new King(Color.White, MoveType.Normal);
+            chessEngine["E4"] = new Pawn(Color.White);
+            chessEngine["G8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["D5"] = new Pawn(Color.Black);
 
             Move move = chessEngine.CalculateMove();
             Assert.IsTrue(move.End.AreEqual(new Position("D5")));
@@ -191,15 +189,15 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckStaleMate()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
-            Board board = chessEngine.Board;
+            ChessEngine chessEngine = new ChessEngine();
 
-            board["H3"] = new King(Color.White, MoveType.Normal);
-            board["H2"] = new Pawn(Color.White);
-            board["H4"] = new Pawn(Color.White);
-            board["H5"] = new Pawn(Color.Black);
-            board["H8"] = new King(Color.Black, MoveType.Normal);
-            board["G8"] = new Rook(Color.Black);
+
+            chessEngine["H3"] = new King(Color.White, MoveType.Normal);
+            chessEngine["H2"] = new Pawn(Color.White);
+            chessEngine["H4"] = new Pawn(Color.White);
+            chessEngine["H5"] = new Pawn(Color.Black);
+            chessEngine["H8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["G8"] = new Rook(Color.Black);
 
             Move move = chessEngine.CalculateMove();
             Assert.IsTrue(move.Rating.Evaluation == Evaluation.WhiteStaleMate);
@@ -208,14 +206,13 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOneMoveMate()
         {
-            ChessEngine chessEngine = new ChessEngine(EngineType.EngineType1);
-            Board board = chessEngine.Board;
+            ChessEngine chessEngine = new ChessEngine();
 
-            board["G6"] = new King(Color.White, MoveType.Normal );
-            board["E4"] = new Pawn(Color.White);
-            board["G8"] = new King(Color.Black, MoveType.Normal);
-            board["D5"] = new Pawn(Color.Black);
-            board["A1"] = new Rook(Color.White);
+            chessEngine["G6"] = new King(Color.White, MoveType.Normal );
+            chessEngine["E4"] = new Pawn(Color.White);
+            chessEngine["G8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["D5"] = new Pawn(Color.Black);
+            chessEngine["A1"] = new Rook(Color.White);
 
             Move move = chessEngine.CalculateMove();
 

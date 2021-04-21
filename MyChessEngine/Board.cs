@@ -243,10 +243,5 @@ namespace MyChessEngine
 
             return result.GetBestMove(color);
         }
-
-        public Move CalculateMove2(int depth, Color color)
-        {
-            return CalculateMove(depth, color);
-        }
     }
 }

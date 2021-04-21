@@ -6,8 +6,7 @@ namespace MyChessEngine
 {
     public class ChessEngine : IChessEngine
     {
-        private readonly EngineType EngineType = EngineType.EngineType1;
-        public readonly Board Board;
+        private readonly Board Board;
 
         #region IChessEngine
 
@@ -73,6 +72,19 @@ namespace MyChessEngine
             Board.Clear();
         }
 
+        public Piece this[string position]
+        {
+            get => Board[position];
+            set => Board[position] = value;
+        }
+
+
+        public BoardRating GetRating(Color color)
+        {
+            return Board.GetRating(color);
+        }
+
+
         public BoardRating GetBoardRating()
         {
             return Board.GetRating(ColorToMove);
@@ -108,9 +120,8 @@ namespace MyChessEngine
         public string Message => _Message;
         #endregion
 
-        public ChessEngine(EngineType engineType)
+        public ChessEngine()
         {
-            EngineType = engineType;
             Board = new Board();
         }
         private ChessEngine(Board board, Color colorToMove)
@@ -125,12 +136,12 @@ namespace MyChessEngine
 
             Board.Counter = 0;
             Board.ClearOptimizationVariables();
-            var move = EngineType == EngineType.EngineType1 ? Board.CalculateMove(4, ColorToMove) : Board.CalculateMove2(4, ColorToMove);
+            var move = Board.CalculateMove(4, ColorToMove); 
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 
-            _Message = move + " " + ts + " " + move.Rating.Situation + " "
-                      + move.Rating.Evaluation + " " + move.Rating.Weight + " " + Board.Counter;
+            _Message = move + " Time:" + ts + " Situation:" + move.Rating.Situation + 
+                       " Evaluation:" + move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board.Counter;
 
             return move;
         }

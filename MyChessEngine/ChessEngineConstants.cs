@@ -70,13 +70,6 @@ namespace MyChessEngine
         OwnBeatPosition
     }
 
-    public enum EngineType
-    {
-        EngineType1,
-        EngineType2
-    }
-
-
     public class ChessEngineConstants
     {
         public const int Length = 8;
