@@ -9,17 +9,26 @@ namespace MyChessEngine.Pieces
     {
         public MoveType KingMoves;
 
+        static readonly Position WhiteKingField = new Position("E1");
         static readonly Position WhiteKingBishopField = new Position("F1");
         static readonly Position WhiteKingKnightField = new Position("G1");
         static readonly Position WhiteQueenField = new Position("D1");
         static readonly Position WhiteQueenBishopField = new Position("C1");
         static readonly Position WhiteQueenKnightField = new Position("B1");
 
+        static readonly List<Position> WhiteCastleFields = new List<Position>() { WhiteKingField, WhiteKingBishopField, WhiteKingKnightField };
+        static readonly List<Position> WhiteLongCastleFields = new List<Position>() { WhiteKingField, WhiteQueenField, WhiteQueenBishopField, WhiteQueenKnightField };
+
+        static readonly Position BlackKingField = new Position("E8");
         static readonly Position BlackKingBishopField = new Position("F8");
         static readonly Position BlackKingKnightField = new Position("G8");
         static readonly Position BlackQueenField = new Position("D8");
         static readonly Position BlackQueenBishopField = new Position("C8");
         static readonly Position BlackQueenKnightField = new Position("B8");
+
+        static readonly List<Position> BlackCastleFields = new List<Position>() { BlackKingField, BlackKingBishopField, BlackKingKnightField };
+        static readonly List<Position> BlackLongCastleFields = new List<Position>() { BlackKingField, BlackQueenField, BlackQueenBishopField, BlackQueenKnightField };
+
 
         List<Position> ThreatenedFields;
 
@@ -47,48 +56,27 @@ namespace MyChessEngine.Pieces
                 }
 
             // Castle
-
             if (KingMoves != MoveType.Normal )
             {
                 if (Color == Color.White)
                 {
                     if ((KingMoves & MoveType.WhiteCastle) > 0)
                     {
-                        if ((Board[WhiteKingBishopField] == null) && (Board[WhiteKingKnightField] == null))
+                        if (WhiteCastleFields.All(field => Board[field] == null))
                         {
                             ThreatenedFields ??= GetThreatenedFields(Color.Black);
-
-                            bool thread = false;
-                            for (int i = 4; i < 7; i++)
-                            {
-                                Position field = new Position(0, i);
-                                thread = ThreatenedFields.Contains(field);
-                                if (thread)
-                                    break;
-                            }
-
-                            if (!thread)
-                                moveList.Add(new Move(this.Position, new Position("G1"), this, MoveType.WhiteCastle));
+                            if (WhiteCastleFields.All(field => !ThreatenedFields.Contains(field)))
+                                moveList.Add(new Move(WhiteKingField, WhiteKingKnightField, this, MoveType.WhiteCastle));
                         }
                     }
 
                     if ((KingMoves & MoveType.WhiteCastleLong) != 0)
                     {
-                        if ((Board[WhiteQueenField] == null) && (Board[WhiteQueenBishopField] == null) && (Board[WhiteQueenKnightField] == null))
+                        if (WhiteLongCastleFields.All(field => Board[field] == null))
                         {
                             ThreatenedFields ??= GetThreatenedFields(Color.Black);
-
-                            bool thread = false;
-                            for (int i = 1; i <= 5; i++)
-                            {
-                                Position field = new Position(0, i);
-                                thread = ThreatenedFields.Contains(field);
-                                if (thread)
-                                    break;
-                            }
-
-                            if ((!thread) )
-                                moveList.Add(new Move(this.Position, new Position("C1"), this, MoveType.WhiteCastleLong));
+                            if (WhiteLongCastleFields.All(field => !ThreatenedFields.Contains(field)))
+                                moveList.Add(new Move(WhiteKingField, WhiteQueenBishopField, this, MoveType.WhiteCastleLong));
                         }
                     }
                 }
@@ -96,45 +84,24 @@ namespace MyChessEngine.Pieces
                 {
                     if ((KingMoves & MoveType.BlackCastle) != 0)
                     {
-                        if ((Board[BlackKingBishopField] == null) && (Board[BlackKingKnightField] == null))
+                        if (BlackCastleFields.All(field => Board[field] == null))
                         {
                             ThreatenedFields ??= GetThreatenedFields(Color.White);
-
-                            bool thread = false;
-                            for (int i = 4; i < 7; i++)
-                            {
-                                Position field = new Position(7, i);
-                                thread = ThreatenedFields.Contains(field);
-                                if (thread)
-                                    break;
-                            }
-
-                            if ((!thread))
-                                moveList.Add(new Move(this.Position, new Position("G8"), this, MoveType.BlackCastle));
+                            if (BlackCastleFields.All(field => !ThreatenedFields.Contains(field)))
+                                moveList.Add(new Move(BlackKingField, BlackKingKnightField, this, MoveType.BlackCastle));
                         }
                     }
 
                     if ((KingMoves & MoveType.BlackCastleLong) != 0)
                     {
-                        if ((Board[BlackQueenField] == null) && (Board[BlackQueenBishopField] == null) && (Board[BlackQueenKnightField] == null))
+                        if (BlackLongCastleFields.All(field => Board[field] == null))
                         {
                             ThreatenedFields ??= GetThreatenedFields(Color.White);
-
-                            bool thread = false;
-                            for (int i = 1; i <= 5; i++)
-                            {
-                                Position field = new Position(7, i);
-                                thread = ThreatenedFields.Contains(field);
-                                if (thread)
-                                    break;
-                            }
-
-                            if ((!thread))
-                                moveList.Add(new Move(this.Position, new Position("C8"), this, MoveType.BlackCastleLong));
+                            if (BlackLongCastleFields.All(field => !ThreatenedFields.Contains(field)))
+                                moveList.Add(new Move(BlackKingField, BlackQueenBishopField, this, MoveType.BlackCastleLong));
                         }
                     }
                 }
-
             }
 
             return moveList;

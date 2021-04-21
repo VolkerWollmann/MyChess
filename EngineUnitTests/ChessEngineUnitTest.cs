@@ -149,9 +149,9 @@ namespace EngineUnitTests
             ChessEngine chessEngine = new ChessEngine();
 
 
-            chessEngine["G6"] = new King(Color.White);
+            chessEngine["G6"] = new King(Color.White, MoveType.Normal);
             chessEngine["A8"] = new Rook(Color.White);
-            chessEngine["G8"] = new King(Color.Black);
+            chessEngine["G8"] = new King(Color.Black, MoveType.Normal);
 
             BoardRating boardRating = chessEngine.GetRating(Color.Black);
             Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
