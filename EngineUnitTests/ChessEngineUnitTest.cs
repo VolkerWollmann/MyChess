@@ -220,6 +220,24 @@ namespace EngineUnitTests
             
         }
 
+        [TestMethod]
+        public void CalculateTwoMoveMate()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+
+            chessEngine["G6"] = new King(Color.White, MoveType.Normal);
+            chessEngine["C4"] = new Pawn(Color.White);
+            chessEngine["H8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["B5"] = new Pawn(Color.Black);
+            chessEngine["G5"] = new Rook(Color.White);
+
+            Move move = chessEngine.CalculateMove();
+
+            Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
+            Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
+            Assert.IsTrue(move.Piece is Rook);
+        }
+
         #endregion
     }
 }
