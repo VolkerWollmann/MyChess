@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color} PMT={PossibleMoveType}")]
+    [DebuggerDisplay("T={Type}, C = {Color} P={Position} M={PossibleMoveType}")]
     public class Pawn : Piece
     {
         public MoveType PossibleMoveType { get; set; }
@@ -32,14 +32,12 @@ namespace MyChessEngine.Pieces
                     if (this.Position.Row == 1)
                     {
                         // pwn double step
-                        if (this.Position.Row == 1)
+                        Position newPosition2 = this.Position.GetDeltaPosition(2, 0);
+                        if ((newPosition2 != null) && Board[newPosition2] == null)
                         {
-                            Position newPosition2 = this.Position.GetDeltaPosition(2, 0);
-                            if ((newPosition2 != null) && Board[newPosition2] == null)
-                            {
-                                moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
-                            }
+                            moveList.Add(new Move(this.Position, newPosition2, this, MoveType.PawnDoubleStep));
                         }
+
                     }
                 }
 
@@ -54,13 +52,13 @@ namespace MyChessEngine.Pieces
 
                 // enpasant 
 
-                if (PossibleMoveType == MoveType.EnpassantWhiteLeft)
+                if ((PossibleMoveType & MoveType.EnpassantWhiteLeft)>0)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, -1), this,
                         MoveType.EnpassantWhiteLeft));
                 }
 
-                if (PossibleMoveType == MoveType.EnpassantWhiteRight)
+                if ((PossibleMoveType & MoveType.EnpassantWhiteRight)>0)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(1, +1), this,
                         MoveType.EnpassantWhiteRight));
@@ -102,13 +100,13 @@ namespace MyChessEngine.Pieces
                 }
                 // enpasant 
 
-                if (PossibleMoveType == MoveType.EnpassantBlackLeft)
+                if ((PossibleMoveType & MoveType.EnpassantBlackLeft) > 0)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, +1), this,
                         MoveType.EnpassantBlackLeft));
                 }
 
-                if (PossibleMoveType == MoveType.EnpassantBlackRight)
+                if ((PossibleMoveType & MoveType.EnpassantBlackRight) > 0)
                 {
                     moveList.Add(new Move(this.Position, this.Position.GetDeltaPosition(-1, -1), this,
                         MoveType.EnpassantBlackRight));
@@ -152,7 +150,7 @@ namespace MyChessEngine.Pieces
                         Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + PossibleBlackEnpassants[i].Item1);
                         if (adjacentPawnPosition.IsValidPosition())
                         {
-                            if (Board[adjacentPawnPosition] is Pawn {Color: Color.Black} adjacentPawn) adjacentPawn.PossibleMoveType = PossibleBlackEnpassants[i].Item2;
+                            if (Board[adjacentPawnPosition] is Pawn {Color: Color.Black} adjacentPawn) adjacentPawn.PossibleMoveType |= PossibleBlackEnpassants[i].Item2;
                         }
                     }
                 }
@@ -164,25 +162,23 @@ namespace MyChessEngine.Pieces
                         Position adjacentPawnPosition = new Position(move.End.Row, move.End.Column + PossibleWhiteEnpassants[i].Item1);
                         if (adjacentPawnPosition.IsValidPosition())
                         {
-                            if (Board[adjacentPawnPosition] is Pawn {Color: Color.White} adjacentPawn) adjacentPawn.PossibleMoveType = PossibleWhiteEnpassants[i].Item2;
+                            if (Board[adjacentPawnPosition] is Pawn {Color: Color.White} adjacentPawn) adjacentPawn.PossibleMoveType |= PossibleWhiteEnpassants[i].Item2;
                         }
                     }
                 }
             }
             else
             {
-                switch (move.Type)
+                if ((PossibleMoveType & (MoveType.EnpassantWhiteLeft | MoveType.EnpassantWhiteRight)) > 0)
                 {
-                    case MoveType.EnpassantWhiteLeft:
-                    case MoveType.EnpassantWhiteRight:
-                        Board[new Position(move.End.Row - 1, move.End.Column)] = null;
-                        break;
+                    Board[new Position(move.End.Row - 1, move.End.Column)] = null;
+                    PossibleMoveType = MoveType.Normal;
+                }
 
-                    case MoveType.EnpassantBlackLeft:
-                    case MoveType.EnpassantBlackRight:
-                        Board[new Position(move.End.Row + 1, move.End.Column)] = null;
-                        break;
-
+                if ((PossibleMoveType & (MoveType.EnpassantBlackLeft | MoveType.EnpassantBlackRight)) > 0)
+                {
+                    Board[new Position(move.End.Row + 1, move.End.Column)] = null;
+                    PossibleMoveType = MoveType.Normal;
                 }
             }
 

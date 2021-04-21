@@ -57,9 +57,9 @@ namespace MyChessEngine
         {
             if (Piece != null)
                 return
-                    $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End} T:{Type}";
+                    $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End} MT:{Type}";
             else
-                return $"-           {Start} -> {End} T:{Type}";
+                return $"-           {Start} -> {End} MT:{Type}";
         }
     }
 

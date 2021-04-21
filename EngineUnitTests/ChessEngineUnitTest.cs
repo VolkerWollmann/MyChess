@@ -238,6 +238,24 @@ namespace EngineUnitTests
             Assert.IsTrue(move.Piece is Rook);
         }
 
+        [TestMethod]
+        public void CheckEnpassant()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+
+            chessEngine["G6"] = new King(Color.White, MoveType.Normal);
+            chessEngine["C2"] = new Pawn(Color.White);
+            chessEngine["H8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["B4"] = new Pawn(Color.Black);
+
+            chessEngine.ExecuteMove(new Move("C2", "C4", chessEngine["C2"], MoveType.PawnDoubleStep));
+            Move move = chessEngine.CalculateMove();
+            chessEngine.ExecuteMove(move);
+
+            Assert.IsTrue(move.Type == MoveType.EnpassantBlackLeft);
+
+        }
+
         #endregion
     }
 }
