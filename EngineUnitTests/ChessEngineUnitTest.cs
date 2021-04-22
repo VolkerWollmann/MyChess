@@ -65,38 +65,6 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
-        public void CalculatePawnBeat()
-        {
-            ChessEngine chessEngine = new ChessEngine();
-
-
-            chessEngine["E1"] = new King(Color.White, MoveType.Normal);
-            chessEngine["E4"] = new Pawn(Color.White);
-            chessEngine["G8"] = new King(Color.Black, MoveType.Normal);
-            chessEngine["D5"] = new Pawn(Color.Black);
-
-            Move move = chessEngine.CalculateMove();
-            Assert.IsTrue(move.End.AreEqual(new Position("D5")));
-        }
-
-        [TestMethod]
-        public void CheckStaleMate()
-        {
-            ChessEngine chessEngine = new ChessEngine();
-
-
-            chessEngine["H3"] = new King(Color.White, MoveType.Normal);
-            chessEngine["H2"] = new Pawn(Color.White);
-            chessEngine["H4"] = new Pawn(Color.White);
-            chessEngine["H5"] = new Pawn(Color.Black);
-            chessEngine["H8"] = new King(Color.Black, MoveType.Normal);
-            chessEngine["G8"] = new Rook(Color.Black);
-
-            Move move = chessEngine.CalculateMove();
-            Assert.IsTrue(move.Rating.Evaluation == Evaluation.WhiteStaleMate);
-        }
-
-        [TestMethod]
         public void CalculateOneMoveMate1()
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
@@ -162,6 +130,21 @@ namespace EngineUnitTests
 
             Assert.IsTrue(move.Type == MoveType.EnpassantBlackLeft);
 
+        }
+
+        [TestMethod]
+        public void CalculatePawnBeat()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+
+
+            chessEngine["H1"] = new King(Color.White, MoveType.Normal);
+            chessEngine["E4"] = new Pawn(Color.White);
+            chessEngine["G8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["D5"] = new Pawn(Color.Black);
+
+            Move move = chessEngine.CalculateMove();
+            Assert.IsTrue(move.End.AreEqual(new Position("D5")));
         }
 
         #endregion
