@@ -81,7 +81,7 @@ namespace MyChessEngine
             bool hasMoves = moves.Any();
 
             if ((depth <= 1) || (!hasMoves))
-                return Move.CreateNoMove(GetRating(color, this.IsChecked(color), false));
+                return Move.CreateNoMove(GetRating(color, this.IsChecked(color), hasMoves));
 
             MoveList result = new MoveList();
             
