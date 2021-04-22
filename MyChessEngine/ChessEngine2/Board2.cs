@@ -73,6 +73,8 @@ namespace MyChessEngine
 
         public override Move CalculateMove(int depth, Color color)
         {
+            int localdepth = depth-1;
+
             King king = (King)GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
             if (king == null)
                 return Move.CreateNoMove(GetRating(color, true, false));
@@ -80,8 +82,12 @@ namespace MyChessEngine
             var moves  = base.GetBaseMoveList(color);
             bool hasMoves = moves.Any();
 
-            if ((depth <= 1) || (!hasMoves))
-                return Move.CreateNoMove(GetRating(color, this.IsChecked(color), hasMoves));
+            bool isChecked = this.IsChecked(color);
+            if ((localdepth == 1) && isChecked)
+                localdepth++;
+
+            if ( (!hasMoves) || localdepth==1)
+                    return Move.CreateNoMove(GetRating(color, isChecked, hasMoves));
 
             MoveList result = new MoveList();
             
@@ -91,7 +97,7 @@ namespace MyChessEngine
                 copy.ExecuteMove(move);
                 if (!copy.IsChecked(color))
                 {
-                    Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                    Move resultMove = copy.CalculateMove(localdepth, ChessEngineConstants.NextColorToMove(color));
                     if ((move.Rating == null) ||
                         (new BoardRatingComparer(color).Compare(move.Rating, resultMove.Rating) > 0))
                     {
@@ -104,7 +110,7 @@ namespace MyChessEngine
             }
 
             if (!result.Moves.Any())
-                return Move.CreateNoMove(GetRating(color, this.IsChecked(color), false));
+                return Move.CreateNoMove(GetRating(color, isChecked, false));
 
             return result.GetBestMove(color);
         }
