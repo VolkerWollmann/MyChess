@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace MyChessEngine
 {
-    [DebuggerDisplay("Situation:{Situation} Evaluation:{Evaluation} Weight:{Weight} Depth:{Depth}")]
+    [DebuggerDisplay("ToString()")]
     public class BoardRating
     {
         public Situation Situation;
@@ -19,6 +19,10 @@ namespace MyChessEngine
             Depth = 0;
         }
 
+        public override string ToString()
+        {
+            return $"Sit:{Situation} Eval:{Evaluation} W:{Weight} D:{Depth}";
+        }
     }
 
     /// <summary>
@@ -175,6 +179,7 @@ namespace MyChessEngine
         {
             _Color = color;
         }
+
     }
 
 }

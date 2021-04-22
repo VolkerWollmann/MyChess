@@ -139,7 +139,7 @@ namespace MyChessEngine
             Board2.Counter = 0;
 
             Board.ClearOptimizationVariables();
-            var move = Board.CalculateMove(4, ColorToMove);
+            var move = Board.CalculateMove(5, ColorToMove);
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 

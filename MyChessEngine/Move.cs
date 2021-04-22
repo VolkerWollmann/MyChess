@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using MyChessEngine;
+using MyChessEngine.Pieces;
 
 
 namespace MyChessEngine
@@ -55,11 +58,16 @@ namespace MyChessEngine
 
         public override string ToString()
         {
+            string s="";
             if (Piece != null)
-                return
-                    $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End} MT:{Type}";
+                s += $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End} MT:{Type} ";
             else
-                return $"-           {Start} -> {End} MT:{Type}";
+                s += $"-           {Start} -> {End} MT:{Type} ";
+
+            if (Rating != null)
+                s += "    " + Rating.ToString();
+
+            return s;
         }
     }
 

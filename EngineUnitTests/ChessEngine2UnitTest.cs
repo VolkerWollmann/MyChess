@@ -54,19 +54,6 @@ namespace EngineUnitTests
         }
         
         [TestMethod]
-        public void CheckBoardRatingBlackMate()
-        {
-            ChessEngine2 chessEngine2 = new ChessEngine2();
-
-            chessEngine2["G6"] = new King(Color.White, MoveType.Normal);
-            chessEngine2["A8"] = new Rook(Color.White);
-            chessEngine2["G8"] = new King(Color.Black, MoveType.Normal);
-
-            BoardRating boardRating = chessEngine2.GetRating(Color.Black);
-            Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
-        }
-
-        [TestMethod]
         public void CalculatePawnBeat()
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
@@ -133,5 +120,38 @@ namespace EngineUnitTests
             Assert.IsTrue(move.Type == MoveType.EnpassantBlackLeft);
 
         }
+
+        #region BoardRating
+
+        [TestMethod]
+        public void CheckBoardRatingBlackMate()
+        {
+            ChessEngine2 chessEngine2 = new ChessEngine2();
+
+            chessEngine2["G6"] = new King(Color.White, MoveType.Normal);
+            chessEngine2["A8"] = new Rook(Color.White);
+            chessEngine2["G8"] = new King(Color.Black, MoveType.Normal);
+
+            BoardRating boardRating = chessEngine2.GetRating(Color.Black);
+            Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
+        }
+
+        [TestMethod]
+        public void CheckStartBoardRating()
+        {
+            ChessEngine2 chessEngine2 = new ChessEngine2();
+            chessEngine2.New();
+
+            foreach (Color color in ChessEngineConstants.BothColors)
+            {
+                BoardRating boardRating = chessEngine2.GetRating(color);
+
+                Assert.IsTrue(boardRating.Situation == Situation.Normal);
+                Assert.IsTrue(boardRating.Evaluation == Evaluation.Normal);
+                Assert.AreEqual(boardRating.Weight, 0);
+            }
+        }
+
+        #endregion
     }
 }

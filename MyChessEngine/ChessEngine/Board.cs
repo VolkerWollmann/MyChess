@@ -236,7 +236,10 @@ namespace MyChessEngine
                     Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                     if ((move.Rating == null) ||
                         (new BoardRatingComparer(color).Compare(move.Rating, resultMove.Rating) > 0))
+                    {
                         move.Rating = resultMove.Rating;
+                        move.Rating.Depth++;
+                    }
                     result.Add(move);
                 }
             }
