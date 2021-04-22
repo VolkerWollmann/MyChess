@@ -72,17 +72,17 @@ namespace EngineUnitTests
                 int split = random.Next(0, 100);
                 BoardRating boardRating;
                 if (split <= 5)
-                    boardRating = new BoardRating() { Evaluation = Evaluation.WhiteCheckMate };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.WhiteCheckMate, Depth = random.Next(1,5) };
                 else if (split <= 10)
-                    boardRating = new BoardRating() { Evaluation = Evaluation.BlackCheckMate };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.BlackCheckMate, Depth = random.Next(1, 5) };
                 else if (split <= 15)
-                    boardRating = new BoardRating() { Evaluation = Evaluation.WhiteStaleMate };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.WhiteStaleMate, Depth = random.Next(1, 5) };
                 else if (split <= 20)
-                    boardRating = new BoardRating() { Evaluation = Evaluation.BlackStaleMate };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.BlackStaleMate, Depth = random.Next(1, 5) };
                 else if (split <= 25)
-                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Weight = 0 };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Weight = 0, Depth = random.Next(1, 5) };
                 else
-                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Weight = random.Next(-50, 50) };
+                    boardRating = new BoardRating() { Evaluation = Evaluation.Normal, Weight = random.Next(-50, 50), Depth = random.Next(1, 5) };
 
                 result.Add(boardRating);
             }
