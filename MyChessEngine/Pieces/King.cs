@@ -35,9 +35,7 @@ namespace MyChessEngine.Pieces
         private List<Position> GetThreatenedFields(Color color)
         {
             return this.Board.GetAllPieces(color)
-                .Where(piece =>
-                    (piece.Type !=
-                     PieceType.King)) // King cannot threaten castle, avoid for recursion
+                .Where(piece => (piece.Type != PieceType.King)) // King cannot threaten castle, avoid for recursion
                 .Select((piece => piece.GetMoveList().Moves))
                 .SelectMany(move => move).Select(move => move.End).ToList();
         }
