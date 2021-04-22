@@ -3,18 +3,20 @@ using System.Diagnostics;
 
 namespace MyChessEngine
 {
-    [DebuggerDisplay("Situation:{Situation} Evaluation:{Evaluation} Weight:{Weight}")]
+    [DebuggerDisplay("Situation:{Situation} Evaluation:{Evaluation} Weight:{Weight} Depth:{Depth}")]
     public class BoardRating
     {
         public Situation Situation;
         public Evaluation Evaluation;
         public int Weight;
+        public int Depth;
 
         public BoardRating()
         {
             Situation = Situation.Normal;
             Evaluation = Evaluation.Normal;
             Weight = 0;
+            Depth = 0;
         }
 
     }
@@ -46,7 +48,7 @@ namespace MyChessEngine
 
 
         /// <summary>
-        /// Compare 
+        /// Compare for white
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -56,6 +58,17 @@ namespace MyChessEngine
             int xIndex = WhiteDictionary[x.Evaluation];
             int yIndex = WhiteDictionary[y.Evaluation];
 
+            if ((xIndex == 5) && (yIndex == 5))
+            {
+                if (x.Depth < y.Depth)
+                    return -1;
+
+                if (x.Depth > y.Depth)
+                    return +1;
+
+                return 0;
+            }
+
             if ((xIndex == 4) && (yIndex == 4))
             {
                 if (x.Weight > y.Weight)
@@ -64,6 +77,17 @@ namespace MyChessEngine
                     return 1;
                 if (x.Weight == y.Weight)
                     return 0;
+            }
+
+            if ((xIndex == 1) && (yIndex == 1))
+            {
+                if (x.Depth > y.Depth)
+                    return -1;
+
+                if (x.Depth < y.Depth)
+                    return +1;
+
+                return 0;
             }
 
             if (xIndex > yIndex)
@@ -87,7 +111,7 @@ namespace MyChessEngine
 
 
         /// <summary>
-        /// Compare 
+        /// Compare for black
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -97,6 +121,17 @@ namespace MyChessEngine
             int xIndex = BlackDictionary[x.Evaluation];
             int yIndex = BlackDictionary[y.Evaluation];
 
+            if ((xIndex == 5) && (yIndex == 5))
+            {
+                if (x.Depth < y.Depth)
+                    return -1;
+
+                if (x.Depth > y.Depth)
+                    return +1;
+
+                return 0;
+            }
+
             if ((xIndex == 4) && (yIndex == 4))
             {
                 if (x.Weight < y.Weight)
@@ -105,6 +140,17 @@ namespace MyChessEngine
                     return 1;
                 if (x.Weight == y.Weight)
                     return 0;
+            }
+
+            if ((xIndex == 1) && (yIndex == 1))
+            {
+                if (x.Depth > y.Depth)
+                    return -1;
+
+                if (x.Depth < y.Depth)
+                    return +1;
+
+                return 0;
             }
 
             if (xIndex > yIndex)

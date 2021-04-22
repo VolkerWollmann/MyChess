@@ -109,7 +109,7 @@ namespace MyChessEngine
         }
 
 
-        public Board Copy()
+        public virtual Board Copy()
         {
             Board copy = new Board();
 
@@ -160,18 +160,18 @@ namespace MyChessEngine
             return moveList;
         }
 
-        private List<Move> GetBaseMoveList(Color color)
+        internal List<Move> GetBaseMoveList(Color color)
         {
             return GetAllPieces(color).Select((piece => piece.GetMoveList().Moves)).SelectMany(move => move).ToList();
         }
 
-        private bool IsChecked(Color color)
+        internal bool IsChecked(Color color)
         {
             King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
             return king?.IsChecked() ?? true;
         }
 
-        public BoardRating GetRating(Color color)
+        public virtual BoardRating GetRating(Color color)
         {
             Counter++;
 
@@ -217,7 +217,7 @@ namespace MyChessEngine
             return rating;
         }
 
-        public Move CalculateMove(int depth, Color color)
+        public virtual Move CalculateMove(int depth, Color color)
         {
             King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
 
