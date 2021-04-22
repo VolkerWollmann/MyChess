@@ -109,8 +109,17 @@ namespace MyChessEngine
                 }
             }
 
+            
             if (!result.Moves.Any())
                 return Move.CreateNoMove(GetRating(color, isChecked, false));
+            else
+            {
+                int moveCount = result.Moves.Count;
+                foreach (var move1 in result.Moves.Where(move => move.Rating.Evaluation == Evaluation.Normal))
+                {
+                    move1.Rating.Weight += (color == Color.White ? 1 : -1) * moveCount;
+                };
+            }
 
             return result.GetBestMove(color);
         }
