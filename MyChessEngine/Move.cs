@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using MyChessEngine;
-using MyChessEngine.Pieces;
 
+using MyChessEngine.Rating;
 
 namespace MyChessEngine
 {
@@ -75,10 +73,10 @@ namespace MyChessEngine
     {
         public int Compare(Move x, Move y) => _Comparer.Compare(x?.Rating, y?.Rating);
 
-        private readonly BoardRatingComparer _Comparer;
+        private readonly IBoardRatingComparer _Comparer;
         public MoveSorter(Color color)
         {
-            _Comparer = new BoardRatingComparer(color);
+            _Comparer = BoardRatingComparerFactory.GetComparer(color);
         }
 
     }

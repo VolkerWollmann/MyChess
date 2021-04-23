@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyChessEngine.Rating;
 using MyChessEngine.Pieces;
 
 
@@ -226,6 +227,7 @@ namespace MyChessEngine
                 return Move.CreateNoMove(GetRating(color));
 
             MoveList result = new MoveList();
+            IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
 
             foreach (Move move in moves.Moves)
             {
@@ -235,7 +237,7 @@ namespace MyChessEngine
                 {
                     Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                     if ((move.Rating == null) ||
-                        (new BoardRatingComparer(color).Compare(move.Rating, resultMove.Rating) > 0))
+                        (comparer.Compare(move.Rating, resultMove.Rating) > 0))
                     {
                         move.Rating = resultMove.Rating;
                         move.Rating.Depth++;

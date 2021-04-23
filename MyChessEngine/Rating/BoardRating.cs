@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace MyChessEngine
+namespace MyChessEngine.Rating
 {
     [DebuggerDisplay("ToString()")]
     public class BoardRating
@@ -25,6 +25,12 @@ namespace MyChessEngine
         }
     }
 
+    #region IBoardRatingComparer
+    public interface IBoardRatingComparer : IComparer<BoardRating>
+    {
+
+    }
+
     /// <summary>
     /// ![CDATA[
     /// Pre order by Evaluation, Value (e.g for White )
@@ -38,15 +44,15 @@ namespace MyChessEngine
     ///         WhiteCheckMate
     /// ]]>
     /// </summary>
-    public class BoardRatingComparer : IComparer<BoardRating>
+    public class WhiteBoardRatingComparer : IBoardRatingComparer
     {
         private static readonly Dictionary<Evaluation, int> WhiteDictionary = new Dictionary<Evaluation, int>()
         {
             {Evaluation.BlackCheckMate, 5},
-            {Evaluation.Normal, 4 },
-            {Evaluation.WhiteStaleMate,3 },
-            {Evaluation.BlackStaleMate,2 },
-            {Evaluation.WhiteCheckMate,1},
+            {Evaluation.Normal, 4},
+            {Evaluation.WhiteStaleMate, 3},
+            {Evaluation.BlackStaleMate, 2},
+            {Evaluation.WhiteCheckMate, 1},
 
         };
 
@@ -57,7 +63,7 @@ namespace MyChessEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns>-1 for x greater y</returns>
-        public int CompareWhite(BoardRating x, BoardRating y)
+        public int Compare(BoardRating x, BoardRating y)
         {
             int xIndex = WhiteDictionary[x.Evaluation];
             int yIndex = WhiteDictionary[y.Evaluation];
@@ -102,6 +108,11 @@ namespace MyChessEngine
 
             return 0;
         }
+    }
+
+
+    public class BlackBoardRatingComparer : IBoardRatingComparer
+    {
 
         private static readonly Dictionary<Evaluation, int> BlackDictionary = new Dictionary<Evaluation, int>()
         {
@@ -120,7 +131,7 @@ namespace MyChessEngine
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns>-1 for x greater y</returns>
-        public int CompareBlack(BoardRating x, BoardRating y)
+        public int Compare(BoardRating x, BoardRating y)
         {
             int xIndex = BlackDictionary[x.Evaluation];
             int yIndex = BlackDictionary[y.Evaluation];
@@ -165,21 +176,22 @@ namespace MyChessEngine
 
             return 0;
         }
-
-        public int Compare(BoardRating x, BoardRating y)
-        {
-            if (_Color == Color.White)
-                return CompareWhite(x, y);
-            else
-                return CompareBlack(x, y);
-        }
-
-        private readonly Color _Color;
-        public BoardRatingComparer(Color color)
-        {
-            _Color = color;
-        }
-
     }
 
+    public class BoardRatingComparerFactory
+    {
+        private static readonly Dictionary<Color, IBoardRatingComparer> Comparer =
+            new Dictionary<Color, IBoardRatingComparer>
+            {
+                {Color.White, new WhiteBoardRatingComparer()},
+                {Color.Black, new BlackBoardRatingComparer()}
+            };
+
+        public static IBoardRatingComparer GetComparer(Color color)
+        {
+            return Comparer[color];
+        }
+    }
+
+    #endregion
 }

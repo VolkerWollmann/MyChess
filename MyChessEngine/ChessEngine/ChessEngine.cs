@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MyChessEngine.Pieces;
+using MyChessEngine.Rating;
 
 namespace MyChessEngine
 {

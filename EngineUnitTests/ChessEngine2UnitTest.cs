@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngine;
 using MyChessEngine.Pieces;
+using MyChessEngine.Rating;
 
 namespace EngineUnitTests
 {

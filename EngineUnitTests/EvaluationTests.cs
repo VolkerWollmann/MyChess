@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngine;
+using MyChessEngine.Rating;
 using MyChessEngine.Pieces;
 
 
@@ -56,7 +57,7 @@ namespace EngineUnitTests
             moveList.Sort(Color.White);
             var ratingList = moveList.Moves.Select(move => move.Rating).ToList();
 
-            BoardRatingComparer boardRatingComparer = new BoardRatingComparer(Color.White);
+            IBoardRatingComparer boardRatingComparer = BoardRatingComparerFactory.GetComparer(Color.White);
             for (int i = 0; i < ratingList.Count - 1; i++)
                 Assert.IsTrue(boardRatingComparer.Compare(ratingList[i], ratingList[i + 1]) <= 0);
 
@@ -95,7 +96,7 @@ namespace EngineUnitTests
         {
             List<BoardRating> ratingList = CreateBoardRatingList();
 
-            BoardRatingComparer boardRatingWhiteComparer = new BoardRatingComparer(Color.White);
+            IBoardRatingComparer boardRatingWhiteComparer = BoardRatingComparerFactory.GetComparer(Color.White);
 
             var orderedListWhite = ratingList.Select(rating => rating).ToList();
             orderedListWhite.Sort(boardRatingWhiteComparer);
@@ -105,9 +106,7 @@ namespace EngineUnitTests
             Assert.IsTrue(pairsWhite.All(t =>
                 (t.Item2 == null) || boardRatingWhiteComparer.Compare(t.Item1, t.Item2) <= 0));
 
-
-
-            BoardRatingComparer boardRatingBlackComparer = new BoardRatingComparer(Color.Black);
+            IBoardRatingComparer boardRatingBlackComparer = BoardRatingComparerFactory.GetComparer(Color.Black);
 
             var orderedListBlack = ratingList.Select(rating => rating).ToList();
             orderedListBlack.Sort(boardRatingBlackComparer);

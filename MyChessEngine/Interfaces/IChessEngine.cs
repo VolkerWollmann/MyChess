@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using MyChessEngine.Pieces;
+using MyChessEngine.Rating;
 
 namespace MyChessEngine
 { 
