@@ -144,8 +144,9 @@ namespace MyChessEngine
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 
-            _Message = move + " Time:" + ts + " Situation:" + move.Rating.Situation +
-                       " Evaluation:" + move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:";
+            _Message = move + " Time:" + ts + Environment.NewLine +
+                       " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
+                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board2.Counter;
 
             return move;
         }

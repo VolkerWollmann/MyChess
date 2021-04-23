@@ -23,9 +23,6 @@ namespace MyChessEngine
             return copy;
         }
 
-
-        
-
         public BoardRating GetRating(Color color, bool isChecked, bool moves)
         {
             Counter++;

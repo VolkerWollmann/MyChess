@@ -5,7 +5,7 @@ using MyChessEngine.Rating;
 
 namespace MyChessEngine
 {
-    [DebuggerDisplay("{ToString()}")]
+    [DebuggerDisplay("{ToString()} Rating:{Rating}")]
     public class Move 
     {
         public Position Start;
@@ -61,9 +61,6 @@ namespace MyChessEngine
                 s += $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End} MT:{Type} ";
             else
                 s += $"-           {Start} -> {End} MT:{Type} ";
-
-            if (Rating != null)
-                s += "    " + Rating.ToString();
 
             return s;
         }

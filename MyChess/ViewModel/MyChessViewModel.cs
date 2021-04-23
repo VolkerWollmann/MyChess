@@ -130,7 +130,7 @@ namespace MyChess.ViewModel
             #endregion
 
             #region Engine
-            ChessEngine = new ChessEngine();
+            ChessEngine = new ChessEngine2();
             #endregion
 
             #region Menu
