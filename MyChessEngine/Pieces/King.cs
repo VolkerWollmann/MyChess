@@ -35,23 +35,31 @@ namespace MyChessEngine.Pieces
         private List<Position> GetThreatenedFields(Color color)
         {
             return this.Board.GetAllPieces(color)
-                .Where(piece => (piece.Type != PieceType.King)) // King cannot threaten castle, avoid for recursion
+                .Where(piece => (piece.Type != PieceType.King)) // King is very unlikely to threaten castle, avoid for recursion
                 .Select((piece => piece.GetMoveList().Moves))
                 .SelectMany(move => move).Select(move => move.End).ToList();
         }
 
+
         #region IEnginePiece
+
+        static readonly int[,] Delta = new int[,]
+        {
+            { -1, -1 }, { -1, 0 }, {  -1, +1 }, 
+            {  0, -1 },            {   0, +1 },
+            { +1, -1 }, { +1, 0 }, {  +1, +1 }
+        };
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();
 
-            for (int row = -1; row <= 1; row++)
-                for (int column = -1; column <= 1; column++)
-                {
-                    Position newPosition = this.Position.GetDeltaPosition(row, column);
+            
+            for (int i=0; i< 8; i++)
+            {
+                    Position newPosition = this.Position.GetDeltaPosition(Delta[i, 0], Delta[i, 1]);
                     if (newPosition != null)
                         AddPosition(moveList, newPosition);
-                }
+            }
 
             // Castle
             if (KingMoves != MoveType.Normal )
