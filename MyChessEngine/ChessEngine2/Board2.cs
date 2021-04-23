@@ -90,8 +90,7 @@ namespace MyChessEngine
                     localdepth++;
                 else
                 {
-                    if (!hasMoves)
-                        return Move.CreateNoMove(GetRating(color, false, false));
+                    return Move.CreateNoMove(GetRating(color, false, hasMoves));
                 }
             }
             
