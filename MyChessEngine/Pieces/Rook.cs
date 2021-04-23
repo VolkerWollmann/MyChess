@@ -55,7 +55,7 @@ namespace MyChessEngine.Pieces
             if (!HasMoved)
             {
                 HasMoved = true;
-                if (Board.GetAllPieces(Color).First(piece => (piece.Type == PieceType.King)) is King myKing)
+                if (Board[Board.KingPositions[this.Color]] is King myKing)
                 {
                     if ((this.Position.Row == 0) || (this.Position.Column == 0))
                         myKing.KingMoves &= ( MoveType.WhiteCastle | MoveType.Normal);

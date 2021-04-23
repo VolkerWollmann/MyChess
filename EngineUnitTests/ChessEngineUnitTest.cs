@@ -68,13 +68,13 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOneMoveMate1()
         {
-            ChessEngine2 chessEngine2 = new ChessEngine2();
+            ChessEngine chessEngine = new ChessEngine();
 
-            chessEngine2["G6"] = new King(Color.White, MoveType.Normal);
-            chessEngine2["H8"] = new King(Color.Black, MoveType.Normal);
-            chessEngine2["A1"] = new Rook(Color.White);
+            chessEngine["G6"] = new King(Color.White, MoveType.Normal);
+            chessEngine["H8"] = new King(Color.Black, MoveType.Normal);
+            chessEngine["A1"] = new Rook(Color.White);
 
-            Move move = chessEngine2.CalculateMove();
+            Move move = chessEngine.CalculateMove();
 
             Assert.IsTrue(move.End.AreEqual(new Position("A8")));
 

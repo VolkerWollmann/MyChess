@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Markup;
 using MyChessEngine.Rating;
 using MyChessEngine.Pieces;
 
@@ -28,6 +29,8 @@ namespace MyChessEngine
                 {
                     Pieces[row, column].Board = this;
                     Pieces[row, column].Position = new Position(row, column);
+                    if (value is King king)
+                        this.KingPositions[king.Color] = king.Position;
                 }
             }
         }
@@ -35,16 +38,8 @@ namespace MyChessEngine
 
         public Piece this[Position position]
         {
-            get => Pieces[position.Row, position.Column];
-            set
-            {
-                Pieces[position.Row, position.Column] = value;
-                if (value != null)
-                {
-                    Pieces[position.Row, position.Column].Board = this;
-                    Pieces[position.Row, position.Column].Position = position;
-                }
-            }
+            get => (position != null) ? Pieces[position.Row, position.Column] : null;
+            set => this[position.Row, position.Column] = value;
         }
 
         public Piece this[string positionString]
@@ -121,6 +116,11 @@ namespace MyChessEngine
                 copy[i, j] = piece?.Copy();
             }
 
+            foreach(Color color in ChessEngineConstants.BothColors)
+            {
+                copy.KingPositions[color] = GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King)?.Position;
+            }
+            
             return copy;
         }
 
@@ -166,10 +166,11 @@ namespace MyChessEngine
             return GetAllPieces(color).Select((piece => piece.GetMoveList().Moves)).SelectMany(move => move).ToList();
         }
 
+        public Dictionary<Color, Position> KingPositions = new Dictionary<Color, Position> {{Color.White, null}, {Color.Black, null}};
+
         internal bool IsChecked(Color color)
         {
-            King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
-            return king?.IsChecked() ?? true;
+            return (this[KingPositions[color]] as King)?.IsChecked() ?? true;
         }
 
         public virtual BoardRating GetRating(Color color)
@@ -178,9 +179,7 @@ namespace MyChessEngine
 
             BoardRating rating = new BoardRating();
 
-            King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
-
-            if (king == null)
+            if (this[KingPositions[color]] == null)
             {
                 rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
                 rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
@@ -220,10 +219,8 @@ namespace MyChessEngine
 
         public virtual Move CalculateMove(int depth, Color color)
         {
-            King king = (King) GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
-
             var moves = GetMoveList(color);
-            if ((depth <= 1) || (king == null) || (!moves.Moves.Any()))
+            if ((depth <= 1) || (this[KingPositions[color]] == null) || (!moves.Moves.Any()))
                 return Move.CreateNoMove(GetRating(color));
 
             MoveList result = new MoveList();
