@@ -68,34 +68,39 @@ namespace MyChessEngine.Rating
             int xIndex = WhiteDictionary[x.Evaluation];
             int yIndex = WhiteDictionary[y.Evaluation];
 
-            if ((xIndex == 5) && (yIndex == 5))
+            if (xIndex == yIndex)
             {
-                if (x.Depth < y.Depth)
-                    return -1;
+                if (xIndex == 4)
+                {
+                    if (x.Weight > y.Weight)
+                        return -1;
+                    if (x.Weight < y.Weight)
+                        return 1;
+                    if (x.Weight == y.Weight)
+                        return 0;
+                }
 
-                if (x.Depth > y.Depth)
-                    return +1;
+                if (xIndex == 5)
+                {
+                    if (x.Depth < y.Depth)
+                        return -1;
 
-                return 0;
-            }
+                    if (x.Depth > y.Depth)
+                        return +1;
 
-            if ((xIndex == 4) && (yIndex == 4))
-            {
-                if (x.Weight > y.Weight)
-                    return -1;
-                if (x.Weight < y.Weight)
-                    return 1;
-                if (x.Weight == y.Weight)
                     return 0;
-            }
+                }
 
-            if ((xIndex == 1) && (yIndex == 1))
-            {
-                if (x.Depth > y.Depth)
-                    return -1;
+                if (xIndex == 1)
+                {
+                    if (x.Depth > y.Depth)
+                        return -1;
 
-                if (x.Depth < y.Depth)
-                    return +1;
+                    if (x.Depth < y.Depth)
+                        return +1;
+
+                    return 0;
+                }
 
                 return 0;
             }
@@ -136,37 +141,43 @@ namespace MyChessEngine.Rating
             int xIndex = BlackDictionary[x.Evaluation];
             int yIndex = BlackDictionary[y.Evaluation];
 
-            if ((xIndex == 5) && (yIndex == 5))
+            if (xIndex == yIndex)
             {
-                if (x.Depth < y.Depth)
-                    return -1;
+                if (xIndex == 4)
+                {
+                    if (x.Weight < y.Weight)
+                        return -1;
+                    if (x.Weight > y.Weight)
+                        return 1;
+                    if (x.Weight == y.Weight)
+                        return 0;
+                }
 
-                if (x.Depth > y.Depth)
-                    return +1;
+                if (xIndex == 5)
+                {
+                    if (x.Depth < y.Depth)
+                        return -1;
 
-                return 0;
-            }
+                    if (x.Depth > y.Depth)
+                        return +1;
 
-            if ((xIndex == 4) && (yIndex == 4))
-            {
-                if (x.Weight < y.Weight)
-                    return -1;
-                if (x.Weight > y.Weight)
-                    return 1;
-                if (x.Weight == y.Weight)
                     return 0;
-            }
+                }
 
-            if ((xIndex == 1) && (yIndex == 1))
-            {
-                if (x.Depth > y.Depth)
-                    return -1;
+                if (xIndex == 1)
+                {
+                    if (x.Depth > y.Depth)
+                        return -1;
 
-                if (x.Depth < y.Depth)
-                    return +1;
+                    if (x.Depth < y.Depth)
+                        return +1;
+
+                    return 0;
+                }
 
                 return 0;
             }
+
 
             if (xIndex > yIndex)
                 return -1;
