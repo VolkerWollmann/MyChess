@@ -80,15 +80,21 @@ namespace MyChessEngine
                 return Move.CreateNoMove(GetRating(color, true, false));
 
             var moves  = base.GetBaseMoveList(color);
+
             bool hasMoves = moves.Any();
-
             bool isChecked = this.IsChecked(color);
-            if ((localdepth == 1) && isChecked)
-                localdepth++;
 
-            if ( (!hasMoves) || localdepth==1)
-                    return Move.CreateNoMove(GetRating(color, isChecked, hasMoves));
-
+            if (localdepth == 1)
+            {
+                if (isChecked)
+                    localdepth++;
+                else
+                {
+                    if (!hasMoves)
+                        return Move.CreateNoMove(GetRating(color, false, false));
+                }
+            }
+            
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
 

@@ -87,12 +87,11 @@ namespace MyChessEngine
             Position.AllPositions().ForEach(position =>
             {
                 Piece piece = this[position];
-                if ((piece != null) && piece.Color == color)
+                if (piece?.Color == color)
                     pieces.Add(piece);
             });
 
             _AllPiecesByColor.Add(color, pieces);
-
             return pieces;
         }
 
