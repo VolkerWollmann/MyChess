@@ -22,7 +22,7 @@ namespace MyChessEngine
 
             foreach (Color color in ChessEngineConstants.BothColors)
             {
-                copy.KingPositions[color] = GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King)?.Position;
+                copy.Kings[color] = (King)copy.GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
             }
 
             return copy;
@@ -34,7 +34,7 @@ namespace MyChessEngine
 
             BoardRating rating = new BoardRating();
 
-            if (this[KingPositions[color]] == null)
+            if (Kings[color] == null)
             {
                 rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
                 rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
@@ -76,7 +76,7 @@ namespace MyChessEngine
         {
             int localdepth = depth-1;
 
-            if (this[KingPositions[color]] == null)
+            if (Kings[color] == null)
                 return Move.CreateNoMove(GetRating(color, true, false));
 
             var moves  = base.GetBaseMoveList(color);

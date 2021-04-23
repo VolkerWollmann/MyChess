@@ -49,25 +49,27 @@ namespace MyChessEngine.Pieces
 
         public override bool ExecuteMove(Move move)
         {
-            Board[move.End] = this;
-            Board[move.Start] = null;
+            base.ExecuteMove(move);
 
             if (!HasMoved)
             {
                 HasMoved = true;
-                if (Board[Board.KingPositions[this.Color]] is King myKing)
+                if (Board.Kings[this.Color] is King myKing)
                 {
-                    if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                        myKing.KingMoves &= ( MoveType.WhiteCastle | MoveType.Normal);
+                    if (myKing.Color == Color)
+                    {
+                        if ((this.Position.Row == 0) || (this.Position.Column == 0))
+                            myKing.KingMoves &= (MoveType.WhiteCastle | MoveType.Normal);
 
-                    if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                        myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                        if ((this.Position.Row == 0) || (this.Position.Column == 7))
+                            myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
 
-                    if ((this.Position.Row == 7) || (this.Position.Column == 0))
-                        myKing.KingMoves &= (MoveType.BlackCastle | MoveType.Normal);
+                        if ((this.Position.Row == 7) || (this.Position.Column == 0))
+                            myKing.KingMoves &= (MoveType.BlackCastle | MoveType.Normal);
 
-                    if ((this.Position.Row == 7) || (this.Position.Column == 7))
-                        myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                        if ((this.Position.Row == 7) || (this.Position.Column == 7))
+                            myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                    }
                 }
             }
 

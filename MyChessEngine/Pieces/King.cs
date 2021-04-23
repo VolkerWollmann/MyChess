@@ -151,8 +151,7 @@ namespace MyChessEngine.Pieces
                     break;
 
                 default:
-                    Board[move.End] = this;
-                    Board[move.Start] = null;
+                    base.ExecuteMove(move);
                     break;
             }
 

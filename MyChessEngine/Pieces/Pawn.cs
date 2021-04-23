@@ -133,8 +133,6 @@ namespace MyChessEngine.Pieces
 
         public override bool ExecuteMove(Move move)
         {
-            Board[move.End] = Board[move.Start];
-            Board[move.Start] = null;
             if (move.End.Row == 7 || move.End.Row == 0)
             {
                 // promotion
@@ -169,20 +167,21 @@ namespace MyChessEngine.Pieces
             }
             else
             {
-                if ((PossibleMoveType & (MoveType.EnpassantWhiteLeft | MoveType.EnpassantWhiteRight)) > 0)
+                if (((PossibleMoveType & (MoveType.EnpassantWhiteLeft | MoveType.EnpassantWhiteRight)) & move.Type) > 0)
                 {
                     Board[new Position(move.End.Row - 1, move.End.Column)] = null;
                     PossibleMoveType = MoveType.Normal;
                 }
 
-                if ((PossibleMoveType & (MoveType.EnpassantBlackLeft | MoveType.EnpassantBlackRight)) > 0)
+                if (((PossibleMoveType & (MoveType.EnpassantBlackLeft | MoveType.EnpassantBlackRight)) & move.Type) > 0)
                 {
                     Board[new Position(move.End.Row + 1, move.End.Column)] = null;
+                    Board.ClearAllPieces();
                     PossibleMoveType = MoveType.Normal;
                 }
             }
 
-            return true;
+            return base.ExecuteMove(move); ;
         }
 
         public Pawn(Color color, MoveType possibleMoveType) : base(color, PieceType.Pawn)

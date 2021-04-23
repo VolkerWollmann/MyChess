@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 
 namespace MyChessEngine.Pieces
 {
@@ -44,6 +45,14 @@ namespace MyChessEngine.Pieces
 
         public virtual bool ExecuteMove(Move move)
         {
+            if (Board[move.End] is King king)
+                Board.Kings[king.Color] = null;
+
+            foreach (var piece1 in Board.GetAllPieces(move.Piece.Color).Where(piece => piece is Pawn))
+            {
+                ((Pawn) piece1).PossibleMoveType = MoveType.Normal;
+            }
+
             Board[move.End] = Board[move.Start];
             Board[move.Start] = null;
 
