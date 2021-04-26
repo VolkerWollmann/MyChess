@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace MyChessEngine.Rating
 {
-    [DebuggerDisplay("ToString()")]
+    [DebuggerDisplay("{ToString()}")]
     public class BoardRating
     {
         public Situation Situation;
