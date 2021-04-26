@@ -81,15 +81,13 @@ namespace MyChessEngine
             bool hasMoves = moves.Any();
             bool isChecked = this.IsChecked(color);
 
-            int localdepth = depth - 1;
-            if (localdepth == 1)
+            int localDepth = depth - 1;
+            if (localDepth == 1)
             {
                 if (isChecked)
-                    localdepth++;
+                    localDepth++;
                 else
-                {
                     return Move.CreateNoMove(GetRating(color, false, hasMoves));
-                }
             }
             
             MoveList result = new MoveList();
@@ -101,12 +99,23 @@ namespace MyChessEngine
                 copy.ExecuteMove(move);
                 if (!copy.IsChecked(color))
                 {
-                    Move resultMove = copy.CalculateMove(localdepth, ChessEngineConstants.NextColorToMove(color));
+                    Move resultMove = copy.CalculateMove(localDepth, ChessEngineConstants.NextColorToMove(color));
                     if ((move.Rating == null) ||
                         (comparer.Compare(move.Rating, resultMove.Rating) > 0))
                     {
                         move.Rating = resultMove.Rating;
                         move.Rating.Depth++;
+                    }
+
+                    if (color == Color.White)
+                    {
+                        if (move.Rating.Situation == Situation.WhiteVictory && move.Rating.Depth == 1)
+                            return move;
+                    }
+                    else
+                    {
+                        if (move.Rating.Situation == Situation.BlackVictory && move.Rating.Depth == 1)
+                        return move;
                     }
 
                     result.Add(move);
