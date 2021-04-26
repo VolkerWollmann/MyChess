@@ -127,7 +127,7 @@ namespace MyChessEngine
             return copy;
         }
 
-        public bool ExecuteMove(Move move)
+        public virtual bool ExecuteMove(Move move)
         {
             if (this[move.Start] == null)
                 throw new Exception("Move not Existing piece.");

@@ -28,6 +28,48 @@ namespace MyChessEngine
             return copy;
         }
 
+        private Move LastMove;
+        private bool UndoPossible = false;
+
+        private void MemorizeMove(Move move)
+        {
+            LastMove = move;
+            UndoPossible = true;
+            if ((this[move.End] != null) ||
+                (move.Type == MoveType.PawnDoubleStep) ||
+                (move.Type == MoveType.Promotion) ||
+                (move.Piece is King king && king.KingMoves != MoveType.Normal) ||
+                (move.Piece is Rook rook && rook.HasMoved == false))
+            {
+                LastMove = null;
+                UndoPossible = false;
+            }
+        }
+        public Board2 UndoLastMove()
+        {
+            if (UndoPossible)
+            {
+                this[LastMove.Start] = this[LastMove.End];
+                this[LastMove.End] = null;
+                UndoPossible = false;
+                LastMove = null;
+                return this;
+            }
+            else
+            {
+                UndoPossible = false;
+                LastMove = null;
+                return null;
+            }
+        }
+
+        public override bool ExecuteMove(Move move)
+        {
+            MemorizeMove(move);
+            return base.ExecuteMove(move);
+        }
+
+
         public BoardRating GetRating(Color color, bool isChecked, bool moves)
         {
             Counter++;
@@ -68,6 +110,8 @@ namespace MyChessEngine
             GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.Weight; });
 
             rating.Weight = boardWeight;
+            if (rating.Weight >= 30010)
+                ;
 
             return rating;
         }
@@ -93,9 +137,9 @@ namespace MyChessEngine
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
 
+            Board2 copy = this.Copy();
             foreach (Move move in moves)
             {
-                Board copy = this.Copy();
                 copy.ExecuteMove(move);
                 if (!copy.IsChecked(color))
                 {
@@ -107,19 +151,13 @@ namespace MyChessEngine
                         move.Rating.Depth++;
                     }
 
-                    if (color == Color.White)
-                    {
-                        if (move.Rating.Situation == Situation.WhiteVictory && move.Rating.Depth == 1)
-                            return move;
-                    }
-                    else
-                    {
-                        if (move.Rating.Situation == Situation.BlackVictory && move.Rating.Depth == 1)
-                        return move;
-                    }
-
                     result.Add(move);
                 }
+
+                copy = copy.UndoLastMove();
+                if (copy == null)
+                    copy = this.Copy();
+
             }
 
             
