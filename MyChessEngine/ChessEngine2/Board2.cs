@@ -74,16 +74,14 @@ namespace MyChessEngine
 
         public override Move CalculateMove(int depth, Color color)
         {
-            int localdepth = depth-1;
-
             if (Kings[color] == null)
                 return Move.CreateNoMove(GetRating(color, true, false));
 
             var moves  = base.GetBaseMoveList(color);
-
             bool hasMoves = moves.Any();
             bool isChecked = this.IsChecked(color);
 
+            int localdepth = depth - 1;
             if (localdepth == 1)
             {
                 if (isChecked)
