@@ -48,7 +48,7 @@ namespace MyChessEngine.Pieces
             if (Board[move.End] is King king)
                 Board.Kings[king.Color] = null;
 
-            foreach (var piece1 in Board.GetAllPieces(move.Piece.Color).Where(piece => piece is Pawn))
+            foreach (var piece1 in Board.GetAllPieces(move.Piece.Color).Where(piece => piece.Type == PieceType.Pawn))
             {
                 ((Pawn) piece1).PossibleMoveType = MoveType.Normal;
             }
