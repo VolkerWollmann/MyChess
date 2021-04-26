@@ -36,8 +36,8 @@ namespace MyChessEngine
             LastMove = move;
             UndoPossible = true;
             if ((this[move.End] != null) ||
-                (move.Type == MoveType.PawnDoubleStep) ||
-                (move.Type == MoveType.Promotion) ||
+                (this.GetAllPieces(Color.White).Any( p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
+                (this.GetAllPieces(Color.Black).Any(p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
                 (move.Piece is King king && king.KingMoves != MoveType.Normal) ||
                 (move.Piece is Rook rook && rook.HasMoved == false))
             {
@@ -110,9 +110,6 @@ namespace MyChessEngine
             GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.Weight; });
 
             rating.Weight = boardWeight;
-            if (rating.Weight >= 30010)
-                ;
-
             return rating;
         }
 
