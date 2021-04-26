@@ -47,6 +47,10 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
+        static readonly Position WhiteKingRookField = new Position("H1");
+        static readonly Position WhiteQueenRookField = new Position("A1");
+        static readonly Position BlackKingRookField = new Position("H8");
+        static readonly Position BlackQueenRookField = new Position("A8");
         public override bool ExecuteMove(Move move)
         {
             base.ExecuteMove(move);
@@ -56,19 +60,27 @@ namespace MyChessEngine.Pieces
                 HasMoved = true;
                 if (Board.Kings[this.Color] is King myKing)
                 {
-                    if (myKing.Color == Color)
+                    if ((myKing.Color == Color.White) )
                     {
-                        if ((this.Position.Row == 0) || (this.Position.Column == 0))
-                            myKing.KingMoves &= (MoveType.WhiteCastle | MoveType.Normal);
+                        if (myKing.KingMoves != MoveType.Normal)
+                        {
+                            if (this.Position.AreEqual(WhiteQueenRookField))
+                                myKing.KingMoves &= (MoveType.WhiteCastle | MoveType.Normal);
 
-                        if ((this.Position.Row == 0) || (this.Position.Column == 7))
-                            myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                            if (this.Position.AreEqual(WhiteKingRookField))
+                                myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                        }
+                    }
+                    else
+                    {
+                        if (myKing.KingMoves != MoveType.Normal)
+                        {
+                            if (this.Position.AreEqual(BlackQueenRookField))
+                                myKing.KingMoves &= (MoveType.BlackCastle | MoveType.Normal);
 
-                        if ((this.Position.Row == 7) || (this.Position.Column == 0))
-                            myKing.KingMoves &= (MoveType.BlackCastle | MoveType.Normal);
-
-                        if ((this.Position.Row == 7) || (this.Position.Column == 7))
-                            myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                            if (this.Position.AreEqual(BlackKingRookField))
+                                myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
+                        }
                     }
                 }
             }
