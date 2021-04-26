@@ -53,6 +53,8 @@ namespace MyChessEngine
                 this[LastMove.End] = null;
                 UndoPossible = false;
                 LastMove = null;
+                this.Kings[Color.White].ResetIsChecked();
+                this.Kings[Color.Black].ResetIsChecked();
                 return this;
             }
             else

@@ -184,13 +184,19 @@ namespace MyChessEngine.Pieces
                     .Select((piece => piece.GetMoveList().Moves))
                     .SelectMany(move => move);
 
-                var threatenedFields = l.Select(move => move.End).ToList();
+                var threatenedFields = l.Select(move => move.End);
 
                 _IsChecked = threatenedFields.Any(position => position.AreEqual(Position));
                 _IsCheckedCalulated = true;
             }
 
             return _IsChecked;
+        }
+
+        public void ResetIsChecked()
+        {
+            _IsCheckedCalulated = false;
+            _IsChecked = false;
         }
 
         public King(Color color, MoveType kingMoves) : base(color,

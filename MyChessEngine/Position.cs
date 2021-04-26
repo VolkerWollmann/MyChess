@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Text;
 
@@ -62,11 +63,15 @@ namespace MyChessEngine
 
         public Position GetDeltaPosition(int deltaRow, int deltaColumn)
         {
-            Position position = new Position(this.Row + deltaRow, this.Column + deltaColumn);
-            if (!position.IsValidPosition())
+            int newRow = Row + deltaRow;
+            if ((newRow < 0) || (newRow >= ChessEngineConstants.Length))
                 return null;
 
-            return position;
+            int newColumn = Column + deltaColumn;
+            if ((newColumn < 0) || (newColumn >= ChessEngineConstants.Length))
+                return null;
+
+            return new Position(newRow, newColumn);
         }
     }
 }
