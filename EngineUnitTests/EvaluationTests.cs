@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngine;
-using MyChessEngine.Rating;
+using MyChessEngineBase;
+using MyChessEngineBase.Rating;
 using MyChessEngine.Pieces;
 
 

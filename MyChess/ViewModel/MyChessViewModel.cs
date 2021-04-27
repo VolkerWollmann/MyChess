@@ -6,6 +6,7 @@ using MyChess.Common;
 using MyChess.Controls;
 using MyChess.Helper;
 using MyChessEngine;
+using MyChessEngineBase;
 
 namespace MyChess.ViewModel
 {

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Markup;
-using MyChessEngine.Rating;
+using MyChessEngineBase.Rating;
+using MyChessEngineBase;
 using MyChessEngine.Pieces;
 
 

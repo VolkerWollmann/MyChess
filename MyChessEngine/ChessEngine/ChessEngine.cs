@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using MyChessEngine.Pieces;
-using MyChessEngine.Rating;
+using MyChessEngineBase;
+using MyChessEngineBase.Rating;
 
 namespace MyChessEngine
 {

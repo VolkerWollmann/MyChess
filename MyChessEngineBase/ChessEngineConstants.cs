@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyChessEngine
+namespace MyChessEngineBase
 {
     public enum PieceType
     {

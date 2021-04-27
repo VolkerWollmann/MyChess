@@ -3,7 +3,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Text;
 
-namespace MyChessEngine
+namespace MyChessEngineBase
 {
     [DebuggerDisplay("{ToString()}")]
     public class Position 

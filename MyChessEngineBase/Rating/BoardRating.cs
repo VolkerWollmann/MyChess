@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using MyChessEngineBase;
 
-namespace MyChessEngine.Rating
+namespace MyChessEngineBase.Rating
 {
     [DebuggerDisplay("{ToString()}")]
     public class BoardRating

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-
+using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {

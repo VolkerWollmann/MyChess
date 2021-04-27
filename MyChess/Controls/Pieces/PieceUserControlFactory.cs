@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using MyChessEngine;
+using MyChessEngineBase;
 
 namespace MyChess.Controls.Pieces
 {

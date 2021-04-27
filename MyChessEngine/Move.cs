@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-
-using MyChessEngine.Rating;
+using MyChessEngineBase;
+using MyChessEngineBase.Rating;
 
 namespace MyChessEngine
 {

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using MyChess.Common;
 using MyChessEngine;
-using Color = MyChessEngine.Color;
+using Color = MyChessEngineBase.Color;
 
 namespace MyChess.Controls.Pieces
 {

@@ -1,4 +1,5 @@
-﻿namespace MyChessEngine
+﻿using MyChessEngineBase;
+namespace MyChessEngine
 {
     public interface IPiece
     {
