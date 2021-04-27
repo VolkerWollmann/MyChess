@@ -74,10 +74,10 @@ namespace MyChessEngine
             Board.Clear();
         }
 
-        public Piece this[string position]
+        public IPiece this[string position]
         {
             get => Board[position];
-            set => Board[position] = value;
+            set => Board[position] = (Piece)value;
         }
 
 

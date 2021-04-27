@@ -1,9 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using MyChessEngine.Pieces;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
 
-namespace MyChessEngine
+namespace MyChessEngineBase
 { 
     public interface IChessEngine
     {
@@ -15,7 +14,7 @@ namespace MyChessEngine
 
         void Clear();
 
-        Piece this[string position]
+        IPiece this[string position]
         {
             get;
             set;

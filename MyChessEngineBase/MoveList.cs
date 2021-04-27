@@ -2,7 +2,7 @@
 using System.Linq;
 using MyChessEngineBase;
 
-namespace MyChessEngine
+namespace MyChessEngineBase
 {
     public class MoveList
     {

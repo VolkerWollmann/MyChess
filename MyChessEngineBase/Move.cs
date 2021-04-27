@@ -3,7 +3,7 @@ using System.Diagnostics;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
 
-namespace MyChessEngine
+namespace MyChessEngineBase
 {
     [DebuggerDisplay("{ToString()} Rating:{Rating}")]
     public class Move 

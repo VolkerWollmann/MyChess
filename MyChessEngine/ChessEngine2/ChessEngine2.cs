@@ -76,10 +76,10 @@ namespace MyChessEngine
             Board.Clear();
         }
 
-        public Piece this[string position]
+        public IPiece this[string position]
         {
             get => Board[position];
-            set => Board[position] = value;
+            set => Board[position] = (Piece)value;
         }
 
 
@@ -96,6 +96,9 @@ namespace MyChessEngine
 
         public bool ExecuteMove(Move move)
         {
+            if (move.Piece == null)
+                move.Piece = Board[move.Start];
+
             Board.ExecuteMove(move);
 
             ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
