@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineUnitTests", "EngineUn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyChessEngineBase", "MyChessEngineBase\MyChessEngineBase.csproj", "{142CDAA9-6C12-4ABB-95E0-2AC493CFA067}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessEngineBase", "ChessEngineBase\ChessEngineBase.csproj", "{B8D42108-508A-40EA-BB9B-C5942DA3B266}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{142CDAA9-6C12-4ABB-95E0-2AC493CFA067}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{142CDAA9-6C12-4ABB-95E0-2AC493CFA067}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{142CDAA9-6C12-4ABB-95E0-2AC493CFA067}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8D42108-508A-40EA-BB9B-C5942DA3B266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8D42108-508A-40EA-BB9B-C5942DA3B266}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8D42108-508A-40EA-BB9B-C5942DA3B266}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8D42108-508A-40EA-BB9B-C5942DA3B266}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
