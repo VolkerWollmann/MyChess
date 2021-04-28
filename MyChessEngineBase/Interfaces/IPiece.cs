@@ -1,5 +1,4 @@
-﻿using MyChessEngineBase;
-namespace MyChessEngineBase
+﻿namespace MyChessEngineBase
 {
     public interface IPiece
     {

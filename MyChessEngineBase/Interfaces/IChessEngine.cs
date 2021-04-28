@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using MyChessEngineBase;
-using MyChessEngineBase.Rating;
+﻿using MyChessEngineBase.Rating;
 
 namespace MyChessEngineBase
 { 

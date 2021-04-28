@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using MyChessEngineBase;
 
 namespace MyChessEngineBase.Rating
 {

@@ -1,5 +1,4 @@
-﻿using MyChessEngine;
-using MyChessEngineBase;
+﻿using MyChessEngineBase;
 
 namespace MyChess.Common
 {

@@ -126,8 +126,9 @@ namespace MyChessEngineInteger
 
         public string Message { get; }
 
-        public MyChessEngineInteger()
+        public MyChessEngineInteger(IntegerBoard board)
         {
+            Board = board;
             Message = "";
         }
     }
