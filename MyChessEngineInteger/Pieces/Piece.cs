@@ -7,6 +7,7 @@ namespace MyChessEngineInteger.Pieces
 {
     public enum NumPieces
     {
+        Empty = 0,
         WhitePawn = 100,
         WhiteKnight = 300,
         WhiteBishop = 350,
@@ -26,9 +27,70 @@ namespace MyChessEngineInteger.Pieces
         public PieceType Type { get; }
         public Color Color { get; }
 
-        public Piece(int piece)
+        public Piece(NumPieces piece)
         {
+            switch (piece)
+            {
+                case NumPieces.WhitePawn:
+                    Type = PieceType.Pawn;
+                    Color = Color.White;
+                    break;
 
+                case NumPieces.WhiteKnight:
+                    Type = PieceType.Knight;
+                    Color = Color.White;
+                    break;
+
+                case NumPieces.WhiteKing:
+                    Type = PieceType.King;
+                    Color = Color.White;
+                    break;
+
+                case NumPieces.WhiteQueen:
+                    Type = PieceType.Queen;
+                    Color = Color.White;
+                    break;
+
+                case NumPieces.WhiteBishop:
+                    Type = PieceType.Bishop;
+                    Color = Color.White;
+                    break;
+
+                case NumPieces.WhiteRook:
+                    Type = PieceType.Rook;
+                    Color = Color.White;
+                    break;
+
+                case NumPieces.BlackPawn:
+                    Type = PieceType.Pawn;
+                    Color = Color.Black;
+                    break;
+
+                case NumPieces.BlackKnight:
+                    Type = PieceType.Knight;
+                    Color = Color.Black;
+                    break;
+
+                case NumPieces.BlackKing:
+                    Type = PieceType.King;
+                    Color = Color.Black;
+                    break;
+
+                case NumPieces.BlackQueen:
+                    Type = PieceType.Queen;
+                    Color = Color.Black;
+                    break;
+
+                case NumPieces.BlackBishop:
+                    Type = PieceType.Bishop;
+                    Color = Color.Black;
+                    break;
+
+                case NumPieces.BlackRook:
+                    Type = PieceType.Rook;
+                    Color = Color.Black;
+                    break;
+            }
         }
     }
 }

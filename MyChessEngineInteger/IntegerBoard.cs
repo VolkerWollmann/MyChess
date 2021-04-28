@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using MyChessEngineBase;
+using MyChessEngineInteger.Pieces;
 
 namespace MyChessEngineInteger
 {
@@ -36,10 +37,10 @@ namespace MyChessEngineInteger
 
         private int[] Data = new int[20];
 
-        public int this[int row, int column]
+        public NumPieces this[int row, int column]
         {
-            get => Pieces[row, column];
-            set => Pieces[row, column] = value;
+            get => (NumPieces)Pieces[row, column];
+            set => Pieces[row, column] = (int)value;
         }
 
         public void SetFlag(ChessEngineIntegerFlags flag, int value)

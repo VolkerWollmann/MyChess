@@ -10,7 +10,9 @@ namespace MyChessEngineInteger
         private readonly IntegerBoard Board;
         public IPiece GetPiece(Position position)
         {
-            throw new NotImplementedException();
+            NumPieces numPiece = Board[position.Row, position.Column];
+
+            return new Piece(numPiece);
         }
 
         public Color ColorToMove { get; set; }
@@ -19,7 +21,7 @@ namespace MyChessEngineInteger
         private void SetPiece(string positionString, NumPieces piece)
         {
             Position position = new Position(positionString);
-            Board[position.Row, position.Column] = (int)piece;
+            Board[position.Row, position.Column] = piece;
         }
         public void New()
         {
@@ -64,8 +66,8 @@ namespace MyChessEngineInteger
             SetPiece("E8", NumPieces.BlackKing);
             Board.SetFlag(ChessEngineIntegerFlags.BlackKingCastle, 1);
             Board.SetFlag(ChessEngineIntegerFlags.BlackKingLongCastle, 1);
-            Board.SetFlag(ChessEngineIntegerFlags.WhiteKingRow, 7);
-            Board.SetFlag(ChessEngineIntegerFlags.WhiteKingColumn, 4);
+            Board.SetFlag(ChessEngineIntegerFlags.BlackKingRow, 7);
+            Board.SetFlag(ChessEngineIntegerFlags.BlackKingColumn, 4);
         }
 
         public void Clear()
@@ -129,7 +131,11 @@ namespace MyChessEngineInteger
 
         public bool ExecuteMove(Move move)
         {
-            throw new NotImplementedException();
+            //Board.ExecuteMove(move);
+
+            ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
+
+            return true;
         }
 
         public Move CalculateMove()
@@ -138,5 +144,10 @@ namespace MyChessEngineInteger
         }
 
         public string Message { get; }
+
+        public MyChessEngineInteger()
+        {
+            Message = "";
+        }
     }
 }
