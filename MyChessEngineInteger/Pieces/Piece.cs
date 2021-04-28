@@ -27,6 +27,40 @@ namespace MyChessEngineInteger.Pieces
         public PieceType Type { get; }
         public Color Color { get; }
 
+        public NumPieces GetNumPieces()
+        {
+            NumPieces numPiece = 0;
+            switch (Type)
+            {
+                case PieceType.Pawn:
+                    numPiece = (Color == Color.White) ? NumPieces.WhitePawn : NumPieces.BlackPawn;
+                    break;
+                case PieceType.Knight:
+                    numPiece = (Color == Color.White) ? NumPieces.WhiteKnight : NumPieces.BlackKnight;
+                    break;
+                case PieceType.Bishop:
+                    numPiece = (Color == Color.White) ? NumPieces.WhiteBishop : NumPieces.BlackBishop;
+                    break;
+                case PieceType.Rook:
+                    numPiece = (Color == Color.White) ? NumPieces.WhiteRook : NumPieces.BlackRook;
+                    break;
+                case PieceType.Queen:
+                    numPiece = (Color == Color.White) ? NumPieces.WhiteQueen : NumPieces.BlackQueen;
+                    break;
+                case PieceType.King:
+                    numPiece = (Color == Color.White) ? NumPieces.WhiteKing : NumPieces.BlackKing;
+                    break;
+            }
+
+            return numPiece;
+        }
+
+        public Piece(IPiece piece)
+        {
+            Color = piece.Color;
+            Type = piece.Type;
+        }
+
         public Piece(NumPieces piece)
         {
             switch (piece)

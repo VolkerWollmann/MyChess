@@ -77,35 +77,16 @@ namespace MyChessEngineInteger
 
         public IPiece this[string positionString]
         {
-            get { Position position = new Position(positionString);
-                     return new Piece(Board[position.Row, position.Column]);
-               }
+            get 
+            { 
+                Position position = new Position(positionString);
+                return new Piece(Board[position.Row, position.Column]);
+            }
             set
             {
-                NumPieces piece = 0;
-                switch (value.Type)
-                {
-                    case PieceType.Pawn:
-                        piece = (value.Color == Color.White) ? NumPieces.WhitePawn : NumPieces.BlackPawn;
-                        break;
-                    case PieceType.Knight:
-                        piece = (value.Color == Color.White) ? NumPieces.WhiteKnight : NumPieces.BlackKnight;
-                        break;
-                    case PieceType.Bishop:
-                        piece = (value.Color == Color.White) ? NumPieces.WhiteBishop : NumPieces.BlackBishop;
-                        break;
-                    case PieceType.Rook:
-                        piece = (value.Color == Color.White) ? NumPieces.WhiteRook : NumPieces.BlackRook;
-                        break;
-                    case PieceType.Queen:
-                        piece = (value.Color == Color.White) ? NumPieces.WhiteQueen : NumPieces.BlackQueen;
-                        break;
-                    case PieceType.King:
-                        piece = (value.Color == Color.White) ? NumPieces.WhiteKing : NumPieces.BlackKing;
-                        break;
-
-                }
-                SetPiece(positionString, piece);
+                Piece piece = new Piece(value);
+                NumPieces numPiece = piece.GetNumPieces();
+                SetPiece(positionString, numPiece);
             }
         }
 
