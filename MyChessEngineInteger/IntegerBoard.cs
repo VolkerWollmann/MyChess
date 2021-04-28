@@ -50,7 +50,7 @@ namespace MyChessEngineInteger
             {
                 for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    Pieces[row, column] = 0;
+                    Pieces[row, column] = (int)NumPieces.Empty;
                 }
             }
 

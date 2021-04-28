@@ -84,12 +84,8 @@ namespace MyChessEngine
                 return _AllPiecesByColor[color];
 
             List<Piece> pieces = new List<Piece>();
-            Position.AllPositions().ForEach(position =>
-            {
-                Piece piece = this[position];
-                if (piece?.Color == color)
-                    pieces.Add(piece);
-            });
+
+            pieces = Pieces.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
 
             _AllPiecesByColor.Add(color, pieces);
             return pieces;

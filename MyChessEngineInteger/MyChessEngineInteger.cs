@@ -107,6 +107,7 @@ namespace MyChessEngineInteger
 
         public BoardRating GetBoardRating()
         {
+            // arr.Sum();
             throw new NotImplementedException();
         }
 
