@@ -92,7 +92,14 @@ namespace MyChessEngineInteger
 
         public BoardRating GetRating(Color color)
         {
-            throw new NotImplementedException();
+            return Board.GetRating(color);
+        }
+
+
+        public BoardRating GetBoardRating()
+        {
+            // arr.Sum();
+            return Board.GetRating(ColorToMove);
         }
 
         public void Test()
@@ -102,12 +109,6 @@ namespace MyChessEngineInteger
 
         public MoveList GetMoveList()
         {
-            throw new NotImplementedException();
-        }
-
-        public BoardRating GetBoardRating()
-        {
-            // arr.Sum();
             throw new NotImplementedException();
         }
 
