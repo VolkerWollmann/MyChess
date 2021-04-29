@@ -123,5 +123,119 @@ namespace MyChessEngineInteger.Pieces
                     break;
             }
         }
+
+        #region ExecuteMove
+
+        public static void MoveWhiteRook(IntegerBoard board, int startRow, int startColumn)
+        {
+            if ((board.Data[(int) ChessEngineIntegerFlags.WhiteA1RookMoved] == 1) &&
+                (board.Data[(int) ChessEngineIntegerFlags.WhiteH1RookMoved] == 1))
+                return;
+
+            if (startRow > 0)
+                return;
+
+            if (startRow == 0 && startColumn == 0)
+            {
+                board.Data[(int) ChessEngineIntegerFlags.WhiteA1RookMoved] = 1;
+                board.Data[(int) ChessEngineIntegerFlags.WhiteKingLongCastle] = 0;
+            }
+
+            if (startRow == 0 && startColumn == 7)
+            {
+                board.Data[(int)ChessEngineIntegerFlags.WhiteH1RookMoved] = 1;
+                board.Data[(int)ChessEngineIntegerFlags.WhiteKingCastle] = 0;
+            }
+        }
+
+        public static void MoveBlackRook(IntegerBoard board, int startRow, int startColumn)
+        {
+            if ((board.Data[(int)ChessEngineIntegerFlags.BlackA8RookMoved] == 1) &&
+                (board.Data[(int)ChessEngineIntegerFlags.BlackH8RookMoved] == 1))
+                return;
+
+            if (startRow < 7)
+                return;
+
+            if (startRow == 7 && startColumn == 0)
+            {
+                board.Data[(int)ChessEngineIntegerFlags.BlackA8RookMoved] = 1;
+                board.Data[(int)ChessEngineIntegerFlags.BlackKingLongCastle] = 0;
+            }
+
+            if (startRow == 7 && startColumn == 7)
+            {
+                board.Data[(int)ChessEngineIntegerFlags.BlackH8RookMoved] = 1;
+                board.Data[(int)ChessEngineIntegerFlags.BlackKingCastle] = 0;
+            }
+        }
+
+        public static void MoveWhiteKing(IntegerBoard board, int endRow, int endColumn)
+        {
+            board.Data[(int)ChessEngineIntegerFlags.WhiteKingCastle] = 0;
+            board.Data[(int)ChessEngineIntegerFlags.WhiteKingLongCastle] = 0;
+            board.Data[(int)ChessEngineIntegerFlags.WhiteKingRow] = endRow;
+            board.Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = endColumn;
+        }
+
+        public static void MoveBlackKing(IntegerBoard board, int endRow, int endColumn)
+        {
+            board.Data[(int)ChessEngineIntegerFlags.BlackKingCastle] = 0;
+            board.Data[(int)ChessEngineIntegerFlags.BlackKingLongCastle] = 0;
+            board.Data[(int)ChessEngineIntegerFlags.BlackKingRow] = endRow;
+            board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = endColumn;
+        }
+
+        public static bool ExecuteMove(IntegerBoard board, Move move)
+        {
+            int startRow = move.Start.Row;
+            int startColumn = move.Start.Column;
+            int endRow = move.End.Row;
+            int endColumn = move.End.Column;
+
+            if (board[endRow, endColumn] == NumPieces.WhiteKing)
+            {
+                board.Data[(int)ChessEngineIntegerFlags.WhiteKingRow] = -1;
+                board.Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = -1;
+            }
+
+            if (board[endRow, endColumn] == NumPieces.BlackKing)
+            {
+                board.Data[(int)ChessEngineIntegerFlags.BlackKingRow] = -1;
+                board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = -1;
+            }
+
+            NumPieces piece = board[startRow, startColumn];
+            board[endRow, endColumn] = piece;
+
+            switch (piece)
+            {
+                case NumPieces.WhiteKing:
+                    Piece.MoveWhiteKing(board, endRow, endColumn);
+                    break;
+
+                case NumPieces.BlackKing:
+                    Piece.MoveBlackKing(board, endRow, endColumn);
+                    break;
+
+                case NumPieces.WhitePawn:
+                    break;
+
+                case NumPieces.BlackPawn:
+                    break;
+
+                case NumPieces.WhiteRook:
+                    Piece.MoveWhiteRook(board,startRow, startColumn);
+                    break;
+
+                case NumPieces.BlackRook:
+                    Piece.MoveWhiteRook(board, startRow, startColumn);
+                    break;
+            }
+
+            return true;
+        }
+
+        #endregion
     }
 }

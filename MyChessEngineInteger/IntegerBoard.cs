@@ -15,10 +15,10 @@ namespace MyChessEngineInteger
         WhiteKingColumn = 5,
         BlackKingRow = 6,
         BlackKingColumn = 7,
-        WhiteA1Rook = 8,
-        WhiteH1Rook = 9,
-        BlackA8Rook = 10,
-        BlackH8Rook = 11,
+        WhiteA1RookMoved = 8,
+        WhiteH1RookMoved = 9,
+        BlackA8RookMoved = 10,
+        BlackH8RookMoved = 11,
         WhiteFirstEnpassantPawnRow = 12,
         WhiteFirstEnpassantPawnColumn = 13,
         WhiteSecondEnpassantPawnRow = 14,
@@ -31,9 +31,9 @@ namespace MyChessEngineInteger
 
     public class IntegerBoard
     {
-        private int[,] Pieces = new int[8, 8];
+        public int[,] Pieces = new int[8, 8];
 
-        private int[] Data = new int[20];
+        public int[] Data = new int[20];
 
         public NumPieces this[int row, int column]
         {
@@ -62,6 +62,29 @@ namespace MyChessEngineInteger
             }
         }
 
+        private bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn)
+        {
+            if (Pieces[endRow, endColumn] == (int) NumPieces.WhiteKing)
+            {
+                Data[(int) ChessEngineIntegerFlags.WhiteKingRow] = -1;
+                Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = -1;
+            }
+
+            if (Pieces[endRow, endColumn] == (int)NumPieces.BlackKing)
+            {
+                Data[(int)ChessEngineIntegerFlags.BlackKingRow] = -1;
+                Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = -1;
+            }
+
+
+
+            return true;
+        }
+        public bool ExecuteMove(Move move)
+        {
+            return Piece.ExecuteMove(this, move);
+
+        }
 
         private bool KingAlive(Color color)
         {
@@ -71,27 +94,25 @@ namespace MyChessEngineInteger
             return (Data[(int) ChessEngineIntegerFlags.BlackKingRow] >= 0);
         }
 
+        private int GetIntegerRating()
+        {
+            return Pieces.Cast<int>().ToList().Sum();
+        }
+
         public virtual BoardRating GetRating(Color color)
         {
             BoardRating rating = new BoardRating();
 
-            if ((color == Color.White) && (Data[(int) ChessEngineIntegerFlags.WhiteKingRow] < 0))
+            if (!KingAlive(color))
             {
-                rating.Situation = Situation.BlackVictory;
-                rating.Evaluation = Evaluation.WhiteCheckMate;
-                rating.Weight = -ChessEngineConstants.King;
-                return rating;
-            }
-            else if ((color == Color.Black) && (Data[(int) ChessEngineIntegerFlags.BlackKingRow] < 0))
-            {
-                rating.Situation = Situation.WhiteVictory;
-                rating.Evaluation = Evaluation.BlackCheckMate;
-                rating.Weight = -ChessEngineConstants.King;
+                rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
+                rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
+                rating.Weight = ((color == Color.White) ? -(int)NumPieces.WhiteKing : -(int)NumPieces.BlackKing);
                 return rating;
             }
 
             rating.Situation = Situation.Normal;
-            rating.Weight = Pieces.Cast<int>().ToList().Sum();
+            rating.Weight = GetIntegerRating();
 
             return rating;
         }

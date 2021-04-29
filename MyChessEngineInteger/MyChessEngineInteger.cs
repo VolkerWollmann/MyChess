@@ -35,14 +35,14 @@ namespace MyChessEngineInteger
             }
 
             SetPiece("A1", NumPieces.WhiteRook);
-            Board.SetFlag(ChessEngineIntegerFlags.WhiteA1Rook,1);
+            Board.SetFlag(ChessEngineIntegerFlags.WhiteA1RookMoved,0);
             SetPiece("H1", NumPieces.WhiteRook);
-            Board.SetFlag(ChessEngineIntegerFlags.WhiteH1Rook, 1);
+            Board.SetFlag(ChessEngineIntegerFlags.WhiteH1RookMoved, 1);
 
             SetPiece("A8", NumPieces.BlackRook);
-            Board.SetFlag(ChessEngineIntegerFlags.BlackA8Rook, 1);
+            Board.SetFlag(ChessEngineIntegerFlags.BlackA8RookMoved, 1);
             SetPiece("H8", NumPieces.BlackRook);
-            Board.SetFlag(ChessEngineIntegerFlags.BlackH8Rook, 1);
+            Board.SetFlag(ChessEngineIntegerFlags.BlackH8RookMoved, 1);
 
             SetPiece("B1", NumPieces.WhiteKnight);
             SetPiece("G1", NumPieces.WhiteKnight);
@@ -114,7 +114,7 @@ namespace MyChessEngineInteger
 
         public bool ExecuteMove(Move move)
         {
-            //Board.ExecuteMove(move);
+            Board.ExecuteMove(move);
 
             ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
 
