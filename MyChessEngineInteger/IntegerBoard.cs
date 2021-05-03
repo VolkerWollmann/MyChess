@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.Win32.SafeHandles;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
 using MyChessEngineInteger.Pieces;
@@ -77,17 +78,18 @@ namespace MyChessEngineInteger
             if (Pieces[endRow, endColumn] == (int) NumPieces.WhiteKing)
             {
                 Data[(int) ChessEngineIntegerFlags.WhiteKingRow] = -1;
-                Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = -1;
+                Data[(int) ChessEngineIntegerFlags.WhiteKingColumn] = -1;
             }
 
-            if (Pieces[endRow, endColumn] == (int)NumPieces.BlackKing)
+            if (Pieces[endRow, endColumn] == (int) NumPieces.BlackKing)
             {
-                Data[(int)ChessEngineIntegerFlags.BlackKingRow] = -1;
-                Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = -1;
+                Data[(int) ChessEngineIntegerFlags.BlackKingRow] = -1;
+                Data[(int) ChessEngineIntegerFlags.BlackKingColumn] = -1;
             }
 
             return true;
         }
+
         public bool ExecuteMove(IntegerMove move)
         {
             ExecuteMove(move.StartRow, move.StartColumn, move.EndRow, move.EndColumn);
@@ -97,8 +99,8 @@ namespace MyChessEngineInteger
 
         private bool KingAlive(Color color)
         {
-            if (color == Color.White) 
-                return (Data[(int)ChessEngineIntegerFlags.WhiteKingRow] >= 0);
+            if (color == Color.White)
+                return (Data[(int) ChessEngineIntegerFlags.WhiteKingRow] >= 0);
 
             return (Data[(int) ChessEngineIntegerFlags.BlackKingRow] >= 0);
         }
@@ -108,7 +110,7 @@ namespace MyChessEngineInteger
             return Pieces.Cast<int>().ToList().Sum();
         }
 
-        public virtual BoardRating GetRating(Color color)
+        public virtual BoardRating GetRating(Color color, bool isChecked, bool moves)
         {
             BoardRating rating = new BoardRating();
 
@@ -116,14 +118,68 @@ namespace MyChessEngineInteger
             {
                 rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
                 rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
-                rating.Weight = ((color == Color.White) ? -(int)NumPieces.WhiteKing : -(int)NumPieces.BlackKing);
+                rating.Weight = ((color == Color.White) ? -(int) NumPieces.WhiteKing : -(int) NumPieces.BlackKing);
                 return rating;
+            }
+
+            if (isChecked)
+            {
+                rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
+                if (!moves)
+                {
+                    rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
+                    rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
+                    return rating;
+                }
+            }
+            else
+            {
+                if (!moves)
+                {
+                    rating.Situation = Situation.StaleMate;
+                    rating.Evaluation = color == Color.White ? Evaluation.WhiteStaleMate : Evaluation.BlackStaleMate;
+                    return rating;
+                }
             }
 
             rating.Situation = Situation.Normal;
             rating.Weight = GetIntegerRating();
 
             return rating;
+        }
+
+        public Move CalculateMove(int depth, Color color)
+        {
+            if (!KingAlive(color))
+                return Move.CreateNoMove(GetRating(color, true, false));
+
+            // get move list
+            // result = empty move list
+            // checked = false;
+            // foreach( move in move list)
+            // {
+            //    copy board
+            //    execute move
+            //    calculate resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+            //    if ((move.Rating == null) 
+            //      move.Rating = resultMove.Rating;
+            //
+            //    if resultMove.Rating == matt && resultMove.Depth == 2
+            //            isChecked == true;
+            //    else if (comparer.Compare(move.Rating, resultMove.Rating) > 0))
+            //    {
+            //          move.Rating = resultMove.Rating;
+            //          move.Rating.Depth++;
+            //          result.Add(move);
+            //    }
+            // }
+            //
+            // if (!result.Moves.Any())
+            //    return Move.CreateNoMove(GetRating(color, isChecked, false));
+            //
+            // return result.GetBestMove(color);
+
+            return null;
         }
     }
 }

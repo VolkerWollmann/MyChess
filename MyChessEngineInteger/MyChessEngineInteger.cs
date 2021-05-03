@@ -92,14 +92,14 @@ namespace MyChessEngineInteger
 
         public BoardRating GetRating(Color color)
         {
-            return Board.GetRating(color);
+
+            return Board.GetRating(color, false, true);
         }
 
 
         public BoardRating GetBoardRating()
         {
-            // arr.Sum();
-            return Board.GetRating(ColorToMove);
+            return Board.GetRating(ColorToMove, false, true);
         }
 
         public void Test()
@@ -124,10 +124,20 @@ namespace MyChessEngineInteger
 
         public Move CalculateMove()
         {
-            throw new NotImplementedException();
+            DateTime s = DateTime.Now;
+
+            var move = Board.CalculateMove(6, ColorToMove);
+
+            TimeSpan ts = DateTime.Now.Subtract(s);
+
+            Message = move + " Time:" + ts + Environment.NewLine +
+                       " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
+                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight;
+
+            return move;
         }
 
-        public string Message { get; }
+        public string Message { get; private set; }
 
         public MyChessEngineInteger(IntegerBoard board)
         {
