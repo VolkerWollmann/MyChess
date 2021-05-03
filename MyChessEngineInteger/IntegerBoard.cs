@@ -86,12 +86,11 @@ namespace MyChessEngineInteger
                 Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = -1;
             }
 
-
-
             return true;
         }
-        public bool ExecuteMove(Move move)
+        public bool ExecuteMove(IntegerMove move)
         {
+            ExecuteMove(move.StartRow, move.StartColumn, move.EndRow, move.EndColumn);
             return Piece.ExecuteMove(this, move);
 
         }

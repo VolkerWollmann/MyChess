@@ -186,24 +186,12 @@ namespace MyChessEngineInteger.Pieces
             board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = endColumn;
         }
 
-        public static bool ExecuteMove(IntegerBoard board, Move move)
+        public static bool ExecuteMove(IntegerBoard board, IntegerMove  move)
         {
-            int startRow = move.Start.Row;
-            int startColumn = move.Start.Column;
-            int endRow = move.End.Row;
-            int endColumn = move.End.Column;
-
-            if (board[endRow, endColumn] == NumPieces.WhiteKing)
-            {
-                board.Data[(int)ChessEngineIntegerFlags.WhiteKingRow] = -1;
-                board.Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = -1;
-            }
-
-            if (board[endRow, endColumn] == NumPieces.BlackKing)
-            {
-                board.Data[(int)ChessEngineIntegerFlags.BlackKingRow] = -1;
-                board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = -1;
-            }
+            int startRow = move.StartRow;
+            int startColumn = move.StartColumn;
+            int endRow = move.EndRow;
+            int endColumn = move.EndColumn;
 
             NumPieces piece = board[startRow, startColumn];
             board[endRow, endColumn] = piece;

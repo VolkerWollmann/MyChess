@@ -114,7 +114,8 @@ namespace MyChessEngineInteger
 
         public bool ExecuteMove(Move move)
         {
-            Board.ExecuteMove(move);
+
+            Board.ExecuteMove(new IntegerMove(move));
 
             ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
 
