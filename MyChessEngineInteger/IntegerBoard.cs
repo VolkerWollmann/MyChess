@@ -62,6 +62,16 @@ namespace MyChessEngineInteger
             }
         }
 
+        public IntegerBoard Copy()
+        {
+            IntegerBoard copy = new IntegerBoard
+            {
+                Pieces = (int[,]) this.Pieces.Clone(), Data = (int[]) this.Data.Clone()
+            };
+
+            return copy;
+        }
+
         private bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn)
         {
             if (Pieces[endRow, endColumn] == (int) NumPieces.WhiteKing)
