@@ -42,4 +42,16 @@ namespace MyChessEngineInteger
         }
 
     }
+
+    public class MoveSorter : IComparer<Move>
+    {
+        public int Compare(Move x, Move y) => _Comparer.Compare(x?.Rating, y?.Rating);
+
+        private readonly IBoardRatingComparer _Comparer;
+        public MoveSorter(Color color)
+        {
+            _Comparer = BoardRatingComparerFactory.GetComparer(color);
+        }
+
+    }
 }

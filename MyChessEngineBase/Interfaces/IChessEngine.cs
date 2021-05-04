@@ -23,7 +23,6 @@ namespace MyChessEngineBase
         BoardRating GetRating(Color color);
         void Test();
 
-        MoveList GetMoveList();
 
         BoardRating GetBoardRating();
 
