@@ -7,7 +7,7 @@ namespace MyChessEngineInteger
 {
     public class MyChessEngineInteger : IChessEngine
     {
-        private readonly IntegerBoard Board;
+        private readonly Board Board;
         public IPiece GetPiece(Position position)
         {
             NumPieces numPiece = Board[position.Row, position.Column];
@@ -112,17 +112,17 @@ namespace MyChessEngineInteger
             throw new NotImplementedException();
         }
 
-        public bool ExecuteMove(Move move)
+        public bool ExecuteMove(MyChessEngineBase.Move move)
         {
 
-            Board.ExecuteMove(new IntegerMove(move));
+            Board.ExecuteMove(new Move(move));
 
             ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
 
             return true;
         }
 
-        public Move CalculateMove()
+        public MyChessEngineBase.Move CalculateMove()
         {
             DateTime s = DateTime.Now;
 
@@ -139,7 +139,7 @@ namespace MyChessEngineInteger
 
         public string Message { get; private set; }
 
-        public MyChessEngineInteger(IntegerBoard board)
+        public MyChessEngineInteger(Board board)
         {
             Board = board;
             Message = "";

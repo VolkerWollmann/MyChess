@@ -30,7 +30,7 @@ namespace MyChessEngineInteger
         BlackSecondEnpassantPawnColumn = 19,
     }
 
-    public class IntegerBoard
+    public class Board
     {
         public int[,] Pieces = new int[8, 8];
 
@@ -63,9 +63,9 @@ namespace MyChessEngineInteger
             }
         }
 
-        public IntegerBoard Copy()
+        public Board Copy()
         {
-            IntegerBoard copy = new IntegerBoard
+            Board copy = new Board
             {
                 Pieces = (int[,]) this.Pieces.Clone(), Data = (int[]) this.Data.Clone()
             };
@@ -90,7 +90,7 @@ namespace MyChessEngineInteger
             return true;
         }
 
-        public bool ExecuteMove(IntegerMove move)
+        public bool ExecuteMove(Move move)
         {
             ExecuteMove(move.StartRow, move.StartColumn, move.EndRow, move.EndColumn);
             return Piece.ExecuteMove(this, move);
@@ -148,10 +148,10 @@ namespace MyChessEngineInteger
             return rating;
         }
 
-        public Move CalculateMove(int depth, Color color)
+        public MyChessEngineBase.Move CalculateMove(int depth, Color color)
         {
             if (!KingAlive(color))
-                return Move.CreateNoMove(GetRating(color, true, false));
+                return MyChessEngineBase.Move.CreateNoMove(GetRating(color, true, false));
 
             // get move list
             // result = empty move list

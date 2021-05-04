@@ -126,7 +126,7 @@ namespace MyChessEngineInteger.Pieces
 
         #region ExecuteMove
 
-        public static void MoveWhiteRook(IntegerBoard board, int startRow, int startColumn)
+        public static void MoveWhiteRook(Board board, int startRow, int startColumn)
         {
             if ((board.Data[(int) ChessEngineIntegerFlags.WhiteA1RookMoved] == 1) &&
                 (board.Data[(int) ChessEngineIntegerFlags.WhiteH1RookMoved] == 1))
@@ -148,7 +148,7 @@ namespace MyChessEngineInteger.Pieces
             }
         }
 
-        public static void MoveBlackRook(IntegerBoard board, int startRow, int startColumn)
+        public static void MoveBlackRook(Board board, int startRow, int startColumn)
         {
             if ((board.Data[(int)ChessEngineIntegerFlags.BlackA8RookMoved] == 1) &&
                 (board.Data[(int)ChessEngineIntegerFlags.BlackH8RookMoved] == 1))
@@ -170,7 +170,7 @@ namespace MyChessEngineInteger.Pieces
             }
         }
 
-        public static void MoveWhiteKing(IntegerBoard board, int endRow, int endColumn)
+        public static void MoveWhiteKing(Board board, int endRow, int endColumn)
         {
             board.Data[(int)ChessEngineIntegerFlags.WhiteKingCastle] = 0;
             board.Data[(int)ChessEngineIntegerFlags.WhiteKingLongCastle] = 0;
@@ -178,7 +178,7 @@ namespace MyChessEngineInteger.Pieces
             board.Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = endColumn;
         }
 
-        public static void MoveBlackKing(IntegerBoard board, int endRow, int endColumn)
+        public static void MoveBlackKing(Board board, int endRow, int endColumn)
         {
             board.Data[(int)ChessEngineIntegerFlags.BlackKingCastle] = 0;
             board.Data[(int)ChessEngineIntegerFlags.BlackKingLongCastle] = 0;
@@ -186,7 +186,7 @@ namespace MyChessEngineInteger.Pieces
             board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = endColumn;
         }
 
-        public static bool ExecuteMove(IntegerBoard board, IntegerMove  move)
+        public static bool ExecuteMove(Board board, Move  move)
         {
             int startRow = move.StartRow;
             int startColumn = move.StartColumn;

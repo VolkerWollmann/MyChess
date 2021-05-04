@@ -6,7 +6,7 @@ using MyChessEngineBase.Rating;
 
 namespace MyChessEngineInteger
 {
-    public class IntegerMove
+    public class Move
     {
         public int StartRow;
         public int StartColumn;
@@ -19,7 +19,7 @@ namespace MyChessEngineInteger
         public BoardRating Rating { get; set; }
 
 
-        public IntegerMove(int startRow, int startColumn, int endRow, int endColumn, MoveType moveType, BoardRating boardRating)
+        public Move(int startRow, int startColumn, int endRow, int endColumn, MoveType moveType, BoardRating boardRating)
         {
             StartRow = startRow;
             StartColumn = startColumn;
@@ -29,13 +29,13 @@ namespace MyChessEngineInteger
             Rating = boardRating;
         }
 
-        public IntegerMove(int startRow, int startColumn, int endRow, int endColumn) : this(startRow, startColumn,
+        public Move(int startRow, int startColumn, int endRow, int endColumn) : this(startRow, startColumn,
             endRow, endColumn, MoveType.Normal, null)
         {
 
         }
 
-        public IntegerMove(Move move) : this(move.Start.Row, move.Start.Column, move.End.Row, move.End.Column,
+        public Move(MyChessEngineBase.Move move) : this(move.Start.Row, move.Start.Column, move.End.Row, move.End.Column,
             move.Type, move.Rating)
         {
 
