@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.Design;
+using System.Linq;
 using Microsoft.Win32.SafeHandles;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
@@ -71,6 +72,28 @@ namespace MyChessEngineInteger
             };
 
             return copy;
+        }
+
+        private MoveList GetMoveList(Color color)
+        {
+            MoveList moveList = new MoveList();
+
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                for (int column = 0; column < ChessEngineConstants.Length; column++)
+                {
+                    NumPieces piece = (NumPieces) Pieces[row, column];
+                    if (piece != NumPieces.Empty)
+                    {
+                        if (color == Color.White && piece > 0)
+                            Piece.AddMovesToMoveList(this, row, column, piece, color, moveList);
+                        else if (piece < 0)
+                            Piece.AddMovesToMoveList(this, row, column, piece, color, moveList);
+                    }
+                }
+            }
+
+            return moveList;
         }
 
         private bool ExecuteMove(int startRow, int startColumn, int endRow, int endColumn)
@@ -154,25 +177,26 @@ namespace MyChessEngineInteger
                 return MyChessEngineBase.Move.CreateNoMove(GetRating(color, true, false));
 
             // get move list
-            // result = empty move list
-            // checked = false;
-            // foreach( move in move list)
-            // {
-            //    copy board
-            //    execute move
-            //    calculate resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
-            //    if ((move.Rating == null) 
-            //      move.Rating = resultMove.Rating;
-            //
-            //    if resultMove.Rating == matt && resultMove.Depth == 2
-            //            isChecked == true;
-            //    else if (comparer.Compare(move.Rating, resultMove.Rating) > 0))
-            //    {
-            //          move.Rating = resultMove.Rating;
-            //          move.Rating.Depth++;
-            //          result.Add(move);
-            //    }
-            // }
+            MoveList moveList = GetMoveList(color);
+
+            bool check = false;
+            foreach( Move move in moveList.Moves)
+            {
+                Board copy = this.Copy();
+                //    execute move
+                //    calculate resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                //    if ((move.Rating == null) 
+                //      move.Rating = resultMove.Rating;
+                //
+                //    if resultMove.Rating == matt && resultMove.Depth == 2
+                //            isChecked == true;
+                //    else if (comparer.Compare(move.Rating, resultMove.Rating) > 0))
+                //    {
+                //          move.Rating = resultMove.Rating;
+                //          move.Rating.Depth++;
+                //          result.Add(move);
+                //    }
+            }
             //
             // if (!result.Moves.Any())
             //    return Move.CreateNoMove(GetRating(color, isChecked, false));

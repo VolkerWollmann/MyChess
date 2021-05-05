@@ -1,4 +1,6 @@
-﻿using MyChessEngineBase;
+﻿using System.Drawing;
+using MyChessEngineBase;
+using Color = MyChessEngineBase.Color;
 
 namespace MyChessEngineInteger.Pieces
 {
@@ -50,6 +52,12 @@ namespace MyChessEngineInteger.Pieces
             }
 
             return numPiece;
+        }
+
+        public static void AddMovesToMoveList(Board board, int row, int column, NumPieces piece, Color color, MoveList moveList)
+        {
+            if ((piece == NumPieces.WhiteKing) || (piece == NumPieces.BlackKing))
+                King.AddMovesToMoveList(board, row, column, color, moveList);
         }
 
         public Piece(IPiece piece)
