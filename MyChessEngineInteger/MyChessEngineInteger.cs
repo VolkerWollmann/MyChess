@@ -5,7 +5,7 @@ using MyChessEngineInteger.Pieces;
 
 namespace MyChessEngineInteger
 {
-    public class MyChessEngineInteger : IChessEngine
+    public class ChessEngineInteger : IChessEngine
     {
         private readonly Board Board;
         public IPiece GetPiece(Position position)
@@ -122,6 +122,24 @@ namespace MyChessEngineInteger
             return true;
         }
 
+        private MyChessEngineBase.Move MoveToMove(Move move)
+        {
+            if (move.StartRow < 0)
+            {
+                return MyChessEngineBase.Move.CreateNoMove(move.Rating);
+            }
+
+            MyChessEngineBase.Move resultMove = new MyChessEngineBase.Move(
+                new Position(move.StartColumn, move.StartColumn),
+                new Position(move.EndRow, move.EndColumn),
+                new Piece(Board[move.EndRow, move.EndColumn]),
+                move.MoveType);
+
+            resultMove.Rating = move.Rating;
+
+            return resultMove;
+        }
+
         public MyChessEngineBase.Move CalculateMove()
         {
             DateTime s = DateTime.Now;
@@ -134,15 +152,23 @@ namespace MyChessEngineInteger
                        " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
                        move.Rating.Evaluation + " Pieces:" + move.Rating.Weight;
 
-            return move;
+            return MoveToMove(move);
         }
 
         public string Message { get; private set; }
 
-        public MyChessEngineInteger(Board board)
+        public ChessEngineInteger(Board board)
         {
             Board = board;
             Message = "";
         }
+
+        public ChessEngineInteger()
+        {
+            Board = new Board();
+            Message = "";
+        }
+
+
     }
 }

@@ -41,6 +41,11 @@ namespace MyChessEngineInteger
 
         }
 
+        public static Move CreateNoMove(BoardRating rating)
+        {
+            return new Move(-1, -1, -1, -1, MoveType.Normal, rating);
+        }
+
     }
 
     public class MoveSorter : IComparer<Move>
