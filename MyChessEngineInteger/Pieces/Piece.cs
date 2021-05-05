@@ -56,8 +56,19 @@ namespace MyChessEngineInteger.Pieces
 
         public static void AddMovesToMoveList(Board board, int row, int column, NumPieces piece, Color color, MoveList moveList)
         {
-            if ((piece == NumPieces.WhiteKing) || (piece == NumPieces.BlackKing))
-                King.AddMovesToMoveList(board, row, column, color, moveList);
+            switch (piece)
+            {
+                case NumPieces.BlackKing:
+                case NumPieces.WhiteKing:
+                    King.AddMovesToMoveList(board, row, column, color, moveList);
+                    break;
+
+                case NumPieces.BlackRook:
+                case NumPieces.WhiteRook:
+                    Rook.AddMovesToMoveList(board, row, column, color, moveList);
+                    break;
+            }
+            
         }
 
         public Piece(IPiece piece)

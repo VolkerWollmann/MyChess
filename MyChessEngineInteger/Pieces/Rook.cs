@@ -21,12 +21,15 @@ namespace MyChessEngineInteger.Pieces
                 }
                 else
                 {
-                    if (board[actualRow, column] <= 0)
+                    if (board[actualRow, column] >= 0)
                     {
                         Move move = new Move(row, column, actualRow, column);
                         moveList.Add(move);
                     }
                 }
+
+                if (board[actualRow, column] != 0)
+                    break;
             }
 
             for (int actualRow = row + 1; actualRow < ChessEngineConstants.Length; actualRow++)
@@ -47,13 +50,16 @@ namespace MyChessEngineInteger.Pieces
                         moveList.Add(move);
                     }
                 }
+
+                if (board[actualRow, column] != 0)
+                    break;
             }
 
             for (int actualColumn = column - 1; actualColumn >= 0; actualColumn--)
             {
                 if (color == Color.White)
                 {
-                    if (board[row, column] <= 0)
+                    if (board[row, actualColumn] <= 0)
                     {
                         Move move = new Move(row, column, row, actualColumn);
                         moveList.Add(move);
@@ -61,19 +67,22 @@ namespace MyChessEngineInteger.Pieces
                 }
                 else
                 {
-                    if (board[row, column] <= 0)
+                    if (board[row, actualColumn] >= 0)
                     {
                         Move move = new Move(row, column, row, actualColumn);
                         moveList.Add(move);
                     }
                 }
+
+                if (board[row, actualColumn] != 0)
+                    break;
             }
 
-            for (int actualColumn = column - 1; actualColumn >= 0; actualColumn--)
+            for (int actualColumn = column + 1; actualColumn < ChessEngineConstants.Length; actualColumn++)
             {
                 if (color == Color.White)
                 {
-                    if (board[row, column] <= 0)
+                    if (board[row, actualColumn] <= 0)
                     {
                         Move move = new Move(row, column, row, actualColumn);
                         moveList.Add(move);
@@ -81,12 +90,15 @@ namespace MyChessEngineInteger.Pieces
                 }
                 else
                 {
-                    if (board[row, column] <= 0)
+                    if (board[row, actualColumn] >= 0)
                     {
                         Move move = new Move(row, column, row, actualColumn);
                         moveList.Add(move);
                     }
                 }
+
+                if (board[row, actualColumn] != 0)
+                    break;
             }
         }
     }

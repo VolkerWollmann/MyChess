@@ -92,14 +92,17 @@ namespace MyChessEngineInteger
 
         public BoardRating GetRating(Color color)
         {
+            Board copy = Board.Copy();
 
-            return Board.GetRating(color, false, true);
+            var move = Board.CalculateMove(2, color);
+
+            return move.Rating;
         }
 
 
         public BoardRating GetBoardRating()
         {
-            return Board.GetRating(ColorToMove, false, true);
+            return GetRating(ColorToMove);
         }
 
         public void Test()
@@ -144,7 +147,7 @@ namespace MyChessEngineInteger
         {
             DateTime s = DateTime.Now;
 
-            var move = Board.CalculateMove(6, ColorToMove);
+            var move = Board.CalculateMove(4, ColorToMove);
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 

@@ -33,7 +33,7 @@ namespace MyChessEngineInteger.Pieces
                         }
                         else
                         {
-                            if (board[actualRow, actualColumn] <= 0)
+                            if (board[actualRow, actualColumn] >= 0)
                             {
                                 Move move = new Move(row, column, actualRow, actualColumn);
                                 moveList.Add(move);

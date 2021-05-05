@@ -88,7 +88,7 @@ namespace MyChessEngineInteger
                     {
                         if (color == Color.White && piece > 0)
                             Piece.AddMovesToMoveList(this, row, column, piece, color, moveList);
-                        else if (piece < 0)
+                        else if ( color == Color.Black && piece < 0)
                             Piece.AddMovesToMoveList(this, row, column, piece, color, moveList);
                     }
                 }
