@@ -135,7 +135,7 @@ namespace MyChessEngineInteger
             MyChessEngineBase.Move resultMove = new MyChessEngineBase.Move(
                 new Position(move.StartColumn, move.StartColumn),
                 new Position(move.EndRow, move.EndColumn),
-                new Piece(Board[move.EndRow, move.EndColumn]),
+                new Piece(Board[move.StartRow, move.StartColumn]),
                 move.MoveType);
 
             resultMove.Rating = move.Rating;
@@ -147,7 +147,7 @@ namespace MyChessEngineInteger
         {
             DateTime s = DateTime.Now;
 
-            var move = Board.CalculateMove(4, ColorToMove);
+            var move = Board.CalculateMove(6, ColorToMove);
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 

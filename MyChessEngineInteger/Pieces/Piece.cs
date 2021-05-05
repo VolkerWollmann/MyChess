@@ -214,6 +214,7 @@ namespace MyChessEngineInteger.Pieces
 
             NumPieces piece = board[startRow, startColumn];
             board[endRow, endColumn] = piece;
+            board[startRow, startColumn] = NumPieces.Empty;
 
             switch (piece)
             {

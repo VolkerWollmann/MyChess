@@ -189,29 +189,30 @@ namespace MyChessEngineInteger
 
             foreach (Move move in moveList.Moves)
             {
+                bool isCheckedByMove = false;
                 Board copy = this.Copy();
                 copy.ExecuteMove(move);
 
                 Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 if (move.Rating == null)
+                {
                     move.Rating = resultMove.Rating;
+                    move.Rating.Depth++;
+                }
 
                 if (resultMove.Rating.Depth <= 2)
                 {
                     if (color == Color.White && resultMove.Rating.Evaluation == Evaluation.WhiteCheckMate)
-                        isChecked = true;
+                        isCheckedByMove = true;
                     if (color == Color.Black && resultMove.Rating.Evaluation == Evaluation.BlackCheckMate)
-                        isChecked = true;
+                        isCheckedByMove = true;
                 }
 
-                if (!isChecked)
+                if (!isCheckedByMove)
+                    result.Add(move);
+                else
                 {
-                    //if (comparer.Compare(move.Rating, resultMove.Rating) > 0))
-                    {
-                        move.Rating = resultMove.Rating;
-                        move.Rating.Depth++;
-                        result.Add(move);
-                    }
+                    isChecked = true;
                 }
             }
             
