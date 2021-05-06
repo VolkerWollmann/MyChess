@@ -145,7 +145,7 @@ namespace MyChessEngine
                         (comparer.Compare(move.Rating, resultMove.Rating) > 0))
                     {
                         move.Rating = resultMove.Rating;
-                        move.Rating.Depth++;
+                        move.Rating.Depth = move.Rating.Depth + 1;
                     }
 
                     result.Add(move);

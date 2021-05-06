@@ -197,7 +197,11 @@ namespace MyChessEngineInteger
                 if (move.Rating == null)
                 {
                     move.Rating = resultMove.Rating;
-                    move.Rating.Depth++;
+                    move.Rating.Depth = move.Rating.Depth + 1;
+                }
+                else
+                {
+                    ;
                 }
 
                 if (resultMove.Rating.Depth <= 2)
