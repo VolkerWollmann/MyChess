@@ -19,10 +19,24 @@ namespace EngineUnitTests
 
             chessEngineInteger["G6"] = new King(Color.White, MoveType.Normal);
             chessEngineInteger["A8"] = new Rook(Color.White);
-            chessEngineInteger["G8"] = new King(Color.Black, MoveType.Normal);
+            chessEngineInteger["H8"] = new King(Color.Black, MoveType.Normal);
 
             BoardRating boardRating = chessEngineInteger.GetRating(Color.Black);
             Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
+        }
+
+        [TestMethod]
+        public void CheckBoardRatingBlackMateCalculateMove()
+        {
+            ChessEngineInteger chessEngineInteger = new ChessEngineInteger();
+
+            chessEngineInteger["G6"] = new King(Color.White, MoveType.Normal);
+            chessEngineInteger["A8"] = new Rook(Color.White);
+            chessEngineInteger["H8"] = new King(Color.Black, MoveType.Normal);
+
+            chessEngineInteger.ColorToMove = Color.Black;
+            MyChessEngineBase.Move move = chessEngineInteger.CalculateMove();
+
         }
 
         [TestMethod]

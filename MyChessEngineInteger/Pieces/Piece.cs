@@ -54,18 +54,18 @@ namespace MyChessEngineInteger.Pieces
             return numPiece;
         }
 
-        public static void AddMovesToMoveList(Board board, int row, int column, NumPieces piece, Color color, MoveList moveList)
+        public static void GetMoveList(Board board, int row, int column, NumPieces piece, Color color, MoveList moveList)
         {
             switch (piece)
             {
                 case NumPieces.BlackKing:
                 case NumPieces.WhiteKing:
-                    King.AddMovesToMoveList(board, row, column, color, moveList);
+                    King.GetMoveList(board, row, column, color, moveList);
                     break;
 
                 case NumPieces.BlackRook:
                 case NumPieces.WhiteRook:
-                    Rook.AddMovesToMoveList(board, row, column, color, moveList);
+                    Rook.GetMoveList(board, row, column, color, moveList);
                     break;
             }
             
@@ -145,66 +145,6 @@ namespace MyChessEngineInteger.Pieces
 
         #region ExecuteMove
 
-        public static void MoveWhiteRook(Board board, int startRow, int startColumn)
-        {
-            if ((board.Data[(int) ChessEngineIntegerFlags.WhiteA1RookMoved] == 1) &&
-                (board.Data[(int) ChessEngineIntegerFlags.WhiteH1RookMoved] == 1))
-                return;
-
-            if (startRow > 0)
-                return;
-
-            if (startRow == 0 && startColumn == 0)
-            {
-                board.Data[(int) ChessEngineIntegerFlags.WhiteA1RookMoved] = 1;
-                board.Data[(int) ChessEngineIntegerFlags.WhiteKingLongCastle] = 0;
-            }
-
-            if (startRow == 0 && startColumn == 7)
-            {
-                board.Data[(int)ChessEngineIntegerFlags.WhiteH1RookMoved] = 1;
-                board.Data[(int)ChessEngineIntegerFlags.WhiteKingCastle] = 0;
-            }
-        }
-
-        public static void MoveBlackRook(Board board, int startRow, int startColumn)
-        {
-            if ((board.Data[(int)ChessEngineIntegerFlags.BlackA8RookMoved] == 1) &&
-                (board.Data[(int)ChessEngineIntegerFlags.BlackH8RookMoved] == 1))
-                return;
-
-            if (startRow < 7)
-                return;
-
-            if (startRow == 7 && startColumn == 0)
-            {
-                board.Data[(int)ChessEngineIntegerFlags.BlackA8RookMoved] = 1;
-                board.Data[(int)ChessEngineIntegerFlags.BlackKingLongCastle] = 0;
-            }
-
-            if (startRow == 7 && startColumn == 7)
-            {
-                board.Data[(int)ChessEngineIntegerFlags.BlackH8RookMoved] = 1;
-                board.Data[(int)ChessEngineIntegerFlags.BlackKingCastle] = 0;
-            }
-        }
-
-        public static void MoveWhiteKing(Board board, int endRow, int endColumn)
-        {
-            board.Data[(int)ChessEngineIntegerFlags.WhiteKingCastle] = 0;
-            board.Data[(int)ChessEngineIntegerFlags.WhiteKingLongCastle] = 0;
-            board.Data[(int)ChessEngineIntegerFlags.WhiteKingRow] = endRow;
-            board.Data[(int)ChessEngineIntegerFlags.WhiteKingColumn] = endColumn;
-        }
-
-        public static void MoveBlackKing(Board board, int endRow, int endColumn)
-        {
-            board.Data[(int)ChessEngineIntegerFlags.BlackKingCastle] = 0;
-            board.Data[(int)ChessEngineIntegerFlags.BlackKingLongCastle] = 0;
-            board.Data[(int)ChessEngineIntegerFlags.BlackKingRow] = endRow;
-            board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn] = endColumn;
-        }
-
         public static bool ExecuteMove(Board board, Move  move)
         {
             int startRow = move.StartRow;
@@ -219,11 +159,11 @@ namespace MyChessEngineInteger.Pieces
             switch (piece)
             {
                 case NumPieces.WhiteKing:
-                    Piece.MoveWhiteKing(board, endRow, endColumn);
+                    King.MoveWhiteKing(board, endRow, endColumn);
                     break;
 
                 case NumPieces.BlackKing:
-                    Piece.MoveBlackKing(board, endRow, endColumn);
+                    King.MoveBlackKing(board, endRow, endColumn);
                     break;
 
                 case NumPieces.WhitePawn:
@@ -233,11 +173,11 @@ namespace MyChessEngineInteger.Pieces
                     break;
 
                 case NumPieces.WhiteRook:
-                    Piece.MoveWhiteRook(board,startRow, startColumn);
+                    Rook.MoveWhiteRook(board,startRow, startColumn);
                     break;
 
                 case NumPieces.BlackRook:
-                    Piece.MoveWhiteRook(board, startRow, startColumn);
+                    Rook.MoveWhiteRook(board, startRow, startColumn);
                     break;
             }
 

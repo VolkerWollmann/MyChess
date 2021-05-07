@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Design;
+﻿using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Xml.XPath;
 using Microsoft.Win32.SafeHandles;
@@ -87,9 +88,9 @@ namespace MyChessEngineInteger
                     if (piece != NumPieces.Empty)
                     {
                         if (color == Color.White && piece > 0)
-                            Piece.AddMovesToMoveList(this, row, column, piece, color, moveList);
+                            Piece.GetMoveList(this, row, column, piece, color, moveList);
                         else if ( color == Color.Black && piece < 0)
-                            Piece.AddMovesToMoveList(this, row, column, piece, color, moveList);
+                            Piece.GetMoveList(this, row, column, piece, color, moveList);
                     }
                 }
             }
@@ -174,6 +175,8 @@ namespace MyChessEngineInteger
 
         public Move CalculateMove(int depth, Color color)
         {
+            string guid = Guid.NewGuid().ToString();
+
             if (!KingAlive(color))
                 return Move.CreateNoMove(GetRating(color, true, false));
 
