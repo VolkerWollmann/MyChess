@@ -65,6 +65,9 @@ namespace MyChessEngineBase.Rating
         /// <returns>-1 for x greater y</returns>
         public int Compare(BoardRating x, BoardRating y)
         {
+            if ((x == null) || (y == null))
+                return 0;
+
             int xIndex = WhiteDictionary[x.Evaluation];
             int yIndex = WhiteDictionary[y.Evaluation];
 
@@ -138,6 +141,9 @@ namespace MyChessEngineBase.Rating
         /// <returns>-1 for x greater y</returns>
         public int Compare(BoardRating x, BoardRating y)
         {
+            if ( ( x == null ) || ( y == null) )
+                return 0;
+
             int xIndex = BlackDictionary[x.Evaluation];
             int yIndex = BlackDictionary[y.Evaluation];
 

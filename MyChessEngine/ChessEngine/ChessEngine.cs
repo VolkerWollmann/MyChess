@@ -103,7 +103,7 @@ namespace MyChessEngine
 
         public void Test()
         {
-            var allMoves = this.Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoveList().Moves)).SelectMany( move => move).ToList();
+            var allMoves = Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoveList().Moves)).SelectMany( move => move).ToList();
             
             foreach (Move move3 in allMoves)
             {

@@ -136,9 +136,10 @@ namespace MyChessEngineInteger
                 new Position(move.StartColumn, move.StartColumn),
                 new Position(move.EndRow, move.EndColumn),
                 new Piece(Board[move.StartRow, move.StartColumn]),
-                move.MoveType);
-
-            resultMove.Rating = move.Rating;
+                move.MoveType)
+            {
+                Rating = move.Rating
+            };
 
             return resultMove;
         }

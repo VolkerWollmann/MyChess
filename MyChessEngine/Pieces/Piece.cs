@@ -72,11 +72,11 @@ namespace MyChessEngine.Pieces
         /// <returns>returns false, if this is last move in that direction</returns>
         public bool AddPosition(MoveList moveList, Position position)
         {
-            IsValidPositionReturns result = this.Board.IsValidPosition(position, this.Color);
+            IsValidPositionReturns result = Board.IsValidPosition(position, Color);
             if (result == IsValidPositionReturns.NoPosition)
                 return false;
 
-            moveList.Add(new Move(this.Position, position, this));
+            moveList.Add(new Move(Position, position, this));
             if (result == IsValidPositionReturns.EnemyBeatPosition)
                 return false;
 

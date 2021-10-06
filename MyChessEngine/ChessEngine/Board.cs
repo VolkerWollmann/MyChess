@@ -30,7 +30,7 @@ namespace MyChessEngine
                     Pieces[row, column].Board = this;
                     Pieces[row, column].Position = new Position(row, column);
                     if (value is King king)
-                        this.Kings[king.Color] = king;
+                        Kings[king.Color] = king;
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace MyChessEngine
             if (_AllPiecesByColor.ContainsKey(color))
                 return _AllPiecesByColor[color];
 
-            List<Piece> pieces = new List<Piece>();
+            List<Piece> pieces;
 
             pieces = Pieces.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
 
@@ -149,7 +149,7 @@ namespace MyChessEngine
 
             foreach (Move move in baseMoveList)
             {
-                Board testBoard = this.Copy();
+                Board testBoard = Copy();
                 testBoard.ExecuteMove(move);
                 if (!testBoard.IsChecked(color))
                     moveList.Add(move);
@@ -227,7 +227,7 @@ namespace MyChessEngine
 
             foreach (Move move in moves.Moves)
             {
-                Board copy = this.Copy();
+                Board copy = Copy();
                 copy.ExecuteMove(move);
                 if (!copy.IsChecked(color))
                 {

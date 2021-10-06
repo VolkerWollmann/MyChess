@@ -34,10 +34,10 @@ namespace MyChessEngine
             LastMove = move;
             UndoPossible = true;
             if ((this[move.End] != null) ||
-                (this.GetAllPieces(Color.White).Any( p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
-                (this.GetAllPieces(Color.Black).Any(p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
+                (GetAllPieces(Color.White).Any( p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
+                (GetAllPieces(Color.Black).Any(p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
                 (move.Piece is King king && king.KingMoves != MoveType.Normal) ||
-                (move.Piece is Rook rook && rook.HasMoved == false))
+                move.Piece is Rook { HasMoved: false })
             {
                 LastMove = null;
                 UndoPossible = false;
@@ -51,8 +51,8 @@ namespace MyChessEngine
                 this[LastMove.End] = null;
                 UndoPossible = false;
                 LastMove = null;
-                this.Kings[Color.White].ResetIsChecked();
-                this.Kings[Color.Black].ResetIsChecked();
+                Kings[Color.White].ResetIsChecked();
+                Kings[Color.Black].ResetIsChecked();
                 return this;
             }
             else
@@ -118,9 +118,9 @@ namespace MyChessEngine
             if (Kings[color] == null)
                 return Move.CreateNoMove(GetRating(color, true, false));
 
-            var moves  = base.GetBaseMoveList(color);
+            var moves  = GetBaseMoveList(color);
             bool hasMoves = moves.Any();
-            bool isChecked = this.IsChecked(color);
+            bool isChecked = IsChecked(color);
 
             int localDepth = depth - 1;
             if (localDepth == 1)
@@ -134,7 +134,7 @@ namespace MyChessEngine
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
 
-            Board2 copy = this.Copy();
+            Board2 copy = Copy();
             foreach (Move move in moves)
             {
                 copy.ExecuteMove(move);
@@ -151,10 +151,7 @@ namespace MyChessEngine
                     result.Add(move);
                 }
 
-                copy = copy.UndoLastMove();
-                if (copy == null)
-                    copy = this.Copy();
-
+                copy = copy.UndoLastMove() ?? Copy();
             }
 
             

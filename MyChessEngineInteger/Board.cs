@@ -70,7 +70,7 @@ namespace MyChessEngineInteger
         {
             Board copy = new Board
             {
-                Pieces = (int[,]) this.Pieces.Clone(), Data = (int[]) this.Data.Clone()
+                Pieces = (int[,]) Pieces.Clone(), Data = (int[]) Data.Clone()
             };
 
             return copy;
@@ -193,7 +193,7 @@ namespace MyChessEngineInteger
             foreach (Move move in moveList.Moves)
             {
                 bool isCheckedByMove = false;
-                Board copy = this.Copy();
+                Board copy = Copy();
                 copy.ExecuteMove(move);
 
                 Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
@@ -201,10 +201,6 @@ namespace MyChessEngineInteger
                 {
                     move.Rating = resultMove.Rating;
                     move.Rating.Depth = move.Rating.Depth + 1;
-                }
-                else
-                {
-                    ;
                 }
 
                 if (resultMove.Rating.Depth <= 2)

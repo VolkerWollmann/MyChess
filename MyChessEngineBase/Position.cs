@@ -57,7 +57,7 @@ namespace MyChessEngineBase
 
         public bool AreEqual(Position position)
         {
-            return this.Row == position.Row && this.Column == position.Column;
+            return Row == position.Row && Column == position.Column;
         }
 
         public Position GetDeltaPosition(int deltaRow, int deltaColumn)

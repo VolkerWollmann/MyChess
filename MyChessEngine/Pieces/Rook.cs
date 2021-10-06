@@ -13,33 +13,33 @@ namespace MyChessEngine.Pieces
             MoveList moveList = new MoveList();
 
             // left
-            for (int row = this.Position.Row-1; row >= 0; row--)
+            for (int row = Position.Row-1; row >= 0; row--)
             {
-                Position newPosition = new Position(row, this.Position.Column);
+                Position newPosition = new Position(row, Position.Column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
 
             // right
-            for (int row = this.Position.Row + 1; row < ChessEngineConstants.Length; row++)
+            for (int row = Position.Row + 1; row < ChessEngineConstants.Length; row++)
             {
-                Position newPosition = new Position(row, this.Position.Column);
+                Position newPosition = new Position(row, Position.Column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
 
             // down
-            for (int column = this.Position.Column - 1; column >=0; column--)
+            for (int column = Position.Column - 1; column >=0; column--)
             {
-                Position newPosition = new Position(this.Position.Row, column);
+                Position newPosition = new Position(Position.Row, column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
 
             // up
-            for (int column = this.Position.Column + 1; column < ChessEngineConstants.Length; column++)
+            for (int column = Position.Column + 1; column < ChessEngineConstants.Length; column++)
             {
-                Position newPosition = new Position(this.Position.Row, column);
+                Position newPosition = new Position(Position.Row, column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
@@ -58,16 +58,16 @@ namespace MyChessEngine.Pieces
             if (!HasMoved)
             {
                 HasMoved = true;
-                if (Board.Kings[this.Color] is King myKing)
+                if (Board.Kings[Color] is { } myKing)
                 {
                     if ((myKing.Color == Color.White) )
                     {
                         if (myKing.KingMoves != MoveType.Normal)
                         {
-                            if (this.Position.AreEqual(WhiteQueenRookField))
+                            if (Position.AreEqual(WhiteQueenRookField))
                                 myKing.KingMoves &= (MoveType.WhiteCastle | MoveType.Normal);
 
-                            if (this.Position.AreEqual(WhiteKingRookField))
+                            if (Position.AreEqual(WhiteKingRookField))
                                 myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
                         }
                     }
@@ -75,10 +75,10 @@ namespace MyChessEngine.Pieces
                     {
                         if (myKing.KingMoves != MoveType.Normal)
                         {
-                            if (this.Position.AreEqual(BlackQueenRookField))
+                            if (Position.AreEqual(BlackQueenRookField))
                                 myKing.KingMoves &= (MoveType.BlackCastle | MoveType.Normal);
 
-                            if (this.Position.AreEqual(BlackKingRookField))
+                            if (Position.AreEqual(BlackKingRookField))
                                 myKing.KingMoves &= (MoveType.WhiteCastleLong | MoveType.Normal);
                         }
                     }

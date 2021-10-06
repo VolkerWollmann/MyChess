@@ -94,8 +94,7 @@ namespace MyChessEngine
 
         public bool ExecuteMove(Move move)
         {
-            if (move.Piece == null)
-                move.Piece = Board[move.Start];
+            move.Piece ??= Board[move.Start];
 
             Board.ExecuteMove(move);
 
@@ -106,7 +105,7 @@ namespace MyChessEngine
 
         public void Test()
         {
-            var allMoves = this.Board.GetAllPieces(ColorToMove).Select((piece => piece.GetMoveList().Moves)).SelectMany(move => move).ToList();
+            var allMoves = Board.GetAllPieces(ColorToMove).Select((piece => piece.GetMoveList().Moves)).SelectMany(move => move).ToList();
 
             foreach (Move move3 in allMoves)
             {
@@ -139,7 +138,7 @@ namespace MyChessEngine
         {
             DateTime s = DateTime.Now;
 
-            Board2.Counter = 0;
+            MyChessEngine.Board.Counter = 0;
 
             Board.ClearOptimizationVariables();
             var move = Board.CalculateMove(6, ColorToMove);
@@ -148,7 +147,7 @@ namespace MyChessEngine
 
             _Message = move + " Time:" + ts + Environment.NewLine +
                        " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
-                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board2.Counter;
+                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + MyChessEngine.Board.Counter;
 
             return move;
         }

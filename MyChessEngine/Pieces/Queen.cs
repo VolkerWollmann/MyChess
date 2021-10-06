@@ -11,33 +11,33 @@ namespace MyChessEngine.Pieces
             MoveList moveList = new MoveList();
 
             // left
-            for (int row = this.Position.Row - 1; row >= 0; row--)
+            for (int row = Position.Row - 1; row >= 0; row--)
             {
-                Position newPosition = new Position(row, this.Position.Column);
+                Position newPosition = new Position(row, Position.Column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
 
             // right
-            for (int row = this.Position.Row + 1; row < ChessEngineConstants.Length; row++)
+            for (int row = Position.Row + 1; row < ChessEngineConstants.Length; row++)
             {
-                Position newPosition = new Position(row, this.Position.Column);
+                Position newPosition = new Position(row, Position.Column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
 
             // down
-            for (int column = this.Position.Column - 1; column >= 0; column--)
+            for (int column = Position.Column - 1; column >= 0; column--)
             {
-                Position newPosition = new Position(this.Position.Row, column);
+                Position newPosition = new Position(Position.Row, column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
 
             // up
-            for (int column = this.Position.Column + 1; column < ChessEngineConstants.Length; column++)
+            for (int column = Position.Column + 1; column < ChessEngineConstants.Length; column++)
             {
-                Position newPosition = new Position(this.Position.Row, column);
+                Position newPosition = new Position(Position.Row, column);
                 if (!AddPosition(moveList, newPosition))
                     break;
             }
@@ -45,7 +45,7 @@ namespace MyChessEngine.Pieces
             // left, down
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
-                Position newPosition = this.Position.GetDeltaPosition(-i, -i);
+                Position newPosition = Position.GetDeltaPosition(-i, -i);
                 if (newPosition == null)
                     break;
 
@@ -56,7 +56,7 @@ namespace MyChessEngine.Pieces
             // left, up
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
-                Position newPosition = this.Position.GetDeltaPosition(-i, i);
+                Position newPosition = Position.GetDeltaPosition(-i, i);
                 if (newPosition == null)
                     break;
 
@@ -67,7 +67,7 @@ namespace MyChessEngine.Pieces
             // right, down
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
-                Position newPosition = this.Position.GetDeltaPosition(i, -i);
+                Position newPosition = Position.GetDeltaPosition(i, -i);
                 if (newPosition == null)
                     break;
 
@@ -78,7 +78,7 @@ namespace MyChessEngine.Pieces
             // right, up
             for (int i = 1; i <= ChessEngineConstants.Length; i++)
             {
-                Position newPosition = this.Position.GetDeltaPosition(i, i);
+                Position newPosition = Position.GetDeltaPosition(i, i);
                 if (newPosition == null)
                     break;
 
