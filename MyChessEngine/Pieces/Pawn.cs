@@ -51,7 +51,7 @@ namespace MyChessEngine.Pieces
                         moveList.Add(new Move(Position, newPosition, this));
                 }
 
-                // enpasant 
+                // enpassant 
 
                 if ((PossibleMoveType & MoveType.EnpassantWhiteLeft)>0)
                 {
@@ -99,7 +99,7 @@ namespace MyChessEngine.Pieces
                     if ((pieceToBeat != null) && (pieceToBeat.Color != Color) )
                         moveList.Add(new Move(Position, newPosition, this));
                 }
-                // enpasant 
+                // enpassant 
 
                 if ((PossibleMoveType & MoveType.EnpassantBlackLeft) > 0)
                 {

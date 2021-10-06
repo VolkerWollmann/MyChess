@@ -48,7 +48,7 @@ namespace MyChessEngineInteger.Pieces
 
         }
 
-        public static bool IsChecked(Board board, Color color, MoveList movelist)
+        public static bool IsChecked(Board board, Color color, MoveList moveList)
         {
             int kingRow, kingColumn;
 
@@ -63,7 +63,7 @@ namespace MyChessEngineInteger.Pieces
                 kingColumn = board.Data[(int)ChessEngineIntegerFlags.BlackKingColumn];
             }
 
-            return movelist.Moves.Any(move => move.EndRow == kingRow && move.EndColumn == kingColumn);
+            return moveList.Moves.Any(move => move.EndRow == kingRow && move.EndColumn == kingColumn);
         }
 
         public static void MoveWhiteKing(Board board, int endRow, int endColumn)

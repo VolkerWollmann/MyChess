@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineUnitTests", "EngineUn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyChessEngineBase", "MyChessEngineBase\MyChessEngineBase.csproj", "{142CDAA9-6C12-4ABB-95E0-2AC493CFA067}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyChessEngineInteger", "MyChessEngineInteger\MyChessEngineInteger.csproj", "{B6FE17FC-C3EF-48B0-B24F-F52B746D6D97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyChessEngineInteger", "MyChessEngineInteger\MyChessEngineInteger.csproj", "{B6FE17FC-C3EF-48B0-B24F-F52B746D6D97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E5DCB085-0B5F-4C02-BA22-14039CD813D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

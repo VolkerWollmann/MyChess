@@ -175,11 +175,11 @@ namespace MyChessEngine.Pieces
             }
         }
 
-        private bool _IsCheckedCalulated = false;
+        private bool _IsCheckedCalculated = false;
         private bool _IsChecked = false;
         public bool IsChecked()
         {
-            if (!_IsCheckedCalulated)
+            if (!_IsCheckedCalculated)
             {
                 var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
                     .Select((piece => piece.GetMoveList().Moves))
@@ -188,7 +188,7 @@ namespace MyChessEngine.Pieces
                 var threatenedFields = l.Select(move => move.End);
 
                 _IsChecked = threatenedFields.Any(position => position.AreEqual(Position));
-                _IsCheckedCalulated = true;
+                _IsCheckedCalculated = true;
             }
 
             return _IsChecked;
@@ -196,7 +196,7 @@ namespace MyChessEngine.Pieces
 
         public void ResetIsChecked()
         {
-            _IsCheckedCalulated = false;
+            _IsCheckedCalculated = false;
             _IsChecked = false;
         }
 
