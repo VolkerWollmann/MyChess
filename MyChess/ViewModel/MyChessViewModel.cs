@@ -7,6 +7,7 @@ using MyChess.Controls;
 using MyChess.Helper;
 using MyChessEngine;
 using MyChessEngineBase;
+using MyChessEngineBase.Interfaces;
 
 namespace MyChess.ViewModel
 {

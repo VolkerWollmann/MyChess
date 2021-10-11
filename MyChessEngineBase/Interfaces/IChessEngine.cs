@@ -1,6 +1,6 @@
 ﻿using MyChessEngineBase.Rating;
 
-namespace MyChessEngineBase
+namespace MyChessEngineBase.Interfaces
 { 
     public interface IChessEngine
     {

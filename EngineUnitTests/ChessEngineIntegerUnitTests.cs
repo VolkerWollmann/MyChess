@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngine.Pieces;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
@@ -38,7 +35,7 @@ namespace EngineUnitTests
             };
 
             MyChessEngineBase.Move move = chessEngineInteger.CalculateMove();
-
+            Assert.IsNotNull(move);
         }
 
         [TestMethod]

@@ -1,8 +1,7 @@
 ﻿using MyChessEngine.Pieces;
 using MyChessEngineBase;
 
-
-namespace MyChessEngine
+namespace MyChessEngine.Interfaces
 {
     public interface IEnginePiece : IPiece
     {

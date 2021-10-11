@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using MyChessEngine.Interfaces;
 using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces

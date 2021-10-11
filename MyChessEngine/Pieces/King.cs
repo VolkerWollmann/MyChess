@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using MyChessEngineBase;
+// ReSharper disable InconsistentNaming
 
 namespace MyChessEngine.Pieces
 {

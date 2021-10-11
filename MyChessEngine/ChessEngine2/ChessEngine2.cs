@@ -3,6 +3,7 @@ using System.Linq;
 using MyChessEngine.Pieces;
 using MyChessEngineBase.Rating;
 using MyChessEngineBase;
+using MyChessEngineBase.Interfaces;
 
 namespace MyChessEngine
 {

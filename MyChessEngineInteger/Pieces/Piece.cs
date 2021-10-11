@@ -1,6 +1,6 @@
-﻿using System.Drawing;
-using MyChessEngineBase;
+﻿using MyChessEngineBase;
 using Color = MyChessEngineBase.Color;
+// ReSharper disable InconsistentNaming
 
 namespace MyChessEngineInteger.Pieces
 {

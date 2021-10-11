@@ -1,5 +1,6 @@
 ﻿using System;
 using MyChessEngineBase;
+using MyChessEngineBase.Interfaces;
 using MyChessEngineBase.Rating;
 using MyChessEngineInteger.Pieces;
 

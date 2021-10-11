@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Xml.XPath;
-using Microsoft.Win32.SafeHandles;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
 using MyChessEngineInteger.Pieces;
+// ReSharper disable InconsistentNaming
 
 namespace MyChessEngineInteger
 {
@@ -23,14 +21,14 @@ namespace MyChessEngineInteger
         WhiteH1RookMoved = 9,
         BlackA8RookMoved = 10,
         BlackH8RookMoved = 11,
-        WhiteFirstEnpassantPawnRow = 12,
-        WhiteFirstEnpassantPawnColumn = 13,
-        WhiteSecondEnpassantPawnRow = 14,
-        WhiteSecondEnpassantPawnColumn = 15,
-        BlackFirstEnpassantPawnRow = 16,
-        BlackFirstEnpassantPawnColumn = 17,
-        BlackSecondEnpassantPawnRow = 18,
-        BlackSecondEnpassantPawnColumn = 19,
+        //WhiteFirstEnpassantPawnRow = 12,
+        //WhiteFirstEnpassantPawnColumn = 13,
+        //WhiteSecondEnpassantPawnRow = 14,
+        //WhiteSecondEnpassantPawnColumn = 15,
+        //BlackFirstEnpassantPawnRow = 16,
+        //BlackFirstEnpassantPawnColumn = 17,
+        //BlackSecondEnpassantPawnRow = 18,
+        //BlackSecondEnpassantPawnColumn = 19,
     }
 
     public class Board

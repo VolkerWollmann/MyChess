@@ -83,9 +83,7 @@ namespace MyChessEngine
             if (_AllPiecesByColor.ContainsKey(color))
                 return _AllPiecesByColor[color];
 
-            List<Piece> pieces;
-
-            pieces = Pieces.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
+            var pieces = Pieces.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
 
             _AllPiecesByColor.Add(color, pieces);
             return pieces;

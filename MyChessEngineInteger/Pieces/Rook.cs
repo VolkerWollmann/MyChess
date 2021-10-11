@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyChessEngineBase;
+﻿using MyChessEngineBase;
 
 namespace MyChessEngineInteger.Pieces
 {
