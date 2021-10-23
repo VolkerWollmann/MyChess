@@ -6,7 +6,7 @@ using MyChessEngineBase;
 namespace MyChessEngine.Pieces
 {
     [DebuggerDisplay("T={Type}, C={Color}")]
-    public class Piece : IEnginePiece
+    public abstract class Piece : IEnginePiece
     {
         #region IPiece
 
@@ -18,6 +18,11 @@ namespace MyChessEngine.Pieces
 
         #region IEnginePiece
         public virtual MoveList GetMoveList()
+        {
+            return new MoveList();
+        }
+
+        public virtual MoveList GetThreatenMoveList()
         {
             return new MoveList();
         }

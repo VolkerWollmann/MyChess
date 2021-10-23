@@ -61,6 +61,9 @@ namespace MyChessEngine
 
         public IsValidPositionReturns IsValidPosition(Position position, Color color)
         {
+            if (position == null)
+                return IsValidPositionReturns.NoPosition;
+
             Piece piece = this[position];
             if (piece == null)
                 return IsValidPositionReturns.EmptyField;

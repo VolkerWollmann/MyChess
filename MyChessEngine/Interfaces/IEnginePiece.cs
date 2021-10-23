@@ -7,6 +7,8 @@ namespace MyChessEngine.Interfaces
     {
         MoveList GetMoveList();
 
+        MoveList GetThreatenMoveList();
+
         Board Board { get; set; }
 
         Position Position { get; set; }

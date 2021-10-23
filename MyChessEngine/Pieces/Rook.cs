@@ -8,6 +8,11 @@ namespace MyChessEngine.Pieces
     {
         public bool HasMoved;
 
+        public override MoveList GetThreatenMoveList()
+        {
+            return GetMoveList();
+        }
+
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();

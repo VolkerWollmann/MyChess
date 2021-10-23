@@ -51,6 +51,20 @@ namespace MyChessEngine.Pieces
             {  0, -1 },            {   0, +1 },
             { +1, -1 }, { +1, 0 }, {  +1, +1 }
         };
+
+        public override MoveList GetThreatenMoveList()
+        {
+            MoveList moveList = new MoveList();
+
+            for (int i = 0; i < 8; i++)
+            {
+                Position newPosition = Position.GetDeltaPosition(Delta[i, 0], Delta[i, 1]);
+                AddPosition(moveList, newPosition);
+            }
+
+            return moveList;
+        }
+
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();
@@ -183,11 +197,11 @@ namespace MyChessEngine.Pieces
             if (!_IsCheckedCalculated)
             {
                 var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
-                    .Select((piece => piece.GetMoveList().Moves))
+                    .Select((piece => piece.GetThreatenMoveList().Moves))
                     .SelectMany(move => move);
 
                 var threatenedFields = l.Select(move => move.End);
-
+                
                 _IsChecked = threatenedFields.Any(position => position.AreEqual(Position));
                 _IsCheckedCalculated = true;
             }

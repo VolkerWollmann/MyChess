@@ -12,6 +12,11 @@ namespace MyChessEngine.Pieces
             { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
         };
 
+        public override MoveList GetThreatenMoveList()
+        {
+            return GetMoveList();
+        }
+
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();

@@ -6,6 +6,11 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Name = {Color}")]
     public class Queen : Piece
     {
+        public override MoveList GetThreatenMoveList()
+        {
+            return GetMoveList();
+        }
+
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();

@@ -10,6 +10,34 @@ namespace MyChessEngine.Pieces
     {
         public MoveType PossibleMoveType { get; set; }
 
+        public override MoveList GetThreatenMoveList()
+        {
+            MoveList moveList = new MoveList();
+            if (Color == Color.White)
+            {
+                // beat left
+                Position newPosition = Position.GetDeltaPosition(1, -1);
+                AddPosition(moveList, newPosition);
+               
+
+                // beat right
+                newPosition = Position.GetDeltaPosition(1, 1);
+                AddPosition(moveList, newPosition);
+            }
+            else
+            {
+                // beat left
+                Position newPosition = Position.GetDeltaPosition(-1, -1);
+                AddPosition(moveList, newPosition);
+
+                // beat right
+                newPosition = Position.GetDeltaPosition(-1, 1);
+                AddPosition(moveList, newPosition);
+            }
+
+            return moveList;
+        }
+
         public override MoveList GetMoveList()
         {
             MoveList moveList = new MoveList();
