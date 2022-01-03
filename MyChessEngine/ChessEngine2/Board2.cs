@@ -15,12 +15,12 @@ namespace MyChessEngine
             for (int j = 0; j < ChessEngineConstants.Length; j++)
             {
                 Piece piece = this[i, j];
-                copy[i, j] = piece?.Copy();
-            }
-
-            foreach (Color color in ChessEngineConstants.BothColors)
-            {
-                copy.Kings[color] = (King)copy.GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
+                if (piece != null)
+                {
+                    copy[i, j] = piece.Copy();
+                    if (piece.Type == PieceType.King)
+                        copy.Kings[piece.Color] = (King)copy[i, j];
+                }
             }
 
             return copy;
