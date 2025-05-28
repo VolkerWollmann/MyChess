@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-using MyChessEngineBase;
+﻿using MyChessEngineBase;
 using MyChessEngineBase.Rating;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MyChessEngineInteger
 {
+    [DebuggerDisplay("{ToString()}")]
     public class Move
     {
         public int StartRow;
@@ -16,7 +18,13 @@ namespace MyChessEngineInteger
 
         public BoardRating Rating { get; set; }
 
+        public override string ToString()
+        {
+            Position p1 = new Position(StartRow, StartColumn);
+            Position p2 = new Position(EndRow, EndColumn);
 
+            return p1 + "->" + p2 + ":" + MoveType + " " + Rating;
+        }
         public Move(int startRow, int startColumn, int endRow, int endColumn, MoveType moveType, BoardRating boardRating)
         {
             StartRow = startRow;
