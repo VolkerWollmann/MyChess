@@ -21,7 +21,7 @@ namespace MyChessEngineBase.Rating
 
         public override string ToString()
         {
-            return $"Sit:{Situation} Eval:{Evaluation} W:{Weight} D:{Depth}";
+            return $"Situation:{Situation} Evaluation:{Evaluation} Weight:{Weight} Depth:{Depth}";
         }
     }
 

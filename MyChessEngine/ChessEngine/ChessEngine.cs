@@ -123,6 +123,12 @@ namespace MyChessEngine
         public string Message => _Message;
         #endregion
 
+        public int Counter
+        {
+            get { return Board.Counter;  }
+        }
+
+        #region Constructors
         public ChessEngine()
         {
             Board = new Board();
@@ -132,6 +138,7 @@ namespace MyChessEngine
             Board = board;
             ColorToMove = colorToMove;
         }
+        #endregion
 
         public Move CalculateMove()
         {
