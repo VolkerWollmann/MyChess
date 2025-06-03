@@ -17,7 +17,7 @@ namespace MyChessEngine
 
         public IPiece GetPiece(Position position)
         {
-            return Board[position];
+            return Board[position].Piece;
         }
 
         public ChessEngine2 Copy()
@@ -33,39 +33,39 @@ namespace MyChessEngine
             string[] blackPawnPositions = new[] { "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7" };
             for (int i = 0; i < 8; i++)
             {
-                Board[whitePawnPositions[i]] = new Pawn(Color.White);
-                Board[blackPawnPositions[i]] = new Pawn(Color.Black);
+                Board[whitePawnPositions[i]].Piece = new Pawn(Color.White);
+                Board[blackPawnPositions[i]].Piece = new Pawn(Color.Black);
             }
 
             // rook
-            Board["A1"] = new Rook(Color.White);
-            Board["H1"] = new Rook(Color.White);
-            Board["A8"] = new Rook(Color.Black);
-            Board["H8"] = new Rook(Color.Black);
+            Board["A1"].Piece = new Rook(Color.White);
+            Board["H1"].Piece = new Rook(Color.White);
+            Board["A8"].Piece = new Rook(Color.Black);
+            Board["H8"].Piece = new Rook(Color.Black);
 
 
             // bishop 
-            Board["C1"] = new Bishop(Color.White);
-            Board["F1"] = new Bishop(Color.White);
-            Board["C8"] = new Bishop(Color.Black);
-            Board["F8"] = new Bishop(Color.Black);
+            Board["C1"].Piece = new Bishop(Color.White);
+            Board["F1"].Piece = new Bishop(Color.White);
+            Board["C8"].Piece = new Bishop(Color.Black);
+            Board["F8"].Piece = new Bishop(Color.Black);
 
 
             // knight
-            Board["B1"] = new Knight(Color.White);
-            Board["G1"] = new Knight(Color.White);
-            Board["B8"] = new Knight(Color.Black);
-            Board["G8"] = new Knight(Color.Black);
+            Board["B1"].Piece = new Knight(Color.White);
+            Board["G1"].Piece = new Knight(Color.White);
+            Board["B8"].Piece = new Knight(Color.Black);
+            Board["G8"].Piece = new Knight(Color.Black);
 
 
             // queen
-            Board["D1"] = new Queen(Color.White);
-            Board["D8"] = new Queen(Color.Black);
+            Board["D1"].Piece = new Queen(Color.White);
+            Board["D8"].Piece = new Queen(Color.Black);
 
 
             // king
-            Board["E1"] = new King(Color.White);
-            Board["E8"] = new King(Color.Black);
+            Board["E1"].Piece = new King(Color.White);
+            Board["E8"].Piece = new King(Color.Black);
 
             ColorToMove = Color.White;
         }
@@ -77,8 +77,8 @@ namespace MyChessEngine
 
         public IPiece this[string position]
         {
-            get => Board[position];
-            set => Board[position] = (Piece)value;
+            get => Board[position].Piece;
+            set => Board[position].Piece = (Piece)value;
         }
 
 
@@ -95,7 +95,7 @@ namespace MyChessEngine
 
         public bool ExecuteMove(Move move)
         {
-            move.Piece ??= Board[move.Start];
+            move.Piece ??= Board[move.Start].Piece;
 
             Board.ExecuteMove(move);
 

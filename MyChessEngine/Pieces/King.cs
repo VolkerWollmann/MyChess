@@ -139,31 +139,31 @@ namespace MyChessEngine.Pieces
             switch (move.Type)
             {
                 case MoveType.WhiteCastle:
-                    Board["G1"] = this;
-                    Board["E1"] = null;
-                    Board["F1"] = Board["H1"];
-                    Board["H1"] = null;
+                    Board["G1"].Piece = this;
+                    Board["E1"].Piece = null;
+                    Board["F1"].Piece = Board["H1"].Piece;
+                    Board["H1"].Piece = null;
                     break;
 
                 case MoveType.WhiteCastleLong:
-                    Board["C1"] = this;
-                    Board["E1"] = null;
-                    Board["D1"] = Board["A1"];
-                    Board["A1"] = null;
+                    Board["C1"].Piece = this;
+                    Board["E1"].Piece = null;
+                    Board["D1"].Piece = Board["A1"].Piece;
+                    Board["A1"].Piece = null;
                     break;
 
                 case MoveType.BlackCastle:
-                    Board["G8"] = this;
-                    Board["E8"] = null;
-                    Board["F8"] = Board["H8"];
-                    Board["H8"] = null;
+                    Board["G8"].Piece = this;
+                    Board["E8"].Piece = null;
+                    Board["F8"].Piece = Board["H8"].Piece;
+                    Board["H8"].Piece = null;
                     break;
 
                 case MoveType.BlackCastleLong:
-                    Board["C8"] = this;
-                    Board["E8"] = null;
-                    Board["D8"] = Board["A8"];
-                    Board["A8"] = null;
+                    Board["C8"].Piece = this;
+                    Board["E8"].Piece = null;
+                    Board["D8"].Piece = Board["A8"].Piece;
+                    Board["A8"].Piece = null;
                     break;
 
                 default:

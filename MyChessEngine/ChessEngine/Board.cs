@@ -10,25 +10,25 @@ namespace MyChessEngine
 {
     public class Board
     {
-        private readonly Piece[,] Pieces;
+        private readonly Field[,] Field;
 
         public static int Counter;
 
         public Board()
         {
-            Pieces = new Piece[8, 8];
+            Field = new Field[8, 8];
         }
 
         public Piece this[int row, int column]
         {
-            get => Pieces[row, column];
+            get => Field[row, column].Piece;
             set
             {
-                Pieces[row, column] = value;
+                Field[row, column].Piece = value;
                 if (value != null)
                 {
-                    Pieces[row, column].Board = this;
-                    Pieces[row, column].Position = new Position(row, column);
+                    Field[row, column].Piece.Board = this;
+                    Field[row, column].Piece.Position = new Position(row, column);
                     if (value is King king)
                         Kings[king.Color] = king;
                 }
@@ -36,13 +36,13 @@ namespace MyChessEngine
         }
 
 
-        public Piece this[Position position]
+        public Field this[Position position]
         {
-            get => (position != null) ? Pieces[position.Row, position.Column] : null;
-            set => this[position.Row, position.Column] = value;
+            get => Field[position.Row, position.Column];
+            set => Field[position.Row, position.Column] = value;
         }
 
-        public Piece this[string positionString]
+        public Field this[string positionString]
         {
             get
             {
@@ -64,7 +64,7 @@ namespace MyChessEngine
             if (position == null)
                 return IsValidPositionReturns.NoPosition;
 
-            Piece piece = this[position];
+            Piece piece = this[position].Piece;
             if (piece == null)
                 return IsValidPositionReturns.EmptyField;
 
@@ -86,7 +86,7 @@ namespace MyChessEngine
             if (_AllPiecesByColor.ContainsKey(color))
                 return _AllPiecesByColor[color];
 
-            var pieces = Pieces.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
+            var pieces = Field.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
 
             _AllPiecesByColor.Add(color, pieces);
             return pieces;
@@ -132,7 +132,7 @@ namespace MyChessEngine
             if (!move.End.IsValidPosition())
                 throw new Exception("Move to invalid position.");
 
-            this[move.Start].ExecuteMove(move);
+            this[move.Start].Piece.ExecuteMove(move);
 
             return true;
         }
