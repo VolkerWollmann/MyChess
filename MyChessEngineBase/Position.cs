@@ -10,7 +10,7 @@ namespace MyChessEngineBase
         public int Row;
         public int Column;
 
-        public Position(int row, int column)
+        public Position(int column, int row)
         {
             Row = row;
             Column = column;
@@ -43,7 +43,7 @@ namespace MyChessEngineBase
                 for (int row = 0; row < ChessEngineConstants.Length; row++)
                 for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    _allPositions.Add(new Position(row, column));
+                    _allPositions.Add(new Position(column, row));
                 }
             }
 
@@ -60,7 +60,7 @@ namespace MyChessEngineBase
             return Row == position.Row && Column == position.Column;
         }
 
-        public Position GetDeltaPosition(int deltaRow, int deltaColumn)
+        public Position GetDeltaPosition(int deltaColumn, int deltaRow)
         {
             int newRow = Row + deltaRow;
             if ((newRow < 0) || (newRow >= ChessEngineConstants.Length))
@@ -70,7 +70,7 @@ namespace MyChessEngineBase
             if ((newColumn < 0) || (newColumn >= ChessEngineConstants.Length))
                 return null;
 
-            return new Position(newRow, newColumn);
+            return new Position(newColumn, newRow);
         }
     }
 }

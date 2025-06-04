@@ -24,7 +24,7 @@ namespace MyChess.Controls
 
         public Position GetPosition()
         {
-            return new Position(Row, Column);
+            return new Position(Column, Row);
         }
 
         private readonly ChessBoardUserControl ChessBoardUserControl;

@@ -17,24 +17,24 @@ namespace MyChessEngine
         public Board()
         {
             Field = new Field[8, 8];
-            for(int x = 0; x < ChessEngineConstants.Length; x++)
+            for(int row = 0; row < ChessEngineConstants.Length; row++)
             {
-                for (int y = 0; y < ChessEngineConstants.Length; y++)
+                for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    Field[x, y] = new Field();
+                    Field[column, row] = new Field( new Position(column,row).ToString());
                 }
             }
         }
 
-        public Field this[int row, int column]
+        public Field this[int column, int row]
         {
-            get => Field[row, column];
+            get => Field[column, row];
         }
 
 
         public Field this[Position position]
         {
-            get => Field[position.Row, position.Column];
+            get => Field[position.Column, position.Row];
         }
         public Field this[string positionString]
         {
@@ -225,7 +225,6 @@ namespace MyChessEngine
         private List<Position> GetThreatenedFields(Color color)
         {
             return GetAllPieces(color)
-                .Where(piece => (piece.Type != PieceType.King)) // King is very unlikely to threaten castle, avoid for recursion
                 .Select((piece => piece.GetMoveList().Moves))
                 .SelectMany(move => move).Select(move => move.End).ToList();
         }

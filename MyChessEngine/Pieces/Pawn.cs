@@ -54,14 +54,14 @@ namespace MyChessEngine.Pieces
                 }
 
                 // up
-                newPosition = Position.GetDeltaPosition(1, 0);
+                newPosition = Position.GetDeltaPosition(0, 1);
                 if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     if (Position.Row == 1)
                     {
                         // pwn double step
-                        Position newPosition2 = Position.GetDeltaPosition(2, 0);
+                        Position newPosition2 = Position.GetDeltaPosition(0,2);
                         if ((newPosition2 != null) && Board[newPosition2].Piece == null)
                         {
                             moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
@@ -106,14 +106,14 @@ namespace MyChessEngine.Pieces
                 }
 
                 // down
-                newPosition = Position.GetDeltaPosition(-1, 0);
+                newPosition = Position.GetDeltaPosition(0, -1);
                 if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     // start with two
                     if (Position.Row == 6)
                     {
-                        Position newPosition2 = Position.GetDeltaPosition(-2, 0);
+                        Position newPosition2 = Position.GetDeltaPosition(0,-2);
                         if ((newPosition2 != null) && (Board[newPosition2].Piece == null))
                             moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
                     }

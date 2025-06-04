@@ -37,10 +37,10 @@ namespace MyChessEngineInteger
 
         public int[] Data = new int[20];
 
-        public NumPieces this[int row, int column]
+        public NumPieces this[int column, int row]
         {
-            get => (NumPieces) Pieces[row, column];
-            set => Pieces[row, column] = (int) value;
+            get => (NumPieces) Pieces[column, row];
+            set => Pieces[column, row] = (int) value;
         }
 
         public void SetFlag(ChessEngineIntegerFlags flag, int value)
@@ -54,7 +54,7 @@ namespace MyChessEngineInteger
             {
                 for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    Pieces[row, column] = (int) NumPieces.Empty;
+                    Pieces[column, row] = (int) NumPieces.Empty;
                 }
             }
 
