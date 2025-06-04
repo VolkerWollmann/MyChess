@@ -14,12 +14,12 @@ namespace MyChessEngine
             for (int i = 0; i < ChessEngineConstants.Length; i++)
             for (int j = 0; j < ChessEngineConstants.Length; j++)
             {
-                Piece piece = this[i, j];
+                Piece piece = this[i, j].Piece;
                 if (piece != null)
                 {
-                    copy[i, j] = piece.Copy();
+                    copy[i, j].Piece = piece.Copy();
                     if (piece.Type == PieceType.King)
-                        copy.Kings[piece.Color] = (King)copy[i, j];
+                        copy.Kings[piece.Color] = (King)copy[i, j].Piece;
                 }
             }
 
@@ -47,12 +47,10 @@ namespace MyChessEngine
         {
             if (UndoPossible)
             {
-                this[LastMove.Start] = this[LastMove.End];
-                this[LastMove.End] = null;
+                this[LastMove.Start].Piece = this[LastMove.End].Piece;
+                this[LastMove.End].Piece = null;
                 UndoPossible = false;
                 LastMove = null;
-                Kings[Color.White].ResetIsChecked();
-                Kings[Color.Black].ResetIsChecked();
                 return this;
             }
             else

@@ -17,31 +17,25 @@ namespace MyChessEngine
         public Board()
         {
             Field = new Field[8, 8];
-        }
-
-        public Piece this[int row, int column]
-        {
-            get => Field[row, column].Piece;
-            set
+            for(int x = 0; x < ChessEngineConstants.Length; x++)
             {
-                Field[row, column].Piece = value;
-                if (value != null)
+                for (int y = 0; y < ChessEngineConstants.Length; y++)
                 {
-                    Field[row, column].Piece.Board = this;
-                    Field[row, column].Piece.Position = new Position(row, column);
-                    if (value is King king)
-                        Kings[king.Color] = king;
+                    Field[x, y] = new Field();
                 }
             }
+        }
+
+        public Field this[int row, int column]
+        {
+            get => Field[row, column];
         }
 
 
         public Field this[Position position]
         {
             get => Field[position.Row, position.Column];
-            set => Field[position.Row, position.Column] = value;
         }
-
         public Field this[string positionString]
         {
             get
@@ -49,15 +43,23 @@ namespace MyChessEngine
                 Position position = new Position(positionString);
                 return this[position];
             }
-
-            set
-            {
-                Position position = new Position(positionString);
-                this[position] = value;
-            }
         }
 
+        public void SetPiece(Position position, Piece piece)
+        {
+            this[position].Piece = piece;
+            piece.Position = position;
+            piece.Board = this;
+            if (piece is King king)
+                Kings[king.Color] = king;
 
+        }
+
+        public void SetPiece(string positionString, Piece piece)
+        {
+            Position position = new Position(positionString);
+            SetPiece(position, piece);
+        }
 
         public IsValidPositionReturns IsValidPosition(Position position, Color color)
         {
@@ -86,7 +88,7 @@ namespace MyChessEngine
             if (_AllPiecesByColor.ContainsKey(color))
                 return _AllPiecesByColor[color];
 
-            var pieces = Field.Cast<Piece>().Where(piece => (piece?.Color == color)).ToList();
+            var pieces = Field.Cast<Field>().Where(field => (field.Piece?.Color == color)).Select(field => field.Piece).ToList();
 
             _AllPiecesByColor.Add(color, pieces);
             return pieces;
@@ -101,7 +103,7 @@ namespace MyChessEngine
 
         public void Clear()
         {
-            Position.AllPositions().ForEach(position => { this[position] = null; });
+            Position.AllPositions().ForEach(position => { this[position].Piece = null; this[position].Threat = false; });
         }
 
 
@@ -110,13 +112,16 @@ namespace MyChessEngine
             Board copy = new Board();
 
             for (int i = 0; i < ChessEngineConstants.Length; i++)
-            for (int j = 0; j < ChessEngineConstants.Length; j++)
-            {
-                Piece piece = this[i, j];
-                copy[i, j] = piece?.Copy();
-            }
+                for (int j = 0; j < ChessEngineConstants.Length; j++)
+                {
+                    Piece piece = this[i, j].Piece;
+                    if (piece != null)
+                    {
+                        copy.SetPiece(piece.Position, piece);
+                    }
+                }
 
-            foreach(Color color in ChessEngineConstants.BothColors)
+            foreach (Color color in ChessEngineConstants.BothColors)
             {
                 copy.Kings[color] = (King)copy.GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
             }
@@ -217,9 +222,22 @@ namespace MyChessEngine
             return rating;
         }
 
+        private List<Position> GetThreatenedFields(Color color)
+        {
+            return GetAllPieces(color)
+                .Where(piece => (piece.Type != PieceType.King)) // King is very unlikely to threaten castle, avoid for recursion
+                .Select((piece => piece.GetMoveList().Moves))
+                .SelectMany(move => move).Select(move => move.End).ToList();
+        }
         public virtual Move CalculateMove(int depth, Color color)
         {
-            var moves = GetMoveList(color);
+            // Mark the treatened fields
+            Board copy = Copy();
+            List<Position> threatenedFields = GetThreatenedFields(ChessEngineConstants.NextColorToMove(color));
+            threatenedFields.ForEach(pos => copy[pos].Threat = true);
+
+            var moves = copy.GetMoveList(color);
+
             if ((depth <= 1) || (Kings[color] == null) || (!moves.Moves.Any()))
                 return Move.CreateNoMove(GetRating(color));
 
@@ -228,11 +246,11 @@ namespace MyChessEngine
 
             foreach (Move move in moves.Moves)
             {
-                Board copy = Copy();
+                Board copy2 = copy.Copy();
                 copy.ExecuteMove(move);
                 if (!copy.IsChecked(color))
                 {
-                    Move resultMove = copy.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                    Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                     if ((move.Rating == null) ||
                         (comparer.Compare(move.Rating, resultMove.Rating) > 0))
                     {

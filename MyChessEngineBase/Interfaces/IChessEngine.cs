@@ -12,14 +12,6 @@ namespace MyChessEngineBase.Interfaces
 
         void Clear();
 
-        IPiece this[string position]
-        {
-            get;
-            set;
-        }
-
-
-
         BoardRating GetRating(Color color);
         void Test();
 

@@ -55,14 +55,14 @@ namespace MyChessEngine.Pieces
 
                 // up
                 newPosition = Position.GetDeltaPosition(1, 0);
-                if ((newPosition != null) && Board[newPosition] == null)
+                if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     if (Position.Row == 1)
                     {
                         // pwn double step
                         Position newPosition2 = Position.GetDeltaPosition(2, 0);
-                        if ((newPosition2 != null) && Board[newPosition2] == null)
+                        if ((newPosition2 != null) && Board[newPosition2].Piece == null)
                         {
                             moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
                         }
@@ -107,14 +107,14 @@ namespace MyChessEngine.Pieces
 
                 // down
                 newPosition = Position.GetDeltaPosition(-1, 0);
-                if ((newPosition != null) && Board[newPosition] == null)
+                if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     // start with two
                     if (Position.Row == 6)
                     {
                         Position newPosition2 = Position.GetDeltaPosition(-2, 0);
-                        if ((newPosition2 != null) && (Board[newPosition2] == null))
+                        if ((newPosition2 != null) && (Board[newPosition2].Piece == null))
                             moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
                     }
                 }
@@ -198,13 +198,13 @@ namespace MyChessEngine.Pieces
             {
                 if (((PossibleMoveType & (MoveType.EnpassantWhiteLeft | MoveType.EnpassantWhiteRight)) & move.Type) > 0)
                 {
-                    Board[new Position(move.End.Row - 1, move.End.Column)] = null;
+                    Board[new Position(move.End.Row - 1, move.End.Column)].Piece = null;
                     PossibleMoveType = MoveType.Normal;
                 }
 
                 if (((PossibleMoveType & (MoveType.EnpassantBlackLeft | MoveType.EnpassantBlackRight)) & move.Type) > 0)
                 {
-                    Board[new Position(move.End.Row + 1, move.End.Column)] = null;
+                    Board[new Position(move.End.Row + 1, move.End.Column)].Piece = null;
                     Board.ClearAllPieces();
                     PossibleMoveType = MoveType.Normal;
                 }

@@ -31,18 +31,6 @@ namespace MyChessEngine.Pieces
         static readonly List<Position> BlackCastleFields = new List<Position>() { BlackKingField, BlackKingBishopField, BlackKingKnightField };
         static readonly List<Position> BlackLongCastleFields = new List<Position>() { BlackKingField, BlackQueenField, BlackQueenBishopField, BlackQueenKnightField };
 
-
-        List<Position> ThreatenedFields;
-
-        private List<Position> GetThreatenedFields(Color color)
-        {
-            return Board.GetAllPieces(color)
-                .Where(piece => (piece.Type != PieceType.King)) // King is very unlikely to threaten castle, avoid for recursion
-                .Select((piece => piece.GetMoveList().Moves))
-                .SelectMany(move => move).Select(move => move.End).ToList();
-        }
-
-
         #region IEnginePiece
 
         static readonly int[,] Delta = new int[,]
@@ -59,7 +47,8 @@ namespace MyChessEngine.Pieces
             for (int i = 0; i < 8; i++)
             {
                 Position newPosition = Position.GetDeltaPosition(Delta[i, 0], Delta[i, 1]);
-                AddPosition(moveList, newPosition);
+                if (newPosition != null && !Board[newPosition].Threat)
+                    AddPosition(moveList, newPosition);
             }
 
             return moveList;
@@ -84,44 +73,28 @@ namespace MyChessEngine.Pieces
                 {
                     if ((KingMoves & MoveType.WhiteCastle) > 0)
                     {
-                        if (WhiteCastleFields.All(field => Board[field] == null))
-                        {
-                            ThreatenedFields ??= GetThreatenedFields(Color.Black);
-                            if (WhiteCastleFields.All(field => !ThreatenedFields.Contains(field)))
-                                moveList.Add(new Move(WhiteKingField, WhiteKingKnightField, this, MoveType.WhiteCastle));
-                        }
+                        if (WhiteCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
+                            moveList.Add(new Move(WhiteKingField, WhiteKingKnightField, this, MoveType.WhiteCastle));
                     }
 
                     if ((KingMoves & MoveType.WhiteCastleLong) != 0)
                     {
-                        if (WhiteLongCastleFields.All(field => Board[field] == null))
-                        {
-                            ThreatenedFields ??= GetThreatenedFields(Color.Black);
-                            if (WhiteLongCastleFields.All(field => !ThreatenedFields.Contains(field)))
-                                moveList.Add(new Move(WhiteKingField, WhiteQueenBishopField, this, MoveType.WhiteCastleLong));
-                        }
+                        if (WhiteLongCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
+                            moveList.Add(new Move(WhiteKingField, WhiteQueenBishopField, this, MoveType.WhiteCastleLong));
                     }
                 }
                 else
                 {
                     if ((KingMoves & MoveType.BlackCastle) != 0)
                     {
-                        if (BlackCastleFields.All(field => Board[field] == null))
-                        {
-                            ThreatenedFields ??= GetThreatenedFields(Color.White);
-                            if (BlackCastleFields.All(field => !ThreatenedFields.Contains(field)))
-                                moveList.Add(new Move(BlackKingField, BlackKingKnightField, this, MoveType.BlackCastle));
-                        }
+                        if (BlackCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
+                            moveList.Add(new Move(BlackKingField, BlackKingKnightField, this, MoveType.BlackCastle));
                     }
 
                     if ((KingMoves & MoveType.BlackCastleLong) != 0)
                     {
-                        if (BlackLongCastleFields.All(field => Board[field] == null))
-                        {
-                            ThreatenedFields ??= GetThreatenedFields(Color.White);
-                            if (BlackLongCastleFields.All(field => !ThreatenedFields.Contains(field)))
-                                moveList.Add(new Move(BlackKingField, BlackQueenBishopField, this, MoveType.BlackCastleLong));
-                        }
+                        if (BlackLongCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
+                           moveList.Add(new Move(BlackKingField, BlackQueenBishopField, this, MoveType.BlackCastleLong));
                     }
                 }
             }
@@ -190,29 +163,19 @@ namespace MyChessEngine.Pieces
             }
         }
 
-        private bool _IsCheckedCalculated = false;
+       
         private bool _IsChecked = false;
         public bool IsChecked()
         {
-            if (!_IsCheckedCalculated)
-            {
-                var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
-                    .Select((piece => piece.GetThreatenMoveList().Moves))
-                    .SelectMany(move => move);
+            var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
+                .Select((piece => piece.GetThreatenMoveList().Moves))
+                .SelectMany(move => move);
 
-                var threatenedFields = l.Select(move => move.End);
-                
-                _IsChecked = threatenedFields.Any(position => position.AreEqual(Position));
-                _IsCheckedCalculated = true;
-            }
+            var threatenedFields = l.Select(move => move.End);
+
+            _IsChecked = threatenedFields.Any(position => position.AreEqual(Position));
 
             return _IsChecked;
-        }
-
-        public void ResetIsChecked()
-        {
-            _IsCheckedCalculated = false;
-            _IsChecked = false;
         }
 
         public King(Color color, MoveType kingMoves) : base(color,

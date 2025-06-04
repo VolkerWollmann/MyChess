@@ -60,8 +60,8 @@ namespace MyChessEngine.Pieces
                 ((Pawn) piece1).PossibleMoveType = MoveType.Normal;
             }
 
-            Board[move.End] = Board[move.Start];
-            Board[move.Start] = null;
+            Board[move.End].Piece = Board[move.Start].Piece;
+            Board[move.Start].Piece = null;
 
             return true;
         }

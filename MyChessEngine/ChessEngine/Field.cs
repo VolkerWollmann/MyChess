@@ -12,12 +12,12 @@ namespace MyChessEngine
         public Piece Piece;
         public bool Threat = false;
 
-        Field(Piece piece)
+        public Field(Piece piece)
         {
             Piece = piece;
         }
 
-        Field()
+        public Field()
         {
             Piece = null;
         }
