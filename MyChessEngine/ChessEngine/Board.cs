@@ -123,10 +123,11 @@ namespace MyChessEngine
             for (int row = 0; row < ChessEngineConstants.Length; row++)
                 for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    Piece piece = this[column,row].Piece.Copy();
+                    Piece piece = this[column,row].Piece;
                     if (piece != null)
                     {
-                        copy.SetPiece(piece.Position, piece);
+                        Piece pc = piece.Copy();
+                        copy.SetPiece(piece.Position, pc);
                     }
                 }
 
