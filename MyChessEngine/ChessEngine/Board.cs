@@ -45,10 +45,19 @@ namespace MyChessEngine
             }
         }
 
-        public void SetPiece(Position position, Piece piece)
+        public void SetPiece(Position position,Piece piece)
         {
             this[position].Piece = piece;
             piece.Position = position;
+            piece.Board = this;
+            if (piece is King king)
+                Kings[king.Color] = king;
+
+        }
+
+        public void SetPiece(Piece piece)
+        {
+            this[piece.Position].Piece = piece;
             piece.Board = this;
             if (piece is King king)
                 Kings[king.Color] = king;
@@ -111,10 +120,10 @@ namespace MyChessEngine
         {
             Board copy = new Board();
 
-            for (int i = 0; i < ChessEngineConstants.Length; i++)
-                for (int j = 0; j < ChessEngineConstants.Length; j++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+                for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    Piece piece = this[i, j].Piece;
+                    Piece piece = this[column,row].Piece.Copy();
                     if (piece != null)
                     {
                         copy.SetPiece(piece.Position, piece);
@@ -238,7 +247,10 @@ namespace MyChessEngine
             var moves = copy.GetMoveList(color);
 
             if ((depth <= 1) || (Kings[color] == null) || (!moves.Moves.Any()))
-                return Move.CreateNoMove(GetRating(color));
+            {
+                var rating = GetRating(color);
+                return Move.CreateNoMove(rating);
+            }
 
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
@@ -246,8 +258,8 @@ namespace MyChessEngine
             foreach (Move move in moves.Moves)
             {
                 Board copy2 = copy.Copy();
-                copy.ExecuteMove(move);
-                if (!copy.IsChecked(color))
+                copy2.ExecuteMove(move);
+                if (!copy2.IsChecked(color))
                 {
                     Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                     if ((move.Rating == null) ||

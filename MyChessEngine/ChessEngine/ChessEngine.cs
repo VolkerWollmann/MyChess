@@ -25,6 +25,11 @@ namespace MyChessEngine
             Board.SetPiece(position,piece);
         }
 
+        public void SetPiece(Piece piece)
+        {
+            Board.SetPiece(piece);
+        }
+
         public Field this[string position]
         {
             get {  return Board[position]; }
@@ -42,39 +47,39 @@ namespace MyChessEngine
             string[] blackPawnPositions = new[] { "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7" };
             for (int i = 0; i < 8; i++)
             {
-                SetPiece(whitePawnPositions[i], new Pawn(Color.White));
-                SetPiece(blackPawnPositions[i], new Pawn(Color.Black));
+                SetPiece( new Pawn(Color.White, whitePawnPositions[i]));
+                SetPiece( new Pawn(Color.Black,blackPawnPositions[i]));
             }
 
             // rook
-            SetPiece("A1", new Rook(Color.White));
-            SetPiece("H1", new Rook(Color.White));
-            SetPiece("A8", new Rook(Color.Black));
-            SetPiece("H8", new Rook(Color.Black));
+            SetPiece(new Rook(Color.White, "A1"));
+            SetPiece(new Rook(Color.White, "H1"));
+            SetPiece(new Rook(Color.Black, "A8"));
+            SetPiece(new Rook(Color.Black, "H8"));
 
 
             // bishop 
-            SetPiece("C1", new Bishop(Color.White));
-            SetPiece("F1", new Bishop(Color.White));
-            SetPiece("C8", new Bishop(Color.Black));
-            SetPiece("F8", new Bishop(Color.Black));
+            SetPiece(new Bishop(Color.White, "C1"));
+            SetPiece(new Bishop(Color.White, "F1"));
+            SetPiece(new Bishop(Color.Black, "C8"));
+            SetPiece(new Bishop(Color.Black, "F8"));
 
 
             // knight
-            SetPiece("B1", new Knight(Color.White));
-            SetPiece("G1", new Knight(Color.White));
-            SetPiece("B8", new Knight(Color.Black));
-            SetPiece("G8", new Knight(Color.Black));
+            SetPiece(new Knight(Color.White, "B1"));
+            SetPiece(new Knight(Color.White, "G1"));
+            SetPiece(new Knight(Color.Black, "B8"));
+            SetPiece(new Knight(Color.Black, "G8"));
 
 
             // queen
-            SetPiece("D1", new Queen(Color.White));
-            SetPiece("D8", new Queen(Color.Black));
+            SetPiece(new Queen(Color.White, "D1"));
+            SetPiece(new Queen(Color.Black, "D8"));
             
 
             // king
-            SetPiece("E1", new King(Color.White));
-            SetPiece("E8", new King(Color.Black));
+            SetPiece(new King(Color.White, "E1"));
+            SetPiece(new King(Color.Black, "E8"));
 
             ColorToMove = Color.White;
         }

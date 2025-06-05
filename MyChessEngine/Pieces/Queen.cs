@@ -94,7 +94,12 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        public Queen(Color color) : base(color, PieceType.Queen)
+        public Queen(Color color, Position position) : base(color, PieceType.Queen, position)
+        {
+
+        }
+
+        public Queen(Color color, string position) : base(color, PieceType.Queen, new Position(position))
         {
 
         }

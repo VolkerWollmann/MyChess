@@ -64,7 +64,11 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        public Bishop(Color color) : base(color, PieceType.Bishop)
+        public Bishop(Color color, Position position) : base(color, PieceType.Bishop, position)
+        {
+
+        }
+        public Bishop(Color color, string position) : base(color, PieceType.Bishop, new Position(position))
         {
 
         }

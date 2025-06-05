@@ -104,7 +104,7 @@ namespace MyChessEngine.Pieces
 
         public override Piece Copy()
         {
-            return new King(Color, KingMoves);
+            return new King(Color, Position, KingMoves);
         }
 
         public override bool ExecuteMove(Move move)
@@ -151,7 +151,7 @@ namespace MyChessEngine.Pieces
 
         #endregion
 
-        public King(Color color) : base(color, PieceType.King)
+        public King(Color color, Position position) : base(color, PieceType.King, position)
         {
             if (color == Color.White)
             {
@@ -163,7 +163,9 @@ namespace MyChessEngine.Pieces
             }
         }
 
-       
+        public King(Color color, string positionString):
+            this(color, new Position(positionString)) { }
+
         private bool _IsChecked = false;
         public bool IsChecked()
         {
@@ -178,8 +180,12 @@ namespace MyChessEngine.Pieces
             return _IsChecked;
         }
 
-        public King(Color color, MoveType kingMoves) : base(color,
-            PieceType.King)
+        public King(Color color, string positionString, MoveType kingMoves) : this(color, new Position(positionString))
+        {
+            KingMoves = kingMoves;
+        }
+
+        public King(Color color, Position position, MoveType kingMoves) : this(color, position)
         {
             KingMoves = kingMoves;
         }

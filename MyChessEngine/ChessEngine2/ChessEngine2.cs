@@ -25,6 +25,15 @@ namespace MyChessEngine
             return new ChessEngine2(Board.Copy(), ChessEngineConstants.NextColorToMove(ColorToMove));
         }
 
+        public void SetPiece(string position, Piece piece)
+        {
+            Board.SetPiece(position, piece);
+        }
+
+        public void SetPiece(Piece piece)
+        {
+            Board.SetPiece(piece);
+        }
 
         public void New()
         {
@@ -33,39 +42,40 @@ namespace MyChessEngine
             string[] blackPawnPositions = new[] { "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7" };
             for (int i = 0; i < 8; i++)
             {
-                Board[whitePawnPositions[i]].Piece = new Pawn(Color.White);
-                Board[blackPawnPositions[i]].Piece = new Pawn(Color.Black);
+                Board.SetPiece(new Pawn(Color.White, whitePawnPositions[i] ));
+                Board.SetPiece(new Pawn(Color.Black, blackPawnPositions[i] ));
+               
             }
 
             // rook
-            Board["A1"].Piece = new Rook(Color.White);
-            Board["H1"].Piece = new Rook(Color.White);
-            Board["A8"].Piece = new Rook(Color.Black);
-            Board["H8"].Piece = new Rook(Color.Black);
-
-
+            Board.SetPiece(new Rook(Color.White, "A1"));
+            Board.SetPiece(new Rook(Color.White, "H1"));
+            Board.SetPiece(new Rook(Color.Black, "A8"));
+            Board.SetPiece(new Rook(Color.Black, "H8"));
+            
             // bishop 
-            Board["C1"].Piece = new Bishop(Color.White);
-            Board["F1"].Piece = new Bishop(Color.White);
-            Board["C8"].Piece = new Bishop(Color.Black);
-            Board["F8"].Piece = new Bishop(Color.Black);
-
+            Board.SetPiece(new Bishop(Color.White, "C1"));
+            Board.SetPiece(new Bishop(Color.White, "F1"));
+            Board.SetPiece(new Bishop(Color.Black, "C8"));
+            Board.SetPiece(new Bishop(Color.Black, "F8"));
 
             // knight
-            Board["B1"].Piece = new Knight(Color.White);
-            Board["G1"].Piece = new Knight(Color.White);
-            Board["B8"].Piece = new Knight(Color.Black);
-            Board["G8"].Piece = new Knight(Color.Black);
+            Board.SetPiece(new Knight(Color.White, "B1"));
+            Board.SetPiece(new Knight(Color.White, "G1"));
+            Board.SetPiece(new Knight(Color.Black, "B8"));
+            Board.SetPiece(new Knight(Color.Black, "G8"));
+
 
 
             // queen
-            Board["D1"].Piece = new Queen(Color.White);
-            Board["D8"].Piece = new Queen(Color.Black);
+            Board.SetPiece(new Queen(Color.White, "D1"));
+            Board.SetPiece(new Queen(Color.Black, "D8"));
 
 
             // king
-            Board["E1"].Piece = new King(Color.White);
-            Board["E8"].Piece = new King(Color.Black);
+            Board.SetPiece( new King(Color.White, "E1"));
+            Board.SetPiece( new King(Color.Black, "E8"));
+            
 
             ColorToMove = Color.White;
         }

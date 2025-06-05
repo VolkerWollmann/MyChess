@@ -19,7 +19,7 @@ namespace MyChessEngineInteger
         public Color ColorToMove { get; set; }
 
 
-        private void SetPiece(string positionString, NumPieces piece)
+        public void SetPiece(string positionString, NumPieces piece)
         {
             Position position = new Position(positionString);
             Board[position.Row, position.Column] = piece;

@@ -40,12 +40,12 @@ namespace MyChessEngine.Pieces
         {
             return Type switch
             {
-                PieceType.Bishop => new Bishop(Color),
-                PieceType.Knight => new Knight(Color),
-                PieceType.Queen => new Queen(Color),
-                PieceType.Pawn => new Pawn(Color, ((Pawn)this).PossibleMoveType),
-                PieceType.Rook => new Rook(Color, ((Rook)this).HasMoved),
-                PieceType.King => new King(Color, ((King)this).KingMoves),
+                PieceType.Bishop => new Bishop(Color, Position),
+                PieceType.Knight => new Knight(Color, Position),
+                PieceType.Queen => new Queen(Color, Position),
+                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType),
+                PieceType.Rook => new Rook(Color, Position, ((Rook)this).HasMoved),
+                PieceType.King => new King(Color, Position, ((King)this).KingMoves),
             _ => null 
             };
         }
@@ -62,6 +62,8 @@ namespace MyChessEngine.Pieces
 
             Board[move.End].Piece = Board[move.Start].Piece;
             Board[move.Start].Piece = null;
+
+            this.Position = move.End;
 
             return true;
         }
@@ -89,10 +91,11 @@ namespace MyChessEngine.Pieces
             return true;
         }
 
-        public Piece(Color color, PieceType piece)
+        public Piece(Color color, PieceType piece, Position position)
         {
             Color = color;
             Type = piece;
+            Position = position;
             switch (Type)
             {
                 case PieceType.Rook:
@@ -122,6 +125,11 @@ namespace MyChessEngine.Pieces
             }
         }
 
+        public Piece(Color color, PieceType piece, string positionString) :
+            this( color, piece, new Position(positionString))
+        {
+
+        }
 
     }
 }

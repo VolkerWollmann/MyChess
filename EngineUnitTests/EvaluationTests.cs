@@ -36,7 +36,7 @@ namespace EngineUnitTests
             MoveList moveList = new MoveList();
             ratings.ForEach(rating =>
             {
-                Move move = new Move("A" + i, "A1", new Pawn(Color.White), MoveType.Normal) { Rating = rating };
+                Move move = new Move("A" + i, "A1", new Pawn(Color.White, "A1"), MoveType.Normal) { Rating = rating };
                 moveList.Add(move);
                 i++;
             });

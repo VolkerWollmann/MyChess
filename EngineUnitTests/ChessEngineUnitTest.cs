@@ -48,9 +48,9 @@ namespace EngineUnitTests
         public void CheckBoardRatingBlackMate()
         {
             ChessEngine chessEngine = new ChessEngine();
-            chessEngine.SetPiece("G6", new King(Color.White, MoveType.Normal));
-            chessEngine.SetPiece("G8", new King(Color.Black, MoveType.Normal));
-            chessEngine.SetPiece("A8", new Rook(Color.White));
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
+            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
+            chessEngine.SetPiece(new Rook(Color.White, "A8"));
             
             BoardRating boardRating = chessEngine.GetRating(Color.Black);
             Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
@@ -85,9 +85,9 @@ namespace EngineUnitTests
         public void CalculateOneMoveMate1()
         {
             ChessEngine chessEngine = new ChessEngine();
-            chessEngine.SetPiece("G6", new King(Color.White, MoveType.Normal));
-            chessEngine.SetPiece("G8", new King(Color.Black, MoveType.Normal));
-            chessEngine.SetPiece("A1", new Rook(Color.White));
+            chessEngine.SetPiece(new King(Color.White, "G6"));
+            chessEngine.SetPiece(new King(Color.Black, "G8"));
+            chessEngine.SetPiece(new Rook(Color.White, "A1"));
 
             Move move = chessEngine.CalculateMove();
 
@@ -99,11 +99,11 @@ namespace EngineUnitTests
         public void CalculateOneMoveMate2()
         {
             ChessEngine chessEngine = new ChessEngine();
-            chessEngine.SetPiece("G6", new King(Color.White, MoveType.Normal));
-            chessEngine.SetPiece("E4", new Pawn(Color.White));
-            chessEngine.SetPiece("G8", new King(Color.Black, MoveType.Normal));
-            chessEngine.SetPiece("D5", new Pawn(Color.Black));
-            chessEngine.SetPiece("A1", new Rook(Color.White));
+            chessEngine.SetPiece(new King(Color.White, "G6"));
+            chessEngine.SetPiece(new Pawn(Color.White, "E4"));
+            chessEngine.SetPiece(new King(Color.Black, "G8"));
+            chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
+            chessEngine.SetPiece(new Rook(Color.White, "A1"));
             
 
             Move move = chessEngine.CalculateMove();
@@ -116,11 +116,11 @@ namespace EngineUnitTests
         {
             ChessEngine chessEngine = new ChessEngine();
 
-            chessEngine.SetPiece("G6", new King(Color.White, MoveType.Normal));
-            chessEngine.SetPiece("C4", new Pawn(Color.White));
-            chessEngine.SetPiece("H8", new King(Color.Black, MoveType.Normal));
-            chessEngine.SetPiece("B5", new Pawn(Color.Black));
-            chessEngine.SetPiece("G5", new Rook(Color.White));
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.White, "C4"));
+            chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
+            chessEngine.SetPiece(new Rook(Color.White, "G5" ));
             
 
             Move move = chessEngine.CalculateMove();
@@ -135,10 +135,10 @@ namespace EngineUnitTests
         {
             ChessEngine chessEngine = new ChessEngine();
 
-            chessEngine.SetPiece("G6", new King(Color.White, MoveType.Normal));
-            chessEngine.SetPiece("C2", new Pawn(Color.White));
-            chessEngine.SetPiece("H8", new King(Color.Black, MoveType.Normal));
-            chessEngine.SetPiece("B4", new Pawn(Color.Black));
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.White, "C4"));
+            chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.Black, "C4"));
 
 
             chessEngine.ExecuteMove(new Move("C2", "C4", chessEngine["C2"].Piece, MoveType.PawnDoubleStep));
@@ -154,10 +154,10 @@ namespace EngineUnitTests
         {
             ChessEngine chessEngine = new ChessEngine();
 
-            chessEngine.SetPiece("H1", new King(Color.White, MoveType.Normal));
-            chessEngine.SetPiece("E4", new Pawn(Color.White));
-            chessEngine.SetPiece("G8", new King(Color.Black, MoveType.Normal));
-            chessEngine.SetPiece("D5", new Pawn(Color.Black));
+            chessEngine.SetPiece(new King(Color.White, "H1", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.White, "E4"));
+            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
 
             Move move = chessEngine.CalculateMove();
             Assert.IsTrue(move.End.AreEqual(new Position("D5")));

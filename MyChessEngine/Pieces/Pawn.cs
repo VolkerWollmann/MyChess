@@ -165,7 +165,7 @@ namespace MyChessEngine.Pieces
             if (move.End.Row == 7 || move.End.Row == 0)
             {
                 // promotion
-                Board[move.End].Piece = new Queen(Color);
+                Board[move.End].Piece = new Queen(Color, move.End);
             }
 
             if (move.Type == MoveType.PawnDoubleStep)
@@ -213,12 +213,22 @@ namespace MyChessEngine.Pieces
             return base.ExecuteMove(move); 
         }
 
-        public Pawn(Color color, MoveType possibleMoveType) : base(color, PieceType.Pawn)
+        public Pawn(Color color, Position position, MoveType possibleMoveType) : base(color, PieceType.Pawn, position)
         {
             PossibleMoveType = possibleMoveType;
         }
 
-        public Pawn(Color color): this(color, MoveType.Normal)
+        public Pawn(Color color, Position position) : this(color, position, MoveType.Normal)
+        {
+
+        }
+
+        public Pawn(Color color, string position, MoveType possibleMoveType) : base(color, PieceType.Pawn, new Position(position))
+        {
+            PossibleMoveType = possibleMoveType;
+        }
+
+        public Pawn(Color color, string position) : this(color, new Position(position), MoveType.Normal)
         {
 
         }

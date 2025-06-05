@@ -2,7 +2,7 @@
 using MyChessEngine.Pieces;
 using MyChessEngineBase;
 using MyChessEngineBase.Rating;
-using MyChessEngineInteger;
+using MCEI = MyChessEngineInteger;
 
 namespace EngineUnitTests
 {
@@ -12,12 +12,10 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckBoardRatingBlackMate()
         {
-            ChessEngineInteger chessEngineInteger = new ChessEngineInteger
-            {
-                ["G6"] = new King(Color.White, MoveType.Normal),
-                ["A8"] = new Rook(Color.White),
-                ["H8"] = new King(Color.Black, MoveType.Normal)
-            };
+            MCEI.ChessEngineInteger chessEngineInteger = new MCEI.ChessEngineInteger();
+                chessEngineInteger.SetPiece("G6", MCEI.Pieces.NumPieces.WhiteKing);
+                chessEngineInteger.SetPiece("A8", MCEI.Pieces.NumPieces.WhiteRook);
+                chessEngineInteger.SetPiece("H8", MCEI.Pieces.NumPieces.BlackKing);
 
             BoardRating boardRating = chessEngineInteger.GetRating(Color.Black);
             Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
@@ -26,14 +24,13 @@ namespace EngineUnitTests
         [TestMethod]
         public void CheckBoardRatingBlackMateCalculateMove()
         {
-            ChessEngineInteger chessEngineInteger = new ChessEngineInteger
-            {
-                ["G6"] = new King(Color.White, MoveType.Normal),
-                ["A8"] = new Rook(Color.White),
-                ["H8"] = new King(Color.Black, MoveType.Normal),
-                ColorToMove = Color.Black
-            };
+            MCEI.ChessEngineInteger chessEngineInteger = new MCEI.ChessEngineInteger();
 
+            chessEngineInteger.SetPiece("G6", MCEI.Pieces.NumPieces.WhiteKing);
+            chessEngineInteger.SetPiece("A8", MCEI.Pieces.NumPieces.WhiteRook);
+            chessEngineInteger.SetPiece("H8", MCEI.Pieces.NumPieces.BlackKing);
+            chessEngineInteger.ColorToMove = Color.Black;
+            
             MyChessEngineBase.Move move = chessEngineInteger.CalculateMove();
             Assert.IsNotNull(move);
         }
@@ -41,12 +38,11 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOneMoveMate1()
         {
-            ChessEngineInteger chessEngineInteger = new ChessEngineInteger
-            {
-                ["G6"] = new King(Color.White, MoveType.Normal),
-                ["H8"] = new King(Color.Black, MoveType.Normal),
-                ["A1"] = new Rook(Color.White)
-            };
+            MCEI.ChessEngineInteger chessEngineInteger = new MCEI.ChessEngineInteger();
+
+            chessEngineInteger.SetPiece("G6", MCEI.Pieces.NumPieces.WhiteKing);
+            chessEngineInteger.SetPiece("H8", MCEI.Pieces.NumPieces.BlackKing);
+            chessEngineInteger.SetPiece("A1", MCEI.Pieces.NumPieces.WhiteRook);
 
             MyChessEngineBase.Move move = chessEngineInteger.CalculateMove();
 

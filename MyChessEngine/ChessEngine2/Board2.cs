@@ -11,15 +11,13 @@ namespace MyChessEngine
         {
             Board2 copy = new Board2();
 
-            for (int i = 0; i < ChessEngineConstants.Length; i++)
-            for (int j = 0; j < ChessEngineConstants.Length; j++)
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
             {
-                Piece piece = this[i, j].Piece;
+                Piece piece = this[column, row].Piece;
                 if (piece != null)
                 {
-                    copy[i, j].Piece = piece.Copy();
-                    if (piece.Type == PieceType.King)
-                        copy.Kings[piece.Color] = (King)copy[i, j].Piece;
+                        copy.SetPiece(piece.Position, piece);
                 }
             }
 
