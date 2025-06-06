@@ -221,6 +221,7 @@ namespace MyChessEngine
             rating.Weight = boardWeight;
             rating.Evaluation = Evaluation.Normal;
 
+            rating.Situation = Situation.Normal;
             if (this[Kings[color].Position].Threat)
             {
                 rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;

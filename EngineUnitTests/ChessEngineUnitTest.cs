@@ -51,9 +51,12 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
             chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
             chessEngine.SetPiece(new Rook(Color.White, "A8"));
-            
-            BoardRating boardRating = chessEngine.GetRating(Color.Black);
-            Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
+            chessEngine.ColorToMove = Color.Black;
+            Move move = chessEngine.CalculateMove();
+
+            BoardRating rating = move.Rating;
+            Assert.AreEqual(rating.Situation, Situation.WhiteVictory);
+            Assert.AreEqual(rating.Evaluation, Evaluation.BlackCheckMate);
         }
 
         #endregion
