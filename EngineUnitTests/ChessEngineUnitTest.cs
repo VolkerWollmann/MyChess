@@ -99,9 +99,9 @@ namespace EngineUnitTests
         public void CalculateOneMoveMate2()
         {
             ChessEngine chessEngine = new ChessEngine();
-            chessEngine.SetPiece(new King(Color.White, "G6"));
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
             chessEngine.SetPiece(new Pawn(Color.White, "E4"));
-            chessEngine.SetPiece(new King(Color.Black, "G8"));
+            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
             chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
             chessEngine.SetPiece(new Rook(Color.White, "A1"));
             
