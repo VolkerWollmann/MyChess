@@ -197,37 +197,34 @@ namespace MyChessEngine
             if (Kings[color] == null)
             {
                 rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
-                rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
                 rating.Weight = (color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
                 return rating;
             }
 
-            if (IsChecked(color))
+            Color opponentColor = ChessEngineConstants.NextColorToMove(color);
+            if (Kings[opponentColor] == null)
             {
-                rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
-                if ((!GetMoveList(color).Moves.Any()))
-                {
-                    rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
-                    rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
-                    return rating;
-                }
-            }
-            else
-            {
-                if ((!GetMoveList(color).Moves.Any()))
-                {
-                    rating.Situation = Situation.StaleMate;
-                    rating.Evaluation = color == Color.White ? Evaluation.WhiteStaleMate : Evaluation.BlackStaleMate;
-                    return rating;
-                }
+                rating.Situation = opponentColor == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
+                rating.Weight = (opponentColor == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+                return rating;
             }
 
             int boardWeight = 0;
 
-            GetAllPieces(Color.White).ForEach(piece => { boardWeight += piece.Weight; });
-            GetAllPieces(Color.Black).ForEach(piece => { boardWeight += piece.Weight; });
-
+            foreach (var field in Field)
+            {
+                Piece piece = field.Piece;
+                if (piece != null)
+                    boardWeight += piece.Weight;
+            }
+            
             rating.Weight = boardWeight;
+            rating.Evaluation = Evaluation.Normal;
+
+            if (this[Kings[color].Position].Threat)
+            {
+                rating.Situation = color == Color.White ? Situation.WhiteChecked : Situation.BlackChecked;
+            }
 
             return rating;
         }
@@ -240,18 +237,18 @@ namespace MyChessEngine
         }
         public virtual Move CalculateMove(int depth, Color color)
         {
-            // Mark the treatened fields
+            // Mark the threatened fields
             Board copy = Copy();
             List<Position> threatenedFields = GetThreatenedFields(ChessEngineConstants.NextColorToMove(color));
             threatenedFields.ForEach(pos => copy[pos].Threat = true);
 
             var moves = copy.GetMoveList(color);
 
-            if ((depth <= 1) || (Kings[color] == null) || (!moves.Moves.Any()))
-            {
-                var rating = GetRating(color);
+            var rating = GetRating(color);
+            
+            if ( depth == 0 || rating.Situation == Situation.WhiteVictory || rating.Situation == Situation.BlackVictory )    
                 return Move.CreateNoMove(rating);
-            }
+            
 
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);

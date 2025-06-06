@@ -28,22 +28,24 @@ namespace MyChessEngineBase
 
     public enum Situation
     {
+        None,
         Normal,
-        Remis,
-        StaleMate,
         WhiteChecked,
         BlackChecked,
         WhiteVictory,
-        BlackVictory
+        BlackVictory,
+        StaleMate
     }
 
     public enum Evaluation
     {
+        None,
         WhiteCheckMate,
         WhiteStaleMate,
         Normal,
         BlackStaleMate,
-        BlackCheckMate
+        BlackCheckMate,
+        Remis
     }
 
     [Flags]

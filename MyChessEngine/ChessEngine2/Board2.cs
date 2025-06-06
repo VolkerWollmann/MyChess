@@ -75,7 +75,6 @@ namespace MyChessEngine
             if (Kings[color] == null)
             {
                 rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
-                rating.Evaluation = color == Color.White ? Evaluation.WhiteCheckMate : Evaluation.BlackCheckMate;
                 rating.Weight = (color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
                 return rating;
             }

@@ -3,7 +3,7 @@ using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color} Position={Position}")]
     public class Rook : Piece
     {
         public bool HasMoved;

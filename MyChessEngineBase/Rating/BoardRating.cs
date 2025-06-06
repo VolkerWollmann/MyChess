@@ -13,8 +13,8 @@ namespace MyChessEngineBase.Rating
 
         public BoardRating()
         {
-            Situation = Situation.Normal;
-            Evaluation = Evaluation.Normal;
+            Situation = Situation.None;
+            Evaluation = Evaluation.None;
             Weight = 0;
             Depth = 0;
         }

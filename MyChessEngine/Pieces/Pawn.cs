@@ -5,7 +5,7 @@ using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("T={Type}, C = {Color} P={Position} M={PossibleMoveType}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color} Position={Position} M={PossibleMoveType}")]
     public class Pawn : Piece
     {
         public MoveType PossibleMoveType { get; set; }
@@ -205,7 +205,6 @@ namespace MyChessEngine.Pieces
                 if (((PossibleMoveType & (MoveType.EnpassantBlackLeft | MoveType.EnpassantBlackRight)) & move.Type) > 0)
                 {
                     Board[new Position(move.End.Row + 1, move.End.Column)].Piece = null;
-                    Board.ClearAllPieces();
                     PossibleMoveType = MoveType.Normal;
                 }
             }

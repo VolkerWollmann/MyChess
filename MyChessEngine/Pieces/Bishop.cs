@@ -3,7 +3,7 @@ using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color}  P={Position}")]
     public class Bishop : Piece
     {
         public override MoveList GetThreatenMoveList()

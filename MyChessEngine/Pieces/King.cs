@@ -6,7 +6,7 @@ using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("T={Type}, C={Color} P={Position} M={KingMoves}")]
+    [DebuggerDisplay("Type={Type}, Color={Color} Position={Position} M={KingMoves}")]
     public class King : Piece
     {
         public MoveType KingMoves;

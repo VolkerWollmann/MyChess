@@ -3,7 +3,7 @@ using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("Type={Type}, Name = {Color}")]
+    [DebuggerDisplay("Type={Type}, Color = {Color} Position={Position}")]
     public class Knight : Piece
     {
         static readonly int[,] Delta = new int[,]

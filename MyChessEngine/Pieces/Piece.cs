@@ -5,7 +5,7 @@ using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
 {
-    [DebuggerDisplay("T={Type}, C={Color}")]
+    [DebuggerDisplay("Type={Type}, Color={Color} Position={Position}")]
     public abstract class Piece : IEnginePiece
     {
         #region IPiece
