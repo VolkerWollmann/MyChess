@@ -11,6 +11,8 @@ namespace MyChessEngine
     public class Board
     {
         private readonly Field[,] Field;
+        
+        private string[] MoveStack = ["", "", "", "", "", "", "", "", "", ""];
 
         public static int Counter;
 
@@ -124,6 +126,9 @@ namespace MyChessEngine
         {
             Board copy = new Board();
 
+            for (int i = 0; i < 9; i++)
+                copy.MoveStack[i] = (string)MoveStack[i].Clone();
+            
             for (int row = 0; row < ChessEngineConstants.Length; row++)
                 for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
@@ -145,6 +150,12 @@ namespace MyChessEngine
 
         public virtual bool ExecuteMove(Move move)
         {
+            return ExecuteMove(move, 0);
+        }
+        
+        public virtual bool ExecuteMove(Move move, int depth = 0)
+        {
+            MoveStack[depth] = move.ToString();
             if (this[move.Start] == null)
                 throw new Exception("Move not Existing piece.");
 
@@ -187,7 +198,7 @@ namespace MyChessEngine
             if (Kings[color] == null)
             {
                 rating.Situation = color == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
-                rating.Weight = (color == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+                rating.Weight = (color == Color.White) ? -ChessEngineConstants.CheckMate : ChessEngineConstants.CheckMate;
                 return rating;
             }
 
@@ -195,7 +206,7 @@ namespace MyChessEngine
             if (Kings[opponentColor] == null)
             {
                 rating.Situation = opponentColor == Color.White ? Situation.BlackVictory : Situation.WhiteVictory;
-                rating.Weight = (opponentColor == Color.White) ? ChessEngineConstants.King : -ChessEngineConstants.King;
+                rating.Weight = (opponentColor == Color.White) ? -ChessEngineConstants.CheckMate : ChessEngineConstants.CheckMate;
                 return rating;
             }
 
@@ -261,24 +272,21 @@ namespace MyChessEngine
 
             foreach (Move move in moves.Moves)
             {
+                MoveStack[depth] = move.ToString();
                 Board copy2 = copy.Copy();
-                copy2.ExecuteMove(move);
+                copy2.ExecuteMove(move,depth);
 
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
-
-                if ((resultMove.Rating.Situation == Situation.WhiteVictory && color == Color.White)
-                    || (resultMove.Rating.Situation == Situation.BlackVictory && color == Color.Black))
-                    return move;
                 
                 result.Add(move);
-
             }
 
             var king = copy.Kings[color];
             bool check = copy[king.Position].Threat;
-            return result.GetBestMove(color, check);
+            Move resultMove2 = result.GetBestMove(color, check);
+            return resultMove2;
         }
     }
 }

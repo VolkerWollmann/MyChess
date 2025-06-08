@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using MyChessEngineBase;
+using MyChessEngineBase.Rating;
 
 namespace MyChessEngineBase.Rating
 {
@@ -46,19 +48,40 @@ namespace MyChessEngineBase.Rating
     /// </summary>
     public class WhiteBoardRatingComparer : IBoardRatingComparer
     {
-        private static readonly Dictionary<Evaluation, int> WhiteDictionary = new Dictionary<Evaluation, int>()
-        {
-            {Evaluation.BlackCheckMate, 5},
-            {Evaluation.Normal, 4},
-            {Evaluation.WhiteStaleMate, 3},
-            {Evaluation.BlackStaleMate, 2},
-            {Evaluation.WhiteCheckMate, 1},
-
-        };
-
-
+       
         /// <summary>
-        /// Compare for white
+        /// Compare for white : W
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>-1 : x less y
+        ///           0 : x = y
+        ///           1 : x greater y
+        /// </returns>
+        public int Compare(BoardRating x, BoardRating y)
+        {
+            if ((x == null) || (y == null))
+                return 0;
+
+            if (x.Weight > y.Weight)
+                return 1;
+            if (x.Weight < y.Weight) 
+                return -1;
+
+            if (x.Depth < y.Depth)
+                return 1;
+            if (x.Depth > y.Depth) 
+                return -1;
+            
+            return 0;
+        }
+    }
+
+
+    public class BlackBoardRatingComparer : IBoardRatingComparer
+    {
+        /// <summary>
+        /// Compare for black
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -68,129 +91,17 @@ namespace MyChessEngineBase.Rating
             if ((x == null) || (y == null))
                 return 0;
 
-            int xIndex = WhiteDictionary[x.Evaluation];
-            int yIndex = WhiteDictionary[y.Evaluation];
-
-            if (xIndex == yIndex)
-            {
-                if (xIndex == 4)
-                {
-                    if (x.Weight > y.Weight)
-                        return -1;
-                    if (x.Weight < y.Weight)
-                        return 1;
-                    if (x.Weight == y.Weight)
-                        return 0;
-                }
-
-                if (xIndex == 5)
-                {
-                    if (x.Depth < y.Depth)
-                        return -1;
-
-                    if (x.Depth > y.Depth)
-                        return +1;
-
-                    return 0;
-                }
-
-                if (xIndex == 1)
-                {
-                    if (x.Depth > y.Depth)
-                        return -1;
-
-                    if (x.Depth < y.Depth)
-                        return +1;
-
-                    return 0;
-                }
-
-                return 0;
-            }
-
-            if (xIndex > yIndex)
+            if (x.Weight < y.Weight)
+                return 1;
+            if (x.Weight > y.Weight)
                 return -1;
 
-            if (xIndex < yIndex)
+            if (x.Depth < y.Depth)
                 return 1;
-
-            return 0;
-        }
-    }
-
-
-    public class BlackBoardRatingComparer : IBoardRatingComparer
-    {
-
-        private static readonly Dictionary<Evaluation, int> BlackDictionary = new Dictionary<Evaluation, int>()
-        {
-            {Evaluation.WhiteCheckMate, 5},
-            {Evaluation.Normal, 4 },
-            {Evaluation.WhiteStaleMate,3 },
-            {Evaluation.BlackStaleMate,2 },
-            {Evaluation.BlackCheckMate,1},
-
-        };
-
-
-        /// <summary>
-        /// Compare for black
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns>-1 for x greater y</returns>
-        public int Compare(BoardRating x, BoardRating y)
-        {
-            if ( ( x == null ) || ( y == null) )
-                return 0;
-
-            int xIndex = BlackDictionary[x.Evaluation];
-            int yIndex = BlackDictionary[y.Evaluation];
-
-            if (xIndex == yIndex)
-            {
-                if (xIndex == 4)
-                {
-                    if (x.Weight < y.Weight)
-                        return -1;
-                    if (x.Weight > y.Weight)
-                        return 1;
-                    if (x.Weight == y.Weight)
-                        return 0;
-                }
-
-                if (xIndex == 5)
-                {
-                    if (x.Depth < y.Depth)
-                        return -1;
-
-                    if (x.Depth > y.Depth)
-                        return +1;
-
-                    return 0;
-                }
-
-                if (xIndex == 1)
-                {
-                    if (x.Depth > y.Depth)
-                        return -1;
-
-                    if (x.Depth < y.Depth)
-                        return +1;
-
-                    return 0;
-                }
-
-                return 0;
-            }
-
-
-            if (xIndex > yIndex)
+            
+            if (x.Depth > y.Depth) 
                 return -1;
-
-            if (xIndex < yIndex)
-                return 1;
-
+            
             return 0;
         }
     }

@@ -62,7 +62,7 @@ namespace MyChessEngine
         public override bool ExecuteMove(Move move)
         {
             MemorizeMove(move);
-            return base.ExecuteMove(move);
+            return base.ExecuteMove(move,0);
         }
 
 
