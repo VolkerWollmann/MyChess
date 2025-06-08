@@ -150,11 +150,15 @@ namespace MyChessEngine
 
         public Move CalculateMove()
         {
+            return CalculateMoveWithDepth(4);
+        }
+        public Move CalculateMoveWithDepth( int depth = 6)
+        {
             DateTime s = DateTime.Now;
 
             Board.Counter = 0;
             Board.ClearOptimizationVariables();
-            var move = Board.CalculateMove(6, ColorToMove); 
+            var move = Board.CalculateMove(depth, ColorToMove); 
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 

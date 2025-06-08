@@ -9,6 +9,7 @@ namespace MyChessEngineBase
     {
         public Position Start;
         public Position End;
+        public Position EnpassantField;
         public IPiece Piece;
         public MoveType Type;
 

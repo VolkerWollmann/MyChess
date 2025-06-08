@@ -140,11 +140,6 @@ namespace MyChessEngine
                     }
                 }
 
-            foreach (Color color in ChessEngineConstants.BothColors)
-            {
-                copy.Kings[color] = (King)copy.GetAllPieces(color).FirstOrDefault(piece => piece.Type == PieceType.King);
-            }
-            
             return copy;
         }
 

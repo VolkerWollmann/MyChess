@@ -83,14 +83,18 @@ namespace MyChessEngine.Pieces
 
                 if ((PossibleMoveType & MoveType.EnpassantWhiteLeft)>0)
                 {
-                    moveList.Add(new Move(Position, Position.GetDeltaPosition(-1, 1), this,
-                        MoveType.EnpassantWhiteLeft));
+                    Move move = new Move(Position, Position.GetDeltaPosition(-1, +1), this,
+                        MoveType.EnpassantBlackLeft);
+                    move.EnpassantField = new Position(Position.Column -1, Position.Row);
+                    moveList.Add(move);
                 }
 
                 if ((PossibleMoveType & MoveType.EnpassantWhiteRight)>0)
                 {
-                    moveList.Add(new Move(Position, Position.GetDeltaPosition(1, +1), this,
-                        MoveType.EnpassantWhiteRight));
+                    Move move = new Move(Position, Position.GetDeltaPosition(1, +1), this,
+                        MoveType.EnpassantBlackLeft);
+                    move.EnpassantField = new Position(Position.Column + 1, Position.Row);
+                    moveList.Add(move);
                 }
 
             }
@@ -132,14 +136,18 @@ namespace MyChessEngine.Pieces
 
                 if ((PossibleMoveType & MoveType.EnpassantBlackLeft) > 0)
                 {
-                    moveList.Add(new Move(Position, Position.GetDeltaPosition(-1, +1), this,
-                        MoveType.EnpassantBlackLeft));
+                    Move move =new Move(Position, Position.GetDeltaPosition(1, -1), this,
+                        MoveType.EnpassantBlackLeft);
+                    move.EnpassantField = new Position(Position.Column + 1, Position.Row);
+                    moveList.Add(move);
                 }
 
                 if ((PossibleMoveType & MoveType.EnpassantBlackRight) > 0)
                 {
-                    moveList.Add(new Move(Position, Position.GetDeltaPosition(-1, -1), this,
-                        MoveType.EnpassantBlackRight));
+                    Move move = new Move(Position, Position.GetDeltaPosition(-1, -1), this,
+                        MoveType.EnpassantBlackRight);
+                    move.EnpassantField = new Position(Position.Column - 1, Position.Row);
+                    moveList.Add(move);
                 }
             }
 

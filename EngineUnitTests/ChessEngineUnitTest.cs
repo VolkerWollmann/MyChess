@@ -109,7 +109,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Rook(Color.White, "A1"));
             
 
-            Move move = chessEngine.CalculateMove();
+            Move move = chessEngine.CalculateMoveWithDepth(6);
             Assert.IsTrue(move.End.AreEqual(new Position("A8")));
             
         }
@@ -126,7 +126,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Rook(Color.White, "G5" ));
             
 
-            Move move = chessEngine.CalculateMove();
+            Move move = chessEngine.CalculateMoveWithDepth(6);
 
             Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
             Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
@@ -139,16 +139,16 @@ namespace EngineUnitTests
             ChessEngine chessEngine = new ChessEngine();
 
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
-            chessEngine.SetPiece(new Pawn(Color.White, "C4"));
+            chessEngine.SetPiece(new Pawn(Color.White, "B2"));
             chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal));
             chessEngine.SetPiece(new Pawn(Color.Black, "C4"));
 
+            chessEngine.ColorToMove = Color.White;
+            chessEngine.ExecuteMove(new Move("B2", "B4", chessEngine["B2"].Piece, MoveType.PawnDoubleStep));
+            Move move = chessEngine.CalculateMoveWithDepth(4);
+            //chessEngine.ExecuteMove(move);
 
-            chessEngine.ExecuteMove(new Move("C2", "C4", chessEngine["C2"].Piece, MoveType.PawnDoubleStep));
-            Move move = chessEngine.CalculateMove();
-            chessEngine.ExecuteMove(move);
-
-            Assert.IsTrue(move.Type == MoveType.EnpassantBlackLeft);
+            Assert.IsTrue(move.Type == MoveType.EnpassantBlackRight);
 
         }
 
@@ -162,7 +162,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
             chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
 
-            Move move = chessEngine.CalculateMove();
+            Move move = chessEngine.CalculateMoveWithDepth(4);
             Assert.IsTrue(move.End.AreEqual(new Position("D5")));
         }
 
