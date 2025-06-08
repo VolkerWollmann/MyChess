@@ -153,7 +153,7 @@ namespace MyChessEngine
             if (!result.Moves.Any())
                 return Move.CreateNoMove(GetRating(color, isChecked, false));
 
-            return result.GetBestMove(color);
+            return result.GetBestMove(color, isChecked);
         }
     }
 }

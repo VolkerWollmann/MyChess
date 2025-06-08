@@ -73,14 +73,15 @@ namespace MyChessEngine.Pieces
         #endregion
 
         /// <summary>
-        /// Adds position to to moves.
+        /// Adds position to moves.
         /// </summary>
         /// <param name="moveList">moves so far</param>
         /// <param name="position"></param>
+        /// <param name="threat"> true, if threat through king to inveestigate</param>
         /// <returns>returns false, if this is last move in that direction</returns>
-        public bool AddPosition(MoveList moveList, Position position)
+        public bool AddPosition(MoveList moveList, Position position, bool threat = false)
         {
-            IsValidPositionReturns result = Board.IsValidPosition(position, Color);
+            IsValidPositionReturns result = Board.IsValidPosition(position, Color, threat);
             if (result == IsValidPositionReturns.NoPosition)
                 return false;
 
@@ -90,6 +91,8 @@ namespace MyChessEngine.Pieces
 
             return true;
         }
+        
+        
 
         public Piece(Color color, PieceType piece, Position position)
         {

@@ -69,13 +69,15 @@ namespace MyChessEngineBase
         NoPosition,
         EmptyField,
         EnemyBeatPosition,
-        OwnBeatPosition
+        OwnBeatPosition,
+        EnemyKingThreatPosition
     }
 
     public class ChessEngineConstants
     {
         public const int Length = 8;
 
+        public const int CheckMate = 100000;
         public const int King = 10000;
         public const int Queen = 90;
         public const int Rook = 50;

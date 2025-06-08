@@ -49,7 +49,7 @@ namespace EngineUnitTests
         {
             MoveList moveList = CreateMoveList();
 
-            var whiteBestMove = moveList.GetBestMove(Color.White);
+            var whiteBestMove = moveList.GetBestMove(Color.White,false);
 
             Assert.IsNotNull(whiteBestMove.Rating.Evaluation == Evaluation.BlackCheckMate);
 

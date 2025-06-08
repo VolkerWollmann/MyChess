@@ -7,8 +7,8 @@ namespace MyChessEngineBase
     [DebuggerDisplay("{ToString()}")]
     public class Position 
     {
-        public int Row;
-        public int Column;
+        public int Row;    // 1
+        public int Column; // A
 
         public Position(int column, int row)
         {

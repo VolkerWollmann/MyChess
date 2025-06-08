@@ -70,7 +70,7 @@ namespace MyChessEngine
             SetPiece(position, piece);
         }
 
-        public IsValidPositionReturns IsValidPosition(Position position, Color color)
+        public IsValidPositionReturns IsValidPosition(Position position, Color color, bool threat = false)
         {
             if (position == null)
                 return IsValidPositionReturns.NoPosition;
@@ -80,7 +80,11 @@ namespace MyChessEngine
                 return IsValidPositionReturns.EmptyField;
 
             if (piece.Color != color)
+            {
+                if (threat && piece is King)
+                    return IsValidPositionReturns.EnemyKingThreatPosition;
                 return IsValidPositionReturns.EnemyBeatPosition;
+            }
 
             // do not beat own pieces
             return IsValidPositionReturns.NoPosition;
@@ -156,24 +160,10 @@ namespace MyChessEngine
 
         public MoveList GetMoveList(Color color)
         {
-            if (_AllMovesByColor.ContainsKey(color))
-                return _AllMovesByColor[color];
+            if (!_AllMovesByColor.ContainsKey(color))
+                _AllMovesByColor[color] = new MoveList(GetBaseMoveList(color));
 
-            List<Move> baseMoveList = GetBaseMoveList(color);
-
-            MoveList moveList = new MoveList();
-
-            foreach (Move move in baseMoveList)
-            {
-                Board testBoard = Copy();
-                testBoard.ExecuteMove(move);
-                if (!testBoard.IsChecked(color))
-                    moveList.Add(move);
-            }
-
-            _AllMovesByColor[color] = moveList;
-
-            return moveList;
+            return _AllMovesByColor[color];
         }
 
         internal List<Move> GetBaseMoveList(Color color)
@@ -232,14 +222,29 @@ namespace MyChessEngine
 
         private List<Position> GetThreatenedFields(Color color)
         {
-            return GetAllPieces(color)
-                .Select((piece => piece.GetMoveList().Moves))
-                .SelectMany(move => move).Select(move => move.End).ToList();
+            var pieces = GetAllPieces(color);
+            List<Move> listOfMoves = new List<Move>();
+            foreach (Piece piece in pieces)
+            {
+                List<Move> moves = new List<Move>();
+                moves = piece.GetThreatenMoveList().Moves;
+                listOfMoves.AddRange(moves);
+            }
+            
+            List<Position> threatenedFields = listOfMoves.Select(move => move.End).ToList();
+
+            return threatenedFields;
+
+
+            //return GetAllPieces(color)
+            //    .Select((piece => piece.GetThreatenMoveList().Moves))
+            //    .SelectMany(move => move).Select(move => move.End).ToList();
         }
         public virtual Move CalculateMove(int depth, Color color)
         {
             // Mark the threatened fields
             Board copy = Copy();
+
             List<Position> threatenedFields = GetThreatenedFields(ChessEngineConstants.NextColorToMove(color));
             threatenedFields.ForEach(pos => copy[pos].Threat = true);
 
@@ -258,20 +263,22 @@ namespace MyChessEngine
             {
                 Board copy2 = copy.Copy();
                 copy2.ExecuteMove(move);
-                if (!copy2.IsChecked(color))
-                {
-                    Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
-                    if ((move.Rating == null) ||
-                        (comparer.Compare(move.Rating, resultMove.Rating) > 0))
-                    {
-                        move.Rating = resultMove.Rating;
-                        move.Rating.Depth = move.Rating.Depth + 1;
-                    }
-                    result.Add(move);
-                }
+
+                Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                move.Rating = resultMove.Rating;
+                move.Rating.Depth = move.Rating.Depth + 1;
+
+                if ((resultMove.Rating.Situation == Situation.WhiteVictory && color == Color.White)
+                    || (resultMove.Rating.Situation == Situation.BlackVictory && color == Color.Black))
+                    return move;
+                
+                result.Add(move);
+
             }
 
-            return result.GetBestMove(color);
+            var king = copy.Kings[color];
+            bool check = copy[king.Position].Threat;
+            return result.GetBestMove(color, check);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace MyChessEngineInteger.Pieces
         WhiteRook = 500,
         WhiteQueen = 900,
         WhiteKing = 10000,
+        WhiteCheckMate = 100000,
 
         BlackPawn = -100,
         BlackKnight = -300,
@@ -20,6 +21,7 @@ namespace MyChessEngineInteger.Pieces
         BlackRook = -500,
         BlackQueen = -900,
         BlackKing = -10000,
+        BlackCheckMate = -100000
     }
     public class Piece : IPiece
     {
