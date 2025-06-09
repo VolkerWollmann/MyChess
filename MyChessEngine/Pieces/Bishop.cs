@@ -8,11 +8,14 @@ namespace MyChessEngine.Pieces
     {
         public override MoveList GetThreatenMoveList()
         {
-            return GetMoveList();
+            return GetMoveList(true);
         }
 
-
         public override MoveList GetMoveList()
+        {
+            return GetMoveList(false);
+        }
+        public MoveList GetMoveList(bool threat)
         {
             MoveList moveList = new MoveList();
 
@@ -23,7 +26,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
@@ -34,7 +37,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
@@ -45,7 +48,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
@@ -56,7 +59,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
 
             }

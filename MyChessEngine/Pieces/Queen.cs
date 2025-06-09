@@ -8,42 +8,46 @@ namespace MyChessEngine.Pieces
     {
         public override MoveList GetThreatenMoveList()
         {
-            return GetMoveList();
+            return GetMoveList(true);
         }
 
         public override MoveList GetMoveList()
+        {
+            return GetMoveList(false);
+        }
+        public  MoveList GetMoveList(bool threat)
         {
             MoveList moveList = new MoveList();
 
             // left
             for (int row = Position.Row - 1; row >= 0; row--)
             {
-                Position newPosition = new Position(row, Position.Column);
-                if (!AddPosition(moveList, newPosition))
+                Position newPosition = new Position( Position.Column, row);
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
             // right
             for (int row = Position.Row + 1; row < ChessEngineConstants.Length; row++)
             {
-                Position newPosition = new Position(row, Position.Column);
-                if (!AddPosition(moveList, newPosition))
+                Position newPosition = new Position(Position.Column, row);
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
             // down
             for (int column = Position.Column - 1; column >= 0; column--)
             {
-                Position newPosition = new Position(Position.Row, column);
-                if (!AddPosition(moveList, newPosition))
+                Position newPosition = new Position( column, Position.Row);
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
             // up
             for (int column = Position.Column + 1; column < ChessEngineConstants.Length; column++)
             {
-                Position newPosition = new Position(Position.Row, column);
-                if (!AddPosition(moveList, newPosition))
+                Position newPosition = new Position( column, Position.Row);
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
@@ -54,7 +58,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
@@ -65,7 +69,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 
@@ -76,7 +80,7 @@ namespace MyChessEngine.Pieces
                 if (newPosition == null)
                     break;
 
-                if (!AddPosition(moveList, newPosition))
+                if (!AddPosition(moveList, newPosition, threat))
                     break;
             }
 

@@ -76,11 +76,11 @@ namespace EngineUnitTests
         [TestMethod]
         public void CalculateOpeningMoveBlack()
         {
-            ChessEngine2 chessEngine2 = new ChessEngine2();
-            chessEngine2.New();
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.New();
 
-            chessEngine2.ExecuteMove(new Move("E2", "E4", chessEngine2["E2"], MoveType.PawnDoubleStep));
-            Move move = chessEngine2.CalculateMove();
+            chessEngine.ExecuteMove(new Move("E2", "E4", chessEngine["E2"].Piece, MoveType.PawnDoubleStep));
+            Move move = chessEngine.CalculateMove();
             Assert.IsNotNull(move);
         }
 
