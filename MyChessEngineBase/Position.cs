@@ -5,11 +5,12 @@ using System.Text;
 namespace MyChessEngineBase
 {
     [DebuggerDisplay("{ToString()}")]
-    public class Position 
+    public class Position
     {
-        public int Row;    // 1
-        public int Column; // A
 
+        public int Column; // A
+        public int Row;    // 1
+        
         public Position(int column, int row)
         {
             Row = row;

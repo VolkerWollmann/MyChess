@@ -125,7 +125,7 @@ namespace MyChessEngine.Pieces
                 }
 
                 // beat right
-                newPosition = Position.GetDeltaPosition(-1, 1);
+                newPosition = Position.GetDeltaPosition(-1, -1);
                 if (newPosition != null)
                 {
                     Piece pieceToBeat = Board[newPosition].Piece;
