@@ -18,12 +18,15 @@ namespace MyChessEngine
 
         public Board()
         {
+            string[] rows = new[] {"1", "2", "3", "4", "5", "6", "7", "8"};
+            string[] cols = new string[] {"A", "B", "C", "D", "E", "F", "G", "H"};
+            
             Field = new Field[8, 8];
             for(int row = 0; row < ChessEngineConstants.Length; row++)
             {
                 for (int column = 0; column < ChessEngineConstants.Length; column++)
                 {
-                    Field[column, row] = new Field( new Position(column,row).ToString());
+                    Field[column, row] = new Field(cols[column] + rows[row]);
                 }
             }
         }
