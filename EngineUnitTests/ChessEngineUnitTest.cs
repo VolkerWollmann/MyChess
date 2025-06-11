@@ -134,6 +134,25 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void CalculateTwoMoveMateWithDepth8()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.White, "C4"));
+            chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
+            chessEngine.SetPiece(new Rook(Color.White, "G5"));
+
+
+            Move move = chessEngine.CalculateMoveWithDepth(8);
+
+            Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
+            Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
+            Assert.IsTrue(move.Piece is Rook);
+        }
+
+        [TestMethod]
         public void CheckEnpassant()
         {
             ChessEngine chessEngine = new ChessEngine();

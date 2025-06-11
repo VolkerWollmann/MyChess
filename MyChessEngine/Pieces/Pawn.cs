@@ -175,6 +175,7 @@ namespace MyChessEngine.Pieces
             {
                 // promotion
                 Board[move.End].Piece = new Queen(Color, move.End);
+                Board[move.End].Piece.Board = Board;
             }
 
             if (move.Type == MoveType.PawnDoubleStep)
