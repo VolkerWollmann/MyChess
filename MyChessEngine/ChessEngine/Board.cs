@@ -126,20 +126,18 @@ namespace MyChessEngine
         {
             Board copy = new Board();
 
-            for (int i = 0; i < 9; i++)
-                copy.MoveStack[i] = (string)MoveStack[i].Clone();
+            copy.MoveStack = MoveStack.ToArray();
             
-            for (int row = 0; row < ChessEngineConstants.Length; row++)
-                for (int column = 0; column < ChessEngineConstants.Length; column++)
+            foreach (var field in Field)
+            {
+                Piece piece = field.Piece;
+                if (field.Piece != null)
                 {
-                    Piece piece = this[column,row].Piece;
-                    if (piece != null)
-                    {
-                        Piece pc = piece.Copy();
-                        copy.SetPiece(piece.Position, pc);
-                    }
+                    Piece pc = piece.Copy();
+                    copy.SetPiece(piece.Position, pc);
                 }
-
+            }
+            
             return copy;
         }
 
