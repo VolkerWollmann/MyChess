@@ -166,7 +166,6 @@ namespace MyChessEngine.Pieces
         public King(Color color, string positionString):
             this(color, new Position(positionString)) { }
 
-        private bool _IsChecked = false;
         public bool IsChecked()
         {
             return Board[Position].Threat;
