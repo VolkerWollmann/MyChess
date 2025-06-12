@@ -169,15 +169,7 @@ namespace MyChessEngine.Pieces
         private bool _IsChecked = false;
         public bool IsChecked()
         {
-            var l = Board.GetAllPieces(ChessEngineConstants.NextColorToMove(Color))
-                .Select((piece => piece.GetThreatenMoveList().Moves))
-                .SelectMany(move => move);
-
-            var threatenedFields = l.Select(move => move.End);
-
-            _IsChecked = threatenedFields.Any(position => position.AreEqual(Position));
-
-            return _IsChecked;
+            return Board[Position].Threat;
         }
 
         public King(Color color, string positionString, MoveType kingMoves) : this(color, new Position(positionString))
