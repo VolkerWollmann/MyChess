@@ -15,26 +15,26 @@ namespace MyChess.Controls
 
         private readonly ChessCommandUserControl ChessCommandUserControl;
 
-        private ChessFieldUserControl StartField;
-        private ChessFieldUserControl EndField;
+        private ChessFieldUserControl Start;
+        private ChessFieldUserControl End;
 
         public Move GetMove()
         {
-            if (StartField == null || EndField==null)
+            if (Start == null || End==null)
                 return null;
 
-            if ((StartField.Row == 0) && (StartField.Column == 4) &&
-                (EndField.Row == 0) && (StartField.Column == 6))
+            if ((Start.Row == 0) && (Start.Column == 4) &&
+                (End.Row == 0) && (End.Column == 6))
             {
-                return new Move(StartField.GetPosition(), EndField.GetPosition(), null, MoveType.WhiteCastle);
+                return new Move(Start.GetPosition(), End.GetPosition(), null, MoveType.WhiteCastle);
             }
-            else if ((StartField.Row == 0) && (StartField.Column == 4) &&
-                         (EndField.Row == 0) && (StartField.Column == 3))
+            else if ((Start.Row == 0) && (Start.Column == 4) &&
+                         (End.Row == 0) && (End.Column == 3))
             {
-                return new Move(StartField.GetPosition(), EndField.GetPosition(), null, MoveType.WhiteCastleLong);
+                return new Move(Start.GetPosition(), End.GetPosition(), null, MoveType.WhiteCastleLong);
             }
             else
-                return new Move(StartField.GetPosition(), EndField.GetPosition(), null);
+                return new Move(Start.GetPosition(), End.GetPosition(), null);
         }
 
         public void SetField(ChessFieldUserControl field)
@@ -43,21 +43,21 @@ namespace MyChess.Controls
 
             if (field != null)
             {
-                if (StartField == null)
+                if (Start == null)
                 {
-                    StartField = field;
-                    StartField.SetFieldColor(FieldColor.Start);
+                    Start = field;
+                    Start.SetFieldColor(FieldColor.Start);
 
-                    ChessCommandUserControl.SetStartField((char) (StartField.Column + 65) +
-                                                         (StartField.Row + 1).ToString());
+                    ChessCommandUserControl.SetStartField((char) (Start.Column + 65) +
+                                                         (Start.Row + 1).ToString());
                     reset = false;
                 }
-                else if (EndField == null)
+                else if (End == null)
                 {
-                    EndField = field;
-                    EndField.SetFieldColor(FieldColor.End);
+                    End = field;
+                    End.SetFieldColor(FieldColor.End);
 
-                    ChessCommandUserControl.SetEndField((char) (EndField.Column + 65) + (EndField.Row + 1).ToString());
+                    ChessCommandUserControl.SetEndField((char) (End.Column + 65) + (End.Row + 1).ToString());
 
                     reset = false;
                 }
@@ -66,14 +66,14 @@ namespace MyChess.Controls
  
             if ( reset) 
             {
-                StartField?.SetFieldColor(FieldColor.Standard);
-                EndField?.SetFieldColor(FieldColor.Standard);
+                Start?.SetFieldColor(FieldColor.Standard);
+                End?.SetFieldColor(FieldColor.Standard);
 
                 ChessCommandUserControl.SetStartField("");
                 ChessCommandUserControl.SetEndField("");
 
-                StartField = null;
-                EndField = null;
+                Start = null;
+                End = null;
             }
 
         }
