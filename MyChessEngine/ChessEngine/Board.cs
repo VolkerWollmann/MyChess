@@ -224,31 +224,27 @@ namespace MyChessEngine
             return rating;
         }
 
-        private List<Position> GetThreatenedFields(Color color)
+        private void MarkThreatenedFields(Color color)
         {
             var pieces = GetAllPieces(color);
             List<Move> listOfMoves = new List<Move>();
             foreach (Piece piece in pieces)
             {
-                List<Move> moves = new List<Move>();
-                moves = piece.GetThreatenMoveList().Moves;
-                listOfMoves.AddRange(moves);
+	            var moves = piece.GetThreatenMoveList().Moves;
+	            foreach (var move in moves)
+	            {
+                    this[move.End].Threat = true;
+	            }
             }
             
-            List<Position> threatenedFields = listOfMoves.Select(move => move.End).ToList();
-
-            return threatenedFields;
-
-
             //return GetAllPieces(color)
             //    .Select((piece => piece.GetThreatenMoveList().Moves))
             //    .SelectMany(move => move).Select(move => move.End).ToList();
         }
         public virtual Move CalculateMove(int depth, Color color)
         {
-            List<Position> threatenedFields = GetThreatenedFields(ChessEngineConstants.NextColorToMove(color));
-            threatenedFields.ForEach(pos => this[pos].Threat = true);
-
+            MarkThreatenedFields(ChessEngineConstants.NextColorToMove(color));
+            
             var moves = this.GetMoveList(color);
 
             var rating = GetRating(color);

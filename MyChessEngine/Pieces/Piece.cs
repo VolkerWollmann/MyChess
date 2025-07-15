@@ -86,10 +86,8 @@ namespace MyChessEngine.Pieces
                 return false;
 
             moveList.Add(new Move(Position, position, this));
-            if (result == IsValidPositionReturns.EnemyBeatPosition)
-                return false;
-
-            return true;
+            
+            return (result != IsValidPositionReturns.EnemyBeatPosition);
         }
         
         
