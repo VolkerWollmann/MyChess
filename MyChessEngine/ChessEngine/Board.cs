@@ -246,13 +246,10 @@ namespace MyChessEngine
         }
         public virtual Move CalculateMove(int depth, Color color)
         {
-            // Mark the threatened fields
-            Board copy = Copy();
-
             List<Position> threatenedFields = GetThreatenedFields(ChessEngineConstants.NextColorToMove(color));
-            threatenedFields.ForEach(pos => copy[pos].Threat = true);
+            threatenedFields.ForEach(pos => this[pos].Threat = true);
 
-            var moves = copy.GetMoveList(color);
+            var moves = this.GetMoveList(color);
 
             var rating = GetRating(color);
             
@@ -266,7 +263,7 @@ namespace MyChessEngine
             foreach (Move move in moves.Moves)
             {
                 MoveStack[depth] = move.ToString();
-                Board copy2 = copy.Copy();
+                Board copy2 = this.Copy();
                 copy2.ExecuteMove(move,depth);
 
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
@@ -276,8 +273,8 @@ namespace MyChessEngine
                 result.Add(move);
             }
 
-            var king = copy.Kings[color];
-            bool check = copy[king.Position].Threat;
+            var king = this.Kings[color];
+            bool check = this[king.Position].Threat;
             Move resultMove2 = result.GetBestMove(color, check);
             return resultMove2;
         }
