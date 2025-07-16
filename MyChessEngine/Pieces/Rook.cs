@@ -25,7 +25,7 @@ namespace MyChessEngine.Pieces
             int localRow = Position.Row;
 
             // left
-            for (int row = Position.Row-1; row >= 0; row--)
+            for (int row = localRow - 1; row >= 0; row--)
             {
                 Position newPosition = new Position(localColumn, row);
                 if (!AddPosition(moveList, newPosition, threat))
@@ -33,7 +33,7 @@ namespace MyChessEngine.Pieces
             }
 
             // right
-            for (int row = Position.Row + 1; row < ChessEngineConstants.Length; row++)
+            for (int row = localRow + 1; row < ChessEngineConstants.Length; row++)
             {
                 Position newPosition = new Position(localColumn, row);
                 if (!AddPosition(moveList, newPosition, threat))
@@ -41,7 +41,7 @@ namespace MyChessEngine.Pieces
             }
 
             // down
-            for (int column = Position.Column - 1; column >=0; column--)
+            for (int column = localColumn - 1; column >=0; column--)
             {
                 Position newPosition = new Position(column,localRow);
                 if (!AddPosition(moveList, newPosition, threat))
@@ -49,7 +49,7 @@ namespace MyChessEngine.Pieces
             }
 
             // up
-            for (int column = Position.Column + 1; column < ChessEngineConstants.Length; column++)
+            for (int column = localColumn + 1; column < ChessEngineConstants.Length; column++)
             {
                 Position newPosition = new Position(column, localRow);
                 if (!AddPosition(moveList, newPosition, threat))
