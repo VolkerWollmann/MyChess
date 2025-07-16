@@ -205,13 +205,16 @@ namespace MyChessEngine
 
             int boardWeight = 0;
 
-            foreach (var field in Field)
+            foreach (var piece in GetAllPieces(color))
             {
-                Piece piece = field.Piece;
-                if (piece != null)
-                    boardWeight += piece.Weight;
+                boardWeight += piece.Weight;
             }
-            
+
+            foreach (var piece in GetAllPieces(opponentColor))
+            {
+                boardWeight += piece.Weight;
+            }
+
             rating.Weight = boardWeight;
             rating.Evaluation = Evaluation.Normal;
 
