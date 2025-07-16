@@ -65,9 +65,7 @@ namespace MyChessEngine.Pieces
         static readonly Position BlackQueenRookField = new Position("A8");
         public override bool ExecuteMove(Move move)
         {
-            base.ExecuteMove(move);
-
-            if (!HasMoved)
+	        if (!HasMoved)
             {
                 HasMoved = true;
                 if (Board.Kings[Color] is { } myKing)
@@ -97,7 +95,9 @@ namespace MyChessEngine.Pieces
                 }
             }
 
-            return true;
+			base.ExecuteMove(move);
+
+			return true;
         }
 
         public Rook(Color color, Position position, bool hasMoved) : base(color, PieceType.Rook, position)

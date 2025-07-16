@@ -31,9 +31,11 @@ namespace MyChessEngine.Pieces
         static readonly List<Position> BlackCastleFields = new List<Position>() { BlackKingField, BlackKingBishopField, BlackKingKnightField };
         static readonly List<Position> BlackLongCastleFields = new List<Position>() { BlackKingField, BlackQueenField, BlackQueenBishopField, BlackQueenKnightField };
 
+        private static readonly MoveType WhiteKingInitialMoveTypes = MoveType.Normal | MoveType.WhiteCastle | MoveType.WhiteCastleLong;
+        private static readonly MoveType BlackKingInitialMoveTypes = MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong;
         #region IEnginePiece
 
-        static readonly int[,] Delta = new int[,]
+		static readonly int[,] Delta = new int[,]
         {
             { -1, -1 }, { -1, 0 }, {  -1, +1 }, 
             {  0, -1 },            {   0, +1 },
@@ -152,15 +154,8 @@ namespace MyChessEngine.Pieces
         #endregion
 
         public King(Color color, Position position) : base(color, PieceType.King, position)
-        {
-            if (color == Color.White)
-            {
-                KingMoves = MoveType.Normal |MoveType.WhiteCastle | MoveType.WhiteCastleLong;
-            }
-            else
-            {
-                KingMoves = MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong;
-            }
+        { 
+	        KingMoves = (color == Color.White) ? WhiteKingInitialMoveTypes : BlackKingInitialMoveTypes;
         }
 
         public King(Color color, string positionString):
