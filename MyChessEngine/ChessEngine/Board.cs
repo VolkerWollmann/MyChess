@@ -4,6 +4,7 @@ using System.Linq;
 using MyChessEngineBase.Rating;
 using MyChessEngineBase;
 using MyChessEngine.Pieces;
+using System.Threading.Tasks;
 
 
 namespace MyChessEngine
@@ -271,6 +272,43 @@ namespace MyChessEngine
                 
                 result.Add(move);
             }
+
+            var king = this.Kings[color];
+            bool check = this[king.Position].Threat;
+            Move resultMove2 = result.GetBestMove(color, check);
+            return resultMove2;
+        }
+
+        public virtual Move CalculateMoveParallel(int depth, Color color)
+        {
+            MarkThreatenedFields(ChessEngineConstants.NextColorToMove(color));
+
+            var moves = this.GetMoveList(color);
+
+            var rating = GetRating(color);
+
+            if (depth == 0 || rating.Situation == Situation.WhiteVictory || rating.Situation == Situation.BlackVictory)
+                return Move.CreateNoMove(rating);
+
+
+            ParallelMoveList result = new ParallelMoveList();
+            IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
+
+            var moveIndexes = Enumerable.Range(0, moves.Moves.Count);
+            Parallel.ForEach(moveIndexes, moveindex =>
+            {
+                Move move = moves.Moves[moveindex];
+             
+                //MoveStack[depth] = move.ToString();
+                Board copy2 = this.Copy();
+                copy2.ExecuteMove(move, depth);
+
+                Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                move.Rating = resultMove.Rating;
+                move.Rating.Depth = move.Rating.Depth + 1;
+
+                result.Add(move);
+            });
 
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;

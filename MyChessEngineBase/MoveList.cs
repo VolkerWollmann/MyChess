@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MyChessEngineBase.Rating;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
-using MyChessEngineBase.Rating;
 
 namespace MyChessEngineBase
 {
@@ -70,6 +71,70 @@ namespace MyChessEngineBase
         public void Sort(Color color)
         {
             _Moves.Sort(new MoveComparer(color));
+        }
+    }
+
+    public class ParallelMoveList
+    {
+        private readonly ConcurrentBag<Move> _Moves = new ConcurrentBag<Move>();
+
+        public List<Move> Moves => _Moves.ToList<Move>();
+
+        public void Add(Move move)
+        {
+            _Moves.Add(move);
+        }
+
+        public ParallelMoveList(List<Move> moves)
+        {
+            foreach(Move move in moves)
+                _Moves.Add(move);
+        }
+
+        public ParallelMoveList()
+        {
+          
+        }
+
+
+        public Move GetBestMove(Color color, bool check)
+        {
+
+            if (color == Color.White)
+            {
+                bool atLeastOneMove = _Moves.Any();
+                bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory);
+                if (!check && !atLeastOneMove)
+                    return Move.CreateNoMove(new BoardRating { Situation = Situation.StaleMate, Evaluation = Evaluation.WhiteStaleMate });
+
+                if (check && allMovesAreBlackVictory)
+                    return Move.CreateNoMove(new BoardRating { Situation = Situation.BlackVictory, Evaluation = Evaluation.WhiteCheckMate, Weight = -ChessEngineConstants.CheckMate });
+            }
+            else
+            {
+                bool atLeastOneMove = _Moves.Any();
+                bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory);
+                if (!check && !atLeastOneMove)
+                    return Move.CreateNoMove(new BoardRating { Situation = Situation.StaleMate, Evaluation = Evaluation.BlackStaleMate });
+
+                if (check && allMovesAreWhiteVictory)
+                    return Move.CreateNoMove(new BoardRating { Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate, Weight = ChessEngineConstants.CheckMate });
+            }
+
+            Move bestMove = _Moves.FirstOrDefault();
+
+            IComparer<Move> comparer = new MoveComparer(color);
+
+            if ((bestMove == null) || (_Moves.Count <= 1))
+                return bestMove;
+
+           foreach (var move in _Moves)
+            {
+                if (comparer.Compare(bestMove, move) < 0)
+                    bestMove = move;
+            }
+
+            return bestMove;
         }
     }
 }

@@ -168,5 +168,22 @@ namespace MyChessEngine
 
             return move;
         }
+
+        public Move CalculateMoveWithDepthParallel(int depth = 6)
+        {
+            DateTime s = DateTime.Now;
+
+            Board.Counter = 0;
+            Board.ClearOptimizationVariables();
+            var move = Board.CalculateMoveParallel(depth, ColorToMove);
+
+            TimeSpan ts = DateTime.Now.Subtract(s);
+
+            _Message = move + " Time:" + ts + Environment.NewLine +
+                       " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
+                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board.Counter;
+
+            return move;
+        }
     }
 }
