@@ -150,7 +150,7 @@ namespace MyChessEngine
 
         public Move CalculateMove()
         {
-            return CalculateMoveWithDepth(4);
+            return CalculateMoveWithDepthParallel(4);
         }
         public Move CalculateMoveWithDepth( int depth = 6)
         {
@@ -158,7 +158,7 @@ namespace MyChessEngine
 
             Board.Counter = 0;
             Board.ClearOptimizationVariables();
-            var move = Board.CalculateMoveParallel(depth, ColorToMove); 
+            var move = Board.CalculateMove(depth, ColorToMove); 
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 
