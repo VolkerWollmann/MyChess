@@ -158,7 +158,7 @@ namespace MyChessEngine
 
             Board.Counter = 0;
             Board.ClearOptimizationVariables();
-            var move = Board.CalculateMove(depth, ColorToMove); 
+            var move = Board.CalculateMoveParallel(depth, ColorToMove); 
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 

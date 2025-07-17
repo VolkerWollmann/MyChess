@@ -85,7 +85,7 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
-        public void CalculateOneMoveMate1()
+        public void CalculateOneMoveMate()
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
@@ -96,22 +96,6 @@ namespace EngineUnitTests
 
             Assert.IsTrue(move.End.AreEqual(new Position("A8")));
 
-        }
-
-        [TestMethod]
-        public void CalculateOneMoveMate2()
-        {
-            ChessEngine chessEngine = new ChessEngine();
-            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
-            chessEngine.SetPiece(new Pawn(Color.White, "E4"));
-            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
-            chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
-            chessEngine.SetPiece(new Rook(Color.White, "A1"));
-            
-
-            Move move = chessEngine.CalculateMoveWithDepth(6);
-            Assert.IsTrue(move.End.AreEqual(new Position("A8")));
-            
         }
 
         [TestMethod]
@@ -131,6 +115,22 @@ namespace EngineUnitTests
             Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
             Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
             Assert.IsTrue(move.Piece is Rook);
+        }
+
+        [TestMethod]
+        public void CalculateTwoMoveMateParallel()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.White, "E4"));
+            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal));
+            chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
+            chessEngine.SetPiece(new Rook(Color.White, "A1"));
+
+
+            Move move = chessEngine.CalculateMoveWithDepthParallel(6);
+            Assert.IsTrue(move.End.AreEqual(new Position("A8")));
+
         }
 
         [TestMethod]
