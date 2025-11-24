@@ -48,33 +48,35 @@ namespace MyChessEngine
             }
 
             // rook
-            Board.SetPiece(new Rook(Color.White, "A1"));
-            Board.SetPiece(new Rook(Color.White, "H1"));
-            Board.SetPiece(new Rook(Color.Black, "A8"));
-            Board.SetPiece(new Rook(Color.Black, "H8"));
+            Board.SetPiece(new Rook(Color.White, "A1", false, 0));
+            Board.SetPiece(new Rook(Color.White, "H1", false, 0));
+            Board.SetPiece(new Rook(Color.Black, "A8", false, 0));
+            Board.SetPiece(new Rook(Color.Black, "H8", false, 0));
             
             // bishop 
-            Board.SetPiece(new Bishop(Color.White, "C1"));
-            Board.SetPiece(new Bishop(Color.White, "F1"));
-            Board.SetPiece(new Bishop(Color.Black, "C8"));
-            Board.SetPiece(new Bishop(Color.Black, "F8"));
+            Board.SetPiece(new Bishop(Color.White, "C1",  0));
+            Board.SetPiece(new Bishop(Color.White, "F1", 0));
+            Board.SetPiece(new Bishop(Color.Black, "C8", 0));
+            Board.SetPiece(new Bishop(Color.Black, "F8", 0));
 
             // knight
-            Board.SetPiece(new Knight(Color.White, "B1"));
-            Board.SetPiece(new Knight(Color.White, "G1"));
-            Board.SetPiece(new Knight(Color.Black, "B8"));
-            Board.SetPiece(new Knight(Color.Black, "G8"));
+            Board.SetPiece(new Knight(Color.White, "B1", 0));
+            Board.SetPiece(new Knight(Color.White, "G1", 0));
+            Board.SetPiece(new Knight(Color.Black, "B8", 0));
+            Board.SetPiece(new Knight(Color.Black, "G8", 0));
 
 
 
             // queen
-            Board.SetPiece(new Queen(Color.White, "D1"));
-            Board.SetPiece(new Queen(Color.Black, "D8"));
+            Board.SetPiece(new Queen(Color.White, "D1", 0));
+            Board.SetPiece(new Queen(Color.Black, "D8", 0));
 
 
             // king
-            Board.SetPiece( new King(Color.White, "E1"));
-            Board.SetPiece( new King(Color.Black, "E8"));
+            Board.SetPiece( new King(Color.White, "E1",
+                (MoveType.Normal | MoveType.WhiteCastle | MoveType.WhiteCastleLong), false));
+            Board.SetPiece( new King(Color.Black, "E8",
+                (MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong), false));
             
 
             ColorToMove = Color.White;

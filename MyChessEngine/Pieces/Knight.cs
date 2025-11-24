@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
-using MyChessEngineBase;
+﻿using MyChessEngineBase;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace MyChessEngine.Pieces
 {
@@ -31,12 +32,12 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        public Knight(Color color, Position position) : base(color, PieceType.Knight, position, false)
+        public Knight(Color color, Position position, int promotionPly) : base(color, PieceType.Knight, position, false, promotionPly)
         {
 
         }
 
-        public Knight(Color color, string position) : base(color, PieceType.Knight, new Position(position), false)
+        public Knight(Color color, string position, int promotionPly) : base(color, PieceType.Knight, new Position(position), false, promotionPly)
         {
 
         }

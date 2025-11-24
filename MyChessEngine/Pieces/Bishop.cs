@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
-using MyChessEngineBase;
+﻿using MyChessEngineBase;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace MyChessEngine.Pieces
 {
@@ -67,11 +68,11 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        public Bishop(Color color, Position position) : base(color, PieceType.Bishop, position, false)
+        public Bishop(Color color, Position position, int promotionPly) : base(color, PieceType.Bishop, position, false, promotionPly)
         {
 
         }
-        public Bishop(Color color, string position) : base(color, PieceType.Bishop, new Position(position), false)
+        public Bishop(Color color, string position, int promotionPly) : base(color, PieceType.Bishop, new Position(position), false, promotionPly)
         {
 
         }

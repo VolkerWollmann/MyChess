@@ -42,12 +42,12 @@ namespace MyChessEngine.Pieces
         {
             return Type switch
             {
-                PieceType.Bishop => new Bishop(Color, Position),
-                PieceType.Knight => new Knight(Color, Position),
-                PieceType.Queen => new Queen(Color, Position),
+                PieceType.Bishop => new Bishop(Color, Position, PromotionPly),
+                PieceType.Knight => new Knight(Color, Position, PromotionPly),
+                PieceType.Queen => new Queen(Color, Position, PromotionPly),
                 PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType),
-                PieceType.Rook => new Rook(Color, Position, ((Rook)this).IsMoved),
-                PieceType.King => new King(Color, Position, ((King)this).KingMoves),
+                PieceType.Rook => new Rook(Color, Position, IsMoved, PromotionPly),
+                PieceType.King => new King(Color, Position, ((King)this).KingMoves, IsMoved),
             _ => null 
             };
         }
@@ -96,12 +96,13 @@ namespace MyChessEngine.Pieces
         
         
 
-        public Piece(Color color, PieceType piece, Position position, bool isMoved )
+        public Piece(Color color, PieceType piece, Position position, bool isMoved, int promotionPly )
         {
             Color = color;
             Type = piece;
             Position = position;
             IsMoved = isMoved;
+            PromotionPly = promotionPly;
 
             switch (Type)
             {
@@ -132,8 +133,8 @@ namespace MyChessEngine.Pieces
             }
         }
 
-        public Piece(Color color, PieceType piece, string positionString, bool isMoved) :
-            this( color, piece, new Position(positionString), isMoved)
+        public Piece(Color color, PieceType piece, string positionString, bool isMoved, int promotionPly) :
+            this( color, piece, new Position(positionString), isMoved, promotionPly)
         {
         }
 

@@ -10,8 +10,7 @@ namespace MyChessEngine.Pieces
     {
         public MoveType PossibleMoveType { get; set; }
 
-        public int LastLeftPlyMarking;
-        public int LastRightPlyMarking;
+        public int LastEnPassantPlyMarking; // a pawn can only beat enpassant on the next move to one side(!)
 
         public override MoveList GetThreatenMoveList()
         {
@@ -177,7 +176,7 @@ namespace MyChessEngine.Pieces
             if (move.End.Row == 7 || move.End.Row == 0)
             {
                 // promotion
-                Board[move.End].Piece = new Queen(Color, move.End);
+                Board[move.End].Piece = new Queen(Color, move.End, Board.Ply);
                 Board[move.End].Piece.Board = Board;
             }
 
@@ -225,7 +224,7 @@ namespace MyChessEngine.Pieces
             return base.ExecuteMove(move); 
         }
 
-        public Pawn(Color color, Position position, MoveType possibleMoveType) : base(color, PieceType.Pawn, position, false)
+        public Pawn(Color color, Position position, MoveType possibleMoveType) : base(color, PieceType.Pawn, position, false, 0)
         {
             PossibleMoveType = possibleMoveType;
         }
@@ -235,7 +234,7 @@ namespace MyChessEngine.Pieces
 
         }
 
-        public Pawn(Color color, string position, MoveType possibleMoveType) : base(color, PieceType.Pawn, new Position(position), false)           
+        public Pawn(Color color, string position, MoveType possibleMoveType) : base(color, PieceType.Pawn, new Position(position), false, 0)           
         {
             PossibleMoveType = possibleMoveType;
         }
