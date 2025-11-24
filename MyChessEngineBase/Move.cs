@@ -9,21 +9,33 @@ namespace MyChessEngineBase
     {
         public Position Start;
         public Position End;
-        public Position EnpassantField;
         public IPiece Piece;
         public MoveType Type;
 
-        public bool IsAMove { get; } = true;
+
+		public Position AffectedPosition = null;
+        public IPiece AffectedPiece = null;
+
+
+		public bool IsAMove { get; } = true;
         
         public BoardRating Rating { get; set; }
 
-        public Move(Position start, Position end, IPiece piece, MoveType type)
-        {
-            Start = start;
-            End = end;
-            Piece = piece;
-            Type = type;
+        public Move(Position start, Position end, IPiece piece, MoveType type) : this(start, end, piece, type, null, null)
+		{
+
         }
+
+        public Move(Position start, Position end, IPiece piece, MoveType type, IPiece affectedPiece,
+	        Position affectedPosition)
+        {
+	        Start = start;
+	        End = end;
+	        Piece = piece;
+	        Type = type;
+            AffectedPiece = affectedPiece;
+            AffectedPosition = affectedPosition;
+		}
 
         public Move(Position start, Position end, IPiece piece) : this(start, end, piece, MoveType.Normal)
         {
