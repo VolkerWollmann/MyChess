@@ -6,8 +6,6 @@ namespace MyChessEngine.Pieces
     [DebuggerDisplay("Type={Type}, Color = {Color} Position={Position}")]
     public class Rook : Piece
     {
-        public bool HasMoved;
-
         public override MoveList GetThreatenMoveList()
         {
             return GetMoveList(true);
@@ -65,9 +63,8 @@ namespace MyChessEngine.Pieces
         static readonly Position BlackQueenRookField = new Position("A8");
         public override bool ExecuteMove(Move move)
         {
-	        if (!HasMoved)
+	        if (!IsMoved)
             {
-                HasMoved = true;
                 if (Board.Kings[Color] is { } myKing)
                 {
                     if ((myKing.Color == Color.White) )
@@ -100,9 +97,9 @@ namespace MyChessEngine.Pieces
 			return true;
         }
 
-        public Rook(Color color, Position position, bool hasMoved) : base(color, PieceType.Rook, position)
+        public Rook(Color color, Position position, bool isMoved) : base(color, PieceType.Rook, position, isMoved)
         {
-            HasMoved = hasMoved;
+           
         }
 
         public Rook(Color color, Position position) : this(color, position, false)
@@ -110,9 +107,8 @@ namespace MyChessEngine.Pieces
 
         }
 
-        public Rook(Color color, string position, bool hasMoved) : base(color, PieceType.Rook, new Position(position))
+        public Rook(Color color, string position, bool isMoved) : base(color, PieceType.Rook, new Position(position), isMoved)
         {
-            HasMoved = hasMoved;
         }
 
         public Rook(Color color, string position) : this(color, new Position(position), false)

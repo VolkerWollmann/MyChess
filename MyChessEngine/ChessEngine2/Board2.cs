@@ -35,7 +35,7 @@ namespace MyChessEngine
                 (GetAllPieces(Color.White).Any( p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
                 (GetAllPieces(Color.Black).Any(p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
                 (move.Piece is King king && king.KingMoves != MoveType.Normal) ||
-                move.Piece is Rook { HasMoved: false })
+                move.Piece is Rook { IsMoved: false })
             {
                 LastMove = null;
                 UndoPossible = false;

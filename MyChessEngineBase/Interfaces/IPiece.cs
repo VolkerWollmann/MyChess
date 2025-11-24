@@ -5,5 +5,10 @@
         PieceType Type { get; }
 
         Color Color { get; }
+
+        bool IsMoved { get; }
+        int PromotionPly { get; set; }
+
+        
     }
 }

@@ -10,6 +10,9 @@ namespace MyChessEngine.Pieces
     {
         public MoveType PossibleMoveType { get; set; }
 
+        public int LastLeftPlyMarking;
+        public int LastRightPlyMarking;
+
         public override MoveList GetThreatenMoveList()
         {
             MoveList moveList = new MoveList();
@@ -222,7 +225,7 @@ namespace MyChessEngine.Pieces
             return base.ExecuteMove(move); 
         }
 
-        public Pawn(Color color, Position position, MoveType possibleMoveType) : base(color, PieceType.Pawn, position)
+        public Pawn(Color color, Position position, MoveType possibleMoveType) : base(color, PieceType.Pawn, position, false)
         {
             PossibleMoveType = possibleMoveType;
         }
@@ -232,7 +235,7 @@ namespace MyChessEngine.Pieces
 
         }
 
-        public Pawn(Color color, string position, MoveType possibleMoveType) : base(color, PieceType.Pawn, new Position(position))
+        public Pawn(Color color, string position, MoveType possibleMoveType) : base(color, PieceType.Pawn, new Position(position), false)           
         {
             PossibleMoveType = possibleMoveType;
         }

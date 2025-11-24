@@ -17,6 +17,8 @@ namespace MyChessEngine
 
         public static int Counter;
 
+        public int Ply = 0;
+
         public Board()
         {
             Field = new Field[8, 8];
@@ -127,6 +129,7 @@ namespace MyChessEngine
         {
             Board copy = new Board();
 
+            copy.Ply = Ply;
             copy.MoveStack = MoveStack.ToArray();
             
             foreach (var field in Field)
@@ -149,6 +152,7 @@ namespace MyChessEngine
         
         public virtual bool ExecuteMove(Move move, int depth = 0)
         {
+            Ply++;
             MoveStack[depth] = move.ToString();
             if (this[move.Start] == null)
                 throw new Exception("Move not Existing piece.");

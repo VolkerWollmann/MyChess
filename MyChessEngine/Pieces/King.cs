@@ -153,7 +153,7 @@ namespace MyChessEngine.Pieces
 
         #endregion
 
-        public King(Color color, Position position) : base(color, PieceType.King, position)
+        public King(Color color, Position position) : base(color, PieceType.King, position, false)
         { 
 	        KingMoves = (color == Color.White) ? WhiteKingInitialMoveTypes : BlackKingInitialMoveTypes;
         }

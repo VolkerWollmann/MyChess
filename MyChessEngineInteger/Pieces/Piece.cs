@@ -27,6 +27,8 @@ namespace MyChessEngineInteger.Pieces
     {
         public PieceType Type { get; }
         public Color Color { get; }
+        public bool IsMoved { get; private set; } = false;
+        public int PromotionPly { get; set; }
 
         public NumPieces GetNumPieces()
         {
@@ -147,7 +149,7 @@ namespace MyChessEngineInteger.Pieces
 
         #region ExecuteMove
 
-        public static bool ExecuteMove(Board board, Move  move)
+        public static bool ExecuteMove(Board board, Move  move) 
         {
             int startRow = move.StartRow;
             int startColumn = move.StartColumn;

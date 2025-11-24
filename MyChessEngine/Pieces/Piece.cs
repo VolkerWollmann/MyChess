@@ -13,6 +13,8 @@ namespace MyChessEngine.Pieces
         public PieceType Type { get; }
 
         public Color Color { get; }
+        public bool IsMoved { get; private set; } = false;
+        public int PromotionPly { get; set; }
 
         #endregion
 
@@ -44,7 +46,7 @@ namespace MyChessEngine.Pieces
                 PieceType.Knight => new Knight(Color, Position),
                 PieceType.Queen => new Queen(Color, Position),
                 PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType),
-                PieceType.Rook => new Rook(Color, Position, ((Rook)this).HasMoved),
+                PieceType.Rook => new Rook(Color, Position, ((Rook)this).IsMoved),
                 PieceType.King => new King(Color, Position, ((King)this).KingMoves),
             _ => null 
             };
@@ -64,6 +66,8 @@ namespace MyChessEngine.Pieces
             Board[move.Start].Piece = null;
 
             this.Position = move.End;
+
+            this.IsMoved = true;
 
             return true;
         }
@@ -92,11 +96,13 @@ namespace MyChessEngine.Pieces
         
         
 
-        public Piece(Color color, PieceType piece, Position position)
+        public Piece(Color color, PieceType piece, Position position, bool isMoved )
         {
             Color = color;
             Type = piece;
             Position = position;
+            IsMoved = isMoved;
+
             switch (Type)
             {
                 case PieceType.Rook:
@@ -126,10 +132,9 @@ namespace MyChessEngine.Pieces
             }
         }
 
-        public Piece(Color color, PieceType piece, string positionString) :
-            this( color, piece, new Position(positionString))
+        public Piece(Color color, PieceType piece, string positionString, bool isMoved) :
+            this( color, piece, new Position(positionString), isMoved)
         {
-
         }
 
     }
