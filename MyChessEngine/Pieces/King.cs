@@ -107,16 +107,33 @@ namespace MyChessEngine.Pieces
                 }
                 else
                 {
-                    if ((KingMoves & MoveType.BlackCastle) != 0)
+                    if (BlackCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
                     {
-                        if (BlackCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
-                            moveList.Add(new Move(BlackKingField, BlackKingKnightField, this, MoveType.BlackCastle));
+                        Move blackCastle = new Move(BlackKingField, BlackKingKnightField, this, MoveType.BlackCastle);
+
+                        blackCastle.AffectedPositionAfter[0] = new Position("F8");
+                        blackCastle.AffectedPieceAfter[0] = Board["H8"].Piece;
+
+                        blackCastle.AffectedPositionBefore[0] = new Position("H8");
+                        blackCastle.AffectedPieceBefore[0] = Board["H8"].Piece;
+
+                        moveList.Add(blackCastle);
                     }
 
                     if ((KingMoves & MoveType.BlackCastleLong) != 0)
                     {
                         if (BlackLongCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
-                           moveList.Add(new Move(BlackKingField, BlackQueenBishopField, this, MoveType.BlackCastleLong));
+                        {
+                            Move blackCastleLong = new Move(BlackKingField, BlackQueenBishopField, this, MoveType.BlackCastleLong);
+
+                            blackCastleLong.AffectedPositionAfter[0] = new Position("D8");
+                            blackCastleLong.AffectedPieceAfter[0] = Board["A8"].Piece;
+
+                            blackCastleLong.AffectedPositionBefore[0] = new Position("A8");
+                            blackCastleLong.AffectedPieceBefore[0] = Board["A8"].Piece;
+
+                            moveList.Add(blackCastleLong);
+                        }
                     }
                 }
             }
