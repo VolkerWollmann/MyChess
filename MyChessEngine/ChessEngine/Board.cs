@@ -13,7 +13,8 @@ namespace MyChessEngine
     {
         private readonly Field[,] Field;
         
-        private string[] MoveStack = ["", "", "", "", "", "", "", "", "", ""];
+
+        private List<Move> Moves = new List<Move>();
 
         public static int Counter;
 
@@ -130,7 +131,6 @@ namespace MyChessEngine
             Board copy = new Board();
 
             copy.Ply = Ply;
-            copy.MoveStack = MoveStack.ToArray();
             
             foreach (var field in Field)
             {
@@ -147,20 +147,53 @@ namespace MyChessEngine
 
         public virtual bool ExecuteMove(Move move)
         {
-            return ExecuteMove(move, 0);
-        }
-        
-        public virtual bool ExecuteMove(Move move, int depth = 0)
-        {
             Ply++;
-            MoveStack[depth] = move.ToString();
+            Moves.Add(move);
+            
             if (this[move.Start] == null)
                 throw new Exception("Move not Existing piece.");
 
             if (!move.End.IsValidPosition())
                 throw new Exception("Move to invalid position.");
 
-            this[move.Start].Piece.ExecuteMove(move);
+            this[move.End].Piece = this[move.Start].Piece;
+            this[move.Start].Piece = null;
+
+            for (int i = 0; i < 2; i++)
+            {
+                Position p = move.AffectedPositionAfter[i];
+                if (p!= null)
+                {
+                    this[p].Piece = (Piece)move.AffectedPieceAfter[i];
+                }
+            }
+
+            return true;
+        }
+
+        public virtual bool UndoLastMove()
+        {
+            var list = Moves;
+            if (list == null || list.Count == 0)
+                return false;
+
+            // get last element (C# index-from-end)
+            var move = list[^1];
+
+            // remove last element
+            list.RemoveAt(list.Count - 1);
+
+            this[move.End].Piece = this[move.Start].Piece;
+            this[move.Start].Piece = null;
+
+            for (int i = 0; i < 2; i++)
+            {
+                Position p = move.AffectedPositionBefore[i];
+                if (p != null)
+                {
+                    this[p].Piece = (Piece)move.AffectedPieceBefore[i];
+                }
+            }
 
             return true;
         }
@@ -264,17 +297,17 @@ namespace MyChessEngine
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
 
+            Board copy2 = this.Copy();
             foreach (Move move in moves.Moves)
             {
-                MoveStack[depth] = move.ToString();
-                Board copy2 = this.Copy();
-                copy2.ExecuteMove(move,depth);
+                copy2.ExecuteMove(move);
 
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
                 
                 result.Add(move);
+                copy2.UndoLastMove();
             }
 
             var king = this.Kings[color];
@@ -305,7 +338,7 @@ namespace MyChessEngine
              
                 //MoveStack[depth] = move.ToString();
                 Board copy2 = this.Copy();
-                copy2.ExecuteMove(move, depth);
+                copy2.ExecuteMove(move);
 
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;

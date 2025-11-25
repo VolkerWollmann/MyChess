@@ -24,48 +24,7 @@ namespace MyChessEngine
             return copy;
         }
 
-        private Move LastMove;
-        private bool UndoPossible = false;
-
-        private void MemorizeMove(Move move)
-        {
-            LastMove = move;
-            UndoPossible = true;
-            if ((this[move.End] != null) ||
-                (GetAllPieces(Color.White).Any( p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
-                (GetAllPieces(Color.Black).Any(p => p is Pawn pawn && pawn.PossibleMoveType != MoveType.Normal)) ||
-                (move.Piece is King king && king.KingMoves != MoveType.Normal) ||
-                move.Piece is Rook { IsMoved: false })
-            {
-                LastMove = null;
-                UndoPossible = false;
-            }
-        }
-        public Board2 UndoLastMove()
-        {
-            if (UndoPossible)
-            {
-                this[LastMove.Start].Piece = this[LastMove.End].Piece;
-                this[LastMove.End].Piece = null;
-                UndoPossible = false;
-                LastMove = null;
-                return this;
-            }
-            else
-            {
-                UndoPossible = false;
-                LastMove = null;
-                return null;
-            }
-        }
-
-        public override bool ExecuteMove(Move move)
-        {
-            MemorizeMove(move);
-            return base.ExecuteMove(move,0);
-        }
-
-
+        
         public BoardRating GetRating(Color color, bool isChecked, bool moves)
         {
             Counter++;
@@ -140,13 +99,13 @@ namespace MyChessEngine
                         (comparer.Compare(move.Rating, resultMove.Rating) > 0))
                     {
                         move.Rating = resultMove.Rating;
-                        move.Rating.Depth = move.Rating.Depth + 1;
+                        move.Rating.Depth = + 1;
                     }
 
                     result.Add(move);
                 }
 
-                copy = copy.UndoLastMove() ?? Copy();
+                copy.UndoLastMove() ;
             }
 
             
