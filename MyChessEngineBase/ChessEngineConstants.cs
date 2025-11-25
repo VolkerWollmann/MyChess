@@ -61,7 +61,8 @@ namespace MyChessEngineBase
         WhiteCastleLong=128,
         BlackCastle=256,
         BlackCastleLong=512,
-        Promotion=1024
+        Promotion=1024,
+        Capture= 2048
     }
 
     public enum IsValidPositionReturns

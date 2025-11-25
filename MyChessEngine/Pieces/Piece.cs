@@ -56,9 +56,9 @@ namespace MyChessEngine.Pieces
         {
             if (Board[move.End].Piece is King king)
                 Board.Kings[king.Color] = null;
-            if (move.AffectedPosition != null)
+            if (move.AffectedPositionAfter[0] != null)
             {
-                Board[move.AffectedPosition].Piece = null;
+                Board[move.AffectedPositionAfter[0]].Piece = (Piece)move.AffectedPieceAfter[0];
                 ((Pawn) move.Piece).PossibleMoveType = MoveType.Normal;
             }
 
@@ -92,8 +92,8 @@ namespace MyChessEngine.Pieces
             Move move = new Move(Position, endPosition, this);
 			if (result == IsValidPositionReturns.EnemyBeatPosition)
             {
-                move.AffectedPosition = endPosition;
-                move.AffectedPiece = Board[endPosition].Piece;
+                move.AffectedPositionBefore[0] = endPosition;
+                move.AffectedPieceBefore[0] = Board[endPosition].Piece;
 			}
             else
                 moveList.Add(move);

@@ -13,11 +13,13 @@ namespace MyChessEngineBase
         public MoveType Type;
 
 
-		public Position AffectedPosition = null;
-        public IPiece AffectedPiece = null;
+		public Position[] AffectedPositionAfter = new Position[]{null, null};
+        public IPiece[] AffectedPieceAfter = new IPiece[] { null, null };
 
+        public Position[] AffectedPositionBefore = new Position[] { null, null };
+        public IPiece[] AffectedPieceBefore = new IPiece[] { null, null };
 
-		public bool IsAMove { get; } = true;
+        public bool IsAMove { get; } = true;
         
         public BoardRating Rating { get; set; }
 
@@ -33,8 +35,8 @@ namespace MyChessEngineBase
 	        End = end;
 	        Piece = piece;
 	        Type = type;
-            AffectedPiece = affectedPiece;
-            AffectedPosition = affectedPosition;
+            AffectedPieceAfter[0] = affectedPiece;
+            AffectedPositionAfter[0] = affectedPosition;
 		}
 
         public Move(Position start, Position end, IPiece piece) : this(start, end, piece, MoveType.Normal)

@@ -53,11 +53,10 @@ namespace MyChessEngine.Pieces
                     Piece pieceToBeat = Board[newPosition].Piece;
                     if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
                     {
-                        Move move = new Move(Position, newPosition, this)
-                        {
-	                        AffectedPosition = newPosition,
-	                        AffectedPiece = pieceToBeat
-                        };
+                        Move move = new Move(Position, newPosition, this);
+                       
+                        move.AffectedPositionAfter[0] = newPosition;
+                        move.AffectedPieceAfter[0] = pieceToBeat;
                         moveList.Add(move);
                     }
                 }
@@ -85,12 +84,11 @@ namespace MyChessEngine.Pieces
                 {
 	                Piece pieceToBeat = Board[newPosition].Piece;
 					if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
-					{
-						Move move = new Move(Position, newPosition, this)
-						{
-							AffectedPosition = newPosition,
-							AffectedPiece = pieceToBeat
-						};
+                    {
+                        Move move = new Move(Position, newPosition, this);
+
+                        move.AffectedPositionAfter[0] = newPosition;
+                        move.AffectedPieceAfter[0] = pieceToBeat;
 						moveList.Add(move);
 					}
 				}
@@ -100,23 +98,21 @@ namespace MyChessEngine.Pieces
                 if ((PossibleMoveType & MoveType.EnpassantWhiteLeft)>0)
                 {
                     Move move = new Move(Position, Position.GetDeltaPosition(-1, +1), this,
-                        MoveType.EnpassantBlackLeft)
-                    {
-	                    AffectedPosition = new Position(Position.Column -1, Position.Row)
-                    };
-                    move.AffectedPiece = Board[move.AffectedPosition].Piece;
+                        MoveType.EnpassantBlackLeft);
+
+                    move.AffectedPositionAfter[0] = new Position(Position.Column - 1, Position.Row);
+                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
 					moveList.Add(move);
                 }
 
                 if ((PossibleMoveType & MoveType.EnpassantWhiteRight)>0)
                 {
                     Move move = new Move(Position, Position.GetDeltaPosition(1, +1), this,
-                        MoveType.EnpassantBlackLeft)
-                    {
-	                    AffectedPosition = new Position(Position.Column + 1, Position.Row)
-                    };
-                    move.AffectedPiece = Board[move.AffectedPosition].Piece;
-					moveList.Add(move);
+                        MoveType.EnpassantBlackLeft);
+
+                    move.AffectedPositionAfter[0] = new Position(Position.Column + 1, Position.Row);
+                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
+                    moveList.Add(move);
                 }
 
             }
@@ -129,12 +125,12 @@ namespace MyChessEngine.Pieces
                 {
 					Piece pieceToBeat = Board[newPosition].Piece;
 					if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
-					{
-						Move move = new Move(Position, newPosition, this)
-						{
-							AffectedPosition = newPosition,
-							AffectedPiece = pieceToBeat
-						};
+                    {
+                        Move move = new Move(Position, newPosition, this);
+
+                        move.AffectedPositionAfter[0] = newPosition;
+                        move.AffectedPieceAfter[0] = pieceToBeat;
+
 						moveList.Add(move);
 					}
 				}
@@ -159,12 +155,12 @@ namespace MyChessEngine.Pieces
                 {
 					Piece pieceToBeat = Board[newPosition].Piece;
 					if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
-					{
-						Move move = new Move(Position, newPosition, this)
-						{
-							AffectedPosition = newPosition,
-							AffectedPiece = pieceToBeat
-						};
+                    {
+                        Move move = new Move(Position, newPosition, this);
+
+                        move.AffectedPositionAfter[0] = newPosition;
+                        move.AffectedPieceAfter[0] = pieceToBeat;
+						
 						moveList.Add(move);
 					}
 				}
@@ -173,23 +169,21 @@ namespace MyChessEngine.Pieces
                 if ((PossibleMoveType & MoveType.EnpassantBlackLeft) > 0)
                 {
                     Move move = new Move(Position, Position.GetDeltaPosition(1, -1), this,
-                        MoveType.EnpassantBlackLeft)
-                    {
-                        AffectedPosition = new Position(Position.Column + 1, Position.Row)
-                    };
-                    move.AffectedPiece = Board[move.AffectedPosition].Piece;
+                        MoveType.EnpassantBlackLeft);
+
+                    move.AffectedPositionAfter[0] = new Position(Position.Column + 1, Position.Row);
+                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
 					moveList.Add(move);
                 }
 
                 if ((PossibleMoveType & MoveType.EnpassantBlackRight) > 0)
                 {
                     Move move = new Move(Position, Position.GetDeltaPosition(-1, -1), this,
-                        MoveType.EnpassantBlackRight)
-                    {
-	                    AffectedPosition = new Position(Position.Column - 1, Position.Row)
-                    };
-                    move.AffectedPiece = Board[move.AffectedPosition].Piece;
-					moveList.Add(move);
+                        MoveType.EnpassantBlackRight);
+
+                    move.AffectedPositionAfter[0] = new Position(Position.Column - 1, Position.Row);
+                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
+                    moveList.Add(move);
                 }
             }
 
