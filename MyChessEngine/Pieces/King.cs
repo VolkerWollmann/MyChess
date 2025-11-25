@@ -76,7 +76,18 @@ namespace MyChessEngine.Pieces
                     if ((KingMoves & MoveType.WhiteCastle) > 0)
                     {
                         if (WhiteCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
-                            moveList.Add(new Move(WhiteKingField, WhiteKingKnightField, this, MoveType.WhiteCastle));
+                        {
+                            Move whiteCastle = new Move(WhiteKingField, WhiteKingKnightField, this,
+                                MoveType.WhiteCastle);
+                            
+                            whiteCastle.AffectedPositionAfter[0] = new Position("F1");
+                            whiteCastle.AffectedPieceAfter[0] = Board["H1"].Piece;
+
+                            whiteCastle.AffectedPositionBefore[0] = new Position("H1");
+                            whiteCastle.AffectedPieceBefore[0] = Board["H1"].Piece;
+
+                            moveList.Add(whiteCastle);
+                        }
                     }
 
                     if ((KingMoves & MoveType.WhiteCastleLong) != 0)
@@ -111,41 +122,7 @@ namespace MyChessEngine.Pieces
 
         public override bool ExecuteMove(Move move)
         {
-            switch (move.Type)
-            {
-                case MoveType.WhiteCastle:
-                    Board["G1"].Piece = this;
-                    Board["E1"].Piece = null;
-                    Board["F1"].Piece = Board["H1"].Piece;
-                    Board["H1"].Piece = null;
-                    break;
-
-                case MoveType.WhiteCastleLong:
-                    Board["C1"].Piece = this;
-                    Board["E1"].Piece = null;
-                    Board["D1"].Piece = Board["A1"].Piece;
-                    Board["A1"].Piece = null;
-                    break;
-
-                case MoveType.BlackCastle:
-                    Board["G8"].Piece = this;
-                    Board["E8"].Piece = null;
-                    Board["F8"].Piece = Board["H8"].Piece;
-                    Board["H8"].Piece = null;
-                    break;
-
-                case MoveType.BlackCastleLong:
-                    Board["C8"].Piece = this;
-                    Board["E8"].Piece = null;
-                    Board["D8"].Piece = Board["A8"].Piece;
-                    Board["A8"].Piece = null;
-                    break;
-
-                default:
-                    base.ExecuteMove(move);
-                    break;
-            }
-
+            base.ExecuteMove(move);
             KingMoves = MoveType.Normal;
 
             return true;
