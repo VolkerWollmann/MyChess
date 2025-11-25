@@ -93,7 +93,16 @@ namespace MyChessEngine.Pieces
                     if ((KingMoves & MoveType.WhiteCastleLong) != 0)
                     {
                         if (WhiteLongCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
-                            moveList.Add(new Move(WhiteKingField, WhiteQueenBishopField, this, MoveType.WhiteCastleLong));
+                        {
+                            Move whiteCastleLong = new Move(WhiteKingField, WhiteQueenBishopField, this,
+                                MoveType.WhiteCastleLong);
+                            whiteCastleLong.AffectedPositionAfter[0] = new Position("D1");
+                            whiteCastleLong.AffectedPieceAfter[0] = Board["A1"].Piece;
+                            whiteCastleLong.AffectedPositionBefore[0] = new Position("A1");
+                            whiteCastleLong.AffectedPieceBefore[0] = Board["A1"].Piece;
+
+                            moveList.Add(whiteCastleLong);
+                        }
                     }
                 }
                 else
