@@ -156,9 +156,12 @@ namespace MyChessEngine.Pieces
 
         #endregion
 
-        public King(Color color, Position position, bool isMoved) : base(color, PieceType.King, position, isMoved, 0)
+        public King(Color color, Position position, bool isMoved=true) : base(color, PieceType.King, position, isMoved)
         { 
-	        KingMoves = (color == Color.White) ? WhiteKingInitialMoveTypes : BlackKingInitialMoveTypes;
+            if (isMoved)
+	            KingMoves = (color == Color.White) ? WhiteKingInitialMoveTypes : BlackKingInitialMoveTypes;
+            else
+                KingMoves = MoveType.Normal;
         }
 
         public King(Color color, string positionString, bool isMoved):

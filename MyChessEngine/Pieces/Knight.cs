@@ -32,12 +32,12 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        public Knight(Color color, Position position, int promotionPly) : base(color, PieceType.Knight, position, false, promotionPly)
+        public Knight(Color color, Position position, int promotionPly = -1) : base(color, PieceType.Knight, position, true, promotionPly)
         {
 
         }
 
-        public Knight(Color color, string position, int promotionPly) : base(color, PieceType.Knight, new Position(position), false, promotionPly)
+        public Knight(Color color, string position, int promotionPly= -1) : base(color, PieceType.Knight, new Position(position), false, promotionPly)
         {
 
         }

@@ -16,6 +16,7 @@ namespace MyChessEngine.Pieces
         public bool IsMoved { get; private set; } = false;
         public int PromotionPly { get; set; }
 
+        public int LastEnPassantPlyMarking { get; set; } = -1;
         #endregion
 
         #region IEnginePiece
@@ -45,7 +46,7 @@ namespace MyChessEngine.Pieces
                 PieceType.Bishop => new Bishop(Color, Position, PromotionPly),
                 PieceType.Knight => new Knight(Color, Position, PromotionPly),
                 PieceType.Queen => new Queen(Color, Position, PromotionPly),
-                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType),
+                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastEnPassantPlyMarking),
                 PieceType.Rook => new Rook(Color, Position, IsMoved, PromotionPly),
                 PieceType.King => new King(Color, Position, ((King)this).KingMoves, IsMoved),
             _ => null 
@@ -103,13 +104,14 @@ namespace MyChessEngine.Pieces
         
         
 
-        public Piece(Color color, PieceType piece, Position position, bool isMoved, int promotionPly )
+        public Piece(Color color, PieceType piece, Position position, bool isMoved=true, int promotionPly=-1, int lastEnPassantPlyMarking=-1)
         {
             Color = color;
             Type = piece;
             Position = position;
             IsMoved = isMoved;
             PromotionPly = promotionPly;
+            LastEnPassantPlyMarking = lastEnPassantPlyMarking;
 
             switch (Type)
             {
@@ -139,11 +141,5 @@ namespace MyChessEngine.Pieces
 
             }
         }
-
-        public Piece(Color color, PieceType piece, string positionString, bool isMoved, int promotionPly) :
-            this( color, piece, new Position(positionString), isMoved, promotionPly)
-        {
-        }
-
     }
 }

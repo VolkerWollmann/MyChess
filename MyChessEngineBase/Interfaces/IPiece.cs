@@ -9,6 +9,7 @@
         bool IsMoved { get; }
         int PromotionPly { get; set; }
 
-        
+        int LastEnPassantPlyMarking { get; set; }
+
     }
 }

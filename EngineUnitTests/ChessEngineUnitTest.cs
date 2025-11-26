@@ -182,11 +182,12 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Pawn(Color.Black, "C4"));
 
             chessEngine.ColorToMove = Color.White;
+            var x = chessEngine.GetMoveList();
             chessEngine.ExecuteMove(new Move("B2", "B4", chessEngine["B2"].Piece, MoveType.PawnDoubleStep));
             Move move = chessEngine.CalculateMoveWithDepth(4);
             //chessEngine.ExecuteMove(move);
 
-            Assert.IsTrue(move.Type == MoveType.EnpassantBlackRight);
+            Assert.IsTrue(move.Type == MoveType.EnpassantBlackHighRow);
 
         }
 

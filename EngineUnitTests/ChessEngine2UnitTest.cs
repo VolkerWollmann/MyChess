@@ -127,7 +127,7 @@ namespace EngineUnitTests
             Move move = chessEngine2.CalculateMove();
             chessEngine2.ExecuteMove(move);
 
-            Assert.IsTrue(move.Type == MoveType.EnpassantBlackLeft);
+            Assert.IsTrue(move.Type == MoveType.EnpassantBlackLowRow);
 
         }
 

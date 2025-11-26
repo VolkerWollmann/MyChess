@@ -30,6 +30,8 @@ namespace MyChessEngineInteger.Pieces
         public bool IsMoved { get; private set; } = false;
         public int PromotionPly { get; set; }
 
+        public int LastEnPassantPlyMarking { get; set; } = -1;
+
         public NumPieces GetNumPieces()
         {
             NumPieces numPiece = 0;

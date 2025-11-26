@@ -97,12 +97,12 @@ namespace MyChessEngine.Pieces
 			return true;
         }
 
-        public Rook(Color color, Position position, bool isMoved, int promotionPly) : base(color, PieceType.Rook, position, isMoved, promotionPly)
+        public Rook(Color color, Position position, bool isMoved=true, int promotionPly=-1) : base(color, PieceType.Rook, position, isMoved, promotionPly)
         {
            
         }
 
-        public Rook(Color color, string position, bool isMoved, int promotionPly) : base(color, PieceType.Rook, new Position(position), isMoved, promotionPly)
+        public Rook(Color color, string position, bool isMoved=true, int promotionPly=-1) : base(color, PieceType.Rook, new Position(position), isMoved, promotionPly)
         {
         }
 

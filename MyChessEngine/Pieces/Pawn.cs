@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using MyChessEngineBase;
 
 namespace MyChessEngine.Pieces
@@ -9,8 +10,6 @@ namespace MyChessEngine.Pieces
     public class Pawn : Piece
     {
         public MoveType PossibleMoveType { get; set; }
-
-        public int LastEnPassantPlyMarking; // a pawn can only beat enpassant on the next move to one side(!)
 
         public override MoveList GetThreatenMoveList()
         {
@@ -55,23 +54,51 @@ namespace MyChessEngine.Pieces
                     {
                         Move move = new Move(Position, newPosition, this);
                        
-                        move.AffectedPositionAfter[0] = newPosition;
-                        move.AffectedPieceAfter[0] = pieceToBeat;
+                        move.AffectedPositionBefore[0] = newPosition;
+                        move.AffectedPieceBefore[0] = pieceToBeat;
                         moveList.Add(move);
                     }
                 }
 
                 // up
-                newPosition = Position.GetDeltaPosition(1, 0);
+                newPosition = Position.GetDeltaPosition(0, 1);
                 if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     if (Position.Row == 1)
                     {
-                        // pwn double step
-                        Position newPosition2 = Position.GetDeltaPosition(2,0);
+                        // pawn double step
+                        Position newPosition2 = Position.GetDeltaPosition(0,2);
                         if ((newPosition2 != null) && Board[newPosition2].Piece == null)
                         {
+                            Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
+                            
+                            Position left = newPosition2.GetDeltaPosition(-1, 0);
+                            if (Board[left]?.Piece.Type == PieceType.Pawn && Board[left]?.Piece.Color == Color.Black)
+                            {
+                                move.AffectedPositionBefore[0] = left;
+                                move.AffectedPieceBefore[0] = Board[left].Piece;
+                                
+                                move.AffectedPositionAfter[0] = left;
+                                Pawn pawn = (Pawn)Board[left].Piece.Copy();
+                                pawn.LastEnPassantPlyMarking = this.Board.Ply; 
+                                pawn.PossibleMoveType |= MoveType.EnpassantBlackLowRow;
+                                move.AffectedPieceAfter[0] = pawn;
+                            }
+
+                            Position right = newPosition2.GetDeltaPosition(1, 0);
+                            if (Board[right]?.Piece.Type == PieceType.Pawn && Board[right]?.Piece.Color == Color.Black)
+                            {
+                                move.AffectedPositionBefore[1] = right;
+                                move.AffectedPieceBefore[1] = Board[right].Piece;
+
+                                move.AffectedPositionAfter[1] = right;
+                                Pawn pawn = (Pawn)Board[right].Piece.Copy();
+                                pawn.LastEnPassantPlyMarking = this.Board.Ply;
+                                pawn.PossibleMoveType |= MoveType.EnpassantBlackHighRow;
+                                move.AffectedPieceAfter[1] = pawn;
+                            }
+
                             moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
                         }
 
@@ -87,31 +114,43 @@ namespace MyChessEngine.Pieces
                     {
                         Move move = new Move(Position, newPosition, this);
 
-                        move.AffectedPositionAfter[0] = newPosition;
-                        move.AffectedPieceAfter[0] = pieceToBeat;
+                        move.AffectedPositionBefore[0] = newPosition;
+                        move.AffectedPieceBefore[0] = pieceToBeat;
 						moveList.Add(move);
 					}
 				}
 
                 // enpassant 
 
-                if ((PossibleMoveType & MoveType.EnpassantWhiteLeft)>0)
+                if ((PossibleMoveType & MoveType.EnpassantWhiteLowRow)>0)
                 {
+                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
                     Move move = new Move(Position, Position.GetDeltaPosition(-1, +1), this,
-                        MoveType.EnpassantBlackLeft);
+                        MoveType.EnpassantWhiteLowRow);
 
-                    move.AffectedPositionAfter[0] = new Position(Position.Column - 1, Position.Row);
-                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
+                    Position position = new Position(Position.Column - 1, Position.Row);
+
+                    move.AffectedPositionAfter[0] = position;
+                    move.AffectedPieceAfter = null;
+
+                    move.AffectedPositionBefore[0] = position;
+                    move.AffectedPieceBefore[0] = Board[position].Piece;
 					moveList.Add(move);
                 }
 
-                if ((PossibleMoveType & MoveType.EnpassantWhiteRight)>0)
+                if ((PossibleMoveType & MoveType.EnpassantWhiteHighRow)>0)
                 {
+                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
                     Move move = new Move(Position, Position.GetDeltaPosition(1, +1), this,
-                        MoveType.EnpassantBlackLeft);
+                        MoveType.EnpassantWhiteHighRow);
 
-                    move.AffectedPositionAfter[0] = new Position(Position.Column + 1, Position.Row);
-                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
+                    Position position = new Position(Position.Column + 1, Position.Row);
+
+                    move.AffectedPositionAfter[0] = position;
+                    move.AffectedPieceAfter = null;
+
+                    move.AffectedPositionBefore[0] = position;
+                    move.AffectedPieceBefore[0] = Board[position].Piece;
                     moveList.Add(move);
                 }
 
@@ -128,8 +167,8 @@ namespace MyChessEngine.Pieces
                     {
                         Move move = new Move(Position, newPosition, this);
 
-                        move.AffectedPositionAfter[0] = newPosition;
-                        move.AffectedPieceAfter[0] = pieceToBeat;
+                        move.AffectedPositionBefore[0] = newPosition;
+                        move.AffectedPieceBefore[0] = pieceToBeat;
 
 						moveList.Add(move);
 					}
@@ -143,9 +182,36 @@ namespace MyChessEngine.Pieces
                     // start with two
                     if (Position.Row == 6)
                     {
-                        Position newPosition2 = Position.GetDeltaPosition(0,-2);
-                        if ((newPosition2 != null) && (Board[newPosition2].Piece == null))
-                            moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
+                        Position newPosition2 = Position.GetDeltaPosition(0, -2);
+                        Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
+
+                        Position left = newPosition2.GetDeltaPosition(-1, 0);
+                        if (Board[left]?.Piece.Type == PieceType.Pawn && Board[left]?.Piece.Color == Color.White)
+                        {
+                            move.AffectedPositionBefore[0] = left;
+                            move.AffectedPieceBefore[0] = Board[left].Piece;
+
+                            move.AffectedPositionAfter[0] = left;
+                            Pawn pawn = (Pawn)Board[left].Piece.Copy();
+                            pawn.LastEnPassantPlyMarking = this.Board.Ply;
+                            pawn.PossibleMoveType |= MoveType.EnpassantWhiteHighRow;
+                            move.AffectedPieceAfter[0] = pawn;
+                        }
+
+                        Position right = newPosition2.GetDeltaPosition(1, 0);
+                        if (Board[right]?.Piece.Type == PieceType.Pawn && Board[right]?.Piece.Color == Color.White)
+                        {
+                            move.AffectedPositionBefore[1] = right;
+                            move.AffectedPieceBefore[1] = Board[right].Piece;
+
+                            move.AffectedPositionAfter[1] = right;
+                            Pawn pawn = (Pawn)Board[right].Piece.Copy();
+                            pawn.LastEnPassantPlyMarking = this.Board.Ply;
+                            pawn.PossibleMoveType |= MoveType.EnpassantWhiteLowRow;
+                            move.AffectedPieceAfter[1] = pawn;
+                        }
+
+                        moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
                     }
                 }
 
@@ -158,28 +224,35 @@ namespace MyChessEngine.Pieces
                     {
                         Move move = new Move(Position, newPosition, this);
 
-                        move.AffectedPositionAfter[0] = newPosition;
-                        move.AffectedPieceAfter[0] = pieceToBeat;
+                        move.AffectedPositionBefore[0] = newPosition;
+                        move.AffectedPieceBefore[0] = pieceToBeat;
 						
 						moveList.Add(move);
 					}
 				}
                 // enpassant 
 
-                if ((PossibleMoveType & MoveType.EnpassantBlackLeft) > 0)
+                if ((PossibleMoveType & MoveType.EnpassantBlackLowRow) > 0)
                 {
+                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
                     Move move = new Move(Position, Position.GetDeltaPosition(1, -1), this,
-                        MoveType.EnpassantBlackLeft);
+                        MoveType.EnpassantBlackLowRow);
 
-                    move.AffectedPositionAfter[0] = new Position(Position.Column + 1, Position.Row);
-                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
-					moveList.Add(move);
+                    Position position = new Position(Position.Column - 1, Position.Row);
+
+                    move.AffectedPositionAfter[0] = position;
+                    move.AffectedPieceAfter = null;
+
+                    move.AffectedPositionBefore[0] = position;
+                    move.AffectedPieceBefore[0] = Board[position].Piece;
+                    moveList.Add(move);
                 }
 
-                if ((PossibleMoveType & MoveType.EnpassantBlackRight) > 0)
+                if ((PossibleMoveType & MoveType.EnpassantBlackHighRow) > 0)
                 {
+                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
                     Move move = new Move(Position, Position.GetDeltaPosition(-1, -1), this,
-                        MoveType.EnpassantBlackRight);
+                        MoveType.EnpassantBlackHighRow);
 
                     move.AffectedPositionAfter[0] = new Position(Position.Column - 1, Position.Row);
                     move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
@@ -192,14 +265,14 @@ namespace MyChessEngine.Pieces
 
         static readonly List<Tuple<int, MoveType>> PossibleBlackEnpassants =
         [
-	        new(-1, MoveType.EnpassantBlackLeft),
-	        new(1, MoveType.EnpassantBlackRight)
+	        new(-1, MoveType.EnpassantBlackLowRow),
+	        new(1, MoveType.EnpassantBlackHighRow)
         ];
 
         static readonly List<Tuple<int, MoveType>> PossibleWhiteEnpassants =
         [
-	        new(-1, MoveType.EnpassantWhiteRight),
-	        new(1, MoveType.EnpassantWhiteLeft)
+	        new(-1, MoveType.EnpassantWhiteHighRow),
+	        new(1, MoveType.EnpassantWhiteLowRow)
         ];
 
 
@@ -212,64 +285,15 @@ namespace MyChessEngine.Pieces
                 Board[move.End].Piece.Board = Board;
             }
 
-            if (move.Type == MoveType.PawnDoubleStep)
-            {
-                if (Color == Color.White)
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Position adjacentPawnPosition = new Position(move.End.Column + PossibleBlackEnpassants[i].Item1, move.End.Row);
-                        if (adjacentPawnPosition.IsValidPosition())
-                        {
-	                        if (Board[adjacentPawnPosition].Piece is Pawn { Color: Color.Black } adjacentPawn)
-	                        {
-		                        adjacentPawn.PossibleMoveType |= PossibleBlackEnpassants[i].Item2;
-                                adjacentPawn.LastEnPassantPlyMarking = Board.Ply;
-							}
-                        }
-                    }
-                }
-                else
-                {
-
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Position adjacentPawnPosition = new Position(move.End.Column + PossibleWhiteEnpassants[i].Item1, move.End.Row);
-                        if (adjacentPawnPosition.IsValidPosition())
-                        {
-	                        if (Board[adjacentPawnPosition].Piece is Pawn { Color: Color.White } adjacentPawn)
-	                        {
-		                        adjacentPawn.PossibleMoveType |= PossibleWhiteEnpassants[i].Item2;
-                                adjacentPawn.LastEnPassantPlyMarking = Board.Ply;
-							}
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (((PossibleMoveType & (MoveType.EnpassantWhiteLeft | MoveType.EnpassantWhiteRight)) & move.Type) > 0)
-                {
-                    Board[new Position(move.End.Column-1,move.End.Row)].Piece = null;
-                    PossibleMoveType = MoveType.Normal;
-                }
-
-                if (((PossibleMoveType & (MoveType.EnpassantBlackLeft | MoveType.EnpassantBlackRight)) & move.Type) > 0)
-                {
-                    Board[new Position(move.End.Column + 1, move.End.Row)].Piece = null;
-                    PossibleMoveType = MoveType.Normal;
-                }
-            }
-
             return base.ExecuteMove(move); 
         }
 
-        public Pawn(Color color, Position position, MoveType possibleMoveType) : base(color, PieceType.Pawn, position, false, 0)
+        public Pawn(Color color, Position position, MoveType possibleMoveType, int lastEnPassantPlyMarking) : base(color, PieceType.Pawn, position, false, -1, lastEnPassantPlyMarking)
         {
             PossibleMoveType = possibleMoveType;
         }
 
-        public Pawn(Color color, Position position) : this(color, position, MoveType.Normal)
+        public Pawn(Color color, Position position) : this(color, position, MoveType.Normal, -1)
         {
 
         }
@@ -279,7 +303,7 @@ namespace MyChessEngine.Pieces
             PossibleMoveType = possibleMoveType;
         }
 
-        public Pawn(Color color, string position) : this(color, new Position(position), MoveType.Normal)
+        public Pawn(Color color, string position) : this(color, new Position(position))
         {
 
         }
