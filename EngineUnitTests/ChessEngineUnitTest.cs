@@ -42,6 +42,8 @@ namespace EngineUnitTests
             chessEngine.New();
 
             var x = chessEngine.GetMoveList();
+
+            Assert.AreEqual(20, x.Moves.Count);
         }
 
         [TestMethod]
