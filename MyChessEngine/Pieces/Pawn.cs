@@ -263,7 +263,7 @@ namespace MyChessEngine.Pieces
                         var lowPawn = Board[low]?.Piece;
                         if (lowPawn is { Type: PieceType.Pawn, Color: Color.White })
                         {
-                            Move move = new Move(Position, Position.GetDeltaPosition(1, -1), this,
+                            Move move = new Move(Position, Position.GetDeltaPosition(-1, -1), this,
                                 MoveType.EnpassantBlackLowRow);
 
                             move.AffectedPositionAfter[0] = low;

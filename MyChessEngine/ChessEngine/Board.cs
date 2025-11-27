@@ -275,6 +275,9 @@ namespace MyChessEngine
 
         private void MarkThreatenedFields(Color color)
         {
+            foreach (var field in Field)
+                field.Threat = false;
+
             var pieces = GetAllPieces(color);
             List<Move> listOfMoves = new List<Move>();
             foreach (Piece piece in pieces)
