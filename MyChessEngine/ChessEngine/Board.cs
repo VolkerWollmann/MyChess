@@ -308,17 +308,16 @@ namespace MyChessEngine
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
 
-            Board copy2 = this.Copy();
             foreach (Move move in moves.Moves)
             {
-                copy2.ExecuteMove(move);
+                ExecuteMove(move);
 
-                Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                Move resultMove = CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
                 
                 result.Add(move);
-                copy2.UndoLastMove();
+                UndoLastMove();
             }
 
             var king = this.Kings[color];
