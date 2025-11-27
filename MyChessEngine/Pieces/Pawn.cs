@@ -105,10 +105,10 @@ namespace MyChessEngine.Pieces
 									pawn.LastEnPassantPlyMarking = this.Board.Ply;
 									pawn.PossibleMoveType |= MoveType.EnpassantBlackHighRow;
 									move.AffectedPieceAfter[1] = pawn;
-								}
+                                }
 							}
 
-							moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
+							moveList.Add(move);
                         }
 
                     }
@@ -130,39 +130,44 @@ namespace MyChessEngine.Pieces
 				}
 
                 // enpassant 
-
-                if ((PossibleMoveType & MoveType.EnpassantWhiteLowRow)>0)
+                if (this.LastEnPassantPlyMarking + 1 == this.Board.Ply)
                 {
-                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
-                    Move move = new Move(Position, Position.GetDeltaPosition(-1, +1), this,
-                        MoveType.EnpassantWhiteLowRow);
+                    Position low = Position.GetDeltaPosition(-1, 0);
+                    if (low != null)
+                    {
+                        var lowPawn = Board[low]?.Piece;
+                        if (lowPawn is { Type: PieceType.Pawn, Color: Color.Black })
+                        {
+                            Move move = new Move(Position, Position.GetDeltaPosition(-1, 1), this,
+                                MoveType.EnpassantBlackLowRow);
 
-                    Position position = new Position(Position.Column - 1, Position.Row);
+                            move.AffectedPositionAfter[0] = low;
+                            move.AffectedPieceAfter[0] = null;
 
-                    move.AffectedPositionAfter[0] = position;
-                    move.AffectedPieceAfter = null;
+                            move.AffectedPositionBefore[0] = low;
+                            move.AffectedPieceBefore[0] = Board[low].Piece;
+                            moveList.Add(move);
+                        }
+                    }
 
-                    move.AffectedPositionBefore[0] = position;
-                    move.AffectedPieceBefore[0] = Board[position].Piece;
-					moveList.Add(move);
+                    Position high = Position.GetDeltaPosition(+1, 0);
+                    if (high != null)
+                    {
+                        var lowPawn = Board[high]?.Piece;
+                        if (lowPawn is { Type: PieceType.Pawn, Color: Color.Black })
+                        {
+                            Move move = new Move(Position, Position.GetDeltaPosition(1, 1), this,
+                                MoveType.EnpassantBlackLowRow);
+
+                            move.AffectedPositionAfter[0] = high;
+                            move.AffectedPieceAfter[0] = null;
+
+                            move.AffectedPositionBefore[0] = high;
+                            move.AffectedPieceBefore[0] = Board[high].Piece;
+                            moveList.Add(move);
+                        }
+                    }
                 }
-
-                if ((PossibleMoveType & MoveType.EnpassantWhiteHighRow)>0)
-                {
-                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
-                    Move move = new Move(Position, Position.GetDeltaPosition(1, +1), this,
-                        MoveType.EnpassantWhiteHighRow);
-
-                    Position position = new Position(Position.Column + 1, Position.Row);
-
-                    move.AffectedPositionAfter[0] = position;
-                    move.AffectedPieceAfter = null;
-
-                    move.AffectedPositionBefore[0] = position;
-                    move.AffectedPieceBefore[0] = Board[position].Piece;
-                    moveList.Add(move);
-                }
-
             }
             else
             {
@@ -229,7 +234,7 @@ namespace MyChessEngine.Pieces
 							}
 						}
 
-						moveList.Add(new Move(Position, newPosition2, this, MoveType.PawnDoubleStep));
+						moveList.Add(move);
                     }
                 }
 
@@ -250,31 +255,43 @@ namespace MyChessEngine.Pieces
 				}
                 // enpassant 
 
-                if ((PossibleMoveType & MoveType.EnpassantBlackLowRow) > 0)
+                if (this.LastEnPassantPlyMarking + 1 == this.Board.Ply)
                 {
-                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
-                    Move move = new Move(Position, Position.GetDeltaPosition(1, -1), this,
-                        MoveType.EnpassantBlackLowRow);
+                    Position low = Position.GetDeltaPosition(-1, 0);
+                    if ( low != null)
+                    {
+                        var lowPawn = Board[low]?.Piece;
+                        if (lowPawn is { Type: PieceType.Pawn, Color: Color.White })
+                        {
+                            Move move = new Move(Position, Position.GetDeltaPosition(1, -1), this,
+                                MoveType.EnpassantBlackLowRow);
 
-                    Position position = new Position(Position.Column - 1, Position.Row);
+                            move.AffectedPositionAfter[0] = low;
+                            move.AffectedPieceAfter[0] = null;
 
-                    move.AffectedPositionAfter[0] = position;
-                    move.AffectedPieceAfter = null;
+                            move.AffectedPositionBefore[0] = low;
+                            move.AffectedPieceBefore[0] = Board[low].Piece;
+                            moveList.Add(move);
+                        }
+                    }
 
-                    move.AffectedPositionBefore[0] = position;
-                    move.AffectedPieceBefore[0] = Board[position].Piece;
-                    moveList.Add(move);
-                }
+                    Position high = Position.GetDeltaPosition(+1, 0);
+                    if (high != null)
+                    {
+                        var lowPawn = Board[high]?.Piece;
+                        if (lowPawn is { Type: PieceType.Pawn, Color: Color.White })
+                        {
+                            Move move = new Move(Position, Position.GetDeltaPosition(1, -1), this,
+                                MoveType.EnpassantBlackLowRow);
 
-                if ((PossibleMoveType & MoveType.EnpassantBlackHighRow) > 0)
-                {
-                    Debug.Assert(this.LastEnPassantPlyMarking + 1 == this.Board.Ply);
-                    Move move = new Move(Position, Position.GetDeltaPosition(-1, -1), this,
-                        MoveType.EnpassantBlackHighRow);
+                            move.AffectedPositionAfter[0] = high;
+                            move.AffectedPieceAfter[0] = null;
 
-                    move.AffectedPositionAfter[0] = new Position(Position.Column - 1, Position.Row);
-                    move.AffectedPieceAfter[0] = Board[move.AffectedPositionAfter[0]].Piece;
-                    moveList.Add(move);
+                            move.AffectedPositionBefore[0] = high;
+                            move.AffectedPieceBefore[0] = Board[high].Piece;
+                            moveList.Add(move);
+                        }
+                    }
                 }
             }
 

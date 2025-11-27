@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngine;
 using MyChessEngine.Pieces;
@@ -184,8 +185,12 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Pawn(Color.Black, "C4"));
 
             chessEngine.ColorToMove = Color.White;
-            var x = chessEngine.GetMoveList();
-            chessEngine.ExecuteMove(new Move("B2", "B4", chessEngine["B2"].Piece, MoveType.PawnDoubleStep));
+            var moveListWhite = chessEngine.GetMoveList();
+            var enpassantMove = moveListWhite.Moves.First(move => move.Type == MoveType.PawnDoubleStep);
+            chessEngine.ExecuteMove(enpassantMove);
+
+            var moveListBlack = chessEngine.GetMoveList();
+
             Move move = chessEngine.CalculateMoveWithDepth(4);
             //chessEngine.ExecuteMove(move);
 

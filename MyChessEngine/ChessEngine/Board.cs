@@ -51,14 +51,15 @@ namespace MyChessEngine
             }
         }
 
-        public void SetPiece(Position position,Piece piece)
+        public void SetPiece(Position position,Piece? piece)
         {
             this[position].Piece = piece;
+            if (piece == null) return;
+
             piece.Position = position;
             piece.Board = this;
             if (piece is King king)
                 Kings[king.Color] = king;
-
         }
 
         public void SetPiece(Piece piece)
@@ -147,24 +148,27 @@ namespace MyChessEngine
 
         public virtual bool ExecuteMove(Move move)
         {
-            Ply++;
-            Moves.Add(move);
-            
             if (this[move.Start] == null)
                 throw new Exception("Move not Existing piece.");
 
             if (!move.End.IsValidPosition())
                 throw new Exception("Move to invalid position.");
 
+            Ply++;
+            Moves.Add(move);
+
             this[move.End].Piece = this[move.Start].Piece;
             this[move.Start].Piece = null;
 
             for (int i = 0; i < 2; i++)
             {
-                Position p = move.AffectedPositionAfter[i];
-                if (p!= null)
+                var pos = move.AffectedPositionAfter[i];
+                if (pos != null)
                 {
-                    this[p].Piece = (Piece)move.AffectedPieceAfter[i];
+                    if (move.AffectedPieceAfter[i] != null)
+                        SetPiece(pos, (Piece)move.AffectedPieceAfter[i]);
+                    else
+                        this[pos].Piece = null;
                 }
             }
 
@@ -183,18 +187,22 @@ namespace MyChessEngine
             // remove last element
             list.RemoveAt(list.Count - 1);
 
-            this[move.End].Piece = this[move.Start].Piece;
-            this[move.Start].Piece = null;
+            this[move.Start].Piece = this[move.End].Piece;
+            this[move.End].Piece = null;
 
             for (int i = 0; i < 2; i++)
             {
-                Position p = move.AffectedPositionBefore[i];
-                if (p != null)
+                Position pos = move.AffectedPositionBefore[i];
+                if (pos != null)
                 {
-                    this[p].Piece = (Piece)move.AffectedPieceBefore[i];
+                    if (move.AffectedPieceBefore[i] != null)
+                        SetPiece(pos, (Piece)move.AffectedPieceBefore[i]);
+                    else
+                        this[pos].Piece = null;
                 }
             }
 
+            Ply--;
             return true;
         }
 

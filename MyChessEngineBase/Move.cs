@@ -13,11 +13,11 @@ namespace MyChessEngineBase
         public MoveType Type;
 
 
-		public Position[] AffectedPositionAfter = new Position[]{null, null};
-        public IPiece[] AffectedPieceAfter = new IPiece[] { null, null };
+		public Position[] AffectedPositionAfter = [null, null];
+        public IPiece[] AffectedPieceAfter = [null, null];
 
-        public Position[] AffectedPositionBefore = new Position[] { null, null };
-        public IPiece[] AffectedPieceBefore = new IPiece[] { null, null };
+        public Position[] AffectedPositionBefore = [null, null];
+        public IPiece[] AffectedPieceBefore = [null, null];
 
         public bool IsAMove { get; } = true;
         

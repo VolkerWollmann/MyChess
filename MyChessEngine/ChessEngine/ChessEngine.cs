@@ -105,7 +105,6 @@ namespace MyChessEngine
 
         public bool ExecuteMove(Move move)
         {
-            move.Piece = Board[move.Start].Piece;
             Board.ExecuteMove(move);
 
             ColorToMove = ChessEngineConstants.NextColorToMove(ColorToMove);
