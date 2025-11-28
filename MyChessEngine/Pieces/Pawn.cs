@@ -86,7 +86,7 @@ namespace MyChessEngine.Pieces
 		                            move.AffectedPositionAfter[0] = low;
 		                            Pawn pawn = (Pawn)lowPawn.Copy();
 		                            pawn.LastEnPassantPlyMarking = this.Board.Ply;
-		                            pawn.PossibleMoveType |= MoveType.EnpassantBlackLowRow;
+		                            pawn.PossibleMoveType |= MoveType.EnpassantBlackHighRow;
 		                            move.AffectedPieceAfter[0] = pawn;
 	                            }
                             }
@@ -103,7 +103,7 @@ namespace MyChessEngine.Pieces
 									move.AffectedPositionAfter[1] = high;
 									Pawn pawn = (Pawn)highPawn.Copy();
 									pawn.LastEnPassantPlyMarking = this.Board.Ply;
-									pawn.PossibleMoveType |= MoveType.EnpassantBlackHighRow;
+									pawn.PossibleMoveType |= MoveType.EnpassantBlackLowRow;
 									move.AffectedPieceAfter[1] = pawn;
                                 }
 							}
@@ -212,7 +212,7 @@ namespace MyChessEngine.Pieces
 								move.AffectedPositionAfter[0] = low;
 								Pawn pawn = (Pawn)lowPawn.Copy();
 								pawn.LastEnPassantPlyMarking = this.Board.Ply;
-								pawn.PossibleMoveType |= MoveType.EnpassantWhiteLowRow;
+								pawn.PossibleMoveType |= MoveType.EnpassantWhiteHighRow;
 								move.AffectedPieceAfter[0] = pawn;
 							}
 						}
@@ -229,7 +229,7 @@ namespace MyChessEngine.Pieces
 								move.AffectedPositionAfter[1] = high;
 								Pawn pawn = (Pawn)highPawn.Copy();
 								pawn.LastEnPassantPlyMarking = this.Board.Ply;
-								pawn.PossibleMoveType |= MoveType.EnpassantWhiteHighRow;
+								pawn.PossibleMoveType |= MoveType.EnpassantWhiteLowRow;
 								move.AffectedPieceAfter[1] = pawn;
 							}
 						}

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MyChessEngineBase.Rating;
+﻿using MyChessEngine.Pieces;
 using MyChessEngineBase;
-using MyChessEngine.Pieces;
+using MyChessEngineBase.Rating;
+using System;
+using System.Collections.Generic;
+using System.IO.Pipelines;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -157,8 +158,10 @@ namespace MyChessEngine
             Ply++;
             Moves.Add(move);
 
+            
             this[move.End].Piece = this[move.Start].Piece;
             this[move.Start].Piece = null;
+            this[move.End].Piece.Position = move.End;
 
             for (int i = 0; i < 2; i++)
             {
@@ -189,6 +192,7 @@ namespace MyChessEngine
 
             this[move.Start].Piece = this[move.End].Piece;
             this[move.End].Piece = null;
+            this[move.Start].Piece.Position = move.Start;
 
             for (int i = 0; i < 2; i++)
             {
@@ -251,16 +255,14 @@ namespace MyChessEngine
 
             int boardWeight = 0;
 
-            foreach (var piece in GetAllPieces(color))
+            foreach (var field in Field)
             {
+                var piece = field.Piece;
+                if (piece == null)
+                    continue;
                 boardWeight += piece.Weight;
             }
-
-            foreach (var piece in GetAllPieces(opponentColor))
-            {
-                boardWeight += piece.Weight;
-            }
-
+            
             rating.Weight = boardWeight;
             rating.Evaluation = Evaluation.Normal;
 
@@ -296,8 +298,8 @@ namespace MyChessEngine
         public virtual Move CalculateMove(int depth, Color color)
         {
             MarkThreatenedFields(ChessEngineConstants.NextColorToMove(color));
-            
-            var moves = this.GetMoveList(color);
+
+            var moves = new MoveList(GetBaseMoveList(color));
 
             var rating = GetRating(color);
             

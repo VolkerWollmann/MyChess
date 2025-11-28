@@ -191,10 +191,10 @@ namespace EngineUnitTests
 
             var moveListBlack = chessEngine.GetMoveList();
 
-            Move move = chessEngine.CalculateMoveWithDepth(4);
+            Move move = chessEngine.CalculateMoveWithDepth(1);
             //chessEngine.ExecuteMove(move);
 
-            Assert.AreEqual(MoveType.EnpassantBlackHighRow, move.Type);
+            Assert.AreEqual(MoveType.EnpassantBlackLowRow, move.Type);
 
         }
 
