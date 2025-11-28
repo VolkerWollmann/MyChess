@@ -90,7 +90,7 @@ namespace EngineUnitTests
             chessEngine2.SetPiece(new Rook(Color.Black, "G8", true, 0));
 
             Move move = chessEngine2.CalculateMove();
-            Assert.IsTrue(move.Rating.Evaluation == Evaluation.WhiteStaleMate);
+            Assert.AreEqual(Evaluation.WhiteStaleMate, move.Rating.Evaluation);
         }
 
         [TestMethod]
@@ -107,8 +107,8 @@ namespace EngineUnitTests
 
             Move move = chessEngine2.CalculateMove();
 
-            Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
-            Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
+            Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
             Assert.IsTrue(move.Piece is Rook);
         }
 
@@ -127,7 +127,7 @@ namespace EngineUnitTests
             Move move = chessEngine2.CalculateMove();
             chessEngine2.ExecuteMove(move);
 
-            Assert.IsTrue(move.Type == MoveType.EnpassantBlackLowRow);
+            Assert.AreEqual(MoveType.EnpassantBlackLowRow, move.Type);
 
         }
 
@@ -143,7 +143,7 @@ namespace EngineUnitTests
             chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
 
             BoardRating boardRating = chessEngine2.GetRating(Color.Black);
-            Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
+            Assert.AreEqual(Situation.WhiteVictory, boardRating.Situation);
         }
 
         [TestMethod]
@@ -156,9 +156,9 @@ namespace EngineUnitTests
             {
                 BoardRating boardRating = chessEngine2.GetRating(color);
 
-                Assert.IsTrue(boardRating.Situation == Situation.Normal);
-                Assert.IsTrue(boardRating.Evaluation == Evaluation.Normal);
-                Assert.AreEqual(boardRating.Weight, 0);
+                Assert.AreEqual(Situation.Normal, boardRating.Situation);
+                Assert.AreEqual(Evaluation.Normal, boardRating.Evaluation);
+                Assert.AreEqual(0, boardRating.Weight);
             }
         }
 

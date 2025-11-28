@@ -18,7 +18,7 @@ namespace EngineUnitTests
                 chessEngineInteger.SetPiece("H8", MCEI.Pieces.NumPieces.BlackKing);
 
             BoardRating boardRating = chessEngineInteger.GetRating(Color.Black);
-            Assert.AreEqual(boardRating.Situation, Situation.WhiteVictory);
+            Assert.AreEqual(Situation.WhiteVictory, boardRating.Situation);
         }
 
         [TestMethod]

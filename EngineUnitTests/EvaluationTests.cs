@@ -58,7 +58,7 @@ namespace EngineUnitTests
 
             IBoardRatingComparer boardRatingComparer = BoardRatingComparerFactory.GetComparer(Color.White);
             for (int i = 0; i < ratingList.Count - 1; i++)
-                Assert.IsTrue(boardRatingComparer.Compare(ratingList[i], ratingList[i + 1]) <= 0);
+                Assert.IsLessThanOrEqualTo(0, boardRatingComparer.Compare(ratingList[i], ratingList[i + 1]));
 
         }
 

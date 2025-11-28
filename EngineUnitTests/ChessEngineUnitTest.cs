@@ -29,9 +29,9 @@ namespace EngineUnitTests
             {
                 BoardRating boardRating = chessEngine.GetRating(color);
 
-                Assert.IsTrue(boardRating.Situation == Situation.Normal);
-                Assert.IsTrue(boardRating.Evaluation == Evaluation.Normal);
-                Assert.AreEqual(boardRating.Weight, 0);
+                Assert.AreEqual(Situation.Normal, boardRating.Situation);
+                Assert.AreEqual(Evaluation.Normal, boardRating.Evaluation);
+                Assert.AreEqual(0, boardRating.Weight);
             }
 
         }
@@ -44,7 +44,7 @@ namespace EngineUnitTests
 
             var x = chessEngine.GetMoveList();
 
-            Assert.AreEqual(20, x.Moves.Count);
+            Assert.HasCount(20, x.Moves);
         }
 
         [TestMethod]
@@ -58,8 +58,8 @@ namespace EngineUnitTests
             Move move = chessEngine.CalculateMove();
 
             BoardRating rating = move.Rating;
-            Assert.AreEqual(rating.Situation, Situation.WhiteVictory);
-            Assert.AreEqual(rating.Evaluation, Evaluation.BlackCheckMate);
+            Assert.AreEqual(Situation.WhiteVictory, rating.Situation);
+            Assert.AreEqual(Evaluation.BlackCheckMate, rating.Evaluation);
         }
 
         #endregion
@@ -115,8 +115,8 @@ namespace EngineUnitTests
 
             Move move = chessEngine.CalculateMoveWithDepth(6);
 
-            Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
-            Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
+            Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
             Assert.IsTrue(move.Piece is Rook);
         }
 
@@ -150,8 +150,8 @@ namespace EngineUnitTests
 
             Move move = chessEngine.CalculateMoveWithDepth(8);
 
-            Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
-            Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
+            Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
             Assert.IsTrue(move.Piece is Rook);
         }
 
@@ -169,8 +169,8 @@ namespace EngineUnitTests
 
             Move move = chessEngine.CalculateMoveWithDepthParallel(8);
 
-            Assert.IsTrue(move.Rating.Evaluation == Evaluation.BlackCheckMate);
-            Assert.IsTrue(move.Rating.Situation == Situation.WhiteVictory);
+            Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
             Assert.IsTrue(move.Piece is Rook);
         }
 
@@ -194,7 +194,7 @@ namespace EngineUnitTests
             Move move = chessEngine.CalculateMoveWithDepth(4);
             //chessEngine.ExecuteMove(move);
 
-            Assert.IsTrue(move.Type == MoveType.EnpassantBlackHighRow);
+            Assert.AreEqual(MoveType.EnpassantBlackHighRow, move.Type);
 
         }
 
