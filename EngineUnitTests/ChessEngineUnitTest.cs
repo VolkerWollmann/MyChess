@@ -88,7 +88,7 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
-        public void CalculateOneMoveMate()
+        public void CalculateOneMoveMateParallel()
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
@@ -96,6 +96,20 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Rook(Color.White, "A1", false, 0));
 
             Move move = chessEngine.CalculateMove();
+
+            Assert.IsTrue(move.End.AreEqual(new Position("A8")));
+
+        }
+
+        [TestMethod]
+        public void CalculateOneMoveMate()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
+            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
+            chessEngine.SetPiece(new Rook(Color.White, "A1", false, 0));
+
+            Move move = chessEngine.CalculateMoveWithDepth(6);
 
             Assert.IsTrue(move.End.AreEqual(new Position("A8")));
 

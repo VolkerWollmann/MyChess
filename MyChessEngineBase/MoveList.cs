@@ -36,19 +36,36 @@ namespace MyChessEngineBase
                 bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory);
                 if (!check && !atLeastOneMove)
                     return Move.CreateNoMove(new BoardRating {Situation = Situation.StaleMate, Evaluation = Evaluation.WhiteStaleMate});
-                    
+
                 if (check && allMovesAreBlackVictory)
-                        return Move.CreateNoMove(new BoardRating { Situation = Situation.BlackVictory, Evaluation = Evaluation.WhiteCheckMate, Weight = -ChessEngineConstants.CheckMate });
+                {
+                    int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
+                    return Move.CreateNoMove(new BoardRating
+                    {
+                        Situation = Situation.BlackVictory, Evaluation = Evaluation.WhiteCheckMate,
+                        Weight = -ChessEngineConstants.CheckMate, Depth = maxDepth
+                    });
+                }
             }
             else
             {
                 bool atLeastOneMove = _Moves.Any();
                 bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory);
                 if (!check && !atLeastOneMove)
-                        return Move.CreateNoMove(new BoardRating { Situation = Situation.StaleMate, Evaluation = Evaluation.BlackStaleMate });
+                {
+                    return Move.CreateNoMove(new BoardRating
+                        {Situation = Situation.StaleMate, Evaluation = Evaluation.BlackStaleMate});
+                }
 
                 if (check && allMovesAreWhiteVictory)
-                        return Move.CreateNoMove(new BoardRating { Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate, Weight = ChessEngineConstants.CheckMate });
+                {
+                    int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
+                    return Move.CreateNoMove(new BoardRating
+                    {
+                        Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate,
+                        Weight = ChessEngineConstants.CheckMate, Depth = maxDepth
+                    });
+                }
             }
             
             Move bestMove = _Moves.FirstOrDefault();
