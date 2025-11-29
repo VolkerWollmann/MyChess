@@ -96,8 +96,8 @@ namespace MyChessEngine.Pieces
                 move.AffectedPositionBefore[0] = endPosition;
                 move.AffectedPieceBefore[0] = Board[endPosition].Piece;
 			}
-            else
-                moveList.Add(move);
+            
+            moveList.Add(move);
             
             return (result != IsValidPositionReturns.EnemyBeatPosition);
         }
