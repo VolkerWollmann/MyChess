@@ -106,12 +106,8 @@ namespace MyChessEngine
         }
         public List<Piece> GetAllPieces(Color color)
         {
-            if (_AllPiecesByColor.ContainsKey(color))
-                return _AllPiecesByColor[color];
-
             var pieces = Field.Cast<Field>().Where(field => (field.Piece?.Color == color)).Select(field => field.Piece).ToList();
 
-            _AllPiecesByColor.Add(color, pieces);
             return pieces;
         }
 
