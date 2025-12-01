@@ -67,7 +67,7 @@ namespace EngineUnitTests
         #region MoveCalculation
 
         [TestMethod]
-        public void CalculateOpeningMove()
+        public void CalculateOpeningMoveParallel()
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
@@ -77,7 +77,17 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
-        public void CalculateOpeningMoveBlack()
+        public void CalculateOpeningMove()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.New();
+
+            Move move = chessEngine.CalculateMoveWithDepth();
+            Assert.IsNotNull(move);
+        }
+
+        [TestMethod]
+        public void CalculateOpeningMoveBlackParallel()
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
@@ -139,14 +149,17 @@ namespace EngineUnitTests
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
-            chessEngine.SetPiece(new Pawn(Color.White, "E4"));
-            chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
-            chessEngine.SetPiece(new Pawn(Color.Black, "D5"));
-            chessEngine.SetPiece(new Rook(Color.White, "A1", true, 0));
+            chessEngine.SetPiece(new Pawn(Color.White, "C4"));
+            chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
+            chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
+            chessEngine.SetPiece(new Rook(Color.White, "G5", true, 0));
 
 
             Move move = chessEngine.CalculateMoveWithDepthParallel(6);
-            Assert.IsTrue(move.End.AreEqual(new Position("A8")));
+
+            Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
+            Assert.IsTrue(move.Piece is Rook);
 
         }
 

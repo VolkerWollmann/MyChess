@@ -45,7 +45,7 @@ namespace MyChessEngine.Pieces
 
             if (Color == Color.White)
             {
-                // beat left
+                // beat low
                 Position newPosition = Position.GetDeltaPosition(-1, 1);
                 if (newPosition != null)
                 {
@@ -114,7 +114,7 @@ namespace MyChessEngine.Pieces
                     }
                 }
 
-                // beat right
+                // beat high
                 newPosition = Position.GetDeltaPosition(1, 1);
                 if (newPosition != null)
                 {
@@ -172,7 +172,7 @@ namespace MyChessEngine.Pieces
             else
             {
                 // black
-                // beat left
+                // beat low
                 Position newPosition = Position.GetDeltaPosition(-1, -1);
                 if (newPosition != null)
                 {
@@ -241,8 +241,8 @@ namespace MyChessEngine.Pieces
                     }
                 }
 
-                // beat right
-                newPosition = Position.GetDeltaPosition(-1, -1);
+                // beat high
+                newPosition = Position.GetDeltaPosition(1, -1);
                 if (newPosition != null)
                 {
 					Piece pieceToBeat = Board[newPosition].Piece;
