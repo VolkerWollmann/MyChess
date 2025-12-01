@@ -210,11 +210,8 @@ namespace MyChessEngine
 
         public MoveList GetMoveList(Color color)
         {
-            if (!_AllMovesByColor.ContainsKey(color))
-                _AllMovesByColor[color] = new MoveList(GetBaseMoveList(color));
-
-            return _AllMovesByColor[color];
-        }
+	        return new MoveList(GetBaseMoveList(color));
+		}
 
         internal List<Move> GetBaseMoveList(Color color)
         {
