@@ -10,6 +10,7 @@ namespace MyChessEngineBase
         public Position Start;
         public Position End;
         public IPiece Piece;
+        public IPiece PieceBefore;
         public MoveType Type;
         public int PlyBefore;
 

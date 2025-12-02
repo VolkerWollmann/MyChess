@@ -149,13 +149,13 @@ namespace MyChessEngine
             for (int i = 0; i < ChessEngineConstants.Length; i++)
             for (int j = 0; j < ChessEngineConstants.Length; j++)
             {
-                var piece1 = this[i, j].Piece;
-                var piece2 = other[i, j].Piece;
-                if (piece1 == null && piece2 == null)
+                var piece = this[i, j].Piece;
+                var otherPiece = other[i, j].Piece;
+                if (piece == null && otherPiece == null)
                     continue;
-                if (piece1 == null || piece2 == null)
+                if (piece == null || otherPiece == null)
                     return false;
-                if (!piece1.Compare(piece2))
+                if (!piece.Compare(otherPiece))
                     return false;
             }
 
@@ -178,9 +178,10 @@ namespace MyChessEngine
             Piece p = this[move.Start].Piece;
             move.PlyBefore = p.LastPly;
             this[move.End].Piece = p;
+            move.PieceBefore = p.Copy();
             this[move.Start].Piece = null;
             p.Position = move.End;
-            p.LastPly = Ply;
+            //p.LastPly = Ply;
 
             for (int i = 0; i < 2; i++)
             {
@@ -209,11 +210,12 @@ namespace MyChessEngine
             // remove last element
             list.RemoveAt(list.Count - 1);
 
-            Piece p = this[move.End].Piece;
-            this[move.Start].Piece = p;
+            Piece p = (Piece)move.PieceBefore;
+            p.Board = this;
+			this[move.Start].Piece = p;
             this[move.End].Piece = null;
             this[move.Start].Piece.Position = move.Start;
-            p.LastPly = move.PlyBefore;
+            //p.LastPly = move.PlyBefore;
 
             for (int i = 0; i < 2; i++)
             {
@@ -330,7 +332,7 @@ namespace MyChessEngine
 
             foreach (Move move in moves.Moves)
             {
-                Board b = this.Copy();
+                //Board b = this.Copy();
                 ExecuteMove(move);
 
                 Move resultMove = CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
@@ -340,10 +342,10 @@ namespace MyChessEngine
                 result.Add(move);
                 UndoLastMove();
 
-                if (!this.Compare(b))
-                {
-                    ;
-                }
+                //if (!this.Compare(b))
+                //{
+                //    ;
+                //}
             }
 
             var king = this.Kings[color];

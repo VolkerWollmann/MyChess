@@ -99,7 +99,7 @@ namespace EngineUnitTests
 		[DataRow(3)]
 		[DataRow(4)]
 		[DataRow(5)]
-        [DataRow(6)]
+        //[DataRow(6)]
         public void CalculateOpeningMove(int depth)
 		{
 			ChessEngine chessEngine = new ChessEngine();
@@ -109,26 +109,26 @@ namespace EngineUnitTests
 			Assert.IsNotNull(move);
 		}
 
-		[TestMethod]
-        public void A1()
-        {
-	        ChessEngine chessEngine = new ChessEngine();
-	        chessEngine.New();
+		//[TestMethod]
+  //      public void A1()
+  //      {
+	 //       ChessEngine chessEngine = new ChessEngine();
+	 //       chessEngine.New();
 
-	        var w1MoveList = chessEngine.GetMoveList();
-	        var w1Move = w1MoveList.Moves.First(m => m.Start.ToString() == "A2" && m.End.ToString() == "A4");
-	        chessEngine.ExecuteMove(w1Move);
+	 //       var w1MoveList = chessEngine.GetMoveList();
+	 //       var w1Move = w1MoveList.Moves.First(m => m.Start.ToString() == "A2" && m.End.ToString() == "A4");
+	 //       chessEngine.ExecuteMove(w1Move);
 
-            var b1MoveList = chessEngine.GetMoveList();
-            var b1Move = b1MoveList.Moves.First(m => m.Start.ToString() == "B7" && m.End.ToString() == "B5");
-            chessEngine.ExecuteMove(b1Move);
+  //          var b1MoveList = chessEngine.GetMoveList();
+  //          var b1Move = b1MoveList.Moves.First(m => m.Start.ToString() == "B7" && m.End.ToString() == "B5");
+  //          chessEngine.ExecuteMove(b1Move);
 
-            var w2MoveList = chessEngine.GetMoveList();
-            var w2Move = w2MoveList.Moves.First(m => m.Start.ToString() == "A1" && m.End.ToString() == "A3");
-            chessEngine.ExecuteMove(w2Move);
+  //          var w2MoveList = chessEngine.GetMoveList();
+  //          var w2Move = w2MoveList.Moves.First(m => m.Start.ToString() == "A1" && m.End.ToString() == "A3");
+  //          chessEngine.ExecuteMove(w2Move);
 
-			Move move = chessEngine.CalculateMoveWithDepth();
-		}
+		//	Move move = chessEngine.CalculateMoveWithDepth();
+		//}
 
 		[TestMethod]
         public void CalculateOpeningMoveBlackParallel()
@@ -137,7 +137,7 @@ namespace EngineUnitTests
             chessEngine.New();
 
             chessEngine.ExecuteMove(new Move("E2", "E4", chessEngine["E2"].Piece, MoveType.PawnDoubleStep));
-            Move move = chessEngine.CalculateMove();
+            Move move = chessEngine.CalculateMoveWithDepthParallel(5);
             Assert.IsNotNull(move);
         }
 

@@ -69,7 +69,7 @@ namespace MyChessEngine.Pieces
                 PieceType.Bishop => new Bishop(Color, Position, LastPly, PromotionPly),
                 PieceType.Knight => new Knight(Color, Position, LastPly, PromotionPly),
                 PieceType.Queen => new Queen(Color, Position, LastPly,PromotionPly),
-                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastPly, LastEnPassantPlyMarking),
+                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastPly),
                 PieceType.Rook => new Rook(Color, Position, LastPly,PromotionPly),
                 PieceType.King => new King(Color, Position, ((King)this).KingMoves, LastPly),
             _ => null 
