@@ -11,6 +11,7 @@ namespace MyChessEngineBase
         public Position End;
         public IPiece Piece;
         public MoveType Type;
+        public int PlyBefore;
 
 
 		public Position[] AffectedPositionAfter = [null, null];

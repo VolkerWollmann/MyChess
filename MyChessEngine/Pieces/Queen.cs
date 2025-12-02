@@ -100,12 +100,12 @@ namespace MyChessEngine.Pieces
             return moveList;
         }
 
-        public Queen(Color color, Position position, int promotionPly=-1, bool isMoved = true) : base(color, PieceType.Queen, position, isMoved, promotionPly)
+        public Queen(Color color, Position position, int lastPly = -1, int promotionPly=-1) : base(color, PieceType.Queen, position, lastPly, promotionPly)
         {
 
         }
 
-        public Queen(Color color, string position, int promotionPly=-1, bool isMoved = true) : base(color, PieceType.Queen, new Position(position), isMoved, promotionPly)
+        public Queen(Color color, string position, int lastPly=-1, int promotionPly=-1) : base(color, PieceType.Queen, new Position(position), lastPly, promotionPly)
         {
 
         }

@@ -52,36 +52,36 @@ namespace MyChessEngine
             }
 
             // rook
-            SetPiece(new Rook(Color.White, "A1", 0, false));
-            SetPiece(new Rook(Color.White, "H1", 0, false));
-            SetPiece(new Rook(Color.Black, "A8", 0, false));
-            SetPiece(new Rook(Color.Black, "H8", 0, false));
+            SetPiece(new Rook(Color.White, "A1", 0));
+            SetPiece(new Rook(Color.White, "H1"));
+            SetPiece(new Rook(Color.Black, "A8"));
+            SetPiece(new Rook(Color.Black, "H8"));
 
 
             // bishop 
-            SetPiece(new Bishop(Color.White, "C1",0));
-            SetPiece(new Bishop(Color.White, "F1", 0));
-            SetPiece(new Bishop(Color.Black, "C8", 0));
-            SetPiece(new Bishop(Color.Black, "F8", 0));
+            SetPiece(new Bishop(Color.White, "C1"));
+            SetPiece(new Bishop(Color.White, "F1"));
+            SetPiece(new Bishop(Color.Black, "C8"));
+            SetPiece(new Bishop(Color.Black, "F8"));
 
 
             // knight
-            SetPiece(new Knight(Color.White, "B1",0));
-            SetPiece(new Knight(Color.White, "G1", 0));
-            SetPiece(new Knight(Color.Black, "B8", 0));
-            SetPiece(new Knight(Color.Black, "G8", 0));
+            SetPiece(new Knight(Color.White, "B1"));
+            SetPiece(new Knight(Color.White, "G1"));
+            SetPiece(new Knight(Color.Black, "B8"));
+            SetPiece(new Knight(Color.Black, "G8"));
 
 
             // queen
-            SetPiece(new Queen(Color.White, "D1", 0));
-            SetPiece(new Queen(Color.Black, "D8", 0));
+            SetPiece(new Queen(Color.White, "D1"));
+            SetPiece(new Queen(Color.Black, "D8"));
 
 
             // king
             Board.SetPiece(new King(Color.White, "E1",
-                (MoveType.Normal | MoveType.WhiteCastle | MoveType.WhiteCastleLong), false));
+                (MoveType.Normal | MoveType.WhiteCastle | MoveType.WhiteCastleLong), -1));
             Board.SetPiece(new King(Color.Black, "E8",
-                (MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong), false));
+                (MoveType.Normal | MoveType.BlackCastle | MoveType.BlackCastleLong), -1));
 
 
             ColorToMove = Color.White;

@@ -28,8 +28,9 @@ namespace MyChessEngineInteger.Pieces
     {
         public PieceType Type { get; }
         public Color Color { get; }
-        public bool IsMoved { get; private set; } = false;
         public int PromotionPly { get; set; }
+
+        public int LastPly { get; set; } = -1;
 
         public int LastEnPassantPlyMarking { get; set; } = -1;
 
@@ -48,6 +49,10 @@ namespace MyChessEngineInteger.Pieces
             return true;
         }
 
+        public bool IsMoved()
+        {
+            return LastPly >= 0;
+        }
 
         public NumPieces GetNumPieces()
         {

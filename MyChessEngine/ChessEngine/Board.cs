@@ -3,6 +3,7 @@ using MyChessEngineBase;
 using MyChessEngineBase.Rating;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
@@ -174,10 +175,12 @@ namespace MyChessEngine
             Ply++;
             Moves.Add(move);
 
-            
-            this[move.End].Piece = this[move.Start].Piece;
+            Piece p = this[move.Start].Piece;
+            move.PlyBefore = p.LastPly;
+            this[move.End].Piece = p;
             this[move.Start].Piece = null;
-            this[move.End].Piece.Position = move.End;
+            p.Position = move.End;
+            p.LastPly = Ply;
 
             for (int i = 0; i < 2; i++)
             {
@@ -206,9 +209,11 @@ namespace MyChessEngine
             // remove last element
             list.RemoveAt(list.Count - 1);
 
-            this[move.Start].Piece = this[move.End].Piece;
+            Piece p = this[move.End].Piece;
+            this[move.Start].Piece = p;
             this[move.End].Piece = null;
             this[move.Start].Piece.Position = move.Start;
+            p.LastPly = move.PlyBefore;
 
             for (int i = 0; i < 2; i++)
             {
@@ -325,6 +330,7 @@ namespace MyChessEngine
 
             foreach (Move move in moves.Moves)
             {
+                Board b = this.Copy();
                 ExecuteMove(move);
 
                 Move resultMove = CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
@@ -333,6 +339,11 @@ namespace MyChessEngine
                 
                 result.Add(move);
                 UndoLastMove();
+
+                if (!this.Compare(b))
+                {
+                    ;
+                }
             }
 
             var king = this.Kings[color];

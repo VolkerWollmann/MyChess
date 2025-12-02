@@ -14,10 +14,12 @@ namespace MyChessEngine.Pieces
         public PieceType Type { get; }
 
         public Color Color { get; }
-        public bool IsMoved { get; private set; } = false;
+
+        public int LastPly { get; set; }
+
         public int PromotionPly { get; set; }
 
-        public int LastEnPassantPlyMarking { get; set; } = -1;
+        public int LastEnPassantPlyMarking { get; set; }
 
         public bool Compare(IPiece other)
         {
@@ -26,12 +28,17 @@ namespace MyChessEngine.Pieces
 
             if (Type != other.Type ||
                 Color != other.Color ||
-                IsMoved != other.IsMoved ||
+                LastPly != other.LastPly ||
                 PromotionPly != other.PromotionPly ||
                 LastEnPassantPlyMarking != other.LastEnPassantPlyMarking)
                 return false;
 
             return true;
+        }
+
+        public bool IsMoved()
+        {
+            return LastPly > 0;
         }
         #endregion
 
@@ -59,12 +66,12 @@ namespace MyChessEngine.Pieces
         {
             return Type switch
             {
-                PieceType.Bishop => new Bishop(Color, Position, PromotionPly,IsMoved),
-                PieceType.Knight => new Knight(Color, Position, PromotionPly,IsMoved),
-                PieceType.Queen => new Queen(Color, Position, PromotionPly,IsMoved),
-                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastEnPassantPlyMarking,IsMoved),
-                PieceType.Rook => new Rook(Color, Position, PromotionPly,IsMoved),
-                PieceType.King => new King(Color, Position, ((King)this).KingMoves, IsMoved),
+                PieceType.Bishop => new Bishop(Color, Position, LastPly, PromotionPly),
+                PieceType.Knight => new Knight(Color, Position, LastPly, PromotionPly),
+                PieceType.Queen => new Queen(Color, Position, LastPly,PromotionPly),
+                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastPly, LastEnPassantPlyMarking),
+                PieceType.Rook => new Rook(Color, Position, LastPly,PromotionPly),
+                PieceType.King => new King(Color, Position, ((King)this).KingMoves, LastPly),
             _ => null 
             };
         }
@@ -83,8 +90,7 @@ namespace MyChessEngine.Pieces
             Board[move.Start].Piece = null;
 
             this.Position = move.End;
-
-            this.IsMoved = true;
+            this.LastPly = Board.Ply;
 
             return true;
         }
@@ -120,14 +126,14 @@ namespace MyChessEngine.Pieces
         
         
 
-        public Piece(Color color, PieceType piece, Position position, bool isMoved=true, int promotionPly=-1, int lastEnPassantPlyMarking=-1)
+        public Piece(Color color, PieceType piece, Position position, int lastPly=-1, int promotionPly=-1, int lastEnPassantPlyMarking=-1)
         {
             Color = color;
             Type = piece;
             Position = position;
-            IsMoved = isMoved;
             PromotionPly = promotionPly;
             LastEnPassantPlyMarking = lastEnPassantPlyMarking;
+            LastPly = lastPly;
 
             switch (Type)
             {

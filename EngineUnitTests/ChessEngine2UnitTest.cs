@@ -35,9 +35,9 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
-            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
-            chessEngine2.SetPiece(new Rook(Color.White, "A1", 0, true));
+            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, 1));
+            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, 1));
+            chessEngine2.SetPiece(new Rook(Color.White, "A1", 1));
 
 
             Move move = chessEngine2.CalculateMove();
@@ -52,11 +52,11 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.White, "E4"));
-            chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.Black,"D5"));
-            chessEngine2.SetPiece(new Rook(Color.White, "A1", 0, true));
+            chessEngine2.SetPiece(new Rook(Color.White, "A1", 1));
            
             Move move = chessEngine2.CalculateMove();
 
@@ -68,9 +68,9 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece( new King(Color.White, "H1", MoveType.Normal, true));
+            chessEngine2.SetPiece( new King(Color.White, "H1", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.White, "E4"));
-            chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.Black, "D5"));
 
             Move move = chessEngine2.CalculateMove();
@@ -82,12 +82,12 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece( new King(Color.White, "H3",MoveType.Normal, true));
+            chessEngine2.SetPiece( new King(Color.White, "H3",MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.White, "H2"));
             chessEngine2.SetPiece(new Pawn(Color.White, "H4"));
             chessEngine2.SetPiece(new Pawn(Color.Black, "H5"));
-            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
-            chessEngine2.SetPiece(new Rook(Color.Black, "G8", 0, true));
+            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, 1));
+            chessEngine2.SetPiece(new Rook(Color.Black, "G8", 1));
 
             Move move = chessEngine2.CalculateMove();
             Assert.AreEqual(Evaluation.WhiteStaleMate, move.Rating.Evaluation);
@@ -98,11 +98,11 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.White, "C4"));
-            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.Black, "B5"));
-            chessEngine2.SetPiece(new Rook(Color.White, "G5", 0, true));
+            chessEngine2.SetPiece(new Rook(Color.White, "G5", 1));
            
 
             Move move = chessEngine2.CalculateMove();
@@ -117,9 +117,9 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.White, "C2"));
-            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.Black, "H8", MoveType.Normal, 1));
             chessEngine2.SetPiece(new Pawn(Color.Black, "B4"));
             
 
@@ -138,9 +138,9 @@ namespace EngineUnitTests
         {
             ChessEngine2 chessEngine2 = new ChessEngine2();
 
-            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
-            chessEngine2.SetPiece(new Rook(Color.White, "A8", 0, true));
-            chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
+            chessEngine2.SetPiece(new King(Color.White, "G6", MoveType.Normal, 1));
+            chessEngine2.SetPiece(new Rook(Color.White, "A8", 1));
+            chessEngine2.SetPiece(new King(Color.Black, "G8", MoveType.Normal, 1));
 
             BoardRating boardRating = chessEngine2.GetRating(Color.Black);
             Assert.AreEqual(Situation.WhiteVictory, boardRating.Situation);

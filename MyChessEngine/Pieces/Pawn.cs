@@ -328,22 +328,22 @@ namespace MyChessEngine.Pieces
             return base.ExecuteMove(move); 
         }
 
-        public Pawn(Color color, Position position, MoveType possibleMoveType, int lastEnPassantPlyMarking=-1, bool isMoved=false) : base(color, PieceType.Pawn, position, isMoved, -1, lastEnPassantPlyMarking)
+        public Pawn(Color color, Position position, MoveType possibleMoveType, int lastPly, int lastEnPassantPlyMarking=-1, bool isMoved=false) : base(color, PieceType.Pawn, position, lastPly, lastEnPassantPlyMarking)
         {
             PossibleMoveType = possibleMoveType;
         }
 
-        public Pawn(Color color, Position position) : this(color, position, MoveType.Normal, -1)
+        public Pawn(Color color, Position position, int lastPly=-1) : this(color, position, MoveType.Normal, lastPly)
         {
 
         }
 
-        public Pawn(Color color, string position, MoveType possibleMoveType) : base(color, PieceType.Pawn, new Position(position), false, 0)           
+        public Pawn(Color color, string position, MoveType possibleMoveType, int lastPly=-1) : base(color, PieceType.Pawn, new Position(position), lastPly)           
         {
             PossibleMoveType = possibleMoveType;
         }
 
-        public Pawn(Color color, string position) : this(color, new Position(position))
+        public Pawn(Color color, string position, int lastPly = -1) : this(color, new Position(position), lastPly)
         {
 
         }

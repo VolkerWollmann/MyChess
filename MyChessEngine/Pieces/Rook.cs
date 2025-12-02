@@ -63,7 +63,7 @@ namespace MyChessEngine.Pieces
         static readonly Position BlackQueenRookField = new Position("A8");
         public override bool ExecuteMove(Move move)
         {
-	        if (!IsMoved)
+	        if (!IsMoved())
             {
                 if (Board.Kings[Color] is { } myKing)
                 {
@@ -97,12 +97,12 @@ namespace MyChessEngine.Pieces
 			return true;
         }
 
-        public Rook(Color color, Position position,  int promotionPly=-1, bool isMoved = true) : base(color, PieceType.Rook, position, isMoved, promotionPly)
+        public Rook(Color color, Position position, int lastPly=-1, int promotionPly=-1) : base(color, PieceType.Rook, position, lastPly, promotionPly)
         {
            
         }
 
-        public Rook(Color color, string position, int promotionPly=-1,bool isMoved = true) : base(color, PieceType.Rook, new Position(position), isMoved, promotionPly)
+        public Rook(Color color, string position, int lastPly=-1, int promotionPly=-1) : base(color, PieceType.Rook, new Position(position), lastPly, promotionPly)
         {
         }
 
