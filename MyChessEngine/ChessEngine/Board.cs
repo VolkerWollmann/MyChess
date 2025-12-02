@@ -123,7 +123,7 @@ namespace MyChessEngine
             Position.AllPositions().ForEach(position => { this[position].Piece = null; this[position].Threat = false; });
         }
 
-
+        #region Copy
         public virtual Board Copy()
         {
             Board copy = new Board();
@@ -143,6 +143,26 @@ namespace MyChessEngine
             return copy;
         }
 
+        public bool Compare(Board other)
+        {
+            for (int i = 0; i < ChessEngineConstants.Length; i++)
+            for (int j = 0; j < ChessEngineConstants.Length; j++)
+            {
+                var piece1 = this[i, j].Piece;
+                var piece2 = other[i, j].Piece;
+                if (piece1 == null && piece2 == null)
+                    continue;
+                if (piece1 == null || piece2 == null)
+                    return false;
+                if (!piece1.Compare(piece2))
+                    return false;
+            }
+
+            return true;
+        }
+    
+
+        #endregion
         public virtual bool ExecuteMove(Move move)
         {
             if (this[move.Start] == null)

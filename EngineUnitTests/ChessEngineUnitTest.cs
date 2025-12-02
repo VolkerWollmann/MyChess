@@ -17,6 +17,18 @@ namespace EngineUnitTests
             Assert.IsNotNull(chessEngine);
         }
 
+        [TestMethod]
+        public void CompareBoard()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.New();
+            Board board = chessEngine.Board;
+            Board board2 = board.Copy();
+
+            Assert.IsTrue(board.Compare(board2));
+
+        }
+
         #region BoardRating
 
         [TestMethod]
@@ -53,7 +65,7 @@ namespace EngineUnitTests
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
             chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
-            chessEngine.SetPiece(new Rook(Color.White, "A8", true, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "A8", 0, true));
             chessEngine.ColorToMove = Color.Black;
             Move move = chessEngine.CalculateMove();
 
@@ -134,7 +146,7 @@ namespace EngineUnitTests
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
             chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
-            chessEngine.SetPiece(new Rook(Color.White, "A1", false, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "A1", 0, false));
 
             Move move = chessEngine.CalculateMove();
 
@@ -148,7 +160,7 @@ namespace EngineUnitTests
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, true));
             chessEngine.SetPiece(new King(Color.Black, "G8", MoveType.Normal, true));
-            chessEngine.SetPiece(new Rook(Color.White, "A1", false, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "A1", 0, false));
 
             Move move = chessEngine.CalculateMoveWithDepth(6);
 
@@ -165,7 +177,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Pawn(Color.White, "C4"));
             chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
             chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
-            chessEngine.SetPiece(new Rook(Color.White, "G5", true, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "G5", 0, true));
             
 
             Move move = chessEngine.CalculateMoveWithDepth(6);
@@ -183,7 +195,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Pawn(Color.White, "C4"));
             chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
             chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
-            chessEngine.SetPiece(new Rook(Color.White, "G5", true, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "G5", 0, true));
 
 
             Move move = chessEngine.CalculateMoveWithDepthParallel(6);
@@ -203,7 +215,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Pawn(Color.White, "C4"));
             chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
             chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
-            chessEngine.SetPiece(new Rook(Color.White, "G5", true, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "G5", 0, true));
 
 
             Move move = chessEngine.CalculateMoveWithDepth(8);
@@ -222,7 +234,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(new Pawn(Color.White, "C4"));
             chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal, true));
             chessEngine.SetPiece(new Pawn(Color.Black, "B5"));
-            chessEngine.SetPiece(new Rook(Color.White, "G5", true, 0));
+            chessEngine.SetPiece(new Rook(Color.White, "G5", 0, true));
 
 
             Move move = chessEngine.CalculateMoveWithDepthParallel(8);
@@ -247,12 +259,17 @@ namespace EngineUnitTests
             var doubleStepMove = moveListWhite.Moves.First(move => move.Type == MoveType.PawnDoubleStep);
             chessEngine.ExecuteMove(doubleStepMove);
 
+            Board b = chessEngine.Board.Copy();
+
             var moveListBlack = chessEngine.GetMoveList();
 
             Move move = chessEngine.CalculateMoveWithDepth(1);
-            //chessEngine.ExecuteMove(move);
-
+            
             Assert.AreEqual(MoveType.EnpassantBlackLowRow, move.Type);
+            chessEngine.ExecuteMove(move);
+            chessEngine.Board.UndoLastMove();
+
+            Assert.IsTrue(b.Compare(chessEngine.Board));
 
         }
 

@@ -328,7 +328,7 @@ namespace MyChessEngine.Pieces
             return base.ExecuteMove(move); 
         }
 
-        public Pawn(Color color, Position position, MoveType possibleMoveType, int lastEnPassantPlyMarking) : base(color, PieceType.Pawn, position, false, -1, lastEnPassantPlyMarking)
+        public Pawn(Color color, Position position, MoveType possibleMoveType, int lastEnPassantPlyMarking=-1, bool isMoved=false) : base(color, PieceType.Pawn, position, isMoved, -1, lastEnPassantPlyMarking)
         {
             PossibleMoveType = possibleMoveType;
         }

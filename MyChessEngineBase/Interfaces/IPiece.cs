@@ -11,5 +11,6 @@
 
         int LastEnPassantPlyMarking { get; set; }
 
+        bool Compare(IPiece other);
     }
 }

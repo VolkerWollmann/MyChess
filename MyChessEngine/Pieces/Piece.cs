@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using MyChessEngine.Interfaces;
+﻿using MyChessEngine.Interfaces;
 using MyChessEngineBase;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace MyChessEngine.Pieces
 {
@@ -17,6 +18,21 @@ namespace MyChessEngine.Pieces
         public int PromotionPly { get; set; }
 
         public int LastEnPassantPlyMarking { get; set; } = -1;
+
+        public bool Compare(IPiece other)
+        {
+            if (other == null)
+                throw new Exception();
+
+            if (Type != other.Type ||
+                Color != other.Color ||
+                IsMoved != other.IsMoved ||
+                PromotionPly != other.PromotionPly ||
+                LastEnPassantPlyMarking != other.LastEnPassantPlyMarking)
+                return false;
+
+            return true;
+        }
         #endregion
 
         #region IEnginePiece
@@ -43,11 +59,11 @@ namespace MyChessEngine.Pieces
         {
             return Type switch
             {
-                PieceType.Bishop => new Bishop(Color, Position, PromotionPly),
-                PieceType.Knight => new Knight(Color, Position, PromotionPly),
-                PieceType.Queen => new Queen(Color, Position, PromotionPly),
-                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastEnPassantPlyMarking),
-                PieceType.Rook => new Rook(Color, Position, IsMoved, PromotionPly),
+                PieceType.Bishop => new Bishop(Color, Position, PromotionPly,IsMoved),
+                PieceType.Knight => new Knight(Color, Position, PromotionPly,IsMoved),
+                PieceType.Queen => new Queen(Color, Position, PromotionPly,IsMoved),
+                PieceType.Pawn => new Pawn(Color, Position, ((Pawn)this).PossibleMoveType, LastEnPassantPlyMarking,IsMoved),
+                PieceType.Rook => new Rook(Color, Position, PromotionPly,IsMoved),
                 PieceType.King => new King(Color, Position, ((King)this).KingMoves, IsMoved),
             _ => null 
             };

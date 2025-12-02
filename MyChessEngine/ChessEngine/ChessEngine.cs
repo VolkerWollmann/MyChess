@@ -9,7 +9,7 @@ namespace MyChessEngine
 {
     public class ChessEngine : IChessEngine
     {
-        private readonly Board Board;
+        public readonly Board Board;
 
         #region IChessEngine
 
@@ -52,10 +52,10 @@ namespace MyChessEngine
             }
 
             // rook
-            SetPiece(new Rook(Color.White, "A1", false, 0));
-            SetPiece(new Rook(Color.White, "H1", false, 0));
-            SetPiece(new Rook(Color.Black, "A8", false, 0));
-            SetPiece(new Rook(Color.Black, "H8", false, 0));
+            SetPiece(new Rook(Color.White, "A1", 0, false));
+            SetPiece(new Rook(Color.White, "H1", 0, false));
+            SetPiece(new Rook(Color.Black, "A8", 0, false));
+            SetPiece(new Rook(Color.Black, "H8", 0, false));
 
 
             // bishop 

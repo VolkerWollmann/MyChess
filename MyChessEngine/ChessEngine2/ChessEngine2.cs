@@ -48,10 +48,10 @@ namespace MyChessEngine
             }
 
             // rook
-            Board.SetPiece(new Rook(Color.White, "A1", false, 0));
-            Board.SetPiece(new Rook(Color.White, "H1", false, 0));
-            Board.SetPiece(new Rook(Color.Black, "A8", false, 0));
-            Board.SetPiece(new Rook(Color.Black, "H8", false, 0));
+            Board.SetPiece(new Rook(Color.White, "A1", 0,false));
+            Board.SetPiece(new Rook(Color.White, "H1", 0, false));
+            Board.SetPiece(new Rook(Color.Black, "A8", 0, false));
+            Board.SetPiece(new Rook(Color.Black, "H8", 0, false));
             
             // bishop 
             Board.SetPiece(new Bishop(Color.White, "C1",  0));

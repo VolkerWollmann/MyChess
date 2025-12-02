@@ -1,4 +1,5 @@
-﻿using MyChessEngineBase;
+﻿using System;
+using MyChessEngineBase;
 using Color = MyChessEngineBase.Color;
 // ReSharper disable InconsistentNaming
 
@@ -31,6 +32,22 @@ namespace MyChessEngineInteger.Pieces
         public int PromotionPly { get; set; }
 
         public int LastEnPassantPlyMarking { get; set; } = -1;
+
+        public bool Compare(IPiece other)
+        {
+            if (other == null)
+                throw new Exception();
+
+            if (Type != other.Type ||
+                Color != other.Color ||
+                IsMoved != other.IsMoved ||
+                PromotionPly != other.PromotionPly ||
+                LastEnPassantPlyMarking != other.LastEnPassantPlyMarking)
+                return false;
+
+            return true;
+        }
+
 
         public NumPieces GetNumPieces()
         {
