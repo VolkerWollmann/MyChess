@@ -105,7 +105,7 @@ namespace MyChessEngine.Pieces
 
         }
 
-        public Queen(Color color, string position, int lastPly=-1, int promotionPly=-1) : base(color, PieceType.Queen, new Position(position), lastPly, promotionPly)
+        public Queen(Color color, string position, int lastPly = -1, int promotionPly=-1) : base(color, PieceType.Queen, new Position(position), lastPly, promotionPly)
         {
 
         }

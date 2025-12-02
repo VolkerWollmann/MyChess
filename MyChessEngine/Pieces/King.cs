@@ -164,7 +164,7 @@ namespace MyChessEngine.Pieces
                 KingMoves = MoveType.Normal;
         }
 
-        public King(Color color, string positionString, int lastPly):
+        public King(Color color, string positionString, int lastPly = -1):
             this(color, new Position(positionString), lastPly) { }
 
         public bool IsChecked()
