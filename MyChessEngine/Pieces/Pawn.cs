@@ -69,7 +69,7 @@ namespace MyChessEngine.Pieces
                     {
                         // pawn double step
                         Position newPosition2 = Position.GetDeltaPosition(0,2);
-                        if ((newPosition2 != null) && Board[newPosition2].Piece == null)
+                        if (Board[newPosition2].Piece == null)
                         {
                             Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
                             
@@ -171,9 +171,10 @@ namespace MyChessEngine.Pieces
             }
             else
             {
-                // black
-                // beat low
-                Position newPosition = Position.GetDeltaPosition(-1, -1);
+				#region black pawn
+				// black
+				// beat low
+				Position newPosition = Position.GetDeltaPosition(-1, -1);
                 if (newPosition != null)
                 {
 					Piece pieceToBeat = Board[newPosition].Piece;
@@ -197,7 +198,7 @@ namespace MyChessEngine.Pieces
                     if (Position.Row == 6)
                     {
                         Position newPosition2 = Position.GetDeltaPosition(0, -2);
-                        if ((newPosition2 != null) && Board[newPosition2].Piece == null)
+                        if (Board[newPosition2].Piece == null)
                         {
                             Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
 
@@ -296,9 +297,10 @@ namespace MyChessEngine.Pieces
                         }
                     }
                 }
-            }
+				#endregion
+			}
 
-            return moveList;
+			return moveList;
         }
 
         static readonly List<Tuple<int, MoveType>> PossibleBlackEnpassants =

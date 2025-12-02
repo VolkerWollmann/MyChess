@@ -62,17 +62,22 @@ namespace EngineUnitTests
             Assert.AreEqual(Evaluation.BlackCheckMate, rating.Evaluation);
         }
 
-        #endregion
+		#endregion
 
-        #region MoveCalculation
+		#region MoveCalculation
 
-        [TestMethod]
-        public void CalculateOpeningMoveParallel()
+		[DataTestMethod]
+		[DataRow(1)]
+		[DataRow(2)]
+		[DataRow(3)]
+		[DataRow(4)]
+		[DataRow(5)]
+		public void CalculateOpeningMoveParallel(int depth)
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
 
-            Move move = chessEngine.CalculateMove();
+            Move move = chessEngine.CalculateMoveWithDepthParallel(depth);
             Assert.IsNotNull(move);
         }
 
@@ -82,7 +87,7 @@ namespace EngineUnitTests
 		[DataRow(3)]
 		[DataRow(4)]
 		[DataRow(5)]
-		public void CalculateOpeningMove_Depths(int depth)
+		public void CalculateOpeningMove(int depth)
 		{
 			ChessEngine chessEngine = new ChessEngine();
 			chessEngine.New();
@@ -239,8 +244,8 @@ namespace EngineUnitTests
 
             chessEngine.ColorToMove = Color.White;
             var moveListWhite = chessEngine.GetMoveList();
-            var enpassantMove = moveListWhite.Moves.First(move => move.Type == MoveType.PawnDoubleStep);
-            chessEngine.ExecuteMove(enpassantMove);
+            var doubleStepMove = moveListWhite.Moves.First(move => move.Type == MoveType.PawnDoubleStep);
+            chessEngine.ExecuteMove(doubleStepMove);
 
             var moveListBlack = chessEngine.GetMoveList();
 
