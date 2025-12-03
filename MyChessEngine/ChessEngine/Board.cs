@@ -175,7 +175,10 @@ namespace MyChessEngine
             Ply++;
             Moves.Add(move);
 
-            Piece p = this[move.Start].Piece;
+            if (this[move.End].Piece is King king)
+	            Kings[king.Color] = null;
+
+			Piece p = this[move.Start].Piece;
             move.PlyBefore = p.LastPly;
             this[move.End].Piece = p;
             move.PieceBefore = p.Copy();
@@ -351,7 +354,7 @@ namespace MyChessEngine
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;
             Move resultMove2 = result.GetBestMove(color, check);
-            resultMove2.Rating.AddMove(resultMove2.ToString());
+            resultMove2.Rating.AddMove(resultMove2.ShortString());
 			return resultMove2;
         }
 
@@ -391,7 +394,7 @@ namespace MyChessEngine
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;
             Move resultMove2 = result.GetBestMove(color, check);
-            resultMove2.Rating.AddMove(resultMove2.ToString());
+            resultMove2.Rating.AddMove(resultMove2.ShortString());
             return resultMove2;
         }
     }
