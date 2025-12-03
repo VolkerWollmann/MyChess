@@ -13,13 +13,22 @@ namespace MyChessEngineBase.Rating
         public int Weight;
         public int Depth;
 
+        public string MoveList;
+
         public BoardRating()
         {
             Situation = Situation.None;
             Evaluation = Evaluation.None;
             Weight = 0;
             Depth = 0;
-        }
+            MoveList = string.Empty;
+		}
+
+        public void AddMove(string move)
+        {
+	        MoveList = move + ";" + MoveList;
+
+		}
 
         public override string ToString()
         {

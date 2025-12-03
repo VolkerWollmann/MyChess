@@ -80,7 +80,12 @@ namespace MyChessEngineBase
 
             return s;
         }
-    }
+
+        public string ShortString()
+        {
+	        return $"{Start}-{End};";
+        }
+	}
 
     public class MoveComparer : IComparer<Move>
     {

@@ -339,7 +339,7 @@ namespace MyChessEngine
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
                 
-                result.Add(move);
+				result.Add(move);
                 UndoLastMove();
 
                 //if (!this.Compare(b))
@@ -351,7 +351,8 @@ namespace MyChessEngine
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;
             Move resultMove2 = result.GetBestMove(color, check);
-            return resultMove2;
+            resultMove2.Rating.AddMove(resultMove2.ShortString());
+			return resultMove2;
         }
 
         public virtual Move CalculateMoveParallel(int depth, Color color)
@@ -381,6 +382,8 @@ namespace MyChessEngine
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
+                move.Rating.AddMove( move.ToString());
+                result.Moves.Add(move);
 
                 result.Add(move);
             });

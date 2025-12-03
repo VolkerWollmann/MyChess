@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngine;
@@ -186,6 +187,8 @@ namespace EngineUnitTests
             Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
             Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
             Assert.IsTrue(move.Piece is Rook);
+
+            Console.WriteLine(move.Rating.MoveList);
         }
 
         [TestMethod]
