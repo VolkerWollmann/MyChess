@@ -61,19 +61,19 @@ namespace MyChessEngine.Pieces
                 }
 
                 // up
-                newPosition = Position.GetDeltaPosition(0, 1);
+                newPosition = Position.GetDeltaRowPosition(1);
                 if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     if (Position.Row == 1)
                     {
                         // pawn double step
-                        Position newPosition2 = Position.GetDeltaPosition(0,2);
+                        Position newPosition2 = Position.GetDeltaRowPosition(2);
                         if (Board[newPosition2].Piece == null)
                         {
                             Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
-                            
-                            Position low = newPosition2.GetDeltaPosition(-1, 0);
+
+                            Position low = newPosition2.GetDeltaColumnPosition(-1);
                             if ( low != null )
                             {
 	                            var lowPawn =Board[low]?.Piece;
@@ -91,7 +91,7 @@ namespace MyChessEngine.Pieces
 	                            }
                             }
 
-							Position high = newPosition2.GetDeltaPosition(1, 0);
+							Position high = newPosition2.GetDeltaColumnPosition(1);
 							if (high != null)
 							{
 								var highPawn = Board[high]?.Piece;
@@ -132,7 +132,7 @@ namespace MyChessEngine.Pieces
                 // enpassant 
                 if (this.LastEnPassantPlyMarking + 1 == this.Board.Ply)
                 {
-                    Position low = Position.GetDeltaPosition(-1, 0);
+                    Position low = Position.GetDeltaColumnPosition(-1);
                     if (low != null)
                     {
                         var lowPawn = Board[low]?.Piece;
@@ -150,7 +150,7 @@ namespace MyChessEngine.Pieces
                         }
                     }
 
-                    Position high = Position.GetDeltaPosition(+1, 0);
+                    Position high = Position.GetDeltaColumnPosition(+1);
                     if (high != null)
                     {
                         var lowPawn = Board[high]?.Piece;
@@ -190,19 +190,19 @@ namespace MyChessEngine.Pieces
 				}
 
                 // down
-                newPosition = Position.GetDeltaPosition(0, -1);
+                newPosition = Position.GetDeltaRowPosition(-1);
                 if ((newPosition != null) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     // start with two
                     if (Position.Row == 6)
                     {
-                        Position newPosition2 = Position.GetDeltaPosition(0, -2);
+                        Position newPosition2 = Position.GetDeltaRowPosition(-2);
                         if (Board[newPosition2].Piece == null)
                         {
                             Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
 
-                            Position low = newPosition2.GetDeltaPosition(-1, 0);
+                            Position low = newPosition2.GetDeltaColumnPosition(-1);
                             if (low != null)
                             {
                                 var lowPawn = Board[low]?.Piece;
@@ -220,7 +220,7 @@ namespace MyChessEngine.Pieces
                                 }
                             }
 
-                            Position high = newPosition2.GetDeltaPosition(1, 0);
+                            Position high = newPosition2.GetDeltaColumnPosition(1);
                             if (high != null)
                             {
                                 var highPawn = Board[high]?.Piece;
@@ -261,7 +261,7 @@ namespace MyChessEngine.Pieces
 
                 if (this.LastEnPassantPlyMarking + 1 == this.Board.Ply)
                 {
-                    Position low = Position.GetDeltaPosition(-1, 0);
+                    Position low = Position.GetDeltaColumnPosition(-1);
                     if ( low != null)
                     {
                         var lowPawn = Board[low]?.Piece;
@@ -279,7 +279,7 @@ namespace MyChessEngine.Pieces
                         }
                     }
 
-                    Position high = Position.GetDeltaPosition(+1, 0);
+                    Position high = Position.GetDeltaColumnPosition(+1);
                     if (high != null)
                     {
                         var lowPawn = Board[high]?.Piece;

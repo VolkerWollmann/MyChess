@@ -306,7 +306,6 @@ namespace MyChessEngine
                 field.Threat = false;
 
             var pieces = GetAllPieces(color);
-            List<Move> listOfMoves = new List<Move>();
             foreach (Piece piece in pieces)
             {
 	            var moves = piece.GetThreatenMoveList().Moves;
