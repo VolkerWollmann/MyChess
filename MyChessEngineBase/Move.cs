@@ -21,8 +21,6 @@ namespace MyChessEngineBase
         public Position[] AffectedPositionBefore = [null, null];
         public IPiece[] AffectedPieceBefore = [null, null];
 
-        public bool IsAMove { get; } = true;
-        
         public BoardRating Rating { get; set; }
 
         public Move(Position start, Position end, IPiece piece, MoveType type) : this(start, end, piece, type, null, null)
@@ -51,17 +49,15 @@ namespace MyChessEngineBase
             End = new Position(endString);
             Piece = piece;
             Type = type;
-            IsAMove = true;
         }
 
-        private Move(BoardRating rating, bool isAMove)
+        private Move(BoardRating rating)
         {
             Rating = rating;
-            IsAMove = isAMove;
         }
         public static Move CreateNoMove(BoardRating rating)
         {
-            return new Move(rating, false);
+            return new Move(rating);
         }
 
 
