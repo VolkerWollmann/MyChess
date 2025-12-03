@@ -3,6 +3,7 @@ using MyChessEngineBase;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace MyChessEngine.Pieces
 {
@@ -78,21 +79,7 @@ namespace MyChessEngine.Pieces
 
         public virtual bool ExecuteMove(Move move)
         {
-            if (Board[move.End].Piece is King king)
-                Board.Kings[king.Color] = null;
-            if (move.AffectedPositionAfter[0] != null)
-            {
-                Board[move.AffectedPositionAfter[0]].Piece = (Piece)move.AffectedPieceAfter[0];
-                ((Pawn) move.Piece).PossibleMoveType = MoveType.Normal;
-            }
-
-            Board[move.End].Piece = Board[move.Start].Piece;
-            Board[move.Start].Piece = null;
-
-            this.Position = move.End;
-            this.LastPly = Board.Ply;
-
-            return true;
+	        return true;
         }
 
         public int Weight { get; }

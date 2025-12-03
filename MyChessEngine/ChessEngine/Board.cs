@@ -198,6 +198,8 @@ namespace MyChessEngine
                 }
             }
 
+            p.ExecuteMove(move);
+
             return true;
         }
 
