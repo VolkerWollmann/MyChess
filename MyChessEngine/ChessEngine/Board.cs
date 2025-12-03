@@ -184,7 +184,7 @@ namespace MyChessEngine
             move.PieceBefore = p.Copy();
             this[move.Start].Piece = null;
             p.Position = move.End;
-            //p.LastPly = Ply;
+            p.LastPly = Ply;
 
             for (int i = 0; i < 2; i++)
             {
