@@ -351,7 +351,7 @@ namespace MyChessEngine
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;
             Move resultMove2 = result.GetBestMove(color, check);
-            resultMove2.Rating.AddMove(resultMove2.ShortString());
+            resultMove2.Rating.AddMove(resultMove2.ToString());
 			return resultMove2;
         }
 
@@ -374,15 +374,15 @@ namespace MyChessEngine
             Parallel.ForEach(moveIndexes, moveindex =>
             {
                 Move move = moves.Moves[moveindex];
-             
-                //MoveStack[depth] = move.ToString();
+                
                 Board copy2 = this.Copy();
-                copy2.ExecuteMove(move);
+                var copy2Moves = copy2.GetMoveList(color);
+                var copy2Move = copy2Moves.GetMoveByPositions(move.Start, move.End);
+                copy2.ExecuteMove(copy2Move);
 
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
-                move.Rating.AddMove( move.ToString());
                 result.Moves.Add(move);
 
                 result.Add(move);
@@ -391,6 +391,7 @@ namespace MyChessEngine
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;
             Move resultMove2 = result.GetBestMove(color, check);
+            resultMove2.Rating.AddMove(resultMove2.ToString());
             return resultMove2;
         }
     }

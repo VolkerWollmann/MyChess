@@ -89,6 +89,11 @@ namespace MyChessEngineBase
         {
             _Moves.Sort(new MoveComparer(color));
         }
+
+        public Move GetMoveByPositions(Position start, Position end)
+        {
+            return _Moves.FirstOrDefault(m => m.Start.AreEqual(start) && m.End.AreEqual(end));
+        }
     }
 
     public class ParallelMoveList

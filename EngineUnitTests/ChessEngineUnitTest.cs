@@ -204,6 +204,8 @@ namespace EngineUnitTests
 
             Move move = chessEngine.CalculateMoveWithDepthParallel(6);
 
+            Console.WriteLine(move.Rating.MoveList);
+
             Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
             Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
             Assert.IsTrue(move.Piece is Rook);
