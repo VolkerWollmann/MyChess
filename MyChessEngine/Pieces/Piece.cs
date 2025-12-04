@@ -55,12 +55,7 @@ namespace MyChessEngine.Pieces
         }
 
         public Board Board{ get; set; }
-        Position IEnginePiece.Position
-        {
-            get => Position;
-            set => Position = value;
-        }
-
+        
         public Position Position { get; set; }
 
         public virtual Piece Copy()
