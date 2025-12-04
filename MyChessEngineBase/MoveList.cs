@@ -7,7 +7,7 @@ namespace MyChessEngineBase
 {
     public class MoveList
     {
-        private readonly List<Move> _Moves = new List<Move>();
+        private readonly List<Move> _Moves;
 
         public List<Move> Moves => _Moves;
 
@@ -33,38 +33,44 @@ namespace MyChessEngineBase
             if (color == Color.White)
             {
                 bool atLeastOneMove = _Moves.Any();
-                bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory);
                 if (!check && !atLeastOneMove)
                     return Move.CreateNoMove(new BoardRating {Situation = Situation.StaleMate, Evaluation = Evaluation.WhiteStaleMate});
 
-                if (check && allMovesAreBlackVictory)
+                if (check)
                 {
-                    int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
-                    return Move.CreateNoMove(new BoardRating
-                    {
-                        Situation = Situation.BlackVictory, Evaluation = Evaluation.WhiteCheckMate,
-                        Weight = -ChessEngineConstants.CheckMate, Depth = maxDepth
-                    });
+					bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory);
+					if (allMovesAreBlackVictory)
+					{
+						int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
+						return Move.CreateNoMove(new BoardRating
+						{
+							Situation = Situation.BlackVictory, Evaluation = Evaluation.WhiteCheckMate,
+							Weight = -ChessEngineConstants.CheckMate, Depth = maxDepth
+						});
+					}
                 }
             }
             else
             {
                 bool atLeastOneMove = _Moves.Any();
-                bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory);
                 if (!check && !atLeastOneMove)
                 {
                     return Move.CreateNoMove(new BoardRating
                         {Situation = Situation.StaleMate, Evaluation = Evaluation.BlackStaleMate});
                 }
 
-                if (check && allMovesAreWhiteVictory)
+                if (check)
                 {
-                    int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
-                    return Move.CreateNoMove(new BoardRating
-                    {
-                        Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate,
-                        Weight = ChessEngineConstants.CheckMate, Depth = maxDepth
-                    });
+					bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory);
+					if (allMovesAreWhiteVictory)
+					{
+						int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
+						return Move.CreateNoMove(new BoardRating
+						{
+							Situation = Situation.WhiteVictory, Evaluation = Evaluation.BlackCheckMate,
+							Weight = ChessEngineConstants.CheckMate, Depth = maxDepth
+						});
+					}
                 }
             }
             
