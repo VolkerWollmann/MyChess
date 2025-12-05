@@ -47,7 +47,7 @@ namespace MyChessEngine.Pieces
             {
                 // beat low
                 Position newPosition = Position.GetDeltaPosition(-1, 1);
-                if (newPosition != null)
+                if (newPosition.Column > -1)
                 {
                     Piece pieceToBeat = Board[newPosition].Piece;
                     if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
@@ -62,7 +62,7 @@ namespace MyChessEngine.Pieces
 
                 // up
                 newPosition = Position.GetDeltaRowPosition(1);
-                if ((newPosition != null) && Board[newPosition].Piece == null)
+                if ((newPosition.Column > -1) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     if (Position.Row == 1)
@@ -74,7 +74,7 @@ namespace MyChessEngine.Pieces
                             Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
 
                             Position low = newPosition2.GetDeltaColumnPosition(-1);
-                            if ( low != null )
+                            if ( low.Column > -1 )
                             {
 	                            var lowPawn =Board[low]?.Piece;
 
@@ -92,7 +92,7 @@ namespace MyChessEngine.Pieces
                             }
 
 							Position high = newPosition2.GetDeltaColumnPosition(1);
-							if (high != null)
+							if (high.Column > -1)
 							{
 								var highPawn = Board[high]?.Piece;
 								if (highPawn is { Type: PieceType.Pawn, Color: Color.Black })
@@ -116,7 +116,7 @@ namespace MyChessEngine.Pieces
 
                 // beat high
                 newPosition = Position.GetDeltaPosition(1, 1);
-                if (newPosition != null)
+                if (newPosition.Column > -1)
                 {
 	                Piece pieceToBeat = Board[newPosition].Piece;
 					if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
@@ -133,7 +133,7 @@ namespace MyChessEngine.Pieces
                 if (this.LastEnPassantPlyMarking + 1 == this.Board.Ply)
                 {
                     Position low = Position.GetDeltaColumnPosition(-1);
-                    if (low != null)
+                    if (low.Column > -1)
                     {
                         var lowPawn = Board[low]?.Piece;
                         if (lowPawn is { Type: PieceType.Pawn, Color: Color.Black })
@@ -151,7 +151,7 @@ namespace MyChessEngine.Pieces
                     }
 
                     Position high = Position.GetDeltaColumnPosition(+1);
-                    if (high != null)
+                    if (high.Column > -1)
                     {
                         var lowPawn = Board[high]?.Piece;
                         if (lowPawn is { Type: PieceType.Pawn, Color: Color.Black })
@@ -175,7 +175,7 @@ namespace MyChessEngine.Pieces
 				// black
 				// beat low
 				Position newPosition = Position.GetDeltaPosition(-1, -1);
-                if (newPosition != null)
+                if (newPosition.Column > -1)
                 {
 					Piece pieceToBeat = Board[newPosition].Piece;
 					if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
@@ -191,7 +191,7 @@ namespace MyChessEngine.Pieces
 
                 // down
                 newPosition = Position.GetDeltaRowPosition(-1);
-                if ((newPosition != null) && Board[newPosition].Piece == null)
+                if ((newPosition.Column > -1) && Board[newPosition].Piece == null)
                 {
                     moveList.Add(new Move(Position, newPosition, this));
                     // start with two
@@ -203,7 +203,7 @@ namespace MyChessEngine.Pieces
                             Move move = new Move(Position, newPosition2, this, MoveType.PawnDoubleStep);
 
                             Position low = newPosition2.GetDeltaColumnPosition(-1);
-                            if (low != null)
+                            if (low.Column > -1)
                             {
                                 var lowPawn = Board[low]?.Piece;
 
@@ -221,7 +221,7 @@ namespace MyChessEngine.Pieces
                             }
 
                             Position high = newPosition2.GetDeltaColumnPosition(1);
-                            if (high != null)
+                            if (high.Column > -1)
                             {
                                 var highPawn = Board[high]?.Piece;
                                 if (highPawn is {Type: PieceType.Pawn, Color: Color.White})
@@ -244,7 +244,7 @@ namespace MyChessEngine.Pieces
 
                 // beat high
                 newPosition = Position.GetDeltaPosition(1, -1);
-                if (newPosition != null)
+                if (newPosition.Column > -1)
                 {
 					Piece pieceToBeat = Board[newPosition].Piece;
 					if ((pieceToBeat != null) && (pieceToBeat.Color != Color))
@@ -262,7 +262,7 @@ namespace MyChessEngine.Pieces
                 if (this.LastEnPassantPlyMarking + 1 == this.Board.Ply)
                 {
                     Position low = Position.GetDeltaColumnPosition(-1);
-                    if ( low != null)
+                    if ( low.Column > -1)
                     {
                         var lowPawn = Board[low]?.Piece;
                         if (lowPawn is { Type: PieceType.Pawn, Color: Color.White })
@@ -280,7 +280,7 @@ namespace MyChessEngine.Pieces
                     }
 
                     Position high = Position.GetDeltaColumnPosition(+1);
-                    if (high != null)
+                    if (high.Column > -1)
                     {
                         var lowPawn = Board[high]?.Piece;
                         if (lowPawn is { Type: PieceType.Pawn, Color: Color.White })

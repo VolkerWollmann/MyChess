@@ -81,7 +81,7 @@ namespace MyChessEngine
 
         public IsValidPositionReturns IsValidPosition(Position position, Color color, bool threat = false)
         {
-            if (position == null)
+            if (position.Column == -1)
                 return IsValidPositionReturns.NoPosition;
 
             Piece piece = this[position].Piece;
@@ -189,7 +189,7 @@ namespace MyChessEngine
             for (int i = 0; i < 2; i++)
             {
                 var pos = move.AffectedPositionAfter[i];
-                if (pos != null)
+                if (pos.Column > -1)
                 {
                     if (move.AffectedPieceAfter[i] != null)
                         SetPiece(pos, (Piece)move.AffectedPieceAfter[i]);
@@ -225,7 +225,7 @@ namespace MyChessEngine
             for (int i = 0; i < 2; i++)
             {
                 Position pos = move.AffectedPositionBefore[i];
-                if (pos != null)
+                if (pos.Column > -1)
                 {
                     if (move.AffectedPieceBefore[i] != null)
                         SetPiece(pos, (Piece)move.AffectedPieceBefore[i]);

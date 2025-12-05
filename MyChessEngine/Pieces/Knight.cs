@@ -25,7 +25,7 @@ namespace MyChessEngine.Pieces
             for (int i = 0; i < 8; i++)
             {
                 Position newPosition = Position.GetDeltaPosition(Delta[i, 0], Delta[i, 1]);
-                if (newPosition != null)
+                if (newPosition.Column > -1)    
                     AddPosition(moveList, newPosition);
             }
 

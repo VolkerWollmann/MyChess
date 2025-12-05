@@ -15,15 +15,15 @@ namespace MyChessEngineBase
         public int PlyBefore;
 
 
-		public Position[] AffectedPositionAfter = [null, null];
+		public Position[] AffectedPositionAfter = [new Position(), new Position()];
         public IPiece[] AffectedPieceAfter = [null, null];
 
-        public Position[] AffectedPositionBefore = [null, null];
+        public Position[] AffectedPositionBefore = [new Position(), new Position()];
         public IPiece[] AffectedPieceBefore = [null, null];
 
         public BoardRating Rating { get; set; }
 
-        public Move(Position start, Position end, IPiece piece, MoveType type) : this(start, end, piece, type, null, null)
+        public Move(Position start, Position end, IPiece piece, MoveType type) : this(start, end, piece, type, null, new Position())
 		{
 
         }

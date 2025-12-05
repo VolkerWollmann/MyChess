@@ -6,12 +6,17 @@ using System.Text;
 namespace MyChessEngineBase
 {
     [DebuggerDisplay("{ToString()}")]
-    public class Position
+    public struct Position
     {
 
-        public int Column; // A
-        public int Row;    // 1
-        
+        public int Column=-1; // A
+        public int Row=-1;    // 1
+
+        public Position()
+        {
+            Column = -1;
+            Row = -1;
+        }
         public Position(int column, int row)
         {
             Row = row;
@@ -66,11 +71,11 @@ namespace MyChessEngineBase
         {
             int newRow = Row + deltaRow;
             if ((newRow < 0) || (newRow >= ChessEngineConstants.Length))
-                return null;
+                return new Position();
 
             int newColumn = Column + deltaColumn;
             if ((newColumn < 0) || (newColumn >= ChessEngineConstants.Length))
-                return null;
+                return new Position();
 
             return new Position(newColumn, newRow);
         }
@@ -79,7 +84,7 @@ namespace MyChessEngineBase
         {
 	        int newColumn = Column + deltaColumn;
 	        if ((newColumn < 0) || (newColumn >= ChessEngineConstants.Length))
-		        return null;
+		        return new Position();
 
 	        return new Position(newColumn, Row);
         }
@@ -88,7 +93,7 @@ namespace MyChessEngineBase
         {
 			int newRow = Row + deltaRow;
 			if ((newRow < 0) || (newRow >= ChessEngineConstants.Length))
-				return null;
+				return new Position();
 
 			return new Position(Column, newRow);
         }
