@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyChessEngineBase\MyChessEngineBase.csproj" />
-    <ProjectReference Include="..\MyChessEngineInteger\MyChessEngineInteger.csproj" />
     <ProjectReference Include="..\MyChessEngine\MyChessEngine.csproj" />
   </ItemGroup>
 
