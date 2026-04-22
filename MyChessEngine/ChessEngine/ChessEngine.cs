@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using MyChessEngine.Pieces;
 using MyChessEngineBase;
 using MyChessEngineBase.Interfaces;
@@ -114,8 +113,7 @@ namespace MyChessEngine
 
         public void Test()
         {
-            var allMoves = Board.GetAllPieces(ColorToMove).Select( (piece => piece.GetMoveList().Moves)).SelectMany( move => move).ToList();
-            
+            var allMoves = Board.GetBaseMoveList(ColorToMove);
             foreach (Move move3 in allMoves)
             {
                 _Message = _Message + " " + move3 + Environment.NewLine;

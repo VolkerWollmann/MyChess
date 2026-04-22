@@ -107,7 +107,14 @@ namespace MyChessEngine
         }
         public List<Piece> GetAllPieces(Color color)
         {
-            var pieces = Field.Cast<Field>().Where(field => (field.Piece?.Color == color)).Select(field => field.Piece).ToList();
+            var pieces = new List<Piece>(16);
+            for (int c = 0; c < ChessEngineConstants.Length; c++)
+            for (int r = 0; r < ChessEngineConstants.Length; r++)
+            {
+                var piece = Field[c, r].Piece;
+                if (piece != null && piece.Color == color)
+                    pieces.Add(piece);
+            }
 
             return pieces;
         }
@@ -247,7 +254,18 @@ namespace MyChessEngine
 
         internal List<Move> GetBaseMoveList(Color color)
         {
-            return GetAllPieces(color).Select((piece => piece.GetMoveList().Moves)).SelectMany(move => move).ToList();
+            var list = new List<Move>(64);
+            for (int c = 0; c < ChessEngineConstants.Length; c++)
+            for (int r = 0; r < ChessEngineConstants.Length; r++)
+            {
+                var piece = Field[c, r].Piece;
+                if (piece == null || piece.Color != color)
+                    continue;
+                var pieceMoves = piece.GetMoveList().Moves;
+                for (int i = 0; i < pieceMoves.Count; i++)
+                    list.Add(pieceMoves[i]);
+            }
+            return list;
         }
 
         public Dictionary<Color, King> Kings = new Dictionary<Color, King> {{Color.White, null}, {Color.Black, null}};
@@ -305,19 +323,16 @@ namespace MyChessEngine
             foreach (var field in Field)
                 field.Threat = false;
 
-            var pieces = GetAllPieces(color);
-            foreach (Piece piece in pieces)
+            for (int c = 0; c < ChessEngineConstants.Length; c++)
+            for (int r = 0; r < ChessEngineConstants.Length; r++)
             {
-	            var moves = piece.GetThreatenMoveList().Moves;
-	            foreach (var move in moves)
-	            {
-                    this[move.End].Threat = true;
-	            }
+                var piece = Field[c, r].Piece;
+                if (piece == null || piece.Color != color)
+                    continue;
+                var threatened = piece.GetThreatenMoveList().Moves;
+                for (int i = 0; i < threatened.Count; i++)
+                    this[threatened[i].End].Threat = true;
             }
-            
-            //return GetAllPieces(color)
-            //    .Select((piece => piece.GetThreatenMoveList().Moves))
-            //    .SelectMany(move => move).Select(move => move.End).ToList();
         }
         public virtual Move CalculateMove(int depth, Color color)
         {
