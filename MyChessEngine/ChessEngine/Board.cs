@@ -323,13 +323,15 @@ namespace MyChessEngine
         {
             MarkThreatenedFields(ChessEngineConstants.NextColorToMove(color));
 
-            var moves = new MoveList(GetBaseMoveList(color));
-
             var rating = GetRating(color);
-            
-            if ( depth == 0 || rating.Situation == Situation.WhiteVictory || rating.Situation == Situation.BlackVictory )    
+
+            if (rating.Situation == Situation.WhiteVictory || rating.Situation == Situation.BlackVictory)
                 return Move.CreateNoMove(rating);
-            
+
+            if (depth == 0)
+                return Move.CreateNoMove(rating);
+
+            var moves = new MoveList(GetBaseMoveList(color));
 
             MoveList result = new MoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
@@ -363,13 +365,15 @@ namespace MyChessEngine
         {
             MarkThreatenedFields(ChessEngineConstants.NextColorToMove(color));
 
-            var moves = this.GetMoveList(color);
-
             var rating = GetRating(color);
 
-            if (depth == 0 || rating.Situation == Situation.WhiteVictory || rating.Situation == Situation.BlackVictory)
+            if (rating.Situation == Situation.WhiteVictory || rating.Situation == Situation.BlackVictory)
                 return Move.CreateNoMove(rating);
 
+            if (depth == 0)
+                return Move.CreateNoMove(rating);
+
+            var moves = this.GetMoveList(color);
 
             ParallelMoveList result = new ParallelMoveList();
             IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
