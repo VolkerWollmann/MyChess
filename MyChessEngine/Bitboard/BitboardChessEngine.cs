@@ -18,8 +18,15 @@ namespace MyChessEngine.Bitboard
         private const int SearchDepth = 4;
 
         private readonly ulong[] _pieceBoards = new ulong[12];
+        private readonly StartPositionMode _defaultStartPositionMode;
         private Color _colorToMove;
         private string _message = string.Empty;
+
+        public enum StartPositionMode
+        {
+            Classic,
+            Empty
+        }
 
         private enum PieceIndex
         {
@@ -75,15 +82,36 @@ namespace MyChessEngine.Bitboard
 
         public string Message => _message;
 
-        public BitboardChessEngine()
+        public BitboardChessEngine() : this(StartPositionMode.Classic)
         {
-            Clear();
+        }
+
+        public BitboardChessEngine(StartPositionMode defaultStartPositionMode)
+        {
+            _defaultStartPositionMode = defaultStartPositionMode;
+            New(defaultStartPositionMode);
         }
 
         public void New()
         {
-            Clear();
+            New(_defaultStartPositionMode);
+        }
 
+        public void New(StartPositionMode startPositionMode)
+        {
+            Clear();
+            if (startPositionMode == StartPositionMode.Empty)
+            {
+                _message = "Bitboard engine initialized with empty board.";
+                return;
+            }
+
+            SetupClassicPosition();
+            _message = "Bitboard engine initialized with classic board.";
+        }
+
+        private void SetupClassicPosition()
+        {
             // White pieces
             _pieceBoards[(int)PieceIndex.WhitePawn] = 0x000000000000FF00UL;
             _pieceBoards[(int)PieceIndex.WhiteRook] = 0x0000000000000081UL;
@@ -99,9 +127,6 @@ namespace MyChessEngine.Bitboard
             _pieceBoards[(int)PieceIndex.BlackBishop] = 0x2400000000000000UL;
             _pieceBoards[(int)PieceIndex.BlackQueen] = 0x0800000000000000UL;
             _pieceBoards[(int)PieceIndex.BlackKing] = 0x1000000000000000UL;
-
-            _colorToMove = Color.White;
-            _message = "Bitboard engine initialized.";
         }
 
         public void Clear()
@@ -129,6 +154,24 @@ namespace MyChessEngine.Bitboard
             }
 
             return null;
+        }
+
+        public void SetPiece(Position position, IPiece piece)
+        {
+            int square = SquareIndex(position);
+            if (square < 0)
+                return;
+
+            ulong squareMask = 1UL << square;
+
+            for (int i = 0; i < _pieceBoards.Length; i++)
+                _pieceBoards[i] &= ~squareMask;
+
+            if (piece == null)
+                return;
+
+            PieceIndex target = PieceToIndex(piece.Type, piece.Color);
+            _pieceBoards[(int)target] |= squareMask;
         }
 
         public BoardRating GetRating(Color color)

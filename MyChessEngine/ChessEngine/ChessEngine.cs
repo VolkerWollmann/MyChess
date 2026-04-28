@@ -19,6 +19,23 @@ namespace MyChessEngine
             return Board[position].Piece;
         }
 
+        public void SetPiece(Position position, IPiece piece)
+        {
+            if (piece == null)
+            {
+                Board.SetPiece(position, null);
+                return;
+            }
+
+            if (piece is Piece enginePiece)
+            {
+                Board.SetPiece(position, enginePiece);
+                return;
+            }
+
+            throw new ArgumentException("SetPiece requires a MyChessEngine.Pieces.Piece instance.", nameof(piece));
+        }
+
         public void SetPiece(string position, Piece piece)
         {
             Board.SetPiece(position,piece);
