@@ -6,6 +6,8 @@ namespace MyChessEngineBase.Interfaces
     {
         IPiece GetPiece(Position position);
 
+        void SetPiece(IPiece piece);
+
         Color ColorToMove { get; set; }
 
         void New();
