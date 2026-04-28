@@ -132,7 +132,7 @@ namespace MyChess.ViewModel
             #endregion
 
             #region Engine
-            ChessEngine = new ChessEngine();
+            ChessEngine = ChessEngineFactory.CreateDefault();
             #endregion
 
             #region Menu
