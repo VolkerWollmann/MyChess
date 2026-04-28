@@ -174,6 +174,11 @@ namespace MyChessEngine.Bitboard
             _pieceBoards[(int)target] |= squareMask;
         }
 
+        public void SetPiece(string position, IPiece piece)
+        {
+            SetPiece(new Position(position), piece);
+        }
+
         public BoardRating GetRating(Color color)
         {
             return BuildRating(color, EvaluateMaterial());

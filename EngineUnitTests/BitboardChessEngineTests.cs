@@ -1,7 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MyChessEngine;
 using MyChessEngine.Bitboard;
 using MyChessEngine.Pieces;
 using MyChessEngineBase;
+using System;
 
 namespace EngineUnitTests
 {
@@ -76,6 +78,40 @@ namespace EngineUnitTests
 
             engine.SetPiece(new Position("D4"), null);
             Assert.IsNull(engine.GetPiece(new Position("D4")));
+        }
+
+        [TestMethod]
+        public void SetPiece_StringPosition_CanPlaceAndRemovePiece()
+        {
+            var engine = new BitboardChessEngine(BitboardChessEngine.StartPositionMode.Empty);
+            engine.New();
+
+            engine.SetPiece("E1", new King(Color.White, "E1"));
+            engine.SetPiece("E8", new King(Color.Black, "E8"));
+            engine.SetPiece("D5", new Queen(Color.White, "D5"));
+
+            IPiece piece = engine.GetPiece(new Position("D5"));
+            Assert.IsNotNull(piece);
+            Assert.AreEqual(PieceType.Queen, piece.Type);
+            Assert.AreEqual(Color.White, piece.Color);
+
+            engine.SetPiece("D5", null);
+            Assert.IsNull(engine.GetPiece(new Position("D5")));
+        }
+
+        [TestMethod]
+        public void CalculateOneMoveMate()
+        {
+            var chessEngine = new BitboardChessEngine(BitboardChessEngine.StartPositionMode.Empty);
+            chessEngine.SetPiece("G6",new King(Color.White, "G6"));
+
+            chessEngine.SetPiece("G8",new King(Color.Black, "G8"));
+            chessEngine.SetPiece("A1",new Rook(Color.White, "A1"));
+
+            Move move = chessEngine.CalculateMoveWithDepth(6);
+
+            Assert.IsTrue(move.End.AreEqual(new Position("A8")));
+
         }
     }
 }

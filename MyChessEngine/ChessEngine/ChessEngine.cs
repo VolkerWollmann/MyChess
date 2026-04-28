@@ -36,6 +36,11 @@ namespace MyChessEngine
             throw new ArgumentException("SetPiece requires a MyChessEngine.Pieces.Piece instance.", nameof(piece));
         }
 
+        public void SetPiece(string position, IPiece piece)
+        {
+            SetPiece(new Position(position), piece);
+        }
+
         public void SetPiece(string position, Piece piece)
         {
             Board.SetPiece(position,piece);
