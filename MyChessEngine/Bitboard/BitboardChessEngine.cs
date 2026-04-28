@@ -291,7 +291,9 @@ namespace MyChessEngine.Bitboard
                 {
                     if (IsInCheck(_colorToMove))
                     {
-                        return _colorToMove == Color.White ? -ChessEngineConstants.CheckMate : ChessEngineConstants.CheckMate;
+                        // Prefer faster mates by rewarding mates found higher in the tree.
+                        int mateScore = ChessEngineConstants.CheckMate + depth;
+                        return _colorToMove == Color.White ? -mateScore : mateScore;
                     }
                     return 0;
                 }
