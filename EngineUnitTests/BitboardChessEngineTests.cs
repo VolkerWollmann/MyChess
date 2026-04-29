@@ -113,5 +113,12 @@ namespace EngineUnitTests
             Assert.IsTrue(move.End.AreEqual(new Position("A8")));
 
         }
+
+        [TestMethod]
+        public void CopyTest()
+        {
+            var chessEngine = new BitboardChessEngine(BitboardChessEngine.StartPositionMode.Empty);
+            var copy = chessEngine.CaptureState();
+        }
     }
 }

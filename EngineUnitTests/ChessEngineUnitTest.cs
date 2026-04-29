@@ -30,6 +30,27 @@ namespace EngineUnitTests
 
         }
 
+        [TestMethod]
+        public void CopyTest()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+            chessEngine.New();
+            Board board = chessEngine.Board;
+            Board board2 = board.Copy();
+
+        }
+
+        [TestMethod]
+        public void CopyTestArray()
+        {
+            int[,] board = new int[10, 10];
+            int[,] board2;
+
+            for(int i=0; i<2; i++)
+                board2 = (int[,])board.Clone();
+
+        }
+
         #region BoardRating
 
         [TestMethod]

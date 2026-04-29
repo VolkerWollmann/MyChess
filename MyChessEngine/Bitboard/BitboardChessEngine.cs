@@ -62,7 +62,7 @@ namespace MyChessEngine.Bitboard
             }
         }
 
-        private struct BoardState
+        public struct BoardState
         {
             public readonly ulong[] PieceBoards;
             public readonly Color ColorToMove;
@@ -779,7 +779,7 @@ namespace MyChessEngine.Bitboard
             };
         }
 
-        private BoardState CaptureState()
+        public BoardState CaptureState()
         {
             ulong[] copy = new ulong[12];
             Array.Copy(_pieceBoards, copy, 12);
