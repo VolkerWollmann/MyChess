@@ -136,6 +136,40 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void CalculateTwoMoveMateWithDepth8()
+        {
+            var chessEngine = new BitboardChessEngine(BitboardChessEngine.StartPositionMode.Empty);
+
+            chessEngine.SetPiece("G6", new King(Color.White, "G6", MoveType.Normal, 1));
+            chessEngine.SetPiece("C4", new Pawn(Color.White, "C4"));
+            chessEngine.SetPiece("H8", new King(Color.Black, "H8", MoveType.Normal, 1));
+            chessEngine.SetPiece("B5", new Pawn(Color.Black, "B5"));
+            chessEngine.SetPiece("G5", new Rook(Color.White, "G5", 1));
+
+
+            Move move = chessEngine.CalculateMoveWithDepth(8);
+
+            Assert.AreEqual(Evaluation.BlackCheckMate, move.Rating.Evaluation);
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
+            Assert.IsTrue(move.Piece is Rook);
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        [DataRow(6)]
+        public void CalculateOpeningMove(int depth)
+        {
+            var chessEngine = new BitboardChessEngine(BitboardChessEngine.StartPositionMode.Classic);
+
+            Move move = chessEngine.CalculateMoveWithDepth(depth);
+            Assert.IsNotNull(move);
+        }
+
+        [TestMethod]
         public void CopyTest()
         {
             var chessEngine = new BitboardChessEngine(BitboardChessEngine.StartPositionMode.Empty);
