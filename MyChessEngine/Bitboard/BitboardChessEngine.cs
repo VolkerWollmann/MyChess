@@ -271,7 +271,7 @@ namespace MyChessEngine.Bitboard
                 }
             }
 
-            BoardRating rating = BuildRating(_colorToMove, bestScore);
+            BoardRating rating = BuildRootRatingAfterSearch(bestScore);
             Move result = BuildExternalMove(bestMove, rating);
 
             timer.Stop();
@@ -723,6 +723,35 @@ namespace MyChessEngine.Bitboard
                 PieceType.King => ChessEngineConstants.King,
                 _ => 0
             };
+        }
+
+        /// <summary>
+        /// Maps minimax scores to <see cref="BoardRating"/> at the search root.
+        /// Mate is encoded as ±(<see cref="ChessEngineConstants.CheckMate"/> + remaining depth), not as missing kings on the root board.
+        /// </summary>
+        private BoardRating BuildRootRatingAfterSearch(int bestScore)
+        {
+            if (bestScore >= ChessEngineConstants.CheckMate)
+            {
+                return new BoardRating
+                {
+                    Situation = Situation.WhiteVictory,
+                    Evaluation = Evaluation.BlackCheckMate,
+                    Weight = bestScore
+                };
+            }
+
+            if (bestScore <= -ChessEngineConstants.CheckMate)
+            {
+                return new BoardRating
+                {
+                    Situation = Situation.BlackVictory,
+                    Evaluation = Evaluation.WhiteCheckMate,
+                    Weight = bestScore
+                };
+            }
+
+            return BuildRating(_colorToMove, bestScore);
         }
 
         private BoardRating BuildRating(Color perspective, int weight)
