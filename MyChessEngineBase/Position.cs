@@ -9,8 +9,8 @@ namespace MyChessEngineBase
     public struct Position
     {
 
-        public int Column=-1; // A
-        public int Row=-1;    // 1
+        public int Column=-1; // A-H
+        public int Row=-1;    // 1-8
 
         public Position()
         {
