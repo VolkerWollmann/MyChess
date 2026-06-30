@@ -28,7 +28,5 @@ namespace MyIntegerChessEngine
         public const int White = 0;
         public const int Black = 8;
 
-        public const int IsMovedMask = 16;
-        public const int IsMoved = 16;
     }
 }

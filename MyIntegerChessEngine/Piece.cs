@@ -38,7 +38,7 @@
 
         public bool IsMoved()
         {
-            return (PieceAsInteger & Constants.IsMovedMask) != 0;
+            return LastPly > 0;
         }
         #endregion
 
