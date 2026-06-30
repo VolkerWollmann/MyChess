@@ -34,7 +34,7 @@ namespace MyIntegerChessEngine
 
         public void SetPiece(Piece piece, Position position)
         {
-            Field[Constants.PiecePlane, position.Column + 2, position.Row + 2] = piece.PieceAsInteger;
+            Field[Constants.BroadPlane, position.Column + 2, position.Row + 2] = piece.PieceAsInteger;
             Field[Constants.LastPlyPlane, position.Column + 2, position.Row + 2] = piece.LastPly;
             Field[Constants.PromotionPlane, position.Column + 2, position.Row + 2] = piece.PromotionPly;
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = piece.LastEnPassantPlyMarking;
@@ -42,7 +42,7 @@ namespace MyIntegerChessEngine
 
         public Piece GetPiece(Position position)
         {
-            int pieceValue = Field[Constants.PiecePlane, position.Column + 2, position.Row + 2];
+            int pieceValue = Field[Constants.BroadPlane, position.Column + 2, position.Row + 2];
             int lastPly = Field[Constants.LastPlyPlane, position.Column + 2, position.Row + 2];
             int promotionPly = Field[Constants.PromotionPlane, position.Column + 2, position.Row + 2];
             int lastEnPassantPlyMarking = Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2];
@@ -84,8 +84,8 @@ namespace MyIntegerChessEngine
         }
         public void ExecuteMove(Move move)
         {
-            Field[Constants.PiecePlane, move.End.Column + 2, move.End.Row + 2] 
-                = Field[Constants.PiecePlane, move.Start.Column + 2, move.Start.Row + 2];
+            Field[Constants.BroadPlane, move.End.Column + 2, move.End.Row + 2] 
+                = Field[Constants.BroadPlane, move.Start.Column + 2, move.Start.Row + 2];
 
             CurrentPly++;
             Field[Constants.LastPlyPlane, move.End.Column + 2, move.End.Row + 2] = CurrentPly;
@@ -165,12 +165,13 @@ namespace MyIntegerChessEngine
             return newBoard;
         }
 
-        public bool Compare(Board other)
+        public bool CompareBoard(Board other)
         {
+
             for (int i = 2; i < 2+ ChessEngineConstants.Length; i++)
             for (int j = 2; j < 2+ ChessEngineConstants.Length; j++)
             {
-                if (this.Field[0,i, j] != other.Field[0,i, j]) 
+                if (this.Field[Constants.BroadPlane,i, j] != other.Field[Constants.BroadPlane,i, j]) 
                     return false;
             }
 

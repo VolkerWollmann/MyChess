@@ -8,8 +8,8 @@ namespace MyIntegerChessEngine
     {
         public const int GridSize = 12;
         public const int Planes = 4;      //0: piece, 1: last ply, 2: promotion 3: en passant marking
-        public const int PiecePlane = 0;
-        public const int LastPlyPlane = 1;
+        public const int BroadPlane = 0;
+        public const int LastPlyPlane = 1;   // Administrative plane : last ply when piece moved, for en passant and castling rights
         public const int PromotionPlane = 2;
         public const int EnPassantPlane = 3;
         

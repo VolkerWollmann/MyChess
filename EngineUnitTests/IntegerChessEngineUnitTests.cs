@@ -30,7 +30,7 @@ namespace EngineUnitTests
             Board board = chessEngine.Board;
             Board board2 = board.Copy();
 
-            Assert.IsTrue(board.Compare(board2));
+            Assert.IsTrue(board.CompareBoard(board2));
 
         }
     }
