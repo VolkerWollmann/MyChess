@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class Rook
+    internal class Rook : Piece
     {
         internal MoveList GetMoveList(Board board, Position position)
         {

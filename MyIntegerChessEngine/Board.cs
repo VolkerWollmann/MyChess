@@ -84,11 +84,19 @@ namespace MyIntegerChessEngine
         }
         public void ExecuteMove(Move move)
         {
-            Field[Constants.BroadPlane, move.End.Column + 2, move.End.Row + 2] 
-                = Field[Constants.BroadPlane, move.Start.Column + 2, move.Start.Row + 2];
+            int startColumn = move.Start.Column + 2;
+            int startRow = move.Start.Row + 2;
+            int endColumn = move.End.Column + 2;
+            int endRow = move.End.Row + 2;
+
+            Field[Constants.BroadPlane, endColumn, endRow] 
+                = Field[Constants.BroadPlane, startColumn, startRow];
 
             CurrentPly++;
-            Field[Constants.LastPlyPlane, move.End.Column + 2, move.End.Row + 2] = CurrentPly;
+            Field[Constants.LastPlyPlane, move.End.Column, move.End.Row] = CurrentPly;
+
+            Field[Constants.BroadPlane, endColumn, endRow] = Constants.NoPiece;
+            Field[Constants.LastPlyPlane, endColumn, endRow] = 0;
 
             HandleCastlingRights(move);
             

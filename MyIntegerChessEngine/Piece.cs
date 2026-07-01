@@ -8,41 +8,43 @@
 
         // set by other color neighbor pawn, if move adjacent
         // will be evaluated during move generation of that pawn
-        public int LastEnPassantPlyMarking; 
+        public int LastEnPassantPlyMarking;
 
         #region Properties
+
         public int PieceType
         {
-            get
-            {
-                return PieceAsInteger & Constants.PieceMask;
-            }
+            get { return PieceAsInteger & Constants.PieceMask; }
         }
 
         public int Color
         {
-            get
-            {
-                return PieceAsInteger & Constants.ColorMask;
-            }
+            get { return PieceAsInteger & Constants.ColorMask; }
         }
-        
+
         // Assume both on same position
         public bool Compare(Piece other)
         {
-            return PieceAsInteger == other.PieceAsInteger 
-                   && LastPly == other.LastPly 
-                   && PromotionPly == other.PromotionPly 
+            return PieceAsInteger == other.PieceAsInteger
+                   && LastPly == other.LastPly
+                   && PromotionPly == other.PromotionPly
                    && LastEnPassantPlyMarking == other.LastEnPassantPlyMarking;
+        }
+
+        public virtual bool Move(Move move)
+        {
+            return true;
         }
 
         public bool IsMoved()
         {
             return LastPly > 0;
         }
+
         #endregion
 
         #region Constructors
+
         public Piece(int pieceAsInteger, int lastPly, int promotionPly, int lastEnPassantPlyMarking)
         {
             PieceAsInteger = pieceAsInteger;
@@ -51,8 +53,18 @@
             LastEnPassantPlyMarking = lastEnPassantPlyMarking;
         }
 
+        public Piece()
+        {
+
+        }
+
         #endregion
 
+        internal virtual MoveList GetMoveList(Board board, Position position)
+        {
+            MoveList moveList = new MoveList();
+            return moveList;
+        }
     }
 
     public class PieceFactory
@@ -124,3 +136,4 @@
         }
     }
 }
+

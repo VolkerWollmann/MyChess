@@ -1,6 +1,6 @@
 ﻿namespace MyIntegerChessEngine.Pieces
 {
-    internal class Pawn
+    internal class Pawn : Piece
     {
         internal MoveList GetThreatenMoveList(Board board, Position position)
         {

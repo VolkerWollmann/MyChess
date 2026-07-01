@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class Knight
+    internal class Knight : Piece
     {
         static readonly int[,] Delta = new int[,]
         {

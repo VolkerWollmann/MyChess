@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class King
+    internal class King : Piece
     {
         internal MoveList GetMoveList(Board board, Position position)
         {
@@ -30,6 +30,38 @@ namespace MyIntegerChessEngine.Pieces
                     continue; // Can't capture own piece
 
                 moveList.Add(new Move(position, targetPosition, king));
+            }
+
+            if (!IsMoved())
+            {
+                if (king.Color == Constants.White)
+                {
+                    // Check for white king-side castling
+                    if (board.WhiteCastleKingSidePossible())
+                    {
+                        moveList.Add(new Move(position, new Position("G1"), king));
+                    }
+
+                    // Check for white queen-side castling
+                    if (board.WhiteCastleQueenSidePossible())
+                    {
+                        moveList.Add(new Move(position, new Position("C1"), king));
+                    }
+                }
+                else
+                {
+                    // Check for black king-side castling
+                    if (board.BlackCastleKingSidePossible())
+                    {
+                        moveList.Add(new Move(position, new Position("G8"), king));
+                    }
+
+                    // Check for black queen-side castling
+                    if (board.BlackCastleQueenSidePossible())
+                    {
+                        moveList.Add(new Move(position, new Position("C8"), king));
+                    }
+                }
             }
 
             return moveList;
