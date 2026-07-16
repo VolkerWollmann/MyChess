@@ -168,6 +168,15 @@ namespace MyIntegerChessEngine
         {
             Board newBoard = new();
             newBoard.Field = (int[,,])Field.Clone();
+
+            // Empty the threat plane in the new board
+            for (int i = 0; i < Constants.GridSize; i++)
+            {
+                for(int j = 0; j < Constants.GridSize; j++)
+                {
+                    newBoard.Field[Constants.ThreatPlane, i, j] = 0;
+                }
+            }
             newBoard.CurrentPly = CurrentPly;
 
             return newBoard;
