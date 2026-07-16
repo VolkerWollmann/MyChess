@@ -43,6 +43,32 @@ namespace MyIntegerChessEngine
                 SetPiece(PieceFactory.WhitePawn(), whitePawnPositions[i]);
                 SetPiece(PieceFactory.BlackPawn(), blackPawnPositions[i]);
             }
+
+            // Knights
+            SetPiece(PieceFactory.WhiteKnight(), "B1");
+            SetPiece(PieceFactory.WhiteKnight(), "G1");
+            SetPiece(PieceFactory.BlackKnight(), "B8");
+            SetPiece(PieceFactory.BlackKnight(), "G8");
+
+            // Bishops
+            SetPiece(PieceFactory.WhiteBishop(), "C1");
+            SetPiece(PieceFactory.WhiteBishop(), "F1");
+            SetPiece(PieceFactory.BlackBishop(), "C8");
+            SetPiece(PieceFactory.BlackBishop(), "F8");
+
+            // Rooks
+            SetPiece(PieceFactory.WhiteRook(), "A1");
+            SetPiece(PieceFactory.WhiteRook(), "H1");
+            SetPiece(PieceFactory.BlackRook(), "A8");
+            SetPiece(PieceFactory.BlackRook(), "H8");
+
+            // Queens
+            SetPiece(PieceFactory.WhiteQueen(), "D1");
+            SetPiece(PieceFactory.BlackQueen(), "D8");
+
+            // Kings
+            SetPiece(PieceFactory.WhiteKing(), "E1");
+            SetPiece(PieceFactory.BlackKing(), "E8");
         }
 
         public bool ExecuteMove(Move move)
