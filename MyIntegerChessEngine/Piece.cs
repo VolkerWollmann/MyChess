@@ -97,6 +97,12 @@ namespace MyIntegerChessEngine
             MoveList moveList = new MoveList();
             return moveList;
         }
+
+        internal virtual MoveList GetThreatenMoveList(Board board, Position position)
+        {
+            MoveList moveList = new MoveList();
+            return moveList;
+        }
     }
 
     public class PieceFactory

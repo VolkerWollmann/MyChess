@@ -6,7 +6,7 @@ namespace MyIntegerChessEngine.Pieces
 {
     internal class Bishop : Piece
     {
-        internal MoveList GetMoveList(Board board, Position position)
+        internal override MoveList GetMoveList(Board board, Position position)
         {
             MoveList moveList = new MoveList();
             Piece bishop = board.GetPiece(position);
@@ -40,6 +40,11 @@ namespace MyIntegerChessEngine.Pieces
             }
 
             return moveList;
+        }
+
+        internal override MoveList GetThreatenMoveList(Board board, Position position)
+        {
+            return GetMoveList(board, position);
         }
     }
 }
