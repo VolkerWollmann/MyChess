@@ -27,12 +27,12 @@ namespace MyIntegerChessEngine.Pieces
                     Piece pieceAtTarget = board.GetPiece(targetPosition);
                     if (pieceAtTarget.PieceType == Constants.BoardBorder)
                         break; // Out of bounds
-                    if (pieceAtTarget.Color == bishop.Color)
+                    if (pieceAtTarget.IntColor == bishop.IntColor)
                         break; // Can't capture own piece
 
                     moveList.Add(new Move(position, targetPosition, bishop));
 
-                    if (pieceAtTarget.Color != Constants.NoPiece)
+                    if (pieceAtTarget.IntColor != Constants.NoPiece)
                         break; // Capture opponent piece and stop
 
                     targetPosition = targetPosition.GetDeltaPosition(dx, dy);

@@ -7,7 +7,7 @@
             var result = new MoveList();
             Piece pawn = board.GetPiece(position);
 
-            if (pawn.Color == Constants.White)
+            if (pawn.IntColor == Constants.White)
             {
                 TryAddThreatMove(board, position, pawn, result, -1, 1);
                 TryAddThreatMove(board, position, pawn, result, 1, 1);
@@ -26,7 +26,7 @@
             var result = new MoveList();
             Piece pawn = board.GetPiece(position);
 
-            if (pawn.Color == Constants.White)
+            if (pawn.IntColor == Constants.White)
                 AddWhitePawnMoves(board, position, pawn, result);
             else
                 AddBlackPawnMoves(board, position, pawn, result);
@@ -40,7 +40,7 @@
             Piece atTarget = board.GetPiece(target);
             if (atTarget.PieceType == Constants.BoardBorder)
                 return;
-            if (atTarget.Color == pawn.Color)
+            if (atTarget.IntColor == pawn.IntColor)
                 return;
 
             list.Add(new Move(from, target, pawn));
@@ -107,9 +107,9 @@
             Piece atTarget = board.GetPiece(target);
             if (atTarget.PieceType == Constants.BoardBorder)
                 return;
-            if (atTarget.Color == Constants.NoPiece)
+            if (atTarget.IntColor == Constants.NoPiece)
                 return;
-            if (atTarget.Color == pawn.Color)
+            if (atTarget.IntColor == pawn.IntColor)
                 return;
 
             list.Add(new Move(from, target, pawn));
@@ -118,13 +118,13 @@
         private static bool IsEmpty(Board board, Position position)
         {
             Piece at = board.GetPiece(position);
-            return at.PieceType != Constants.BoardBorder && at.Color == Constants.NoPiece;
+            return at.PieceType != Constants.BoardBorder && at.IntColor == Constants.NoPiece;
         }
 
         private static bool IsEnemyPawn(Board board, Position position, int enemyColor)
         {
             Piece at = board.GetPiece(position);
-            return at.PieceType == Constants.Pawn && at.Color == enemyColor;
+            return at.PieceType == Constants.Pawn && at.IntColor == enemyColor;
         }
 
         private static void TryAddWhiteEnPassant(Board board, Position position, Piece pawn, MoveList list)

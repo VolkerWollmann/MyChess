@@ -26,7 +26,7 @@ namespace MyIntegerChessEngine.Pieces
                 Piece pieceAtTarget = board.GetPiece(targetPosition);
                 if (pieceAtTarget.PieceType == Constants.BoardBorder)
                     continue; // Out of bounds
-                if (pieceAtTarget.Color == king.Color)
+                if (pieceAtTarget.IntColor == king.IntColor)
                     continue; // Can't capture own piece
 
                 moveList.Add(new Move(position, targetPosition, king));
@@ -34,7 +34,7 @@ namespace MyIntegerChessEngine.Pieces
 
             if (!IsMoved())
             {
-                if (king.Color == Constants.White)
+                if (king.IntColor == Constants.White)
                 {
                     // Check for white king-side castling
                     if (board.WhiteCastleKingSidePossible())

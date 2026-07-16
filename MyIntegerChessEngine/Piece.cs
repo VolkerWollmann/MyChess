@@ -1,14 +1,10 @@
-﻿namespace MyIntegerChessEngine
+﻿using MyChessEngineBase;
+
+namespace MyIntegerChessEngine
 {
-    public class Piece
+    public class Piece : IPiece
     {
         public int PieceAsInteger;
-        public int LastPly;
-        public int PromotionPly;
-
-        // set by other color neighbor pawn, if move adjacent
-        // will be evaluated during move generation of that pawn
-        public int LastEnPassantPlyMarking;
 
         #region Properties
 
@@ -17,7 +13,21 @@
             get { return PieceAsInteger & Constants.PieceMask; }
         }
 
-        public int Color
+        public PieceType Type { get; }
+
+        public Color Color
+        {
+            get
+            {
+                return IntColor == Constants.White ? Color.White : Color.Black;
+            }
+        }
+
+        public int LastPly { get; set; }
+        public int PromotionPly { get; set; }
+        public int LastEnPassantPlyMarking { get; set; }
+
+        public int IntColor
         {
             get { return PieceAsInteger & Constants.ColorMask; }
         }
@@ -34,6 +44,11 @@
         public virtual bool Move(Move move)
         {
             return true;
+        }
+
+        public bool Compare(IPiece other)
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsMoved()

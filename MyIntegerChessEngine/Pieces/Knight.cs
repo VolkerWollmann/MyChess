@@ -23,7 +23,7 @@ namespace MyIntegerChessEngine.Pieces
                 Piece pieceAtTarget = board.GetPiece(targetPosition);
                 if (pieceAtTarget.PieceType == Constants.BoardBorder)
                     continue; // Out of bounds
-                if (pieceAtTarget.Color == knight.Color)
+                if (pieceAtTarget.IntColor == knight.IntColor)
                     continue; // Can't capture own piece
                 
                 result.Add(new Move(position, targetPosition, knight));

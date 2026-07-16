@@ -51,7 +51,7 @@ namespace MyIntegerChessEngine
 
         private void HandleCastlingRights(Move move)
         {
-            if (move.Piece.Color == Constants.White)
+            if (move.Piece.IntColor == Constants.White)
             {
                 if (move.Piece.PieceType == Constants.King)
                 {
@@ -66,7 +66,7 @@ namespace MyIntegerChessEngine
                         DisableWhiteCastleKingSidePossible();
                 }
             }
-            if (move.Piece.Color == Constants.Black)
+            if (move.Piece.IntColor == Constants.Black)
             {
                 if (move.Piece.PieceType == Constants.King)
                 {
