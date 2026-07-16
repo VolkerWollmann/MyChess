@@ -58,12 +58,12 @@ namespace MyIntegerChessEngine
                    && LastEnPassantPlyMarking == other.LastEnPassantPlyMarking;
         }
 
-        public virtual bool Move(Move move)
+        public bool Compare(IPiece other)
         {
-            return true;
+            return Compare((Piece)other);
         }
 
-        public bool Compare(IPiece other)
+        public virtual bool Move(Move move)
         {
             throw new NotImplementedException();
         }

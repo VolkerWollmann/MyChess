@@ -1,5 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MyChessEngineBase;
 using MyIntegerChessEngine;
+using Move = MyIntegerChessEngine.Move;
+using Position = MyIntegerChessEngine.Position;
 
 
 namespace EngineUnitTests
@@ -32,6 +35,13 @@ namespace EngineUnitTests
 
             Assert.IsTrue(board.CompareBoard(board2));
 
+        }
+
+        [TestMethod]
+        public void TestToString()
+        {
+            Move move = new Move(new Position("A1"), new Position("A2"), PieceFactory.WhitePawn() );
+            string result = move.ToString();    
         }
     }
 }

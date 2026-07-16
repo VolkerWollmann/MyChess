@@ -14,7 +14,13 @@ namespace MyIntegerChessEngine
         BlackKingSide = 3,
         BlackQueenSide = 4
     }
-    public class Move(Position start, Position end, Piece piece, CastleType castleType = CastleType.NoCastle, int enPassant = 0)
+
+    public class Move(
+        Position start,
+        Position end,
+        Piece piece,
+        CastleType castleType = CastleType.NoCastle,
+        int enPassant = 0)
     {
         public Piece Piece = piece;
         public Position Start = start;
@@ -22,6 +28,29 @@ namespace MyIntegerChessEngine
 
         public int EnPassant = enPassant;
         public CastleType CastleType = castleType;
+
+        public override string ToString()
+        {
+            string s = "";
+
+            s += $"{Piece.Color.ToString().Substring(0, 1),1} {Piece.Type,-10} {Start} -> {End}";
+            if (CastleType != CastleType.NoCastle)
+            {
+                s += $" Castle: {CastleType}";
+            }
+
+            if (EnPassant > 0)
+            {
+                s += $" En Passant: {EnPassant}";
+            }
+
+            return s;
+        }
+
+        public string ShortString()
+        {
+            return $"{Start} -> {End}";
+        }
     }
 
     public class MoveList : List<Move>
