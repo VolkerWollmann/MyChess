@@ -13,7 +13,24 @@ namespace MyIntegerChessEngine
             get { return PieceAsInteger & Constants.PieceMask; }
         }
 
-        public PieceType Type { get; }
+        public PieceType Type
+        {
+            get
+            {
+                // PieceType (the int property) shadows the enum name here, so qualify the enum
+                switch (PieceType)
+                {
+                    case Constants.Pawn: return MyChessEngineBase.PieceType.Pawn;
+                    case Constants.Knight: return MyChessEngineBase.PieceType.Knight;
+                    case Constants.Bishop: return MyChessEngineBase.PieceType.Bishop;
+                    case Constants.Rook: return MyChessEngineBase.PieceType.Rook;
+                    case Constants.Queen: return MyChessEngineBase.PieceType.Queen;
+                    case Constants.King: return MyChessEngineBase.PieceType.King;
+                    default:
+                        throw new InvalidOperationException("Piece has no valid piece type.");
+                }
+            }
+        }
 
         public Color Color
         {
@@ -35,7 +52,7 @@ namespace MyIntegerChessEngine
         // Assume both on same position
         public bool Compare(Piece other)
         {
-            return PieceAsInteger == other.PieceAsInteger
+            return PieceAsInteger == other.PieceAsInteger    // Color and Type are included in PieceAsInteger
                    && LastPly == other.LastPly
                    && PromotionPly == other.PromotionPly
                    && LastEnPassantPlyMarking == other.LastEnPassantPlyMarking;
