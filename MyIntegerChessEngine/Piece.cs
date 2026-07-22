@@ -13,6 +13,18 @@ namespace MyIntegerChessEngine
             get { return PieceAsInteger & Constants.PieceMask; }
         }
 
+        // Border (-1) and empty (0) squares must be tested on the raw value:
+        // masking -1 with PieceMask/ColorMask yields 7/Black, and White == NoPiece == 0.
+        public bool IsBorder
+        {
+            get { return PieceAsInteger == Constants.BoardBorder; }
+        }
+
+        public bool IsEmpty
+        {
+            get { return PieceAsInteger == Constants.NoPiece; }
+        }
+
         public PieceType Type
         {
             get

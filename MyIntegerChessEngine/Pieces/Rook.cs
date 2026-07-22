@@ -45,14 +45,14 @@ namespace MyIntegerChessEngine.Pieces
                 while (true)
                 {
                     Piece pieceAtTarget = board.GetPiece(targetPosition);
-                    if (pieceAtTarget.PieceType == Constants.BoardBorder)
+                    if (pieceAtTarget.IsBorder)
                         break; // Out of bounds
-                    if (pieceAtTarget.IntColor == rook.IntColor)
+                    if (!pieceAtTarget.IsEmpty && pieceAtTarget.IntColor == rook.IntColor)
                         break; // Can't capture own piece
 
                     result.Add(new Move(position, targetPosition, rook));
 
-                    if (pieceAtTarget.IntColor != Constants.NoPiece)
+                    if (!pieceAtTarget.IsEmpty)
                         break; // Capture opponent piece and stop
 
                     targetPosition = targetPosition.GetDeltaPosition(dx, dy);

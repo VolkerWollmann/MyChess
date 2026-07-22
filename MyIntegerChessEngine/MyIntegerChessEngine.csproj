@@ -11,4 +11,8 @@
     <ProjectReference Include="..\MyChessEngine\MyChessEngine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="EngineUnitTests" />
+  </ItemGroup>
+
 </Project>

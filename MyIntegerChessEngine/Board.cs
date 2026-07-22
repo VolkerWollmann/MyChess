@@ -15,6 +15,11 @@ namespace MyIntegerChessEngine
 
         public int CurrentPly;
 
+        public Board()
+        {
+            InitBorder();
+        }
+
         public void InitBorder()
         {
             for(int i=0; i<Constants.GridSize; i++)

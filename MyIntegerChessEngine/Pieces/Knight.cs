@@ -21,9 +21,9 @@ namespace MyIntegerChessEngine.Pieces
                 Position targetPosition = position.GetDeltaPosition(Delta[i,0], Delta[i,1]);
 
                 Piece pieceAtTarget = board.GetPiece(targetPosition);
-                if (pieceAtTarget.PieceType == Constants.BoardBorder)
+                if (pieceAtTarget.IsBorder)
                     continue; // Out of bounds
-                if (pieceAtTarget.IntColor == knight.IntColor)
+                if (!pieceAtTarget.IsEmpty && pieceAtTarget.IntColor == knight.IntColor)
                     continue; // Can't capture own piece
                 
                 result.Add(new Move(position, targetPosition, knight));

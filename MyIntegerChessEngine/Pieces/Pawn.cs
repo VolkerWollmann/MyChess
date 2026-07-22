@@ -1,4 +1,4 @@
-﻿namespace MyIntegerChessEngine.Pieces
+namespace MyIntegerChessEngine.Pieces
 {
     internal class Pawn : Piece
     {
@@ -72,9 +72,9 @@
         {
             Position target = from.GetDeltaPosition(deltaColumn, deltaRow);
             Piece atTarget = board.GetPiece(target);
-            if (atTarget.PieceType == Constants.BoardBorder)
+            if (atTarget.IsBorder)
                 return;
-            if (atTarget.IntColor == pawn.IntColor)
+            if (!atTarget.IsEmpty && atTarget.IntColor == pawn.IntColor)
                 return;
 
             list.Add(new Move(from, target, pawn));
@@ -87,7 +87,7 @@
 
             // forward one
             Position oneForward = position.GetDeltaRowPosition(1);
-            if (IsEmpty(board, oneForward))
+            if (IsEmptySquare(board, oneForward))
             {
                 list.Add(new Move(position, oneForward, pawn));
 
@@ -95,7 +95,7 @@
                 if (position.Row == 1)
                 {
                     Position twoForward = position.GetDeltaRowPosition(2);
-                    if (IsEmpty(board, twoForward))
+                    if (IsEmptySquare(board, twoForward))
                         list.Add(new Move(position, twoForward, pawn));
                 }
             }
@@ -115,14 +115,14 @@
             TryAddCapture(board, position, pawn, list, -1, -1);
 
             Position oneForward = position.GetDeltaRowPosition(-1);
-            if (IsEmpty(board, oneForward))
+            if (IsEmptySquare(board, oneForward))
             {
                 list.Add(new Move(position, oneForward, pawn));
 
                 if (position.Row == 6)
                 {
                     Position twoForward = position.GetDeltaRowPosition(-2);
-                    if (IsEmpty(board, twoForward))
+                    if (IsEmptySquare(board, twoForward))
                         list.Add(new Move(position, twoForward, pawn));
                 }
             }
@@ -139,9 +139,7 @@
         {
             Position target = from.GetDeltaPosition(deltaColumn, deltaRow);
             Piece atTarget = board.GetPiece(target);
-            if (atTarget.PieceType == Constants.BoardBorder)
-                return;
-            if (atTarget.IntColor == Constants.NoPiece)
+            if (atTarget.IsBorder || atTarget.IsEmpty)
                 return;
             if (atTarget.IntColor == pawn.IntColor)
                 return;
@@ -149,10 +147,9 @@
             list.Add(new Move(from, target, pawn));
         }
 
-        private static bool IsEmpty(Board board, Position position)
+        private static bool IsEmptySquare(Board board, Position position)
         {
-            Piece at = board.GetPiece(position);
-            return at.PieceType != Constants.BoardBorder && at.IntColor == Constants.NoPiece;
+            return board.GetPiece(position).IsEmpty;
         }
 
         private static bool IsEnemyPawn(Board board, Position position, int enemyColor)
@@ -167,7 +164,7 @@
             if (IsEnemyPawn(board, left, Constants.Black))
             {
                 Position captureTo = position.GetDeltaPosition(-1, 1);
-                if (IsEmpty(board, captureTo))
+                if (IsEmptySquare(board, captureTo))
                     list.Add(new Move(position, captureTo, pawn));
             }
 
@@ -175,7 +172,7 @@
             if (IsEnemyPawn(board, right, Constants.Black))
             {
                 Position captureTo = position.GetDeltaPosition(1, 1);
-                if (IsEmpty(board, captureTo))
+                if (IsEmptySquare(board, captureTo))
                     list.Add(new Move(position, captureTo, pawn));
             }
         }
@@ -186,7 +183,7 @@
             if (IsEnemyPawn(board, left, Constants.White))
             {
                 Position captureTo = position.GetDeltaPosition(-1, -1);
-                if (IsEmpty(board, captureTo))
+                if (IsEmptySquare(board, captureTo))
                     list.Add(new Move(position, captureTo, pawn));
             }
 
@@ -194,7 +191,7 @@
             if (IsEnemyPawn(board, right, Constants.White))
             {
                 Position captureTo = position.GetDeltaPosition(1, -1);
-                if (IsEmpty(board, captureTo))
+                if (IsEmptySquare(board, captureTo))
                     list.Add(new Move(position, captureTo, pawn));
             }
         }

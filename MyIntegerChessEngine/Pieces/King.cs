@@ -53,9 +53,9 @@ namespace MyIntegerChessEngine.Pieces
                 int dy = directions[i, 1];
                 Position targetPosition = position.GetDeltaPosition(dx, dy);
                 Piece pieceAtTarget = board.GetPiece(targetPosition);
-                if (pieceAtTarget.PieceType == Constants.BoardBorder)
+                if (pieceAtTarget.IsBorder)
                     continue; // Out of bounds
-                if (pieceAtTarget.PieceType != Constants.NoPiece)
+                if (!pieceAtTarget.IsEmpty)
                 {
                     if (pieceAtTarget.IntColor == king.IntColor)
                         continue; // Can't capture own piece
