@@ -45,13 +45,13 @@ namespace MyIntegerChessEngine.Pieces
                     // Check for white king-side castling
                     if (board.WhiteCastleKingSidePossible())
                     {
-                        moveList.Add(new Move(position, new Position("G1"), king));
+                        moveList.Add(new Move(position, new Position("G1"), king, CastleType.WhiteKingSide));
                     }
 
                     // Check for white queen-side castling
                     if (board.WhiteCastleQueenSidePossible())
                     {
-                        moveList.Add(new Move(position, new Position("C1"), king));
+                        moveList.Add(new Move(position, new Position("C1"), king, CastleType.WhiteQueenSide));
                     }
                 }
                 else
@@ -59,13 +59,13 @@ namespace MyIntegerChessEngine.Pieces
                     // Check for black king-side castling
                     if (board.BlackCastleKingSidePossible())
                     {
-                        moveList.Add(new Move(position, new Position("G8"), king));
+                        moveList.Add(new Move(position, new Position("G8"), king, CastleType.BlackKingSide));
                     }
 
                     // Check for black queen-side castling
                     if (board.BlackCastleQueenSidePossible())
                     {
-                        moveList.Add(new Move(position, new Position("C8"), king));
+                        moveList.Add(new Move(position, new Position("C8"), king, CastleType.BlackQueenSide));
                     }
                 }
             }
