@@ -106,5 +106,32 @@ namespace EngineUnitTests
 
             Assert.AreEqual(3, moves.Count); // A2, B1, B2
         }
+
+        [TestMethod]
+        public void TwoKingsNoCastlingWhiteToMove()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(), "E8");
+
+            chessEngine.Board.DisableWhiteCastleKingSidePossible();
+            chessEngine.Board.DisableWhiteCastleQueenSidePossible();
+            chessEngine.Board.DisableBlackCastleKingSidePossible();
+            chessEngine.Board.DisableBlackCastleQueenSidePossible();
+
+            chessEngine.ColorToMove = Constants.White;
+
+            MoveList moves = new King().GetMoveList(chessEngine.Board, new Position("E1"));
+
+            foreach (Move move in moves)
+            {
+                System.Console.WriteLine($"{move.Start} - {move.End}");
+            }
+
+            Assert.AreEqual(5, moves.Count); // D1, D2, E2, F2, F1
+            Assert.IsTrue(moves.TrueForAll(move => move.CastleType == CastleType.None));
+        }
     }
 }
