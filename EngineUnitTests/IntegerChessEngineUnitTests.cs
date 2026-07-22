@@ -113,13 +113,8 @@ namespace EngineUnitTests
             IntegerChessEngine chessEngine = new IntegerChessEngine();
             chessEngine.Clear();
 
-            chessEngine.SetPiece(PieceFactory.WhiteKing(), "E1");
-            chessEngine.SetPiece(PieceFactory.BlackKing(), "E8");
-
-            chessEngine.Board.DisableWhiteCastleKingSidePossible();
-            chessEngine.Board.DisableWhiteCastleQueenSidePossible();
-            chessEngine.Board.DisableBlackCastleKingSidePossible();
-            chessEngine.Board.DisableBlackCastleQueenSidePossible();
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
 
             chessEngine.ColorToMove = Constants.White;
 

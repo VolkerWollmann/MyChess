@@ -54,6 +54,10 @@ namespace MyIntegerChessEngine
         public int PromotionPly { get; set; }
         public int LastEnPassantPlyMarking { get; set; }
 
+        /// Bit mask of the castles still possible; only evaluated
+        /// when a king is placed on the board (Board.SetPiece).
+        public CastleType PossibleCastles { get; set; } = CastleType.None;
+
         public int IntColor
         {
             get { return PieceAsInteger & Constants.ColorMask; }
@@ -167,14 +171,18 @@ namespace MyIntegerChessEngine
             return Create(Constants.Queen, Constants.Black);
         }
 
-        public static Piece WhiteKing()
+        public static Piece WhiteKing(CastleType possibleCastles = CastleType.WhiteKingSide | CastleType.WhiteQueenSide)
         {
-            return Create(Constants.King, Constants.White);
+            Piece king = Create(Constants.King, Constants.White);
+            king.PossibleCastles = possibleCastles;
+            return king;
         }
 
-        public static Piece BlackKing()
+        public static Piece BlackKing(CastleType possibleCastles = CastleType.BlackKingSide | CastleType.BlackQueenSide)
         {
-            return Create(Constants.King, Constants.Black);
+            Piece king = Create(Constants.King, Constants.Black);
+            king.PossibleCastles = possibleCastles;
+            return king;
         }
     }
 }

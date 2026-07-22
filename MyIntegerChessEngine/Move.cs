@@ -6,13 +6,14 @@ using MyChessEngineBase;
 
 namespace MyIntegerChessEngine
 {
+    [Flags]
     public enum CastleType
     {
-        None,
-        WhiteKingSide,
-        WhiteQueenSide,
-        BlackKingSide,
-        BlackQueenSide
+        None = 0,
+        WhiteKingSide = 1,
+        WhiteQueenSide = 2,
+        BlackKingSide = 4,
+        BlackQueenSide = 8
     }
 
     public class Move(Position start, Position end, Piece piece, CastleType castleType = CastleType.None)

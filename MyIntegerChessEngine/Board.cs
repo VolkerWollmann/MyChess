@@ -42,6 +42,28 @@ namespace MyIntegerChessEngine
             Field[Constants.LastPlyPlane, position.Column + 2, position.Row + 2] = piece.LastPly;
             Field[Constants.PromotionPlane, position.Column + 2, position.Row + 2] = piece.PromotionPly;
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = piece.LastEnPassantPlyMarking;
+
+            if (piece.PieceType == Constants.King)
+                ApplyPossibleCastles(piece);
+        }
+
+        /// Placing a king disables the castle rights its mask does not contain.
+        private void ApplyPossibleCastles(Piece king)
+        {
+            if (king.IntColor == Constants.White)
+            {
+                if (!king.PossibleCastles.HasFlag(CastleType.WhiteKingSide))
+                    DisableWhiteCastleKingSidePossible();
+                if (!king.PossibleCastles.HasFlag(CastleType.WhiteQueenSide))
+                    DisableWhiteCastleQueenSidePossible();
+            }
+            else
+            {
+                if (!king.PossibleCastles.HasFlag(CastleType.BlackKingSide))
+                    DisableBlackCastleKingSidePossible();
+                if (!king.PossibleCastles.HasFlag(CastleType.BlackQueenSide))
+                    DisableBlackCastleQueenSidePossible();
+            }
         }
 
         public Piece GetPiece(Position position)
