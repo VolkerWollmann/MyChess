@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyChessEngine.Pieces;
 using MyChessEngineBase;
-using MyChessEngineBase.Rating;
+using MyIntegerChessEngine.Pieces;
 
 namespace MyIntegerChessEngine
 {
@@ -49,63 +48,71 @@ namespace MyIntegerChessEngine
             return new Piece(pieceValue, lastPly, promotionPly, lastEnPassantPlyMarking);
         }   
 
-        private void HandleCastlingRights(Move move)
-        {
-            if (move.Piece.IntColor == Constants.White)
-            {
-                if (move.Piece.PieceType == Constants.King)
-                {
-                    DisableWhiteCastleKingSidePossible();
-                    DisableWhiteCastleQueenSidePossible();
-                }
-                else if (move.Piece.PieceType == Constants.Rook)
-                {
-                    if (move.Start is { Column: 0, Row: 0 })
-                        DisableWhiteCastleQueenSidePossible();
-                    else if (move.Start is { Column: 7, Row: 0 })
-                        DisableWhiteCastleKingSidePossible();
-                }
-            }
-            if (move.Piece.IntColor == Constants.Black)
-            {
-                if (move.Piece.PieceType == Constants.King)
-                {
-                    DisableBlackCastleKingSidePossible();
-                    DisableBlackCastleQueenSidePossible();
-                }
-                else if (move.Piece.PieceType == Constants.Rook)
-                {
-                    if (move.Start is { Column: 0, Row: 7 })
-                        DisableBlackCastleQueenSidePossible();
-                    else if (move.Start is { Column: 7, Row: 7 })
-                        DisableBlackCastleKingSidePossible();
-                }
-            }
-        }
         public void ExecuteMove(Move move)
         {
-            int startColumn = move.Start.Column + 2;
-            int startRow = move.Start.Row + 2;
-            int endColumn = move.End.Column + 2;
-            int endRow = move.End.Row + 2;
-
-            Field[Constants.BroadPlane, endColumn, endRow] 
-                = Field[Constants.BroadPlane, startColumn, startRow];
-
             CurrentPly++;
-            Field[Constants.LastPlyPlane, move.End.Column, move.End.Row] = CurrentPly;
 
-            Field[Constants.BroadPlane, endColumn, endRow] = Constants.NoPiece;
-            Field[Constants.LastPlyPlane, endColumn, endRow] = 0;
+            // Piece-specific handling runs on the pre-move board:
+            // King: castle rook move + castle right invalidation
+            // Rook: castle right invalidation
+            // Pawn: en passant capture and en passant marking
+            switch (move.Piece.PieceType)
+            {
+                case Constants.King:
+                    King.ExecuteMove(this, move);
+                    break;
+                case Constants.Rook:
+                    Rook.ExecuteMove(this, move);
+                    break;
+                case Constants.Pawn:
+                    Pawn.ExecuteMove(this, move);
+                    break;
+            }
 
-            HandleCastlingRights(move);
-            
+            MovePiece(move.Start, move.End);
+        }
+
+        /// Transfers all planes from start to end, stamps the end square with CurrentPly
+        /// and clears the start square. Does not increment the ply.
+        internal void MovePiece(Position start, Position end)
+        {
+            int startColumn = start.Column + 2;
+            int startRow = start.Row + 2;
+            int endColumn = end.Column + 2;
+            int endRow = end.Row + 2;
+
+            Field[Constants.BroadPlane, endColumn, endRow]
+                = Field[Constants.BroadPlane, startColumn, startRow];
+            Field[Constants.LastPlyPlane, endColumn, endRow] = CurrentPly;
+            Field[Constants.PromotionPlane, endColumn, endRow]
+                = Field[Constants.PromotionPlane, startColumn, startRow];
+            Field[Constants.EnPassantPlane, endColumn, endRow]
+                = Field[Constants.EnPassantPlane, startColumn, startRow];
+
+            ClearSquare(start);
+        }
+
+        internal void ClearSquare(Position position)
+        {
+            int column = position.Column + 2;
+            int row = position.Row + 2;
+
+            Field[Constants.BroadPlane, column, row] = Constants.NoPiece;
+            Field[Constants.LastPlyPlane, column, row] = 0;
+            Field[Constants.PromotionPlane, column, row] = 0;
+            Field[Constants.EnPassantPlane, column, row] = 0;
+        }
+
+        internal void SetEnPassantMarking(Position position, int ply)
+        {
+            Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = ply;
         }
 
         public void New()
         {
-            Field = new int[Constants.LastPlyPlane, Constants.GridSize, Constants.GridSize];
-
+            Field = new int[Constants.Planes, Constants.GridSize, Constants.GridSize];
+            CurrentPly = 0;
+            InitBorder();
         }
 
         int GetPieceValue(Position position)
@@ -157,10 +164,11 @@ namespace MyIntegerChessEngine
         }
         #endregion
 
+        // Index 4: indices 0-3 hold the castling right flags
         public int ColorToMove
         {
-            get => Field[Constants.LastPlyPlane, 0, 3];
-            set => Field[Constants.LastPlyPlane, 0, 3] = value;
+            get => Field[Constants.LastPlyPlane, 0, 4];
+            set => Field[Constants.LastPlyPlane, 0, 4] = value;
         }
 
 
@@ -168,15 +176,6 @@ namespace MyIntegerChessEngine
         {
             Board newBoard = new();
             newBoard.Field = (int[,,])Field.Clone();
-
-            // Empty the threat plane in the new board
-            for (int i = 0; i < Constants.GridSize; i++)
-            {
-                for(int j = 0; j < Constants.GridSize; j++)
-                {
-                    newBoard.Field[Constants.ThreatPlane, i, j] = 0;
-                }
-            }
             newBoard.CurrentPly = CurrentPly;
 
             return newBoard;

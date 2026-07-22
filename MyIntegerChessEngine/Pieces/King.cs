@@ -6,6 +6,38 @@ namespace MyIntegerChessEngine.Pieces
 {
     internal class King : Piece
     {
+        /// Called by Board.ExecuteMove before the king itself is moved:
+        /// executes the rook part of a castle and invalidates the castle rights.
+        internal static void ExecuteMove(Board board, Move move)
+        {
+            if (move.Piece.IntColor == Constants.White)
+            {
+                board.DisableWhiteCastleKingSidePossible();
+                board.DisableWhiteCastleQueenSidePossible();
+            }
+            else
+            {
+                board.DisableBlackCastleKingSidePossible();
+                board.DisableBlackCastleQueenSidePossible();
+            }
+
+            switch (move.CastleType)
+            {
+                case CastleType.WhiteKingSide:
+                    board.MovePiece(new Position("H1"), new Position("F1"));
+                    break;
+                case CastleType.WhiteQueenSide:
+                    board.MovePiece(new Position("A1"), new Position("D1"));
+                    break;
+                case CastleType.BlackKingSide:
+                    board.MovePiece(new Position("H8"), new Position("F8"));
+                    break;
+                case CastleType.BlackQueenSide:
+                    board.MovePiece(new Position("A8"), new Position("D8"));
+                    break;
+            }
+        }
+
         internal MoveList GetThreatenMoveList(Board board, Position position)
         {
             MoveList moveList = new MoveList();

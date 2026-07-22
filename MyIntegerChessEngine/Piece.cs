@@ -17,18 +17,16 @@ namespace MyIntegerChessEngine
         {
             get
             {
-                // PieceType (the int property) shadows the enum name here, so qualify the enum
-                switch (PieceType)
+                return (PieceAsInteger & Constants.PieceMask) switch
                 {
-                    case Constants.Pawn: return MyChessEngineBase.PieceType.Pawn;
-                    case Constants.Knight: return MyChessEngineBase.PieceType.Knight;
-                    case Constants.Bishop: return MyChessEngineBase.PieceType.Bishop;
-                    case Constants.Rook: return MyChessEngineBase.PieceType.Rook;
-                    case Constants.Queen: return MyChessEngineBase.PieceType.Queen;
-                    case Constants.King: return MyChessEngineBase.PieceType.King;
-                    default:
-                        throw new InvalidOperationException("Piece has no valid piece type.");
-                }
+                    Constants.Pawn => MyChessEngineBase.PieceType.Pawn,
+                    Constants.Knight => MyChessEngineBase.PieceType.Knight,
+                    Constants.Bishop => MyChessEngineBase.PieceType.Bishop,
+                    Constants.Rook => MyChessEngineBase.PieceType.Rook,
+                    Constants.Queen => MyChessEngineBase.PieceType.Queen,
+                    Constants.King => MyChessEngineBase.PieceType.King,
+                    _ => throw new InvalidOperationException("No PieceType for empty square or border.")
+                };
             }
         }
 
@@ -52,18 +50,18 @@ namespace MyIntegerChessEngine
         // Assume both on same position
         public bool Compare(Piece other)
         {
-            return PieceAsInteger == other.PieceAsInteger    // Color and Type are included in PieceAsInteger
+            return PieceAsInteger == other.PieceAsInteger
                    && LastPly == other.LastPly
                    && PromotionPly == other.PromotionPly
                    && LastEnPassantPlyMarking == other.LastEnPassantPlyMarking;
         }
 
-        public bool Compare(IPiece other)
+        public virtual bool Move(Move move)
         {
-            return Compare((Piece)other);
+            return true;
         }
 
-        public virtual bool Move(Move move)
+        public bool Compare(IPiece other)
         {
             throw new NotImplementedException();
         }
@@ -93,12 +91,6 @@ namespace MyIntegerChessEngine
         #endregion
 
         internal virtual MoveList GetMoveList(Board board, Position position)
-        {
-            MoveList moveList = new MoveList();
-            return moveList;
-        }
-
-        internal virtual MoveList GetThreatenMoveList(Board board, Position position)
         {
             MoveList moveList = new MoveList();
             return moveList;

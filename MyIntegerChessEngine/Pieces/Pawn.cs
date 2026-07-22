@@ -2,6 +2,40 @@
 {
     internal class Pawn : Piece
     {
+        /// Called by Board.ExecuteMove before the pawn itself is moved:
+        /// removes the captured pawn on en passant and marks adjacent
+        /// enemy pawns after a double step.
+        internal static void ExecuteMove(Board board, Move move)
+        {
+            // En passant capture: diagonal move onto an empty square,
+            // the captured pawn stands beside the start square
+            if (move.Start.Column != move.End.Column
+                && board.GetPiece(move.End).PieceType == Constants.NoPiece)
+            {
+                board.ClearSquare(new Position(move.End.Column, move.Start.Row));
+            }
+
+            // Double step: allow adjacent enemy pawns to capture en passant.
+            // Pawn.GetMoveList offers the capture while marking + 1 == CurrentPly,
+            // i.e. only for the opponent's immediate reply (ply was already incremented).
+            if (Math.Abs(move.End.Row - move.Start.Row) == 2)
+            {
+                MarkEnPassant(board, move, move.End.GetDeltaColumnPosition(-1));
+                MarkEnPassant(board, move, move.End.GetDeltaColumnPosition(1));
+            }
+
+            // TODO: promotion when the pawn reaches the last row
+        }
+
+        private static void MarkEnPassant(Board board, Move move, Position neighbour)
+        {
+            Piece piece = board.GetPiece(neighbour);
+            if (piece.PieceType != Constants.Pawn || piece.IntColor == move.Piece.IntColor)
+                return;
+
+            board.SetEnPassantMarking(neighbour, board.CurrentPly - 1);
+        }
+
         internal MoveList GetThreatenMoveList(Board board, Position position)
         {
             var result = new MoveList();

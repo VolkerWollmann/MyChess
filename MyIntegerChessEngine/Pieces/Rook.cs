@@ -6,6 +6,26 @@ namespace MyIntegerChessEngine.Pieces
 {
     internal class Rook : Piece
     {
+        /// Called by Board.ExecuteMove: a rook leaving its home square
+        /// invalidates the castle right on that side.
+        internal static void ExecuteMove(Board board, Move move)
+        {
+            if (move.Piece.IntColor == Constants.White)
+            {
+                if (move.Start is { Column: 0, Row: 0 })
+                    board.DisableWhiteCastleQueenSidePossible();
+                else if (move.Start is { Column: 7, Row: 0 })
+                    board.DisableWhiteCastleKingSidePossible();
+            }
+            else
+            {
+                if (move.Start is { Column: 0, Row: 7 })
+                    board.DisableBlackCastleQueenSidePossible();
+                else if (move.Start is { Column: 7, Row: 7 })
+                    board.DisableBlackCastleKingSidePossible();
+            }
+        }
+
         internal MoveList GetMoveList(Board board, Position position)
         {
             var result = new MoveList();
