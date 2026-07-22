@@ -71,6 +71,12 @@ namespace MyIntegerChessEngine
             SetPiece(PieceFactory.BlackKing(), "E8");
         }
 
+        /// Returns all possible moves of the side to move.
+        public MoveList GetMoveList()
+        {
+            return Board.GetMoveList();
+        }
+
         public bool ExecuteMove(Move move)
         {
             Board.ExecuteMove(move);

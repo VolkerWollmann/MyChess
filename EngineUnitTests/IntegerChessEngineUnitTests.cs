@@ -123,7 +123,7 @@ namespace EngineUnitTests
 
             chessEngine.ColorToMove = Constants.White;
 
-            MoveList moves = new King().GetMoveList(chessEngine.Board, new Position("E1"));
+            MoveList moves = chessEngine.GetMoveList();
 
             foreach (Move move in moves)
             {

@@ -108,6 +108,40 @@ namespace MyIntegerChessEngine
             Field[Constants.EnPassantPlane, column, row] = 0;
         }
 
+        /// Returns all possible moves of the side to move.
+        public MoveList GetMoveList()
+        {
+            MoveList moveList = new MoveList();
+
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                Position position = new Position(column, row);
+                Piece piece = GetPiece(position);
+
+                if (piece.IsEmpty || piece.IntColor != ColorToMove)
+                    continue;
+
+                moveList.AddRange(GetMoveList(piece, position));
+            }
+
+            return moveList;
+        }
+
+        internal MoveList GetMoveList(Piece piece, Position position)
+        {
+            return piece.PieceType switch
+            {
+                Constants.Pawn => new Pawn().GetMoveList(this, position),
+                Constants.Knight => new Knight().GetMoveList(this, position),
+                Constants.Bishop => new Bishop().GetMoveList(this, position),
+                Constants.Rook => new Rook().GetMoveList(this, position),
+                Constants.Queen => new Queen().GetMoveList(this, position),
+                Constants.King => new King().GetMoveList(this, position),
+                _ => new MoveList()
+            };
+        }
+
         internal void SetEnPassantMarking(Position position, int ply)
         {
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = ply;
