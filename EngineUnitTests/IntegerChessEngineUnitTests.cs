@@ -128,5 +128,29 @@ namespace EngineUnitTests
             Assert.AreEqual(5, moves.Count); // D1, D2, E2, F2, F1
             Assert.IsTrue(moves.TrueForAll(move => move.CastleType == CastleType.None));
         }
+
+        [TestMethod]
+        public void GetRatingStartPositionIsBalanced()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.New();
+
+            Assert.AreEqual(0, chessEngine.GetRating());
+        }
+
+        [TestMethod]
+        public void GetRatingCountsMaterial()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.WhiteQueen(), "D1");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "A8");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "A7");
+
+            Assert.AreEqual(300, chessEngine.GetRating()); // 900 - 500 - 100
+        }
     }
 }

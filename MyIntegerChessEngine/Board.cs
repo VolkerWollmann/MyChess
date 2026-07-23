@@ -150,6 +150,36 @@ namespace MyIntegerChessEngine
             return moveList;
         }
 
+        /// Material rating: white pieces count positive, black pieces negative.
+        public int GetRating()
+        {
+            int rating = 0;
+
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                Piece piece = GetPiece(new Position(column, row));
+
+                if (piece.IsEmpty)
+                    continue;
+
+                int value = piece.PieceType switch
+                {
+                    Constants.Pawn => Constants.PawnValue,
+                    Constants.Knight => Constants.KnightValue,
+                    Constants.Bishop => Constants.BishopValue,
+                    Constants.Rook => Constants.RookValue,
+                    Constants.Queen => Constants.QueenValue,
+                    Constants.King => Constants.KingValue,
+                    _ => 0
+                };
+
+                rating += piece.IntColor == Constants.White ? value : -value;
+            }
+
+            return rating;
+        }
+
         internal MoveList GetMoveList(Piece piece, Position position)
         {
             return piece.PieceType switch

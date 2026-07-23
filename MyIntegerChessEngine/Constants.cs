@@ -28,5 +28,13 @@ namespace MyIntegerChessEngine
         public const int White = 0;
         public const int Black = 8;
 
+        // Material values for the evaluation function
+        public const int PawnValue = 100;
+        public const int KnightValue = 300;
+        public const int BishopValue = 350;
+        public const int RookValue = 500;
+        public const int QueenValue = 900;
+        public const int KingValue = 10000;
+
     }
 }

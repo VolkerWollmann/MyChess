@@ -77,6 +77,12 @@ namespace MyIntegerChessEngine
             return Board.GetMoveList();
         }
 
+        /// Material rating: white pieces count positive, black pieces negative.
+        public int GetRating()
+        {
+            return Board.GetRating();
+        }
+
         public bool ExecuteMove(Move move)
         {
             Board.ExecuteMove(move);
