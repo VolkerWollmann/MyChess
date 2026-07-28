@@ -191,9 +191,12 @@ namespace MyIntegerChessEngine
         }
 
         /// Material rating: white pieces count positive, black pieces negative.
-        public int GetRating()
+        /// A missing king turns the state into WhiteLoss/BlackLoss.
+        public Rating GetRating()
         {
-            int rating = 0;
+            int ratingValue = 0;
+            bool whiteKingOnBoard = false;
+            bool blackKingOnBoard = false;
 
             for (int column = 0; column < ChessEngineConstants.Length; column++)
             for (int row = 0; row < ChessEngineConstants.Length; row++)
@@ -214,10 +217,24 @@ namespace MyIntegerChessEngine
                     _ => 0
                 };
 
-                rating += piece.IntColor == Constants.White ? value : -value;
+                if (piece.PieceType == Constants.King)
+                {
+                    if (piece.IntColor == Constants.White)
+                        whiteKingOnBoard = true;
+                    else
+                        blackKingOnBoard = true;
+                }
+
+                ratingValue += piece.IntColor == Constants.White ? value : -value;
             }
 
-            return rating;
+            GameState state = GameState.Normal;
+            if (!whiteKingOnBoard)
+                state = GameState.WhiteLoss;
+            else if (!blackKingOnBoard)
+                state = GameState.BlackLoss;
+
+            return new Rating(ratingValue, state);
         }
 
         internal MoveList GetMoveList(Piece piece, Position position)

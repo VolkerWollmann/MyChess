@@ -84,7 +84,8 @@ namespace MyIntegerChessEngine
         }
 
         /// Material rating: white pieces count positive, black pieces negative.
-        public int GetRating()
+        /// A missing king turns the state into WhiteLoss/BlackLoss.
+        public Rating GetRating()
         {
             return Board.GetRating();
         }

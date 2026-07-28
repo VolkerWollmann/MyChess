@@ -256,7 +256,7 @@ namespace EngineUnitTests
             IntegerChessEngine chessEngine = new IntegerChessEngine();
             chessEngine.New();
 
-            Assert.AreEqual(0, chessEngine.GetRating());
+            Assert.AreEqual(0, chessEngine.GetRating().Value);
         }
 
         [TestMethod]
@@ -271,7 +271,7 @@ namespace EngineUnitTests
             chessEngine.SetPiece(PieceFactory.BlackRook(), "A8");
             chessEngine.SetPiece(PieceFactory.BlackPawn(), "A7");
 
-            Assert.AreEqual(300, chessEngine.GetRating()); // 900 - 500 - 100
+            Assert.AreEqual(300, chessEngine.GetRating().Value); // 900 - 500 - 100
         }
     }
 }
