@@ -131,8 +131,11 @@ namespace MyIntegerChessEngine
         }
 
         /// Returns all possible moves of the side to move.
+        /// The opponent's threats are marked first, so the king avoids threatened fields.
         public MoveList GetMoveList()
         {
+            MarkThreatenedFields(ColorToMove == Constants.White ? Constants.Black : Constants.White);
+
             MoveList moveList = new MoveList();
 
             for (int column = 0; column < ChessEngineConstants.Length; column++)
@@ -145,6 +148,43 @@ namespace MyIntegerChessEngine
                     continue;
 
                 moveList.AddRange(GetMoveList(piece, position));
+            }
+
+            return moveList;
+        }
+
+        /// Marks all fields on the threat plane where an actual or possible beat
+        /// by <paramref name="color"/> can happen.
+        public void MarkThreatenedFields(int color)
+        {
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+                Field[Constants.ThreatPlane, column + 2, row + 2] = 0;
+
+            foreach (Move move in GetThreatenMoveList(color))
+                Field[Constants.ThreatPlane, move.End.Column + 2, move.End.Row + 2] = 1;
+        }
+
+        public bool IsThreatened(Position position)
+        {
+            return Field[Constants.ThreatPlane, position.Column + 2, position.Row + 2] != 0;
+        }
+
+        /// Returns all fields where an actual or possible beat by <paramref name="color"/> can happen.
+        public MoveList GetThreatenMoveList(int color)
+        {
+            MoveList moveList = new MoveList();
+
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                Position position = new Position(column, row);
+                Piece piece = GetPiece(position);
+
+                if (piece.IsEmpty || piece.IntColor != color)
+                    continue;
+
+                moveList.AddRange(GetThreatenMoveList(piece, position));
             }
 
             return moveList;
@@ -190,6 +230,20 @@ namespace MyIntegerChessEngine
                 Constants.Rook => new Rook().GetMoveList(this, position),
                 Constants.Queen => new Queen().GetMoveList(this, position),
                 Constants.King => new King().GetMoveList(this, position),
+                _ => new MoveList()
+            };
+        }
+
+        internal MoveList GetThreatenMoveList(Piece piece, Position position)
+        {
+            return piece.PieceType switch
+            {
+                Constants.Pawn => new Pawn().GetThreatenMoveList(this, position),
+                Constants.Knight => new Knight().GetThreatenMoveList(this, position),
+                Constants.Bishop => new Bishop().GetThreatenMoveList(this, position),
+                Constants.Rook => new Rook().GetThreatenMoveList(this, position),
+                Constants.Queen => new Queen().GetThreatenMoveList(this, position),
+                Constants.King => new King().GetThreatenMoveList(this, position),
                 _ => new MoveList()
             };
         }

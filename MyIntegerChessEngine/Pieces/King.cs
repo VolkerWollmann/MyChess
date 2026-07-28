@@ -68,20 +68,29 @@ namespace MyIntegerChessEngine.Pieces
         internal override MoveList GetMoveList(Board board, Position position)
         {
             Piece king = board.GetPiece(position);
-            MoveList moveList = GetThreatenMoveList(board, position);
+            MoveList moveList = new MoveList();
+
+            // The king cannot move onto a field threatened by the opponent
+            foreach (Move move in GetThreatenMoveList(board, position))
+            {
+                if (!board.IsThreatened(move.End))
+                    moveList.Add(move);
+            }
 
             if (!IsMoved())
             {
                 if (king.IntColor == Constants.White)
                 {
                     // Check for white king-side castling
-                    if (board.WhiteCastleKingSidePossible())
+                    if (board.WhiteCastleKingSidePossible()
+                        && CastleFieldsFree(board, ["F1", "G1"], ["E1", "F1", "G1"]))
                     {
                         moveList.Add(new Move(position, new Position("G1"), king, CastleType.WhiteKingSide));
                     }
 
                     // Check for white queen-side castling
-                    if (board.WhiteCastleQueenSidePossible())
+                    if (board.WhiteCastleQueenSidePossible()
+                        && CastleFieldsFree(board, ["B1", "C1", "D1"], ["C1", "D1", "E1"]))
                     {
                         moveList.Add(new Move(position, new Position("C1"), king, CastleType.WhiteQueenSide));
                     }
@@ -89,13 +98,15 @@ namespace MyIntegerChessEngine.Pieces
                 else
                 {
                     // Check for black king-side castling
-                    if (board.BlackCastleKingSidePossible())
+                    if (board.BlackCastleKingSidePossible()
+                        && CastleFieldsFree(board, ["F8", "G8"], ["E8", "F8", "G8"]))
                     {
                         moveList.Add(new Move(position, new Position("G8"), king, CastleType.BlackKingSide));
                     }
 
                     // Check for black queen-side castling
-                    if (board.BlackCastleQueenSidePossible())
+                    if (board.BlackCastleQueenSidePossible()
+                        && CastleFieldsFree(board, ["B8", "C8", "D8"], ["C8", "D8", "E8"]))
                     {
                         moveList.Add(new Move(position, new Position("C8"), king, CastleType.BlackQueenSide));
                     }
@@ -103,6 +114,25 @@ namespace MyIntegerChessEngine.Pieces
             }
 
             return moveList;
+        }
+
+        /// A castle requires the fields between king and rook to be empty and
+        /// the fields the king stands on or passes over to be unthreatened.
+        private static bool CastleFieldsFree(Board board, string[] emptyFields, string[] unthreatenedFields)
+        {
+            foreach (string field in emptyFields)
+            {
+                if (!board.GetPiece(new Position(field)).IsEmpty)
+                    return false;
+            }
+
+            foreach (string field in unthreatenedFields)
+            {
+                if (board.IsThreatened(new Position(field)))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

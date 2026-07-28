@@ -130,6 +130,127 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void PawnThreatensDiagonalsOnly()
+        {
+            Board board = new Board();
+            Position e4 = new Position("E4");
+            board.SetPiece(PieceFactory.WhitePawn(), e4);
+
+            MoveList moves = new Pawn().GetThreatenMoveList(board, e4);
+
+            Assert.AreEqual(2, moves.Count); // D5 and F5, not E5
+            Assert.IsTrue(moves.TrueForAll(move => move.End.Row == 4));
+        }
+
+        [TestMethod]
+        public void RookThreatContinuesBehindEnemyKing()
+        {
+            Board board = new Board();
+            Position a1 = new Position("A1");
+            board.SetPiece(PieceFactory.WhiteRook(), a1);
+            board.SetPiece(PieceFactory.BlackKing(CastleType.None), new Position("A5"));
+
+            MoveList moves = new Rook().GetThreatenMoveList(board, a1);
+
+            // A2-A4, king on A5, A6-A8 behind the king, B1-H1
+            Assert.AreEqual(14, moves.Count);
+        }
+
+        [TestMethod]
+        public void GetThreatenMoveListCollectsAllPiecesOfColor()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "A1");
+            chessEngine.SetPiece(PieceFactory.WhitePawn(), "E4");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+
+            MoveList moves = chessEngine.GetThreatenMoveList(Constants.White);
+
+            Assert.AreEqual(5, moves.Count); // king: A2, B1, B2 - pawn: D5, F5
+        }
+
+        [TestMethod]
+        public void KingAvoidsThreatenedFields()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "D8");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            MoveList moves = chessEngine.GetMoveList();
+
+            // D1 and D2 are threatened by the rook on D8
+            Assert.AreEqual(3, moves.Count); // E2, F1, F2
+            Assert.IsTrue(moves.TrueForAll(move => move.End.Column != 3));
+        }
+
+        [TestMethod]
+        public void CastleBlockedOnThreatenedField()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(), "E1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "A1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "H1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "F8");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            MoveList moves = chessEngine.GetMoveList();
+
+            // F1 is threatened, the king may not pass it on the king side
+            Assert.IsFalse(moves.Exists(move => move.CastleType == CastleType.WhiteKingSide));
+            Assert.IsTrue(moves.Exists(move => move.CastleType == CastleType.WhiteQueenSide));
+        }
+
+        [TestMethod]
+        public void CastleBlockedByPieceInBetween()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(), "E1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "A1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "H1");
+            chessEngine.SetPiece(PieceFactory.WhiteBishop(), "F1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            MoveList moves = chessEngine.GetMoveList();
+
+            Assert.IsFalse(moves.Exists(move => move.CastleType == CastleType.WhiteKingSide));
+            Assert.IsTrue(moves.Exists(move => move.CastleType == CastleType.WhiteQueenSide));
+        }
+
+        [TestMethod]
+        public void CastleBlockedWhenKingIsChecked()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(), "E1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "A1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "H1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "A8");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "E8");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            MoveList moves = chessEngine.GetMoveList();
+
+            Assert.IsFalse(moves.Exists(move => move.CastleType != CastleType.None));
+        }
+
+        [TestMethod]
         public void GetRatingStartPositionIsBalanced()
         {
             IntegerChessEngine chessEngine = new IntegerChessEngine();

@@ -6,7 +6,17 @@ namespace MyIntegerChessEngine.Pieces
 {
     internal class Queen : Piece
     {
+        internal MoveList GetThreatenMoveList(Board board, Position position)
+        {
+            return GetMoveList(board, position, true);
+        }
+
         internal MoveList GetMoveList(Board board, Position position)
+        {
+            return GetMoveList(board, position, false);
+        }
+
+        private MoveList GetMoveList(Board board, Position position, bool threat)
         {
             MoveList moveList = new MoveList();
             Piece queen = board.GetPiece(position);
@@ -33,7 +43,8 @@ namespace MyIntegerChessEngine.Pieces
 
                     moveList.Add(new Move(position, targetPosition, queen));
 
-                    if (!pieceAtTarget.IsEmpty)
+                    // Threat rays pass through the enemy king so the fields behind it stay threatened
+                    if (!pieceAtTarget.IsEmpty && !(threat && pieceAtTarget.PieceType == Constants.King))
                         break; // Capture opponent piece and stop
 
                     targetPosition = targetPosition.GetDeltaPosition(dx, dy);

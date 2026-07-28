@@ -77,6 +77,12 @@ namespace MyIntegerChessEngine
             return Board.GetMoveList();
         }
 
+        /// Returns all fields where an actual or possible beat by <paramref name="color"/> can happen.
+        public MoveList GetThreatenMoveList(int color)
+        {
+            return Board.GetThreatenMoveList(color);
+        }
+
         /// Material rating: white pieces count positive, black pieces negative.
         public int GetRating()
         {

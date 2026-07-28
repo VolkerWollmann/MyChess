@@ -12,6 +12,11 @@ namespace MyIntegerChessEngine.Pieces
             { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
         };
 
+        internal MoveList GetThreatenMoveList(Board board, Position position)
+        {
+            return GetMoveList(board, position);
+        }
+
         internal MoveList GetMoveList(Board board, Position position)
         {
             var result = new MoveList();
