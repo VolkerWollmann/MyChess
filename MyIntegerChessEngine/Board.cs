@@ -282,7 +282,8 @@ namespace MyIntegerChessEngine
             Move bestMove = null;
             Rating bestRating = null;
 
-            foreach (Move move in GetMoveList())
+            MoveList moves = GetMoveList();
+            foreach (Move move in moves)
             {
                 Board copy = Copy();
                 copy.ExecuteMove(move);

@@ -271,9 +271,23 @@ namespace EngineUnitTests
             Assert.AreEqual("C6", move.End.ToString());
         }
 
+		[TestMethod]
+		[DataRow(1)]
+		[DataRow(2)]
+		[DataRow(3)]
+		[DataRow(4)]
+		[DataRow(5)]
+		[DataRow(6)]
+		public void CalculateOpeningMove(int depth)
+        {
+        	var chessEngine = new IntegerChessEngine();
+        	chessEngine.New(); // Initialize the chess engine with the starting position.
+
+			Move move = chessEngine.CalculateMove(depth);
+		}
         [TestMethod]
         public void CalculateMoveAvoidsDefendedPawnAtDepthTwo()
-        {
+        {   
             IntegerChessEngine chessEngine = new IntegerChessEngine();
             chessEngine.Clear();
 
