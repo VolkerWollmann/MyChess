@@ -251,6 +251,67 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void CalculateMoveTakesHangingPawnAtDepthOne()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.WhiteQueen(), "C1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "C6");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "D7");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            Move move = chessEngine.CalculateMove(1);
+
+            // Depth 1 does not see the recapture by the pawn on D7
+            Assert.AreEqual("C1", move.Start.ToString());
+            Assert.AreEqual("C6", move.End.ToString());
+        }
+
+        [TestMethod]
+        public void CalculateMoveAvoidsDefendedPawnAtDepthTwo()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.WhiteQueen(), "C1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "C6");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "D7");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            Move move = chessEngine.CalculateMove(2);
+
+            // Depth 2 sees D7xC6 and keeps the queen
+            Assert.AreNotEqual("C6", move.End.ToString());
+        }
+
+        [TestMethod]
+        public void CalculateMovePrefersWinOverMaterial()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "H1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "A1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "A8");
+            chessEngine.SetPiece(PieceFactory.BlackQueen(), "B1");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            Move move = chessEngine.CalculateMove(2);
+
+            // Beating the king (BlackLoss) outweighs beating the queen
+            Assert.AreEqual("A8", move.End.ToString());
+            Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
+        }
+
+        [TestMethod]
         public void GetRatingStartPositionIsBalanced()
         {
             IntegerChessEngine chessEngine = new IntegerChessEngine();

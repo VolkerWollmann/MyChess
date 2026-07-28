@@ -29,6 +29,8 @@ namespace MyIntegerChessEngine
         public const int White = 0;
         public const int Black = 8;
 
+        public const int DefaultSearchDepth = 3;
+
         // Material values for the evaluation function
         public const int PawnValue = 100;
         public const int KnightValue = 300;

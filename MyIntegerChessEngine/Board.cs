@@ -251,6 +251,59 @@ namespace MyIntegerChessEngine
             };
         }
 
+        /// Depth search (minimax) for the best move of the side to move.
+        /// White maximizes, black minimizes the rating value.
+        /// Returns null if there is no legal move or the game is already over.
+        public Move CalculateMove(int depth)
+        {
+            (Move move, Rating rating) = Search(depth);
+
+            if (move != null)
+                move.Rating = rating;
+
+            return move;
+        }
+
+        private (Move Move, Rating Rating) Search(int depth)
+        {
+            Rating rating = GetRating();
+
+            // A captured king ends the line; the depth bonus prefers the faster win
+            // (and for the loser the later loss).
+            if (rating.State == GameState.BlackLoss)
+                return (null, new Rating(rating.Value + depth, rating.State));
+            if (rating.State == GameState.WhiteLoss)
+                return (null, new Rating(rating.Value - depth, rating.State));
+
+            if (depth <= 0)
+                return (null, rating);
+
+            bool white = ColorToMove == Constants.White;
+            Move bestMove = null;
+            Rating bestRating = null;
+
+            foreach (Move move in GetMoveList())
+            {
+                Board copy = Copy();
+                copy.ExecuteMove(move);
+                copy.ColorToMove = white ? Constants.Black : Constants.White;
+
+                (_, Rating moveRating) = copy.Search(depth - 1);
+
+                if (bestRating == null
+                    || (white ? moveRating.Value > bestRating.Value : moveRating.Value < bestRating.Value))
+                {
+                    bestRating = moveRating;
+                    bestMove = move;
+                }
+            }
+
+            if (bestMove == null)
+                return (null, rating); // no legal move
+
+            return (bestMove, bestRating);
+        }
+
         internal MoveList GetThreatenMoveList(Piece piece, Position position)
         {
             return piece.PieceType switch

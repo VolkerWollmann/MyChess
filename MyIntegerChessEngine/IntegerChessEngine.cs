@@ -129,9 +129,11 @@ namespace MyIntegerChessEngine
             throw new NotImplementedException();
         }
 
-        public Move CalculateMove()
+        /// Depth search (minimax) for the best move of the side to move.
+        /// Returns null if there is no legal move or the game is already over.
+        public Move CalculateMove(int depth = Constants.DefaultSearchDepth)
         {
-            throw new NotImplementedException();
+            return Board.CalculateMove(depth);
         }
 
         public string Message { get; }

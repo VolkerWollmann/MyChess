@@ -22,6 +22,9 @@ namespace MyIntegerChessEngine
         public Position Start = start;
         public Position End = end;
         public CastleType CastleType = castleType;
+
+        /// Expected rating after this move, set by Board.CalculateMove.
+        public Rating Rating;
     }
 
     public class MoveList : List<Move>
