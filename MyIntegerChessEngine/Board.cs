@@ -150,6 +150,26 @@ namespace MyIntegerChessEngine
             return moveList;
         }
 
+        /// Returns all fields where an actual or possible beat by <paramref name="color"/> can happen.
+        public MoveList GetThreatenMoveList(int color)
+        {
+            MoveList moveList = new MoveList();
+
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                Position position = new Position(column, row);
+                Piece piece = GetPiece(position);
+
+                if (piece.IsEmpty || piece.IntColor != color)
+                    continue;
+
+                moveList.AddRange(GetThreatenMoveList(piece, position));
+            }
+
+            return moveList;
+        }
+
         /// Material rating: white pieces count positive, black pieces negative.
         public int GetRating()
         {
@@ -190,6 +210,20 @@ namespace MyIntegerChessEngine
                 Constants.Rook => new Rook().GetMoveList(this, position),
                 Constants.Queen => new Queen().GetMoveList(this, position),
                 Constants.King => new King().GetMoveList(this, position),
+                _ => new MoveList()
+            };
+        }
+
+        internal MoveList GetThreatenMoveList(Piece piece, Position position)
+        {
+            return piece.PieceType switch
+            {
+                Constants.Pawn => new Pawn().GetThreatenMoveList(this, position),
+                Constants.Knight => new Knight().GetThreatenMoveList(this, position),
+                Constants.Bishop => new Bishop().GetThreatenMoveList(this, position),
+                Constants.Rook => new Rook().GetThreatenMoveList(this, position),
+                Constants.Queen => new Queen().GetThreatenMoveList(this, position),
+                Constants.King => new King().GetThreatenMoveList(this, position),
                 _ => new MoveList()
             };
         }
