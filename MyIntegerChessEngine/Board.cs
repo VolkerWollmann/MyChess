@@ -282,8 +282,7 @@ namespace MyIntegerChessEngine
             Move bestMove = null;
             Rating bestRating = null;
 
-            MoveList moves = GetMoveList();
-            foreach (Move move in moves)
+            foreach (Move move in GetMoveList())
             {
                 Board copy = Copy();
                 copy.ExecuteMove(move);
@@ -300,9 +299,37 @@ namespace MyIntegerChessEngine
             }
 
             if (bestMove == null)
-                return (null, rating); // no legal move
+            {
+                // No legal move: checkmate if the own king is in check, otherwise stalemate.
+                // The threat plane is current, GetMoveList marked it for the opponent.
+                if (IsKingThreatened(ColorToMove))
+                {
+                    return white
+                        ? (null, new Rating(rating.Value - Constants.KingValue - depth, GameState.WhiteLoss))
+                        : (null, new Rating(rating.Value + Constants.KingValue + depth, GameState.BlackLoss));
+                }
+
+                return (null, new Rating(0, GameState.Remis));
+            }
 
             return (bestMove, bestRating);
+        }
+
+        /// True if the king of <paramref name="color"/> stands on a threatened field.
+        /// Reads the threat plane as marked by the last MarkThreatenedFields call.
+        public bool IsKingThreatened(int color)
+        {
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                Position position = new Position(column, row);
+                Piece piece = GetPiece(position);
+
+                if (piece.PieceType == Constants.King && !piece.IsEmpty && piece.IntColor == color)
+                    return IsThreatened(position);
+            }
+
+            return false;
         }
 
         internal MoveList GetThreatenMoveList(Piece piece, Position position)

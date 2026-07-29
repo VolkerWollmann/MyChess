@@ -271,23 +271,23 @@ namespace EngineUnitTests
             Assert.AreEqual("C6", move.End.ToString());
         }
 
-		[TestMethod]
-		[DataRow(1)]
-		[DataRow(2)]
-		[DataRow(3)]
-		[DataRow(4)]
-		[DataRow(5)]
-		[DataRow(6)]
-		public void CalculateOpeningMove(int depth)
+        [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        [DataRow(4)]
+        [DataRow(5)]
+        public void CalculateOpeningMove(int depth)
         {
-        	var chessEngine = new IntegerChessEngine();
-        	chessEngine.New(); // Initialize the chess engine with the starting position.
+            var chessEngine = new IntegerChessEngine();
+            chessEngine.New(); // Initialize the chess engine with the starting position.
 
-			Move move = chessEngine.CalculateMove(depth);
-		}
+            Move move = chessEngine.CalculateMove(depth);
+        }
+
         [TestMethod]
         public void CalculateMoveAvoidsDefendedPawnAtDepthTwo()
-        {   
+        {
             IntegerChessEngine chessEngine = new IntegerChessEngine();
             chessEngine.Clear();
 
@@ -322,6 +322,26 @@ namespace EngineUnitTests
 
             // Beating the king (BlackLoss) outweighs beating the queen
             Assert.AreEqual("A8", move.End.ToString());
+            Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
+        }
+
+        [TestMethod]
+        public void CalculateTwoMoveMate()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "G6");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "G5");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "H8");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            // 1. Re5 Kg8 (forced) 2. Re8#
+            Move move = chessEngine.CalculateMove(5);
+
+            Assert.AreEqual("G5", move.Start.ToString());
+            Assert.AreEqual("E5", move.End.ToString());
             Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
         }
 

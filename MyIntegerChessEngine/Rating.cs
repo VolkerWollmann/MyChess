@@ -5,8 +5,9 @@ namespace MyIntegerChessEngine
     public enum GameState
     {
         Normal,
-        WhiteLoss,   // white king is off the board
-        BlackLoss    // black king is off the board
+        WhiteLoss,   // white king is off the board or checkmated
+        BlackLoss,   // black king is off the board or checkmated
+        Remis        // side to move has no legal move without being checked (stalemate)
     }
 
     [DebuggerDisplay("{ToString()}")]
