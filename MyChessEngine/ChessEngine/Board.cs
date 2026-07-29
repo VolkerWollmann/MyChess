@@ -336,6 +336,14 @@ namespace MyChessEngine
         }
         public virtual Move CalculateMove(int depth, Color color)
         {
+            return CalculateMove(depth, color, null, null);
+        }
+
+        /// Alpha-beta pruning: alpha is the best rating white can already force on
+        /// this path, beta the best for black (both from white's point of view).
+        /// Once alpha is at least beta the remaining moves are cut off.
+        public virtual Move CalculateMove(int depth, Color color, BoardRating alpha, BoardRating beta)
+        {
             MarkThreatenedFields(ChessEngineConstants.NextColorToMove(color));
 
             var rating = GetRating(color);
@@ -346,27 +354,47 @@ namespace MyChessEngine
             if (depth == 0)
                 return Move.CreateNoMove(rating);
 
-            var moves = new MoveList(GetBaseMoveList(color));
+            var moves = GetBaseMoveList(color);
 
-            MoveList result = new MoveList();
-            IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
+            // Captures first (most valuable victim first, stable order) so cutoffs come early
+            var searchOrder = moves
+                .OrderByDescending(move => move.AffectedPieceBefore[0] is Piece victim ? Math.Abs(victim.Weight) : 0)
+                .ToList();
 
-            foreach (Move move in moves.Moves)
+            foreach (Move move in searchOrder)
             {
-                //Board b = this.Copy();
                 ExecuteMove(move);
 
-                Move resultMove = CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
+                Move resultMove = CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color), alpha, beta);
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
-                
-				result.Add(move);
+
                 UndoLastMove();
 
-                //if (!this.Compare(b))
-                //{
-                //    ;
-                //}
+                if (color == Color.White)
+                {
+                    if (alpha == null || alpha.Weight < move.Rating.Weight)
+                        alpha = move.Rating;
+                }
+                else
+                {
+                    if (beta == null || beta.Weight > move.Rating.Weight)
+                        beta = move.Rating;
+                }
+
+                // Cut only on strictly greater weight: lines rated equal in weight (e.g.
+                // all the mate lines) stay fully evaluated, so their depth tie-breaking
+                // and Situation/Evaluation stay exactly as in the search without pruning.
+                if (alpha != null && beta != null && alpha.Weight > beta.Weight)
+                    break; // the opponent avoids this line, the remaining moves cannot matter
+            }
+
+            // Rated moves in generation order, GetBestMove ties resolve like without pruning
+            MoveList result = new MoveList();
+            foreach (Move move in moves)
+            {
+                if (move.Rating != null)
+                    result.Add(move);
             }
 
             var king = this.Kings[color];
@@ -388,16 +416,15 @@ namespace MyChessEngine
             if (depth == 0)
                 return Move.CreateNoMove(rating);
 
-            var moves = this.GetMoveList(color);
+            var moves = this.GetMoveList(color).Moves;
 
-            ParallelMoveList result = new ParallelMoveList();
-            IBoardRatingComparer comparer = BoardRatingComparerFactory.GetComparer(color);
-
-            var moveIndexes = Enumerable.Range(0, moves.Moves.Count);
-            Parallel.ForEach(moveIndexes, moveindex =>
+            // Every root move writes only its own Rating; the reduce below runs on the
+            // list in generation order, so ties resolve deterministically like in the
+            // sequential search (a ConcurrentBag would order by thread completion).
+            Parallel.For(0, moves.Count, moveindex =>
             {
-                Move move = moves.Moves[moveindex];
-                
+                Move move = moves[moveindex];
+
                 Board copy2 = this.Copy();
                 var copy2Moves = copy2.GetMoveList(color);
                 var copy2Move = copy2Moves.GetMoveByPositions(move.Start, move.End);
@@ -406,10 +433,9 @@ namespace MyChessEngine
                 Move resultMove = copy2.CalculateMove(depth - 1, ChessEngineConstants.NextColorToMove(color));
                 move.Rating = resultMove.Rating;
                 move.Rating.Depth = move.Rating.Depth + 1;
-                result.Moves.Add(move);
-
-                result.Add(move);
             });
+
+            MoveList result = new MoveList(moves.Where(move => move.Rating != null).ToList());
 
             var king = this.Kings[color];
             bool check = this[king.Position].Threat;
