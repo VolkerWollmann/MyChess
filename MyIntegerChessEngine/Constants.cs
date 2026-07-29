@@ -39,5 +39,19 @@ namespace MyIntegerChessEngine
         public const int QueenValue = 900;
         public const int KingValue = 10000;
 
+        public static int PieceValue(int pieceType)
+        {
+            return pieceType switch
+            {
+                Pawn => PawnValue,
+                Knight => KnightValue,
+                Bishop => BishopValue,
+                Rook => RookValue,
+                Queen => QueenValue,
+                King => KingValue,
+                _ => 0
+            };
+        }
+
     }
 }

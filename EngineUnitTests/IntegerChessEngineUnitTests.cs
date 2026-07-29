@@ -277,6 +277,9 @@ namespace EngineUnitTests
         [DataRow(3)]
         [DataRow(4)]
         [DataRow(5)]
+        [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
         public void CalculateOpeningMove(int depth)
         {
             var chessEngine = new IntegerChessEngine();
@@ -292,6 +295,8 @@ namespace EngineUnitTests
         [DataRow(4)]
         [DataRow(5)]
         [DataRow(6)]
+        [DataRow(7)]
+        [DataRow(8)]
         public void CalculateOpeningMoveParallel(int depth)
         {
             var chessEngine = new IntegerChessEngine();

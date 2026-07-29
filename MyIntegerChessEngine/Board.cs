@@ -206,16 +206,7 @@ namespace MyIntegerChessEngine
                 if (piece.IsEmpty)
                     continue;
 
-                int value = piece.PieceType switch
-                {
-                    Constants.Pawn => Constants.PawnValue,
-                    Constants.Knight => Constants.KnightValue,
-                    Constants.Bishop => Constants.BishopValue,
-                    Constants.Rook => Constants.RookValue,
-                    Constants.Queen => Constants.QueenValue,
-                    Constants.King => Constants.KingValue,
-                    _ => 0
-                };
+                int value = Constants.PieceValue(piece.PieceType);
 
                 if (piece.PieceType == Constants.King)
                 {
@@ -256,7 +247,7 @@ namespace MyIntegerChessEngine
         /// Returns null if there is no legal move or the game is already over.
         public Move CalculateMove(int depth)
         {
-            (Move move, Rating rating) = Search(depth);
+            (Move move, Rating rating) = Search(depth, int.MinValue, int.MaxValue);
 
             if (move != null)
                 move.Rating = rating;
@@ -288,7 +279,9 @@ namespace MyIntegerChessEngine
                 copy.ExecuteMove(moves[i]);
                 copy.ColorToMove = white ? Constants.Black : Constants.White;
 
-                (_, ratings[i]) = copy.Search(depth - 1);
+                // Full window per root move keeps the results exact and the
+                // reduce deterministic; each subtree still prunes internally.
+                (_, ratings[i]) = copy.Search(depth - 1, int.MinValue, int.MaxValue);
             });
 
             Move bestMove = null;
@@ -308,7 +301,9 @@ namespace MyIntegerChessEngine
             return bestMove;
         }
 
-        private (Move Move, Rating Rating) Search(int depth)
+        /// Alpha-beta search: alpha/beta bound the values white/black can already
+        /// force elsewhere in the tree; branches outside the window are cut off.
+        private (Move Move, Rating Rating) Search(int depth, int alpha, int beta)
         {
             Rating rating = GetRating();
 
@@ -326,13 +321,13 @@ namespace MyIntegerChessEngine
             Move bestMove = null;
             Rating bestRating = null;
 
-            foreach (Move move in GetMoveList())
+            foreach (Move move in OrderMoves(GetMoveList()))
             {
                 Board copy = Copy();
                 copy.ExecuteMove(move);
                 copy.ColorToMove = white ? Constants.Black : Constants.White;
 
-                (_, Rating moveRating) = copy.Search(depth - 1);
+                (_, Rating moveRating) = copy.Search(depth - 1, alpha, beta);
 
                 if (bestRating == null
                     || (white ? moveRating.Value > bestRating.Value : moveRating.Value < bestRating.Value))
@@ -340,6 +335,14 @@ namespace MyIntegerChessEngine
                     bestRating = moveRating;
                     bestMove = move;
                 }
+
+                if (white)
+                    alpha = Math.Max(alpha, bestRating.Value);
+                else
+                    beta = Math.Min(beta, bestRating.Value);
+
+                if (alpha >= beta)
+                    break; // opponent avoids this line, no need to search the rest
             }
 
             if (bestMove == null)
@@ -357,6 +360,17 @@ namespace MyIntegerChessEngine
             }
 
             return (bestMove, bestRating);
+        }
+
+        /// Captures first, most valuable victim first; alpha-beta cuts earlier this way.
+        /// OrderByDescending is stable, ties keep the move generation order.
+        private Move[] OrderMoves(MoveList moves)
+        {
+            return moves.OrderByDescending(move =>
+            {
+                Piece victim = GetPiece(move.End);
+                return victim.IsEmpty ? 0 : Constants.PieceValue(victim.PieceType);
+            }).ToArray();
         }
 
         /// True if the king of <paramref name="color"/> stands on a threatened field.
