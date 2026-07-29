@@ -264,6 +264,50 @@ namespace MyIntegerChessEngine
             return move;
         }
 
+        /// Depth search like CalculateMove, the first level moves are searched in parallel.
+        /// Each root move runs on its own board copy; the results are reduced in move
+        /// generation order, so the chosen move is the same as with CalculateMove.
+        public Move CalculateMoveParallel(int depth)
+        {
+            Rating rating = GetRating();
+
+            if (rating.State != GameState.Normal || depth <= 0)
+                return null;
+
+            MoveList moves = GetMoveList();
+
+            if (moves.Count == 0)
+                return null; // checkmate or stalemate, no move to return
+
+            bool white = ColorToMove == Constants.White;
+            Rating[] ratings = new Rating[moves.Count];
+
+            Parallel.For(0, moves.Count, i =>
+            {
+                Board copy = Copy();
+                copy.ExecuteMove(moves[i]);
+                copy.ColorToMove = white ? Constants.Black : Constants.White;
+
+                (_, ratings[i]) = copy.Search(depth - 1);
+            });
+
+            Move bestMove = null;
+            Rating bestRating = null;
+
+            for (int i = 0; i < moves.Count; i++)
+            {
+                if (bestRating == null
+                    || (white ? ratings[i].Value > bestRating.Value : ratings[i].Value < bestRating.Value))
+                {
+                    bestRating = ratings[i];
+                    bestMove = moves[i];
+                }
+            }
+
+            bestMove.Rating = bestRating;
+            return bestMove;
+        }
+
         private (Move Move, Rating Rating) Search(int depth)
         {
             Rating rating = GetRating();

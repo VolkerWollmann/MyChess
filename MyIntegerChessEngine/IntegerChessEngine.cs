@@ -136,6 +136,12 @@ namespace MyIntegerChessEngine
             return Board.CalculateMove(depth);
         }
 
+        /// Depth search like CalculateMove, the first level moves are searched in parallel.
+        public Move CalculateMoveParallel(int depth = Constants.DefaultSearchDepth)
+        {
+            return Board.CalculateMoveParallel(depth);
+        }
+
         public string Message { get; }
     }
 }
