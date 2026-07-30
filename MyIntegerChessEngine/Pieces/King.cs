@@ -6,6 +6,31 @@ namespace MyIntegerChessEngine.Pieces
 {
     internal class King : Piece
     {
+        static readonly Position WhiteKingSideTarget = new("G1");
+        static readonly Position WhiteQueenSideTarget = new("C1");
+        static readonly Position BlackKingSideTarget = new("G8");
+        static readonly Position BlackQueenSideTarget = new("C8");
+
+        static readonly Position WhiteKingRookStart = new("H1");
+        static readonly Position WhiteKingRookTarget = new("F1");
+        static readonly Position WhiteQueenRookStart = new("A1");
+        static readonly Position WhiteQueenRookTarget = new("D1");
+        static readonly Position BlackKingRookStart = new("H8");
+        static readonly Position BlackKingRookTarget = new("F8");
+        static readonly Position BlackQueenRookStart = new("A8");
+        static readonly Position BlackQueenRookTarget = new("D8");
+
+        // Fields between king and rook must be empty, fields the king stands on
+        // or passes over must be unthreatened
+        static readonly Position[] WhiteKingSideEmptyFields = [new("F1"), new("G1")];
+        static readonly Position[] WhiteKingSideKingFields = [new("E1"), new("F1"), new("G1")];
+        static readonly Position[] WhiteQueenSideEmptyFields = [new("B1"), new("C1"), new("D1")];
+        static readonly Position[] WhiteQueenSideKingFields = [new("C1"), new("D1"), new("E1")];
+        static readonly Position[] BlackKingSideEmptyFields = [new("F8"), new("G8")];
+        static readonly Position[] BlackKingSideKingFields = [new("E8"), new("F8"), new("G8")];
+        static readonly Position[] BlackQueenSideEmptyFields = [new("B8"), new("C8"), new("D8")];
+        static readonly Position[] BlackQueenSideKingFields = [new("C8"), new("D8"), new("E8")];
+
         /// Called by Board.ExecuteMove before the king itself is moved:
         /// executes the rook part of a castle and invalidates the castle rights.
         internal static void ExecuteMove(Board board, Move move)
@@ -24,16 +49,16 @@ namespace MyIntegerChessEngine.Pieces
             switch (move.CastleType)
             {
                 case CastleType.WhiteKingSide:
-                    board.MovePiece(new Position("H1"), new Position("F1"));
+                    board.MovePiece(WhiteKingRookStart, WhiteKingRookTarget);
                     break;
                 case CastleType.WhiteQueenSide:
-                    board.MovePiece(new Position("A1"), new Position("D1"));
+                    board.MovePiece(WhiteQueenRookStart, WhiteQueenRookTarget);
                     break;
                 case CastleType.BlackKingSide:
-                    board.MovePiece(new Position("H8"), new Position("F8"));
+                    board.MovePiece(BlackKingRookStart, BlackKingRookTarget);
                     break;
                 case CastleType.BlackQueenSide:
-                    board.MovePiece(new Position("A8"), new Position("D8"));
+                    board.MovePiece(BlackQueenRookStart, BlackQueenRookTarget);
                     break;
             }
         }
@@ -83,32 +108,32 @@ namespace MyIntegerChessEngine.Pieces
                 {
                     // Check for white king-side castling
                     if (board.WhiteCastleKingSidePossible()
-                        && CastleFieldsFree(board, ["F1", "G1"], ["E1", "F1", "G1"]))
+                        && CastleFieldsFree(board, WhiteKingSideEmptyFields, WhiteKingSideKingFields))
                     {
-                        moveList.Add(new Move(position, new Position("G1"), king, CastleType.WhiteKingSide));
+                        moveList.Add(new Move(position, WhiteKingSideTarget, king, CastleType.WhiteKingSide));
                     }
 
                     // Check for white queen-side castling
                     if (board.WhiteCastleQueenSidePossible()
-                        && CastleFieldsFree(board, ["B1", "C1", "D1"], ["C1", "D1", "E1"]))
+                        && CastleFieldsFree(board, WhiteQueenSideEmptyFields, WhiteQueenSideKingFields))
                     {
-                        moveList.Add(new Move(position, new Position("C1"), king, CastleType.WhiteQueenSide));
+                        moveList.Add(new Move(position, WhiteQueenSideTarget, king, CastleType.WhiteQueenSide));
                     }
                 }
                 else
                 {
                     // Check for black king-side castling
                     if (board.BlackCastleKingSidePossible()
-                        && CastleFieldsFree(board, ["F8", "G8"], ["E8", "F8", "G8"]))
+                        && CastleFieldsFree(board, BlackKingSideEmptyFields, BlackKingSideKingFields))
                     {
-                        moveList.Add(new Move(position, new Position("G8"), king, CastleType.BlackKingSide));
+                        moveList.Add(new Move(position, BlackKingSideTarget, king, CastleType.BlackKingSide));
                     }
 
                     // Check for black queen-side castling
                     if (board.BlackCastleQueenSidePossible()
-                        && CastleFieldsFree(board, ["B8", "C8", "D8"], ["C8", "D8", "E8"]))
+                        && CastleFieldsFree(board, BlackQueenSideEmptyFields, BlackQueenSideKingFields))
                     {
-                        moveList.Add(new Move(position, new Position("C8"), king, CastleType.BlackQueenSide));
+                        moveList.Add(new Move(position, BlackQueenSideTarget, king, CastleType.BlackQueenSide));
                     }
                 }
             }
@@ -118,17 +143,17 @@ namespace MyIntegerChessEngine.Pieces
 
         /// A castle requires the fields between king and rook to be empty and
         /// the fields the king stands on or passes over to be unthreatened.
-        private static bool CastleFieldsFree(Board board, string[] emptyFields, string[] unthreatenedFields)
+        private static bool CastleFieldsFree(Board board, Position[] emptyFields, Position[] unthreatenedFields)
         {
-            foreach (string field in emptyFields)
+            foreach (Position field in emptyFields)
             {
-                if (!board.GetPiece(new Position(field)).IsEmpty)
+                if (!board.GetPiece(field).IsEmpty)
                     return false;
             }
 
-            foreach (string field in unthreatenedFields)
+            foreach (Position field in unthreatenedFields)
             {
-                if (board.IsThreatened(new Position(field)))
+                if (board.IsThreatened(field))
                     return false;
             }
 
