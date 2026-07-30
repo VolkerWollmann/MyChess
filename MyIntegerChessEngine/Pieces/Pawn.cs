@@ -1,6 +1,6 @@
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class Pawn : Piece
+    internal static class Pawn
     {
         /// Called by Board.ExecuteMove before the pawn itself is moved:
         /// removes the captured pawn on en passant and marks adjacent
@@ -36,7 +36,7 @@ namespace MyIntegerChessEngine.Pieces
             board.SetEnPassantMarking(neighbour, board.CurrentPly - 1);
         }
 
-        internal MoveList GetThreatenMoveList(Board board, Position position)
+        internal static MoveList GetThreatenMoveList(Board board, Position position)
         {
             var result = new MoveList();
             Piece pawn = board.GetPiece(position);
@@ -55,7 +55,7 @@ namespace MyIntegerChessEngine.Pieces
             return result;
         }
 
-        internal MoveList GetMoveList(Board board, Position position)
+        internal static MoveList GetMoveList(Board board, Position position)
         {
             var result = new MoveList();
             Piece pawn = board.GetPiece(position);

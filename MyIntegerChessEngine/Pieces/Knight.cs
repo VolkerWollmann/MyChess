@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class Knight : Piece
+    internal static class Knight
     {
         static readonly int[,] Delta = new int[,]
         {
@@ -12,12 +12,12 @@ namespace MyIntegerChessEngine.Pieces
             { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
         };
 
-        internal MoveList GetThreatenMoveList(Board board, Position position)
+        internal static MoveList GetThreatenMoveList(Board board, Position position)
         {
             return GetMoveList(board, position);
         }
 
-        internal MoveList GetMoveList(Board board, Position position)
+        internal static MoveList GetMoveList(Board board, Position position)
         {
             var result = new MoveList();
             Piece knight = board.GetPiece(position);

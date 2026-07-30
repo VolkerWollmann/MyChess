@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class King : Piece
+    internal static class King
     {
         static readonly Position WhiteKingSideTarget = new("G1");
         static readonly Position WhiteQueenSideTarget = new("C1");
@@ -63,7 +63,7 @@ namespace MyIntegerChessEngine.Pieces
             }
         }
 
-        internal MoveList GetThreatenMoveList(Board board, Position position)
+        internal static MoveList GetThreatenMoveList(Board board, Position position)
         {
             MoveList moveList = new MoveList();
             Piece king = board.GetPiece(position);
@@ -90,7 +90,7 @@ namespace MyIntegerChessEngine.Pieces
             }
             return moveList;
         }
-        internal override MoveList GetMoveList(Board board, Position position)
+        internal static MoveList GetMoveList(Board board, Position position)
         {
             Piece king = board.GetPiece(position);
             MoveList moveList = new MoveList();
@@ -102,7 +102,7 @@ namespace MyIntegerChessEngine.Pieces
                     moveList.Add(move);
             }
 
-            if (!IsMoved())
+            if (!king.IsMoved())
             {
                 if (king.IntColor == Constants.White)
                 {

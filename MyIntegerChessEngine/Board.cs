@@ -232,12 +232,12 @@ namespace MyIntegerChessEngine
         {
             return piece.PieceType switch
             {
-                Constants.Pawn => new Pawn().GetMoveList(this, position),
-                Constants.Knight => new Knight().GetMoveList(this, position),
-                Constants.Bishop => new Bishop().GetMoveList(this, position),
-                Constants.Rook => new Rook().GetMoveList(this, position),
-                Constants.Queen => new Queen().GetMoveList(this, position),
-                Constants.King => new King().GetMoveList(this, position),
+                Constants.Pawn => Pawn.GetMoveList(this, position),
+                Constants.Knight => Knight.GetMoveList(this, position),
+                Constants.Bishop => Bishop.GetMoveList(this, position),
+                Constants.Rook => Rook.GetMoveList(this, position),
+                Constants.Queen => Queen.GetMoveList(this, position),
+                Constants.King => King.GetMoveList(this, position),
                 _ => new MoveList()
             };
         }
@@ -394,12 +394,12 @@ namespace MyIntegerChessEngine
         {
             return piece.PieceType switch
             {
-                Constants.Pawn => new Pawn().GetThreatenMoveList(this, position),
-                Constants.Knight => new Knight().GetThreatenMoveList(this, position),
-                Constants.Bishop => new Bishop().GetThreatenMoveList(this, position),
-                Constants.Rook => new Rook().GetThreatenMoveList(this, position),
-                Constants.Queen => new Queen().GetThreatenMoveList(this, position),
-                Constants.King => new King().GetThreatenMoveList(this, position),
+                Constants.Pawn => Pawn.GetThreatenMoveList(this, position),
+                Constants.Knight => Knight.GetThreatenMoveList(this, position),
+                Constants.Bishop => Bishop.GetThreatenMoveList(this, position),
+                Constants.Rook => Rook.GetThreatenMoveList(this, position),
+                Constants.Queen => Queen.GetThreatenMoveList(this, position),
+                Constants.King => King.GetThreatenMoveList(this, position),
                 _ => new MoveList()
             };
         }

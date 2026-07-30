@@ -4,19 +4,19 @@ using System.Text;
 
 namespace MyIntegerChessEngine.Pieces
 {
-    internal class Queen : Piece
+    internal static class Queen
     {
-        internal MoveList GetThreatenMoveList(Board board, Position position)
+        internal static MoveList GetThreatenMoveList(Board board, Position position)
         {
             return GetMoveList(board, position, true);
         }
 
-        internal MoveList GetMoveList(Board board, Position position)
+        internal static MoveList GetMoveList(Board board, Position position)
         {
             return GetMoveList(board, position, false);
         }
 
-        private MoveList GetMoveList(Board board, Position position, bool threat)
+        private static MoveList GetMoveList(Board board, Position position, bool threat)
         {
             MoveList moveList = new MoveList();
             Piece queen = board.GetPiece(position);

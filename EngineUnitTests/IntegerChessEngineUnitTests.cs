@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyChessEngineBase;
 using MyIntegerChessEngine;
 using MyIntegerChessEngine.Pieces;
@@ -53,7 +55,7 @@ namespace EngineUnitTests
             Position a1 = new Position("A1");
             board.SetPiece(PieceFactory.WhiteKnight(), a1);
 
-            MoveList moves = new Knight().GetMoveList(board, a1);
+            MoveList moves = Knight.GetMoveList(board, a1);
 
             Assert.AreEqual(2, moves.Count); // only B3 and C2
         }
@@ -65,7 +67,7 @@ namespace EngineUnitTests
             Position h8 = new Position("H8");
             board.SetPiece(PieceFactory.BlackKnight(), h8);
 
-            MoveList moves = new Knight().GetMoveList(board, h8);
+            MoveList moves = Knight.GetMoveList(board, h8);
 
             Assert.AreEqual(2, moves.Count); // only F7 and G6
         }
@@ -77,7 +79,7 @@ namespace EngineUnitTests
             Position a1 = new Position("A1");
             board.SetPiece(PieceFactory.WhiteRook(), a1);
 
-            MoveList moves = new Rook().GetMoveList(board, a1);
+            MoveList moves = Rook.GetMoveList(board, a1);
 
             Assert.AreEqual(14, moves.Count); // A2-A8 and B1-H1
         }
@@ -90,7 +92,7 @@ namespace EngineUnitTests
             board.SetPiece(PieceFactory.BlackRook(), a1);
             board.SetPiece(PieceFactory.WhitePawn(), new Position("A5"));
 
-            MoveList moves = new Rook().GetMoveList(board, a1);
+            MoveList moves = Rook.GetMoveList(board, a1);
 
             Assert.AreEqual(11, moves.Count); // A2-A4, capture A5, B1-H1
         }
@@ -102,7 +104,7 @@ namespace EngineUnitTests
             Position a1 = new Position("A1");
             board.SetPiece(PieceFactory.WhiteKing(), a1);
 
-            MoveList moves = new King().GetThreatenMoveList(board, a1);
+            MoveList moves = King.GetThreatenMoveList(board, a1);
 
             Assert.AreEqual(3, moves.Count); // A2, B1, B2
         }
@@ -136,7 +138,7 @@ namespace EngineUnitTests
             Position e4 = new Position("E4");
             board.SetPiece(PieceFactory.WhitePawn(), e4);
 
-            MoveList moves = new Pawn().GetThreatenMoveList(board, e4);
+            MoveList moves = Pawn.GetThreatenMoveList(board, e4);
 
             Assert.AreEqual(2, moves.Count); // D5 and F5, not E5
             Assert.IsTrue(moves.TrueForAll(move => move.End.Row == 4));
@@ -150,7 +152,7 @@ namespace EngineUnitTests
             board.SetPiece(PieceFactory.WhiteRook(), a1);
             board.SetPiece(PieceFactory.BlackKing(CastleType.None), new Position("A5"));
 
-            MoveList moves = new Rook().GetThreatenMoveList(board, a1);
+            MoveList moves = Rook.GetThreatenMoveList(board, a1);
 
             // A2-A4, king on A5, A6-A8 behind the king, B1-H1
             Assert.AreEqual(14, moves.Count);
@@ -383,6 +385,74 @@ namespace EngineUnitTests
             Assert.AreEqual("G5", move.Start.ToString());
             Assert.AreEqual("E5", move.End.ToString());
             Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
+        }
+
+        /// Proof of concept for replacing Board.Copy per search node with make/unmake:
+        /// cloning all planes copies 5 * 12 * 12 = 720 ints, while executing a move and
+        /// restoring the two touched squares afterwards moves only ~10 ints.
+        [TestMethod]
+        public void CopyBoardVersusMakeUnmakeProofOfConcept()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.New();
+            Board board = chessEngine.Board;
+            Board pristine = board.Copy();
+
+            const int iterations = 10_000;
+
+            // Today per search node: clone the full board
+            Stopwatch cloneWatch = Stopwatch.StartNew();
+            for (int i = 0; i < iterations; i++)
+            {
+                Board copy = board.Copy();
+            }
+            cloneWatch.Stop();
+
+            // Make/unmake: execute the move, then restore the ints it touched
+            Position start = new Position("G1");
+            Position end = new Position("F3");
+
+            Stopwatch makeUnmakeWatch = Stopwatch.StartNew();
+            for (int i = 0; i < iterations; i++)
+            {
+                Move move = new Move(start, end, board.GetPiece(start));
+
+                int[] startBefore = SaveSquare(board, start);
+                int[] endBefore = SaveSquare(board, end);
+                int plyBefore = board.CurrentPly;
+
+                board.ExecuteMove(move);
+
+                RestoreSquare(board, start, startBefore);
+                RestoreSquare(board, end, endBefore);
+                board.CurrentPly = plyBefore;
+            }
+            makeUnmakeWatch.Stop();
+
+            Console.WriteLine($"Clone 720 ints        x {iterations}: {cloneWatch.Elapsed.TotalMilliseconds:F2} ms");
+            Console.WriteLine($"Make/unmake ~10 ints  x {iterations}: {makeUnmakeWatch.Elapsed.TotalMilliseconds:F2} ms");
+            Console.WriteLine($"Factor: {(double)cloneWatch.ElapsedTicks / makeUnmakeWatch.ElapsedTicks:F1}");
+
+            // unmake restores the position completely
+            Assert.IsTrue(board.CompareBoard(pristine));
+            Assert.AreEqual(pristine.CurrentPly, board.CurrentPly);
+
+            // and moving a handful of ints beats cloning the whole board
+            Assert.IsTrue(makeUnmakeWatch.ElapsedTicks < cloneWatch.ElapsedTicks);
+        }
+
+        private static int[] SaveSquare(Board board, Position position)
+        {
+            int[] values = new int[Constants.Planes];
+            for (int plane = 0; plane < Constants.Planes; plane++)
+                values[plane] = board.Field[plane, position.Column + 2, position.Row + 2];
+            return values;
+        }
+
+        private static void RestoreSquare(Board board, Position position, int[] values)
+        {
+            for (int plane = 0; plane < Constants.Planes; plane++)
+                board.Field[plane, position.Column + 2, position.Row + 2] = values[plane];
         }
 
         [TestMethod]

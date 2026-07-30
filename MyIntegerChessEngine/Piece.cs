@@ -2,7 +2,10 @@
 
 namespace MyIntegerChessEngine
 {
-    public class Piece : IPiece
+    /// A struct wrapping the plane values of one square: read access stays
+    /// expressive (IsEmpty, IntColor, PieceType) without heap allocations in
+    /// the move generation. Copies are snapshots, never written back.
+    public struct Piece : IPiece
     {
         public int PieceAsInteger;
 
@@ -72,11 +75,6 @@ namespace MyIntegerChessEngine
                    && LastEnPassantPlyMarking == other.LastEnPassantPlyMarking;
         }
 
-        public virtual bool Move(Move move)
-        {
-            return true;
-        }
-
         public bool Compare(IPiece other)
         {
             throw new NotImplementedException();
@@ -105,12 +103,6 @@ namespace MyIntegerChessEngine
         }
 
         #endregion
-
-        internal virtual MoveList GetMoveList(Board board, Position position)
-        {
-            MoveList moveList = new MoveList();
-            return moveList;
-        }
     }
 
     public class PieceFactory
