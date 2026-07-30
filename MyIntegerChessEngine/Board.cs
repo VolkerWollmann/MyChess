@@ -6,8 +6,8 @@ using MyIntegerChessEngine.Pieces;
 namespace MyIntegerChessEngine
 {
     
-    /// 12×12 padded board: A1 = [2,2], H8 = [9,9] 
-    /// Each cell: [0] piece, [1] LastPly, [2] aux metadata.
+    /// 12×12 padded board: A1 = [2,2], H8 = [9,9]
+    /// Each cell: [0] piece, [1] LastPly, [2] en passant marking, [3] threat.
     /// </summary>
     public class Board
     {
@@ -40,7 +40,6 @@ namespace MyIntegerChessEngine
         {
             Field[Constants.BroadPlane, position.Column + 2, position.Row + 2] = piece.PieceAsInteger;
             Field[Constants.LastPlyPlane, position.Column + 2, position.Row + 2] = piece.LastPly;
-            Field[Constants.PromotionPlane, position.Column + 2, position.Row + 2] = piece.PromotionPly;
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = piece.LastEnPassantPlyMarking;
 
             if (piece.PieceType == Constants.King)
@@ -70,9 +69,8 @@ namespace MyIntegerChessEngine
         {
             int pieceValue = Field[Constants.BroadPlane, position.Column + 2, position.Row + 2];
             int lastPly = Field[Constants.LastPlyPlane, position.Column + 2, position.Row + 2];
-            int promotionPly = Field[Constants.PromotionPlane, position.Column + 2, position.Row + 2];
             int lastEnPassantPlyMarking = Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2];
-            return new Piece(pieceValue, lastPly, promotionPly, lastEnPassantPlyMarking);
+            return new Piece(pieceValue, lastPly, lastEnPassantPlyMarking);
         }   
 
         public void ExecuteMove(Move move)
@@ -111,8 +109,6 @@ namespace MyIntegerChessEngine
             Field[Constants.BroadPlane, endColumn, endRow]
                 = Field[Constants.BroadPlane, startColumn, startRow];
             Field[Constants.LastPlyPlane, endColumn, endRow] = CurrentPly;
-            Field[Constants.PromotionPlane, endColumn, endRow]
-                = Field[Constants.PromotionPlane, startColumn, startRow];
             Field[Constants.EnPassantPlane, endColumn, endRow]
                 = Field[Constants.EnPassantPlane, startColumn, startRow];
 
@@ -126,7 +122,6 @@ namespace MyIntegerChessEngine
 
             Field[Constants.BroadPlane, column, row] = Constants.NoPiece;
             Field[Constants.LastPlyPlane, column, row] = 0;
-            Field[Constants.PromotionPlane, column, row] = 0;
             Field[Constants.EnPassantPlane, column, row] = 0;
         }
 
@@ -138,7 +133,6 @@ namespace MyIntegerChessEngine
             public int Row;
             public int PieceValue;
             public int LastPly;
-            public int PromotionPly;
             public int EnPassantMarking;
         }
 
@@ -221,7 +215,6 @@ namespace MyIntegerChessEngine
 
                 Field[Constants.BroadPlane, column, row] = square.PieceValue;
                 Field[Constants.LastPlyPlane, column, row] = square.LastPly;
-                Field[Constants.PromotionPlane, column, row] = square.PromotionPly;
                 Field[Constants.EnPassantPlane, column, row] = square.EnPassantMarking;
             }
 
@@ -245,7 +238,6 @@ namespace MyIntegerChessEngine
                 Row = position.Row,
                 PieceValue = Field[Constants.BroadPlane, column, row],
                 LastPly = Field[Constants.LastPlyPlane, column, row],
-                PromotionPly = Field[Constants.PromotionPlane, column, row],
                 EnPassantMarking = Field[Constants.EnPassantPlane, column, row]
             };
         }
@@ -570,8 +562,7 @@ namespace MyIntegerChessEngine
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = ply;
         }
 
-        /// Replaces the piece on <paramref name="position"/> by a queen of the same
-        /// color and stamps the promotion plane with the current ply.
+        /// Replaces the piece on <paramref name="position"/> by a queen of the same color.
         internal void PromoteToQueen(Position position)
         {
             int column = position.Column + 2;
@@ -579,7 +570,6 @@ namespace MyIntegerChessEngine
 
             int color = Field[Constants.BroadPlane, column, row] & Constants.ColorMask;
             Field[Constants.BroadPlane, column, row] = Constants.Queen | color;
-            Field[Constants.PromotionPlane, column, row] = CurrentPly;
         }
 
         public void New()

@@ -527,7 +527,6 @@ namespace EngineUnitTests
             var promoted = chessEngine.Board.GetPiece(new Position("B8"));
             Assert.AreEqual(Constants.Queen, promoted.PieceType);
             Assert.AreEqual(Constants.White, promoted.IntColor);
-            Assert.AreEqual(chessEngine.Board.CurrentPly, promoted.PromotionPly);
             Assert.IsTrue(chessEngine.Board.GetPiece(b7).IsEmpty);
         }
 
@@ -576,7 +575,7 @@ namespace EngineUnitTests
 
             var pawn = board.GetPiece(b7);
             Assert.AreEqual(Constants.Pawn, pawn.PieceType);
-            Assert.AreEqual(pristine.GetPiece(b7).PromotionPly, pawn.PromotionPly);
+            Assert.IsTrue(pawn.Compare(pristine.GetPiece(b7)));
         }
 
         [TestMethod]
@@ -609,7 +608,7 @@ namespace EngineUnitTests
         /// Position 2 – Central tension: d4/e5 pawns face each other,
         /// both sides fully developed with equal material.
         [TestMethod]
-        public void CentralTensionCalculateMoveForWhiteDepthEightParallel()
+        public void CentralTensionCalculateMoveForWhiteDepthEight()
         {
             IntegerChessEngine chessEngine = new IntegerChessEngine();
             chessEngine.Clear();
@@ -652,7 +651,7 @@ namespace EngineUnitTests
         /// Position 2 – Central tension: d4/e5 pawns face each other,
         /// both sides fully developed with equal material.
         [TestMethod]
-        public void CentralTensionCalculateMoveForWhiteDepthEight()
+        public void CentralTensionCalculateMoveForWhiteDepthEightParallel()
         {
             IntegerChessEngine chessEngine = new IntegerChessEngine();
             chessEngine.Clear();
@@ -691,6 +690,7 @@ namespace EngineUnitTests
             Assert.AreEqual(Constants.White, move.Piece.IntColor);
             Console.WriteLine($"Best move: {move.Start}-{move.End} {move.Rating}");
         }
+
 
         [TestMethod]
         public void GetRatingStartPositionIsBalanced()

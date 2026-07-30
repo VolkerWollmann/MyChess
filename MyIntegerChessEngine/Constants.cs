@@ -7,12 +7,11 @@ namespace MyIntegerChessEngine
     public class Constants
     {
         public const int GridSize = 12;
-        public const int Planes = 5;      //0: piece, 1: last ply, 2: promotion 3: en passant marking 4: threatened fields
+        public const int Planes = 4;      //0: piece, 1: last ply, 2: en passant marking 3: threatened fields
         public const int BroadPlane = 0;
         public const int LastPlyPlane = 1;   // Administrative plane : last ply when piece moved, for en passant and castling rights
-        public const int PromotionPlane = 2;
-        public const int EnPassantPlane = 3;
-        public const int ThreatPlane = 4;    // Fields threatened by the opponent, written by MarkThreatenedFields
+        public const int EnPassantPlane = 2;
+        public const int ThreatPlane = 3;    // Fields threatened by the opponent, written by MarkThreatenedFields
         
         public const int BoardBorder = -1;
 

@@ -54,7 +54,11 @@ namespace MyIntegerChessEngine
         }
 
         public int LastPly { get; set; }
-        public int PromotionPly { get; set; }
+
+        /// Required by IPiece; the integer board keeps no promotion history,
+        /// a promoted pawn simply becomes a queen on the piece plane.
+        public int PromotionPly { get; set; } = -1;
+
         public int LastEnPassantPlyMarking { get; set; }
 
         /// Bit mask of the castles still possible; only evaluated
@@ -71,7 +75,6 @@ namespace MyIntegerChessEngine
         {
             return PieceAsInteger == other.PieceAsInteger
                    && LastPly == other.LastPly
-                   && PromotionPly == other.PromotionPly
                    && LastEnPassantPlyMarking == other.LastEnPassantPlyMarking;
         }
 
@@ -89,11 +92,10 @@ namespace MyIntegerChessEngine
 
         #region Constructors
 
-        public Piece(int pieceAsInteger, int lastPly, int promotionPly, int lastEnPassantPlyMarking)
+        public Piece(int pieceAsInteger, int lastPly, int lastEnPassantPlyMarking)
         {
             PieceAsInteger = pieceAsInteger;
             LastPly = lastPly;
-            PromotionPly = promotionPly;
             LastEnPassantPlyMarking = lastEnPassantPlyMarking;
         }
 
@@ -107,13 +109,13 @@ namespace MyIntegerChessEngine
 
     public class PieceFactory
     {
-        public static Piece Create(int pieceType, int color ,int lastPly=-1, int promotionPly=-1, int lastEnPassantPlyMarking=-1)
+        public static Piece Create(int pieceType, int color ,int lastPly=-1, int lastEnPassantPlyMarking=-1)
         {
             if (color != Constants.White && color != Constants.Black)
             {
                 throw new ArgumentException("Invalid color for piece creation.");
             }
-            return new Piece(pieceType | color , lastPly, promotionPly, lastEnPassantPlyMarking);
+            return new Piece(pieceType | color , lastPly, lastEnPassantPlyMarking);
         }
 
         public static Piece WhitePawn()
