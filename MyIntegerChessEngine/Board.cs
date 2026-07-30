@@ -538,6 +538,18 @@ namespace MyIntegerChessEngine
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = ply;
         }
 
+        /// Replaces the piece on <paramref name="position"/> by a queen of the same
+        /// color and stamps the promotion plane with the current ply.
+        internal void PromoteToQueen(Position position)
+        {
+            int column = position.Column + 2;
+            int row = position.Row + 2;
+
+            int color = Field[Constants.BroadPlane, column, row] & Constants.ColorMask;
+            Field[Constants.BroadPlane, column, row] = Constants.Queen | color;
+            Field[Constants.PromotionPlane, column, row] = CurrentPly;
+        }
+
         public void New()
         {
             Field = new int[Constants.Planes, Constants.GridSize, Constants.GridSize];

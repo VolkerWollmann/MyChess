@@ -510,6 +510,103 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void WhitePawnPromotesToQueenOnLastRow()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.WhitePawn(), "B7");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            Position b7 = new Position("B7");
+            chessEngine.ExecuteMove(new Move(b7, new Position("B8"), chessEngine.Board.GetPiece(b7)));
+
+            var promoted = chessEngine.Board.GetPiece(new Position("B8"));
+            Assert.AreEqual(Constants.Queen, promoted.PieceType);
+            Assert.AreEqual(Constants.White, promoted.IntColor);
+            Assert.AreEqual(chessEngine.Board.CurrentPly, promoted.PromotionPly);
+            Assert.IsTrue(chessEngine.Board.GetPiece(b7).IsEmpty);
+        }
+
+        [TestMethod]
+        public void BlackPawnPromotesToQueenOnCapture()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "C2");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "B1");
+
+            chessEngine.ColorToMove = Constants.Black;
+
+            Position c2 = new Position("C2");
+            chessEngine.ExecuteMove(new Move(c2, new Position("B1"), chessEngine.Board.GetPiece(c2)));
+
+            var promoted = chessEngine.Board.GetPiece(new Position("B1"));
+            Assert.AreEqual(Constants.Queen, promoted.PieceType);
+            Assert.AreEqual(Constants.Black, promoted.IntColor);
+            Assert.IsTrue(chessEngine.Board.GetPiece(c2).IsEmpty);
+        }
+
+        [TestMethod]
+        public void UndoRestoresPawnAfterPromotion()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.WhitePawn(), "B7");
+
+            chessEngine.ColorToMove = Constants.White;
+            Board board = chessEngine.Board;
+            Board pristine = board.Copy();
+
+            Position b7 = new Position("B7");
+            var undo = board.ExecuteMoveWithUndo(new Move(b7, new Position("B8"), board.GetPiece(b7)));
+            board.UndoMove(undo);
+
+            Assert.IsTrue(board.CompareBoard(pristine));
+            Assert.AreEqual(pristine.CurrentPly, board.CurrentPly);
+
+            var pawn = board.GetPiece(b7);
+            Assert.AreEqual(Constants.Pawn, pawn.PieceType);
+            Assert.AreEqual(pristine.GetPiece(b7).PromotionPly, pawn.PromotionPly);
+        }
+
+        [TestMethod]
+        public void PromotionOnB8DeliversCheckmate()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "G6");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "G8");
+            chessEngine.SetPiece(PieceFactory.WhitePawn(), "B7");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            // B7-B8=Q mates: the queen covers the 8th rank, the king G7/H7/F7
+            Move move = chessEngine.CalculateMove(2);
+
+            Assert.AreEqual("B7", move.Start.ToString());
+            Assert.AreEqual("B8", move.End.ToString());
+            Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
+
+            // After the promotion black has no legal move and is checked
+            chessEngine.ExecuteMove(move);
+
+            Assert.AreEqual(Constants.Queen, chessEngine.Board.GetPiece(new Position("B8")).PieceType);
+            Assert.AreEqual(0, chessEngine.GetMoveList().Count);
+            Assert.IsTrue(chessEngine.Board.IsKingThreatened(Constants.Black));
+        }
+
+        [TestMethod]
         public void GetRatingStartPositionIsBalanced()
         {
             IntegerChessEngine chessEngine = new IntegerChessEngine();

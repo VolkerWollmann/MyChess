@@ -24,7 +24,10 @@ namespace MyIntegerChessEngine.Pieces
                 MarkEnPassant(board, move, move.End.GetDeltaColumnPosition(1));
             }
 
-            // TODO: promotion when the pawn reaches the last row
+            // Promotion (queen only): rewrite the pawn on its start square,
+            // MovePiece then carries the queen to the last row.
+            if (move.End.Row == (move.Piece.IntColor == Constants.White ? 7 : 0))
+                board.PromoteToQueen(move.Start);
         }
 
         private static void MarkEnPassant(Board board, Move move, Position neighbour)
