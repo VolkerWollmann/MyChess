@@ -130,6 +130,134 @@ namespace MyIntegerChessEngine
             Field[Constants.EnPassantPlane, column, row] = 0;
         }
 
+        #region Make/Unmake
+
+        internal struct SavedSquare
+        {
+            public int Column;
+            public int Row;
+            public int PieceValue;
+            public int LastPly;
+            public int PromotionPly;
+            public int EnPassantMarking;
+        }
+
+        /// Snapshot of everything ExecuteMove can touch, created by ExecuteMoveWithUndo.
+        internal struct UndoInfo
+        {
+            public int CurrentPly;
+            public int ColorToMove;
+            public int WhiteCastleKingSideFlag;
+            public int WhiteCastleQueenSideFlag;
+            public int BlackCastleKingSideFlag;
+            public int BlackCastleQueenSideFlag;
+            public SavedSquare[] Squares;
+            public int SquareCount;
+        }
+
+        /// Executes the move like ExecuteMove and returns the snapshot UndoMove needs
+        /// to take it back: the touched squares (start, end, en passant capture and
+        /// marking fields, castle rook fields), castle flags, ColorToMove and the ply.
+        internal UndoInfo ExecuteMoveWithUndo(Move move)
+        {
+            UndoInfo undo = new UndoInfo
+            {
+                CurrentPly = CurrentPly,
+                ColorToMove = ColorToMove,
+                WhiteCastleKingSideFlag = Field[Constants.LastPlyPlane, 0, 0],
+                WhiteCastleQueenSideFlag = Field[Constants.LastPlyPlane, 0, 1],
+                BlackCastleKingSideFlag = Field[Constants.LastPlyPlane, 0, 2],
+                BlackCastleQueenSideFlag = Field[Constants.LastPlyPlane, 0, 3],
+                Squares = new SavedSquare[5]
+            };
+
+            SaveSquare(ref undo, move.Start);
+            SaveSquare(ref undo, move.End);
+
+            switch (move.Piece.PieceType)
+            {
+                case Constants.Pawn:
+                    // en passant capture field and the double step marking neighbours
+                    SaveSquare(ref undo, new Position(move.End.Column, move.Start.Row));
+                    SaveSquareOnBoard(ref undo, move.End.GetDeltaColumnPosition(-1));
+                    SaveSquareOnBoard(ref undo, move.End.GetDeltaColumnPosition(1));
+                    break;
+
+                case Constants.King:
+                    switch (move.CastleType)
+                    {
+                        case CastleType.WhiteKingSide:
+                            SaveSquare(ref undo, King.WhiteKingRookStart);
+                            SaveSquare(ref undo, King.WhiteKingRookTarget);
+                            break;
+                        case CastleType.WhiteQueenSide:
+                            SaveSquare(ref undo, King.WhiteQueenRookStart);
+                            SaveSquare(ref undo, King.WhiteQueenRookTarget);
+                            break;
+                        case CastleType.BlackKingSide:
+                            SaveSquare(ref undo, King.BlackKingRookStart);
+                            SaveSquare(ref undo, King.BlackKingRookTarget);
+                            break;
+                        case CastleType.BlackQueenSide:
+                            SaveSquare(ref undo, King.BlackQueenRookStart);
+                            SaveSquare(ref undo, King.BlackQueenRookTarget);
+                            break;
+                    }
+                    break;
+            }
+
+            ExecuteMove(move);
+
+            return undo;
+        }
+
+        internal void UndoMove(in UndoInfo undo)
+        {
+            for (int i = 0; i < undo.SquareCount; i++)
+            {
+                SavedSquare square = undo.Squares[i];
+                int column = square.Column + 2;
+                int row = square.Row + 2;
+
+                Field[Constants.BroadPlane, column, row] = square.PieceValue;
+                Field[Constants.LastPlyPlane, column, row] = square.LastPly;
+                Field[Constants.PromotionPlane, column, row] = square.PromotionPly;
+                Field[Constants.EnPassantPlane, column, row] = square.EnPassantMarking;
+            }
+
+            Field[Constants.LastPlyPlane, 0, 0] = undo.WhiteCastleKingSideFlag;
+            Field[Constants.LastPlyPlane, 0, 1] = undo.WhiteCastleQueenSideFlag;
+            Field[Constants.LastPlyPlane, 0, 2] = undo.BlackCastleKingSideFlag;
+            Field[Constants.LastPlyPlane, 0, 3] = undo.BlackCastleQueenSideFlag;
+
+            ColorToMove = undo.ColorToMove;
+            CurrentPly = undo.CurrentPly;
+        }
+
+        private void SaveSquare(ref UndoInfo undo, Position position)
+        {
+            int column = position.Column + 2;
+            int row = position.Row + 2;
+
+            undo.Squares[undo.SquareCount++] = new SavedSquare
+            {
+                Column = position.Column,
+                Row = position.Row,
+                PieceValue = Field[Constants.BroadPlane, column, row],
+                LastPly = Field[Constants.LastPlyPlane, column, row],
+                PromotionPly = Field[Constants.PromotionPlane, column, row],
+                EnPassantMarking = Field[Constants.EnPassantPlane, column, row]
+            };
+        }
+
+        private void SaveSquareOnBoard(ref UndoInfo undo, Position position)
+        {
+            if (position.Column >= 0 && position.Column < ChessEngineConstants.Length)
+                SaveSquare(ref undo, position);
+        }
+
+        #endregion
+
         /// Returns all possible moves of the side to move.
         /// The opponent's threats are marked first, so the king avoids threatened fields.
         public MoveList GetMoveList()
@@ -323,11 +451,12 @@ namespace MyIntegerChessEngine
 
             foreach (Move move in OrderMoves(GetMoveList()))
             {
-                Board copy = Copy();
-                copy.ExecuteMove(move);
-                copy.ColorToMove = white ? Constants.Black : Constants.White;
+                UndoInfo undo = ExecuteMoveWithUndo(move);
+                ColorToMove = white ? Constants.Black : Constants.White;
 
-                (_, Rating moveRating) = copy.Search(depth - 1, alpha, beta);
+                (_, Rating moveRating) = Search(depth - 1, alpha, beta);
+
+                UndoMove(undo);
 
                 if (bestRating == null
                     || (white ? moveRating.Value > bestRating.Value : moveRating.Value < bestRating.Value))

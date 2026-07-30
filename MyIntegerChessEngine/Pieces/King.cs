@@ -11,14 +11,14 @@ namespace MyIntegerChessEngine.Pieces
         static readonly Position BlackKingSideTarget = new("G8");
         static readonly Position BlackQueenSideTarget = new("C8");
 
-        static readonly Position WhiteKingRookStart = new("H1");
-        static readonly Position WhiteKingRookTarget = new("F1");
-        static readonly Position WhiteQueenRookStart = new("A1");
-        static readonly Position WhiteQueenRookTarget = new("D1");
-        static readonly Position BlackKingRookStart = new("H8");
-        static readonly Position BlackKingRookTarget = new("F8");
-        static readonly Position BlackQueenRookStart = new("A8");
-        static readonly Position BlackQueenRookTarget = new("D8");
+        internal static readonly Position WhiteKingRookStart = new("H1");
+        internal static readonly Position WhiteKingRookTarget = new("F1");
+        internal static readonly Position WhiteQueenRookStart = new("A1");
+        internal static readonly Position WhiteQueenRookTarget = new("D1");
+        internal static readonly Position BlackKingRookStart = new("H8");
+        internal static readonly Position BlackKingRookTarget = new("F8");
+        internal static readonly Position BlackQueenRookStart = new("A8");
+        internal static readonly Position BlackQueenRookTarget = new("D8");
 
         // Fields between king and rook must be empty, fields the king stands on
         // or passes over must be unthreatened
