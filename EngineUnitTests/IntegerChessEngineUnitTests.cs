@@ -606,6 +606,92 @@ namespace EngineUnitTests
             Assert.IsTrue(chessEngine.Board.IsKingThreatened(Constants.Black));
         }
 
+        /// Position 2 – Central tension: d4/e5 pawns face each other,
+        /// both sides fully developed with equal material.
+        [TestMethod]
+        public void CentralTensionCalculateMoveForWhiteDepthEightParallel()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            // White
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "G1");
+            chessEngine.SetPiece(PieceFactory.WhiteQueen(), "E2");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "A1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "D1");
+            chessEngine.SetPiece(PieceFactory.WhiteBishop(), "C4");
+            chessEngine.SetPiece(PieceFactory.WhiteBishop(), "G2");
+            chessEngine.SetPiece(PieceFactory.WhiteKnight(), "F3");
+            chessEngine.SetPiece(PieceFactory.WhiteKnight(), "C3");
+            foreach (string position in new[] { "A2", "B2", "C2", "D4", "E4", "F2", "G3", "H2" })
+                chessEngine.SetPiece(PieceFactory.WhitePawn(), position);
+
+            // Black
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "G8");
+            chessEngine.SetPiece(PieceFactory.BlackQueen(), "E7");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "A8");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "D8");
+            chessEngine.SetPiece(PieceFactory.BlackBishop(), "C8");
+            chessEngine.SetPiece(PieceFactory.BlackBishop(), "G7");
+            chessEngine.SetPiece(PieceFactory.BlackKnight(), "C6");
+            chessEngine.SetPiece(PieceFactory.BlackKnight(), "F6");
+            foreach (string position in new[] { "A7", "B7", "C7", "D6", "E5", "F7", "G6", "H7" })
+                chessEngine.SetPiece(PieceFactory.BlackPawn(), position);
+
+            chessEngine.ColorToMove = Constants.White;
+
+            Assert.AreEqual(0, chessEngine.GetRating().Value); // equal material
+
+            Move move = chessEngine.CalculateMoveParallel(8);
+
+            Assert.IsNotNull(move);
+            Assert.AreEqual(Constants.White, move.Piece.IntColor);
+            Console.WriteLine($"Best move: {move.Start}-{move.End} {move.Rating}");
+        }
+
+        /// Position 2 – Central tension: d4/e5 pawns face each other,
+        /// both sides fully developed with equal material.
+        [TestMethod]
+        public void CentralTensionCalculateMoveForWhiteDepthEight()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            // White
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "G1");
+            chessEngine.SetPiece(PieceFactory.WhiteQueen(), "E2");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "A1");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "D1");
+            chessEngine.SetPiece(PieceFactory.WhiteBishop(), "C4");
+            chessEngine.SetPiece(PieceFactory.WhiteBishop(), "G2");
+            chessEngine.SetPiece(PieceFactory.WhiteKnight(), "F3");
+            chessEngine.SetPiece(PieceFactory.WhiteKnight(), "C3");
+            foreach (string position in new[] { "A2", "B2", "C2", "D4", "E4", "F2", "G3", "H2" })
+                chessEngine.SetPiece(PieceFactory.WhitePawn(), position);
+
+            // Black
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "G8");
+            chessEngine.SetPiece(PieceFactory.BlackQueen(), "E7");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "A8");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "D8");
+            chessEngine.SetPiece(PieceFactory.BlackBishop(), "C8");
+            chessEngine.SetPiece(PieceFactory.BlackBishop(), "G7");
+            chessEngine.SetPiece(PieceFactory.BlackKnight(), "C6");
+            chessEngine.SetPiece(PieceFactory.BlackKnight(), "F6");
+            foreach (string position in new[] { "A7", "B7", "C7", "D6", "E5", "F7", "G6", "H7" })
+                chessEngine.SetPiece(PieceFactory.BlackPawn(), position);
+
+            chessEngine.ColorToMove = Constants.White;
+
+            Assert.AreEqual(0, chessEngine.GetRating().Value); // equal material
+
+            Move move = chessEngine.CalculateMove(8);
+
+            Assert.IsNotNull(move);
+            Assert.AreEqual(Constants.White, move.Piece.IntColor);
+            Console.WriteLine($"Best move: {move.Start}-{move.End} {move.Rating}");
+        }
+
         [TestMethod]
         public void GetRatingStartPositionIsBalanced()
         {

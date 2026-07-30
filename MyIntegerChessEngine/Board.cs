@@ -383,9 +383,14 @@ namespace MyIntegerChessEngine
             return move;
         }
 
-        /// Depth search like CalculateMove, the first level moves are searched in parallel.
-        /// Each root move runs on its own board copy; the results are reduced in move
-        /// generation order, so the chosen move is the same as with CalculateMove.
+        /// Depth search like CalculateMove, the root moves are searched in parallel
+        /// ("young brothers wait"): the first ordered move is searched with the full
+        /// window to establish the bound, the remaining moves run in parallel and
+        /// only take bounds from finished siblings with a lower index. That window
+        /// is never tighter than the one the sequential search would use, so moves
+        /// that beat their bound have exact values, refuted moves could not have
+        /// been chosen by CalculateMove either, and the reduce in move order picks
+        /// the same move deterministically.
         public Move CalculateMoveParallel(int depth)
         {
             Rating rating = GetRating();
@@ -399,34 +404,61 @@ namespace MyIntegerChessEngine
                 return null; // checkmate or stalemate, no move to return
 
             bool white = ColorToMove == Constants.White;
-            Rating[] ratings = new Rating[moves.Count];
+            Move[] ordered = OrderMoves(moves);
+            Rating[] ratings = new Rating[ordered.Length];
 
-            Parallel.For(0, moves.Count, i =>
+            ratings[0] = SearchRootMove(ordered[0], depth, int.MinValue, int.MaxValue);
+
+            Parallel.For(1, ordered.Length, i =>
             {
-                Board copy = Copy();
-                copy.ExecuteMove(moves[i]);
-                copy.ColorToMove = white ? Constants.Black : Constants.White;
+                int bound = ratings[0].Value;
+                for (int j = 1; j < i; j++)
+                {
+                    Rating sibling = Volatile.Read(ref ratings[j]);
+                    if (sibling != null)
+                        bound = white ? Math.Max(bound, sibling.Value) : Math.Min(bound, sibling.Value);
+                }
 
-                // Full window per root move keeps the results exact and the
-                // reduce deterministic; each subtree still prunes internally.
-                (_, ratings[i]) = copy.Search(depth - 1, int.MinValue, int.MaxValue);
+                Rating result = white
+                    ? SearchRootMove(ordered[i], depth, bound, int.MaxValue)
+                    : SearchRootMove(ordered[i], depth, int.MinValue, bound);
+
+                // Inside the half-open window the value is exact; otherwise the
+                // move cannot beat an earlier sibling and is dropped, like a move
+                // in the sequential loop that does not raise alpha.
+                if (white ? result.Value > bound : result.Value < bound)
+                    Volatile.Write(ref ratings[i], result);
             });
 
             Move bestMove = null;
             Rating bestRating = null;
 
-            for (int i = 0; i < moves.Count; i++)
+            for (int i = 0; i < ordered.Length; i++)
             {
+                if (ratings[i] == null)
+                    continue;
+
                 if (bestRating == null
                     || (white ? ratings[i].Value > bestRating.Value : ratings[i].Value < bestRating.Value))
                 {
                     bestRating = ratings[i];
-                    bestMove = moves[i];
+                    bestMove = ordered[i];
                 }
             }
 
             bestMove.Rating = bestRating;
             return bestMove;
+        }
+
+        /// Executes the root move on a board copy and searches the reply position.
+        private Rating SearchRootMove(Move move, int depth, int alpha, int beta)
+        {
+            Board copy = Copy();
+            copy.ExecuteMove(move);
+            copy.ColorToMove = ColorToMove == Constants.White ? Constants.Black : Constants.White;
+
+            (_, Rating result) = copy.Search(depth - 1, alpha, beta);
+            return result;
         }
 
         /// Alpha-beta search: alpha/beta bound the values white/black can already
