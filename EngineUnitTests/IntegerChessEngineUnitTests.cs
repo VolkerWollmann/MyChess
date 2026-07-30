@@ -328,6 +328,35 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void EnPassantCaptureWinsMaterial()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+            chessEngine.SetPiece(PieceFactory.WhitePawn(), "B2");
+            chessEngine.SetPiece(PieceFactory.BlackPawn(), "C4");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            // White double step B2-B4 passes the black pawn on C4
+            Position b2 = new Position("B2");
+            chessEngine.ExecuteMove(new Move(b2, new Position("B4"), chessEngine.Board.GetPiece(b2)));
+
+            // The black pawn is marked for en passant on the immediate reply
+            var blackPawn = chessEngine.Board.GetPiece(new Position("C4"));
+            Assert.AreEqual(chessEngine.Board.CurrentPly, blackPawn.LastEnPassantPlyMarking + 1);
+
+            // C4xB3 en passant is black's only move that wins material
+            Move move = chessEngine.CalculateMove(2);
+
+            Assert.AreEqual("C4", move.Start.ToString());
+            Assert.AreEqual("B3", move.End.ToString());
+            Assert.AreEqual(-Constants.PawnValue, move.Rating.Value);
+        }
+
+        [TestMethod]
         public void CalculateMovePrefersWinOverMaterial()
         {
             IntegerChessEngine chessEngine = new IntegerChessEngine();
@@ -385,6 +414,31 @@ namespace EngineUnitTests
             Assert.AreEqual("G5", move.Start.ToString());
             Assert.AreEqual("E5", move.End.ToString());
             Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
+        }
+
+        /// The search executes and undoes moves on the live board; afterwards every
+        /// plane except the transient threat plane must be exactly as before.
+        [TestMethod]
+        public void CalculateMoveLeavesBoardUnchanged()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.New();
+            chessEngine.ColorToMove = Constants.White;
+
+            Board pristine = chessEngine.Board.Copy();
+
+            chessEngine.CalculateMove(4);
+
+            for (int plane = 0; plane < Constants.ThreatPlane; plane++)
+            for (int column = 0; column < Constants.GridSize; column++)
+            for (int row = 0; row < Constants.GridSize; row++)
+            {
+                Assert.AreEqual(pristine.Field[plane, column, row],
+                    chessEngine.Board.Field[plane, column, row],
+                    $"Plane {plane} differs at [{column},{row}]");
+            }
+
+            Assert.AreEqual(pristine.CurrentPly, chessEngine.Board.CurrentPly);
         }
 
         /// Proof of concept for replacing Board.Copy per search node with make/unmake:
