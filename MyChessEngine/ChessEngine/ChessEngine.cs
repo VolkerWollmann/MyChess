@@ -172,7 +172,7 @@ namespace MyChessEngine
 
         public Move CalculateMove()
         {
-            return CalculateMoveWithDepthParallel(6);
+            return CalculateMoveWithDepthParallel(5);
         }
         public Move CalculateMoveWithDepth( int depth = 6)
         {

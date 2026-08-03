@@ -106,7 +106,8 @@ namespace EngineUnitTests
 		[DataRow(3)]
 		[DataRow(4)]
 		[DataRow(5)]
-		public void CalculateOpeningMoveParallel(int depth)
+        [DataRow(6)]
+        public void CalculateOpeningMoveParallel(int depth)
         {
             ChessEngine chessEngine = new ChessEngine();
             chessEngine.New();
@@ -121,7 +122,7 @@ namespace EngineUnitTests
 		[DataRow(3)]
 		[DataRow(4)]
 		[DataRow(5)]
-        //[DataRow(6)]
+        [DataRow(6)]
         public void CalculateOpeningMove(int depth)
 		{
 			ChessEngine chessEngine = new ChessEngine();
