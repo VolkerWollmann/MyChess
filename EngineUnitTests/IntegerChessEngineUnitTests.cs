@@ -8,6 +8,7 @@ using Move = MyIntegerChessEngine.Move;
 using MoveList = MyIntegerChessEngine.MoveList;
 using Position = MyIntegerChessEngine.Position;
 
+[assembly: DoNotParallelize]
 
 namespace EngineUnitTests
 {
@@ -57,7 +58,7 @@ namespace EngineUnitTests
 
             MoveList moves = Knight.GetMoveList(board, a1);
 
-            Assert.AreEqual(2, moves.Count); // only B3 and C2
+            Assert.HasCount(2, moves); // only B3 and C2
         }
 
         [TestMethod]
@@ -69,8 +70,8 @@ namespace EngineUnitTests
 
             MoveList moves = Knight.GetMoveList(board, h8);
 
-            Assert.AreEqual(2, moves.Count); // only F7 and G6
-        }
+            Assert.HasCount(2, moves); // only F7 and G6
+        }   
 
         [TestMethod]
         public void WhiteRookInCornerStaysOnBoard()
@@ -81,7 +82,7 @@ namespace EngineUnitTests
 
             MoveList moves = Rook.GetMoveList(board, a1);
 
-            Assert.AreEqual(14, moves.Count); // A2-A8 and B1-H1
+            Assert.HasCount(14, moves); // A2-A8 and B1-H1
         }
 
         [TestMethod]
@@ -94,7 +95,7 @@ namespace EngineUnitTests
 
             MoveList moves = Rook.GetMoveList(board, a1);
 
-            Assert.AreEqual(11, moves.Count); // A2-A4, capture A5, B1-H1
+            Assert.HasCount(11, moves); // A2-A4, capture A5, B1-H1
         }
 
         [TestMethod]
@@ -106,7 +107,7 @@ namespace EngineUnitTests
 
             MoveList moves = King.GetThreatenMoveList(board, a1);
 
-            Assert.AreEqual(3, moves.Count); // A2, B1, B2
+            Assert.HasCount(3, moves); // A2, B1, B2
         }
 
         [TestMethod]
@@ -127,7 +128,7 @@ namespace EngineUnitTests
                 System.Console.WriteLine($"{move.Start} - {move.End}");
             }
 
-            Assert.AreEqual(5, moves.Count); // D1, D2, E2, F2, F1
+            Assert.HasCount(5, moves); // D1, D2, E2, F2, F1
             Assert.IsTrue(moves.TrueForAll(move => move.CastleType == CastleType.None));
         }
 
@@ -140,7 +141,7 @@ namespace EngineUnitTests
 
             MoveList moves = Pawn.GetThreatenMoveList(board, e4);
 
-            Assert.AreEqual(2, moves.Count); // D5 and F5, not E5
+            Assert.HasCount(2, moves); // D5 and F5, not E5
             Assert.IsTrue(moves.TrueForAll(move => move.End.Row == 4));
         }
 
@@ -155,7 +156,7 @@ namespace EngineUnitTests
             MoveList moves = Rook.GetThreatenMoveList(board, a1);
 
             // A2-A4, king on A5, A6-A8 behind the king, B1-H1
-            Assert.AreEqual(14, moves.Count);
+            Assert.HasCount(14, moves);
         }
 
         [TestMethod]
@@ -170,7 +171,7 @@ namespace EngineUnitTests
 
             MoveList moves = chessEngine.GetThreatenMoveList(Constants.White);
 
-            Assert.AreEqual(5, moves.Count); // king: A2, B1, B2 - pawn: D5, F5
+            Assert.HasCount(5, moves); // king: A2, B1, B2 - pawn: D5, F5
         }
 
         [TestMethod]
@@ -188,7 +189,7 @@ namespace EngineUnitTests
             MoveList moves = chessEngine.GetMoveList();
 
             // D1 and D2 are threatened by the rook on D8
-            Assert.AreEqual(3, moves.Count); // E2, F1, F2
+            Assert.HasCount(3, moves); // E2, F1, F2
             Assert.IsTrue(moves.TrueForAll(move => move.End.Column != 3));
         }
 
@@ -492,7 +493,7 @@ namespace EngineUnitTests
             Assert.AreEqual(pristine.CurrentPly, board.CurrentPly);
 
             // and moving a handful of ints beats cloning the whole board
-            Assert.IsTrue(makeUnmakeWatch.ElapsedTicks < cloneWatch.ElapsedTicks);
+            Assert.IsLessThan(makeUnmakeWatch.ElapsedTicks, cloneWatch.ElapsedTicks);
         }
 
         private static int[] SaveSquare(Board board, Position position)
@@ -601,7 +602,7 @@ namespace EngineUnitTests
             chessEngine.ExecuteMove(move);
 
             Assert.AreEqual(Constants.Queen, chessEngine.Board.GetPiece(new Position("B8")).PieceType);
-            Assert.AreEqual(0, chessEngine.GetMoveList().Count);
+            Assert.HasCount(0, chessEngine.GetMoveList());
             Assert.IsTrue(chessEngine.Board.IsKingThreatened(Constants.Black));
         }
 

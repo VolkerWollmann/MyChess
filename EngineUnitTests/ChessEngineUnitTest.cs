@@ -100,7 +100,7 @@ namespace EngineUnitTests
 
 		#region MoveCalculation
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(1)]
 		[DataRow(2)]
 		[DataRow(3)]
@@ -116,7 +116,7 @@ namespace EngineUnitTests
             Assert.IsNotNull(move);
         }
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(1)]
 		[DataRow(2)]
 		[DataRow(3)]
