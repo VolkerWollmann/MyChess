@@ -493,7 +493,7 @@ namespace EngineUnitTests
             Assert.AreEqual(pristine.CurrentPly, board.CurrentPly);
 
             // and moving a handful of ints beats cloning the whole board
-            Assert.IsLessThan(makeUnmakeWatch.ElapsedTicks, cloneWatch.ElapsedTicks);
+            Assert.IsLessThan(cloneWatch.ElapsedTicks, makeUnmakeWatch.ElapsedTicks);
         }
 
         private static int[] SaveSquare(Board board, Position position)
