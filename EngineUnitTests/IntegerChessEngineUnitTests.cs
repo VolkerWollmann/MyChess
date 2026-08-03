@@ -641,7 +641,7 @@ namespace EngineUnitTests
 
             Assert.AreEqual(0, chessEngine.GetRating().Value); // equal material
 
-            Move move = chessEngine.CalculateMoveParallel(8);
+            Move move = chessEngine.CalculateMove(8);
 
             Assert.IsNotNull(move);
             Assert.AreEqual(Constants.White, move.Piece.IntColor);
@@ -684,7 +684,7 @@ namespace EngineUnitTests
 
             Assert.AreEqual(0, chessEngine.GetRating().Value); // equal material
 
-            Move move = chessEngine.CalculateMove(8);
+            Move move = chessEngine.CalculateMoveParallel(8);
 
             Assert.IsNotNull(move);
             Assert.AreEqual(Constants.White, move.Piece.IntColor);

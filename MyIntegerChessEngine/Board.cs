@@ -38,6 +38,9 @@ namespace MyIntegerChessEngine
 
         public void SetPiece(Piece piece, Position position)
         {
+            UpdatePieceAccounting(Field[Constants.BroadPlane, position.Column + 2, position.Row + 2], -1);
+            UpdatePieceAccounting(piece.PieceAsInteger, +1);
+
             Field[Constants.BroadPlane, position.Column + 2, position.Row + 2] = piece.PieceAsInteger;
             Field[Constants.LastPlyPlane, position.Column + 2, position.Row + 2] = piece.LastPly;
             Field[Constants.EnPassantPlane, position.Column + 2, position.Row + 2] = piece.LastEnPassantPlyMarking;
@@ -106,13 +109,19 @@ namespace MyIntegerChessEngine
             int endColumn = end.Column + 2;
             int endRow = end.Row + 2;
 
+            // a capture removes the piece on the end square from the accounting
+            UpdatePieceAccounting(Field[Constants.BroadPlane, endColumn, endRow], -1);
+
             Field[Constants.BroadPlane, endColumn, endRow]
                 = Field[Constants.BroadPlane, startColumn, startRow];
             Field[Constants.LastPlyPlane, endColumn, endRow] = CurrentPly;
             Field[Constants.EnPassantPlane, endColumn, endRow]
                 = Field[Constants.EnPassantPlane, startColumn, startRow];
 
-            ClearSquare(start);
+            // raw clear: the moving piece only relocated, its value stays on the board
+            Field[Constants.BroadPlane, startColumn, startRow] = Constants.NoPiece;
+            Field[Constants.LastPlyPlane, startColumn, startRow] = 0;
+            Field[Constants.EnPassantPlane, startColumn, startRow] = 0;
         }
 
         internal void ClearSquare(Position position)
@@ -120,9 +129,32 @@ namespace MyIntegerChessEngine
             int column = position.Column + 2;
             int row = position.Row + 2;
 
+            UpdatePieceAccounting(Field[Constants.BroadPlane, column, row], -1);
+
             Field[Constants.BroadPlane, column, row] = Constants.NoPiece;
             Field[Constants.LastPlyPlane, column, row] = 0;
             Field[Constants.EnPassantPlane, column, row] = 0;
+        }
+
+        /// Adds (sign +1) or removes (sign -1) a piece to the incrementally
+        /// maintained material sum and king counters read by GetRating.
+        private void UpdatePieceAccounting(int pieceValue, int sign)
+        {
+            if (pieceValue == Constants.NoPiece || pieceValue == Constants.BoardBorder)
+                return;
+
+            int pieceType = pieceValue & Constants.PieceMask;
+            bool white = (pieceValue & Constants.ColorMask) == Constants.White;
+
+            MaterialValue += (white ? sign : -sign) * Constants.PieceValue(pieceType);
+
+            if (pieceType == Constants.King)
+            {
+                if (white)
+                    WhiteKings += sign;
+                else
+                    BlackKings += sign;
+            }
         }
 
         #region Make/Unmake
@@ -145,6 +177,9 @@ namespace MyIntegerChessEngine
             public int WhiteCastleQueenSideFlag;
             public int BlackCastleKingSideFlag;
             public int BlackCastleQueenSideFlag;
+            public int MaterialValue;
+            public int WhiteKings;
+            public int BlackKings;
             public SavedSquare[] Squares;
             public int SquareCount;
         }
@@ -162,6 +197,9 @@ namespace MyIntegerChessEngine
                 WhiteCastleQueenSideFlag = Field[Constants.LastPlyPlane, 0, 1],
                 BlackCastleKingSideFlag = Field[Constants.LastPlyPlane, 0, 2],
                 BlackCastleQueenSideFlag = Field[Constants.LastPlyPlane, 0, 3],
+                MaterialValue = MaterialValue,
+                WhiteKings = WhiteKings,
+                BlackKings = BlackKings,
                 Squares = new SavedSquare[5]
             };
 
@@ -222,6 +260,10 @@ namespace MyIntegerChessEngine
             Field[Constants.LastPlyPlane, 0, 1] = undo.WhiteCastleQueenSideFlag;
             Field[Constants.LastPlyPlane, 0, 2] = undo.BlackCastleKingSideFlag;
             Field[Constants.LastPlyPlane, 0, 3] = undo.BlackCastleQueenSideFlag;
+
+            MaterialValue = undo.MaterialValue;
+            WhiteKings = undo.WhiteKings;
+            BlackKings = undo.BlackKings;
 
             ColorToMove = undo.ColorToMove;
             CurrentPly = undo.CurrentPly;
@@ -312,40 +354,16 @@ namespace MyIntegerChessEngine
 
         /// Material rating: white pieces count positive, black pieces negative.
         /// A missing king turns the state into WhiteLoss/BlackLoss.
+        /// Reads the incrementally maintained accounting instead of scanning the board.
         public Rating GetRating()
         {
-            int ratingValue = 0;
-            bool whiteKingOnBoard = false;
-            bool blackKingOnBoard = false;
-
-            for (int column = 0; column < ChessEngineConstants.Length; column++)
-            for (int row = 0; row < ChessEngineConstants.Length; row++)
-            {
-                Piece piece = GetPiece(new Position(column, row));
-
-                if (piece.IsEmpty)
-                    continue;
-
-                int value = Constants.PieceValue(piece.PieceType);
-
-                if (piece.PieceType == Constants.King)
-                {
-                    if (piece.IntColor == Constants.White)
-                        whiteKingOnBoard = true;
-                    else
-                        blackKingOnBoard = true;
-                }
-
-                ratingValue += piece.IntColor == Constants.White ? value : -value;
-            }
-
             GameState state = GameState.Normal;
-            if (!whiteKingOnBoard)
+            if (WhiteKings == 0)
                 state = GameState.WhiteLoss;
-            else if (!blackKingOnBoard)
+            else if (BlackKings == 0)
                 state = GameState.BlackLoss;
 
-            return new Rating(ratingValue, state);
+            return new Rating(MaterialValue, state);
         }
 
         internal MoveList GetMoveList(Piece piece, Position position)
@@ -570,12 +588,18 @@ namespace MyIntegerChessEngine
 
             int color = Field[Constants.BroadPlane, column, row] & Constants.ColorMask;
             Field[Constants.BroadPlane, column, row] = Constants.Queen | color;
+
+            int gain = Constants.QueenValue - Constants.PawnValue;
+            MaterialValue += color == Constants.White ? gain : -gain;
         }
 
         public void New()
         {
             Field = new int[Constants.Planes, Constants.GridSize, Constants.GridSize];
             CurrentPly = 0;
+            MaterialValue = 0;
+            WhiteKings = 0;
+            BlackKings = 0;
             InitBorder();
         }
 
@@ -635,12 +659,25 @@ namespace MyIntegerChessEngine
             set => Field[Constants.LastPlyPlane, 0, 4] = value;
         }
 
+        // Incrementally maintained accounting, updated by UpdatePieceAccounting
+        // and read by GetRating. Kept outside the Field array: border cells are
+        // read by GetPiece for out-of-board positions, so board data must not
+        // alias with counters. Copy and New handle these explicitly.
+        public int MaterialValue { get; private set; }
+
+        private int WhiteKings;
+
+        private int BlackKings;
+
 
         public Board Copy()
         {
             Board newBoard = new();
             newBoard.Field = (int[,,])Field.Clone();
             newBoard.CurrentPly = CurrentPly;
+            newBoard.MaterialValue = MaterialValue;
+            newBoard.WhiteKings = WhiteKings;
+            newBoard.BlackKings = BlackKings;
 
             return newBoard;
         }
