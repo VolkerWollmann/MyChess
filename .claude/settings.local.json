@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(dotnet build C:\\\\temp\\\\MyChess\\\\MyIntegerChessEngine\\\\MyIntegerChessEngine.csproj 2>&1)",
+      "PowerShell(dotnet test C:\\\\temp\\\\MyChess\\\\EngineUnitTests\\\\EngineUnitTests.csproj --filter \"FullyQualifiedName~IntegerChessEngineUnitTests\" 2>&1)"
+    ]
+  }
+}

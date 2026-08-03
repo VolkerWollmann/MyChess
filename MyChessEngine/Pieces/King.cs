@@ -107,17 +107,21 @@ namespace MyChessEngine.Pieces
                 }
                 else
                 {
-                    if (BlackCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
+                    if ((KingMoves & MoveType.BlackCastle) > 0)
                     {
-                        Move blackCastle = new Move(BlackKingField, BlackKingKnightField, this, MoveType.BlackCastle);
+                        if (BlackCastleFields.All(field => Board[field].Piece == null && !Board[field].Threat))
+                        {
+                            Move blackCastle = new Move(BlackKingField, BlackKingKnightField, this,
+                                MoveType.BlackCastle);
 
-                        blackCastle.AffectedPositionAfter[0] = new Position("F8");
-                        blackCastle.AffectedPieceAfter[0] = Board["H8"].Piece;
+                            blackCastle.AffectedPositionAfter[0] = new Position("F8");
+                            blackCastle.AffectedPieceAfter[0] = Board["H8"].Piece;
 
-                        blackCastle.AffectedPositionBefore[0] = new Position("H8");
-                        blackCastle.AffectedPieceBefore[0] = Board["H8"].Piece;
+                            blackCastle.AffectedPositionBefore[0] = new Position("H8");
+                            blackCastle.AffectedPieceBefore[0] = Board["H8"].Piece;
 
-                        moveList.Add(blackCastle);
+                            moveList.Add(blackCastle);
+                        }
                     }
 
                     if ((KingMoves & MoveType.BlackCastleLong) != 0)
