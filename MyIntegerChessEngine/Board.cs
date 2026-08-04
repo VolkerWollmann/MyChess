@@ -383,9 +383,9 @@ namespace MyIntegerChessEngine
         /// Depth search (minimax) for the best move of the side to move.
         /// White maximizes, black minimizes the rating value.
         /// Returns null if there is no legal move or the game is already over.
-        public Move CalculateMove(int depth)
+        public Move? CalculateMove(int depth)
         {
-            (Move move, Rating rating) = Search(depth, int.MinValue, int.MaxValue);
+            (Move? move, Rating rating) = Search(depth, int.MinValue, int.MaxValue);
 
             if (move != null)
                 move.Rating = rating;
@@ -401,7 +401,7 @@ namespace MyIntegerChessEngine
         /// that beat their bound have exact values, refuted moves could not have
         /// been chosen by CalculateMove either, and the reduce in move order picks
         /// the same move deterministically.
-        public Move CalculateMoveParallel(int depth)
+        public Move? CalculateMoveParallel(int depth)
         {
             Rating rating = GetRating();
 
@@ -415,16 +415,16 @@ namespace MyIntegerChessEngine
 
             bool white = ColorToMove == Constants.White;
             Move[] ordered = OrderMoves(moves);
-            Rating[] ratings = new Rating[ordered.Length];
+            Rating?[] ratings = new Rating[ordered.Length];
 
             ratings[0] = SearchRootMove(ordered[0], depth, int.MinValue, int.MaxValue);
 
             Parallel.For(1, ordered.Length, i =>
             {
-                int bound = ratings[0].Value;
+                int bound = ratings[0]!.Value;
                 for (int j = 1; j < i; j++)
                 {
-                    Rating sibling = Volatile.Read(ref ratings[j]);
+                    Rating? sibling = Volatile.Read(ref ratings[j]);
                     if (sibling != null)
                         bound = white ? Math.Max(bound, sibling.Value) : Math.Min(bound, sibling.Value);
                 }
@@ -440,18 +440,17 @@ namespace MyIntegerChessEngine
                     Volatile.Write(ref ratings[i], result);
             });
 
-            Move bestMove = null;
-            Rating bestRating = null;
+            Move bestMove = ordered[0];
+            Rating bestRating = ratings[0]!;
 
-            for (int i = 0; i < ordered.Length; i++)
+            for (int i = 1; i < ordered.Length; i++)
             {
                 if (ratings[i] == null)
                     continue;
 
-                if (bestRating == null
-                    || (white ? ratings[i].Value > bestRating.Value : ratings[i].Value < bestRating.Value))
+                if (white ? ratings[i]!.Value > bestRating.Value : ratings[i]!.Value < bestRating.Value)
                 {
-                    bestRating = ratings[i];
+                    bestRating = ratings[i]!;
                     bestMove = ordered[i];
                 }
             }
@@ -473,7 +472,7 @@ namespace MyIntegerChessEngine
 
         /// Alpha-beta search: alpha/beta bound the values white/black can already
         /// force elsewhere in the tree; branches outside the window are cut off.
-        private (Move Move, Rating Rating) Search(int depth, int alpha, int beta)
+        private (Move? Move, Rating Rating) Search(int depth, int alpha, int beta)
         {
             Rating rating = GetRating();
 
@@ -488,8 +487,8 @@ namespace MyIntegerChessEngine
                 return (null, rating);
 
             bool white = ColorToMove == Constants.White;
-            Move bestMove = null;
-            Rating bestRating = null;
+            Move? bestMove = null;
+            Rating? bestRating = null;
 
             foreach (Move move in OrderMoves(GetMoveList()))
             {
@@ -530,7 +529,7 @@ namespace MyIntegerChessEngine
                 return (null, new Rating(0, GameState.Remis));
             }
 
-            return (bestMove, bestRating);
+            return (bestMove, bestRating)!;
         }
 
         /// Captures first, most valuable victim first; alpha-beta cuts earlier this way.

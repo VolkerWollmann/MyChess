@@ -9,7 +9,7 @@ namespace MyIntegerChessEngine
 {
     public class IntegerChessEngine 
     {
-        public Board Board;
+        public Board Board = new();
 
         public Piece GetPiece(Position position)
         {
@@ -131,17 +131,17 @@ namespace MyIntegerChessEngine
 
         /// Depth search (minimax) for the best move of the side to move.
         /// Returns null if there is no legal move or the game is already over.
-        public Move CalculateMove(int depth = Constants.DefaultSearchDepth)
+        public Move? CalculateMove(int depth = Constants.DefaultSearchDepth)
         {
             return Board.CalculateMove(depth);
         }
 
         /// Depth search like CalculateMove, the first level moves are searched in parallel.
-        public Move CalculateMoveParallel(int depth = Constants.DefaultSearchDepth)
+        public Move? CalculateMoveParallel(int depth = Constants.DefaultSearchDepth)
         {
             return Board.CalculateMoveParallel(depth);
         }
 
-        public string Message { get; }
+        public string Message { get; } = "Message not set";
     }
 }
