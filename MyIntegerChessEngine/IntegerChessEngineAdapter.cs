@@ -107,13 +107,17 @@ namespace MyIntegerChessEngine
                 return BaseMove.CreateNoMove(ToBoardRating(Engine.GetRating()));
             }
 
-            _Message = FormatMove(move) + " Time:" + duration + Environment.NewLine + move.Rating;
+            _Message = FormatMove(move) + " Time:" + duration + Environment.NewLine + move.Rating +
+                       Environment.NewLine + "Line: " + move.Rating.MoveList;
 
             return new BaseMove(
                 new BasePosition(move.Start.Column, move.Start.Row),
                 new BasePosition(move.End.Column, move.End.Row),
                 move.Piece,
-                ToMoveType(move.CastleType));
+                ToMoveType(move.CastleType))
+            {
+                Rating = ToBoardRating(move.Rating)
+            };
         }
 
         public void Test()
@@ -173,7 +177,7 @@ namespace MyIntegerChessEngine
 
         private static BoardRating ToBoardRating(Rating rating)
         {
-            BoardRating boardRating = new BoardRating { Weight = rating.Value };
+            BoardRating boardRating = new BoardRating { Weight = rating.Value, MoveList = rating.MoveList };
 
             switch (rating.State)
             {

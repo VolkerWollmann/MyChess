@@ -180,13 +180,14 @@ namespace MyChessEngine
 
             Board.Counter = 0;
             Board.ClearOptimizationVariables();
-            var move = Board.CalculateMove(depth, ColorToMove); 
+            var move = Board.CalculateMove(depth, ColorToMove);
 
             TimeSpan ts = DateTime.Now.Subtract(s);
 
             _Message = move + " Time:" + ts + Environment.NewLine +
                        " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
-                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board.Counter;
+                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board.Counter +
+                       Environment.NewLine + "Line: " + move.Rating.MoveList;
 
             return move;
         }
@@ -203,7 +204,8 @@ namespace MyChessEngine
 
             _Message = move + " Time:" + ts + Environment.NewLine +
                        " Situation:" + move.Rating.Situation + " Evaluation:" + Environment.NewLine +
-                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board.Counter;
+                       move.Rating.Evaluation + " Pieces:" + move.Rating.Weight + " Nodes:" + Board.Counter +
+                       Environment.NewLine + "Line: " + move.Rating.MoveList;
 
             return move;
         }

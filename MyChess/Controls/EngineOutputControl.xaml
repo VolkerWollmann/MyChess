@@ -5,11 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="2">
+            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,4,0" FontWeight="Bold">Line:</TextBlock>
+            <TextBox Name="LineText" IsReadOnly="True" VerticalAlignment="Center"/>
+        </DockPanel>
         <ScrollViewer>
             <TextBlock Name="OutputText" VerticalAlignment="Top" HorizontalAlignment="Left">
                 EngineOutputControl
             </TextBlock>
         </ScrollViewer>
-    </Grid>
+    </DockPanel>
 </UserControl>

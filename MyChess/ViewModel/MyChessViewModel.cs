@@ -42,12 +42,14 @@ namespace MyChess.ViewModel
         {
             ChessEngine.New();
             UpdateBoard();
+            EngineOutput.Line = "";
         }
 
         private void Clear()
         {
            ChessEngine.Clear();
            UpdateBoard();
+           EngineOutput.Line = "";
         }
 
         private void Move()
@@ -62,6 +64,7 @@ namespace MyChess.ViewModel
                 UpdateBoard();
 
                 EngineOutput.Text = ChessEngine.Message;
+                EngineOutput.Line = response?.Rating?.MoveList ?? "";
 
             }
         }

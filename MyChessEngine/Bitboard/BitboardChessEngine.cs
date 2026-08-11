@@ -246,6 +246,8 @@ namespace MyChessEngine.Bitboard
 
             int bestScore = _colorToMove == Color.White ? int.MinValue : int.MaxValue;
             BitMove bestMove = moves[0];
+            List<BitMove> bestLine = new List<BitMove> { moves[0] };
+            List<BitMove> childLine = new List<BitMove>();
 
             for (int i = 0; i < moves.Count; i++)
             {
@@ -253,37 +255,52 @@ namespace MyChessEngine.Bitboard
                 ApplyMove(moves[i]);
                 _colorToMove = ChessEngineConstants.NextColorToMove(_colorToMove);
 
-                int score = AlphaBeta(depth - 1, int.MinValue + 1, int.MaxValue - 1, ref nodes);
+                int score = AlphaBeta(depth - 1, int.MinValue + 1, int.MaxValue - 1, ref nodes, childLine);
 
                 RestoreState(backup);
-                if (_colorToMove == Color.White)
-                {
-                    if (score > bestScore)
-                    {
-                        bestScore = score;
-                        bestMove = moves[i];
-                    }
-                }
-                else if (score < bestScore)
+                bool improved = _colorToMove == Color.White ? score > bestScore : score < bestScore;
+                if (improved)
                 {
                     bestScore = score;
                     bestMove = moves[i];
+                    bestLine.Clear();
+                    bestLine.Add(moves[i]);
+                    bestLine.AddRange(childLine);
                 }
             }
 
             BoardRating rating = BuildRootRatingAfterSearch(bestScore);
+            rating.MoveList = FormatLine(bestLine);
             Move result = BuildExternalMove(bestMove, rating);
 
             timer.Stop();
             _message = $"{result} Time:{timer.Elapsed}{Environment.NewLine}" +
                        $"Situation:{rating.Situation} Evaluation:{rating.Evaluation}{Environment.NewLine}" +
-                       $"Score:{rating.Weight} Nodes:{nodes} (bitboard)";
+                       $"Score:{rating.Weight} Nodes:{nodes} (bitboard){Environment.NewLine}" +
+                       $"Line: {rating.MoveList}";
             return result;
         }
 
-        private int AlphaBeta(int depth, int alpha, int beta, ref int nodes)
+        private string FormatLine(List<BitMove> line)
+        {
+            string result = string.Empty;
+            for (int i = 0; i < line.Count; i++)
+            {
+                if (i > 0)
+                    result += ";";
+                result += $"{SquareToPosition(line[i].From)}-{SquareToPosition(line[i].To)}";
+            }
+
+            return result;
+        }
+
+        /// <paramref name="line"/> returns the strongest continuation from this node;
+        /// empty at leaves. Lines from cut-off branches stay partial, but the line of
+        /// the move chosen at the root is never cut and therefore complete.
+        private int AlphaBeta(int depth, int alpha, int beta, ref int nodes, List<BitMove> line)
         {
             nodes++;
+            line.Clear();
             List<BitMove> moves = GenerateLegalMoves(_colorToMove);
             if (depth <= 0 || moves.Count == 0)
             {
@@ -300,6 +317,8 @@ namespace MyChessEngine.Bitboard
                 return EvaluateMaterial();
             }
 
+            List<BitMove> childLine = new List<BitMove>();
+
             if (_colorToMove == Color.White)
             {
                 int best = int.MinValue;
@@ -309,11 +328,16 @@ namespace MyChessEngine.Bitboard
                     ApplyMove(moves[i]);
                     _colorToMove = Color.Black;
 
-                    int score = AlphaBeta(depth - 1, alpha, beta, ref nodes);
+                    int score = AlphaBeta(depth - 1, alpha, beta, ref nodes, childLine);
 
                     RestoreState(backup);
                     if (score > best)
+                    {
                         best = score;
+                        line.Clear();
+                        line.Add(moves[i]);
+                        line.AddRange(childLine);
+                    }
                     if (best > alpha)
                         alpha = best;
                     if (alpha >= beta)
@@ -329,11 +353,16 @@ namespace MyChessEngine.Bitboard
                 ApplyMove(moves[i]);
                 _colorToMove = Color.White;
 
-                int score = AlphaBeta(depth - 1, alpha, beta, ref nodes);
+                int score = AlphaBeta(depth - 1, alpha, beta, ref nodes, childLine);
 
                 RestoreState(backup);
                 if (score < worst)
+                {
                     worst = score;
+                    line.Clear();
+                    line.Add(moves[i]);
+                    line.AddRange(childLine);
+                }
                 if (worst < beta)
                     beta = worst;
                 if (alpha >= beta)

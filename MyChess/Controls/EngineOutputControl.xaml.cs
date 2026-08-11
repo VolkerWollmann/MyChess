@@ -22,12 +22,24 @@ namespace MyChess.Controls
         public string Text
         {
             set
-            { 
+            {
                 OutputText.Text = value;
                 NotifyPropertyChanged("OutputText");
             }
 
             get => OutputText.Text;
+        }
+
+        /// Strongest line (move sequence) of the last engine calculation.
+        public string Line
+        {
+            set
+            {
+                LineText.Text = value;
+                NotifyPropertyChanged("LineText");
+            }
+
+            get => LineText.Text;
         }
     }
 }

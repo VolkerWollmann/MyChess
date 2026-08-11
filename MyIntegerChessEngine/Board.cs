@@ -455,6 +455,10 @@ namespace MyIntegerChessEngine
                 }
             }
 
+            // SearchRootMove only searched the reply position, so the root move
+            // itself still has to be prepended to the line.
+            bestRating.AddMove($"{bestMove.Start}-{bestMove.End}");
+
             bestMove.Rating = bestRating;
             return bestMove;
         }
@@ -528,6 +532,10 @@ namespace MyIntegerChessEngine
 
                 return (null, new Rating(0, GameState.Remis));
             }
+
+            // Every rating object flows up exactly one search path, so prepending
+            // here builds the strongest line in root-first order while unwinding.
+            bestRating!.AddMove($"{bestMove.Start}-{bestMove.End}");
 
             return (bestMove, bestRating)!;
         }

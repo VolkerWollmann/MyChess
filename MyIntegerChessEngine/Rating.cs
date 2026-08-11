@@ -16,10 +16,20 @@ namespace MyIntegerChessEngine
         public int Value;
         public GameState State;
 
+        /// Strongest line found by the search, root move first ("E2-E4;E7-E5;...").
+        public string MoveList = "";
+
         public Rating(int value, GameState state)
         {
             Value = value;
             State = state;
+        }
+
+        /// Prepends a move; the search calls this while unwinding,
+        /// so MoveList ends up in root-first order.
+        public void AddMove(string move)
+        {
+            MoveList = string.IsNullOrEmpty(MoveList) ? move : move + ";" + MoveList;
         }
 
         public override string ToString()
