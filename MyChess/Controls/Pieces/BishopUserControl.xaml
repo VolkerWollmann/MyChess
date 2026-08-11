@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Polygon Name="Figure" Points="0,40, 15,0, 30,40" Stroke="Black" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Bottom" StrokeThickness="2"/>
+        <Polygon Name="Figure" Points="0,30, 15,0, 30,30" Stroke="Black" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Bottom" StrokeThickness="2"/>
     </Grid>
 </UserControl>

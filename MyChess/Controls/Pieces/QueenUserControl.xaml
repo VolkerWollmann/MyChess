@@ -6,9 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <!-- Crown with three bold points above a waisted body; slightly smaller than the king -->
+        <!-- Crown with three bold points above a waisted body; slightly smaller than
+             the king (52 vs 54) but taller than the rook (50) -->
         <Polygon Name="Figure"
-                 Points="8,54 12,50 14,36 8,34 10,16 15,27 22,10 29,27 34,16 36,34 30,36 32,50 36,54"
+                 Points="8,58 12,53 14,37 8,34 10,13 15,26 22,6 29,26 34,13 36,34 30,37 32,53 36,58"
                  Stroke="Black" Fill="Khaki" StrokeThickness="2" StrokeLineJoin="Round"
                  HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
     </Grid>
