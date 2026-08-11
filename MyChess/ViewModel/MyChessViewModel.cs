@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MyChess.Common;
@@ -52,22 +53,42 @@ namespace MyChess.ViewModel
            EngineOutput.Line = "";
         }
 
-        private void Move()
+        /// Guards against a second Move command while the engine is still calculating.
+        private bool IsCalculating;
+
+        private async Task Move()
         {
+            if (IsCalculating)
+                return;
+
             var move = ChessBoard.GetMove();
-            if (move != null)
+            if (move == null)
+                return;
+
+            ChessEngine.ExecuteMove(move);
+            UpdateBoard();
+
+            EngineOutput.Line = "";
+            EngineOutput.Calculating = true;
+
+            IsCalculating = true;
+            try
             {
-                ChessEngine.ExecuteMove(move);
-                UpdateBoard();
-
                 int depth = ChessBoard.GetSearchDepth();
-                Move response = depth > 0 ? ChessEngine.CalculateMove(depth) : ChessEngine.CalculateMove();
-                ChessEngine.ExecuteMove(response);
-                UpdateBoard();
+                Move response = await Task.Run(
+                    () => depth > 0 ? ChessEngine.CalculateMove(depth) : ChessEngine.CalculateMove());
 
+                EngineOutput.Calculating = false;
                 EngineOutput.Text = ChessEngine.Message;
                 EngineOutput.Line = response?.Rating?.MoveList ?? "";
 
+                ChessEngine.ExecuteMove(response);
+                UpdateBoard();
+            }
+            finally
+            {
+                IsCalculating = false;
+                EngineOutput.Calculating = false;
             }
         }
 
@@ -92,8 +113,13 @@ namespace MyChess.ViewModel
                 : "ChessEngine");
         }
 
-        private void Command(object sender, ChessMenuEventArgs e)
+        private async void Command(object sender, ChessMenuEventArgs e)
         {
+            // While the engine is calculating, only Quit is allowed; everything else
+            // would change the board or engine under the running search.
+            if (IsCalculating && e.Tag != ChessGameConstants.QuitCommand)
+                return;
+
             EngineOutput.Text = "Command " + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
             switch (e.Tag)
             {
@@ -106,8 +132,7 @@ namespace MyChess.ViewModel
                     break;
 
                 case ChessGameConstants.MoveCommand:
-                    Move();
-                    EngineOutput.Text = ChessEngine.Message;
+                    await Move();
                     break;
 
                 case ChessGameConstants.QuitCommand:

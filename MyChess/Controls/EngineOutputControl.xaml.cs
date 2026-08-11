@@ -30,6 +30,15 @@ namespace MyChess.Controls
             get => OutputText.Text;
         }
 
+        /// Shows/hides the "Berechne..." indicator while the engine is searching.
+        public bool Calculating
+        {
+            set => CalculatingText.Visibility =
+                value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+            get => CalculatingText.Visibility == System.Windows.Visibility.Visible;
+        }
+
         /// Strongest line (move sequence) of the last engine calculation.
         public string Line
         {

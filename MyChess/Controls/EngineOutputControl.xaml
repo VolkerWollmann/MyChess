@@ -7,6 +7,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="2">
+            <TextBlock Name="CalculatingText" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4,0,0,0"
+                       FontWeight="Bold" Foreground="DarkRed" Visibility="Collapsed">Berechne...</TextBlock>
             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,4,0" FontWeight="Bold">Line:</TextBlock>
             <TextBox Name="LineText" IsReadOnly="True" VerticalAlignment="Center"/>
         </DockPanel>
