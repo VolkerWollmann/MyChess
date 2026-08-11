@@ -15,6 +15,10 @@
                 <Separator />
                 <MenuItem Name="QuitCommand" Header="_Quit" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.QuitCommand}" />
             </MenuItem>
+            <MenuItem Header="_Engine">
+                <MenuItem Name="ChessEngineCommand" Header="_ChessEngine" IsChecked="True" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.ChessEngineCommand}" />
+                <MenuItem Name="IntegerChessEngineCommand" Header="_IntegerChessEngine" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.IntegerChessEngineCommand}" />
+            </MenuItem>
             <MenuItem Header="_Test">
                 <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.Test1Command}" />
                 

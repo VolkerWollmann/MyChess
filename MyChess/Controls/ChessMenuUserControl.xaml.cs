@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using MyChess.Common;
 using MyChess.Helper;
 
 namespace MyChess.Controls
@@ -19,6 +20,12 @@ namespace MyChess.Controls
         public void SetEventHandler(EventHandler<ChessMenuEventArgs> eventHandler)
         {
             EventHandler = eventHandler;
+        }
+
+        public void SetSelectedEngine(string engineTag)
+        {
+            ChessEngineCommand.IsChecked = engineTag == ChessGameConstants.ChessEngineCommand;
+            IntegerChessEngineCommand.IsChecked = engineTag == ChessGameConstants.IntegerChessEngineCommand;
         }
 
         private void MenuCommand_Click(object sender, RoutedEventArgs e)

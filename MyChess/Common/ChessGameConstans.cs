@@ -7,5 +7,7 @@
         public const string ClearCommand = "ClearCommand";
         public const string Test1Command = "Test1Command";
         public const string MoveCommand = "MoveCommand";
+        public const string ChessEngineCommand = "ChessEngineCommand";
+        public const string IntegerChessEngineCommand = "IntegerChessEngineCommand";
     }
 }

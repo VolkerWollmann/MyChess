@@ -8,6 +8,7 @@ using MyChess.Helper;
 using MyChessEngine;
 using MyChessEngineBase;
 using MyChessEngineBase.Interfaces;
+using IntegerChessEngineAdapter = MyIntegerChessEngine.IntegerChessEngineAdapter;
 
 namespace MyChess.ViewModel
 {
@@ -19,7 +20,7 @@ namespace MyChess.ViewModel
 
         private readonly ChessBoardUserControl ChessBoard;
 
-        private readonly IChessEngine ChessEngine;
+        private IChessEngine ChessEngine;
 
         private readonly EngineOutputControl EngineOutput;
 
@@ -71,6 +72,21 @@ namespace MyChess.ViewModel
 
         }
 
+        private void SelectEngine(string engineTag)
+        {
+            ChessEngine = engineTag == ChessGameConstants.IntegerChessEngineCommand
+                ? new IntegerChessEngineAdapter()
+                : new ChessEngine();
+
+            Menu.SetSelectedEngine(engineTag);
+
+            New();
+
+            EngineOutput.Text = "Engine: " + (engineTag == ChessGameConstants.IntegerChessEngineCommand
+                ? "IntegerChessEngine"
+                : "ChessEngine");
+        }
+
         private void Command(object sender, ChessMenuEventArgs e)
         {
             EngineOutput.Text = "Command " + e.Tag + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -96,6 +112,11 @@ namespace MyChess.ViewModel
                 case ChessGameConstants.Test1Command:
                     Test();
                     EngineOutput.Text = ChessEngine.Message;
+                    break;
+
+                case ChessGameConstants.ChessEngineCommand:
+                case ChessGameConstants.IntegerChessEngineCommand:
+                    SelectEngine(e.Tag);
                     break;
 
             }
@@ -133,6 +154,7 @@ namespace MyChess.ViewModel
 
             #region Engine
             ChessEngine = ChessEngineFactory.CreateDefault();
+            Menu.SetSelectedEngine(ChessGameConstants.ChessEngineCommand);
             #endregion
 
             #region Menu
