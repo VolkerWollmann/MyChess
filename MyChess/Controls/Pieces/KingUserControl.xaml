@@ -6,6 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Polygon Name="Figure" Points="0,60, 0,30 20,0, 40,30 40,60" Stroke="Black" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Bottom" StrokeThickness="2"/>
+        <!-- Crown with three peaks, the center peak carries the cross; below a waisted body -->
+        <Polygon Name="Figure"
+                 Points="8,58 12,54 14,40 8,38 11,22 16,30 20,26 20,12 16,12 16,8 20,8 20,4 24,4 24,8 28,8 28,12 24,12 24,26 28,30 33,22 36,38 30,40 32,54 36,58"
+                 Stroke="Black" Fill="Black" StrokeThickness="2" StrokeLineJoin="Round"
+                 HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

@@ -6,8 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Rectangle Name="Figure" Height="50" Width="40" Fill="Khaki" Stroke="Black" StrokeThickness="2" >
-
-        </Rectangle>
+        <!-- Crown with three bold points above a waisted body; slightly smaller than the king -->
+        <Polygon Name="Figure"
+                 Points="8,54 12,50 14,36 8,34 10,16 15,27 22,10 29,27 34,16 36,34 30,36 32,50 36,54"
+                 Stroke="Black" Fill="Khaki" StrokeThickness="2" StrokeLineJoin="Round"
+                 HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>
