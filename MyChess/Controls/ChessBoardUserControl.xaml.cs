@@ -84,6 +84,13 @@ namespace MyChess.Controls
             ChessCommandUserControl.SetEventHandler(eventHandler);
         }
 
+        /// Search depth from the command panel's input field;
+        /// 0 if the field holds no usable number (caller falls back to the engine default).
+        public int GetSearchDepth()
+        {
+            return ChessCommandUserControl.GetDepth();
+        }
+
         public void SetPiece(Position position, IPiece piece)
         {
             Field[position.Row,position.Column].SetPiece(piece);
