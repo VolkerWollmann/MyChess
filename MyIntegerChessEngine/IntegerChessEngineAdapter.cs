@@ -95,9 +95,14 @@ namespace MyIntegerChessEngine
 
         public BaseMove CalculateMove()
         {
+            return CalculateMove(Constants.DefaultSearchDepth);
+        }
+
+        public BaseMove CalculateMove(int depth)
+        {
             DateTime startTime = DateTime.Now;
 
-            Move? move = Engine.CalculateMoveParallel();
+            Move? move = Engine.CalculateMoveParallel(depth);
 
             TimeSpan duration = DateTime.Now - startTime;
 

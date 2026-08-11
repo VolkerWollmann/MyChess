@@ -59,7 +59,9 @@ namespace MyChess.ViewModel
             {
                 ChessEngine.ExecuteMove(move);
                 UpdateBoard();
-                Move response = ChessEngine.CalculateMove();
+
+                int depth = ChessBoard.GetSearchDepth();
+                Move response = depth > 0 ? ChessEngine.CalculateMove(depth) : ChessEngine.CalculateMove();
                 ChessEngine.ExecuteMove(response);
                 UpdateBoard();
 

@@ -174,6 +174,11 @@ namespace MyChessEngine
         {
             return CalculateMoveWithDepthParallel(5);
         }
+
+        public Move CalculateMove(int depth)
+        {
+            return CalculateMoveWithDepthParallel(depth);
+        }
         public Move CalculateMoveWithDepth( int depth = 6)
         {
             DateTime s = DateTime.Now;

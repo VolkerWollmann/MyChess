@@ -12,6 +12,8 @@
             <TextBox Name="StartField" HorizontalAlignment="Center">E2</TextBox>
             <TextBlock HorizontalAlignment="Center" >To:</TextBlock>
             <TextBox Name="EndField" HorizontalAlignment="Center">E4</TextBox>
+            <TextBlock HorizontalAlignment="Center" >Depth:</TextBlock>
+            <TextBox Name="DepthField" HorizontalAlignment="Center" MinWidth="30" TextAlignment="Center">4</TextBox>
             <TextBlock HorizontalAlignment="Center" ></TextBlock>
             <Button Tag="{x:Static common:ChessGameConstants.MoveCommand}" Click="Button_OnClick">Move</Button>
         </StackPanel>

@@ -26,6 +26,16 @@ namespace MyChess.Controls
             EndField.Text = text;
         }
 
+        /// Search depth (plies) from the input field, clamped to 1-8;
+        /// 0 if the field holds no usable number (caller falls back to the engine default).
+        public int GetDepth()
+        {
+            if (!int.TryParse(DepthField.Text, out int depth) || depth < 1)
+                return 0;
+
+            return Math.Min(depth, 8);
+        }
+
         public void SetEventHandler(EventHandler<ChessMenuEventArgs> eventHandler)
         {
             EventHandler = eventHandler;

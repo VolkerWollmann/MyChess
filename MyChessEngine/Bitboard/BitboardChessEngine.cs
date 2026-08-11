@@ -230,6 +230,11 @@ namespace MyChessEngine.Bitboard
             return CalculateMoveWithDepth(SearchDepth);
         }
 
+        public Move CalculateMove(int depth)
+        {
+            return CalculateMoveWithDepth(depth);
+        }
+
         public Move CalculateMoveWithDepth(int depth)
         {
             var timer = Stopwatch.StartNew();

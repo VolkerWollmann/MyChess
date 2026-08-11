@@ -24,7 +24,10 @@ namespace MyChessEngineBase.Interfaces
 
         public bool ExecuteMove(Move move);
 
-        Move CalculateMove(); 
+        Move CalculateMove();
+
+        /// Like CalculateMove, but searches with the given depth (plies).
+        Move CalculateMove(int depth);
 
         public string Message { get; }
 
