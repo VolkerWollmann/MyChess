@@ -41,10 +41,7 @@ namespace MyIntegerChessEngine.Pieces
             var result = new MoveList();
             Piece rook = board.GetPiece(position);
 
-            int[,] directions = new int[,]
-            {
-                { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
-            };
+            int[,] directions = Constants.StraightDirections;
 
             for (int i = 0; i < directions.GetLength(0); i++)
             {

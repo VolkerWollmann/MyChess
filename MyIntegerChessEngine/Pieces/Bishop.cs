@@ -21,10 +21,7 @@ namespace MyIntegerChessEngine.Pieces
             MoveList moveList = new MoveList();
             Piece bishop = board.GetPiece(position);
 
-            int[,] directions = new int[,]
-            {
-                { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 }
-            };
+            int[,] directions = Constants.DiagonalDirections;
 
             for (int i = 0; i < directions.GetLength(0); i++)
             {

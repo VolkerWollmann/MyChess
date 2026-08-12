@@ -38,7 +38,10 @@ namespace MyChessEngineBase
 
                 if (check)
                 {
-					bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory);
+					// Checkmate only if every move is refuted by an immediate king
+					// capture (depth <= 2). A move that survives longer is a legal
+					// defense, even when the line is lost with best play.
+					bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory && move.Rating.Depth <= 2);
 					if (allMovesAreBlackVictory)
 					{
 						int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
@@ -61,7 +64,9 @@ namespace MyChessEngineBase
 
                 if (check)
                 {
-					bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory);
+					// Checkmate only if every move is refuted by an immediate king
+					// capture (depth <= 2), see the white branch above.
+					bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory && move.Rating.Depth <= 2);
 					if (allMovesAreWhiteVictory)
 					{
 						int maxDepth = _Moves.Any() ? _Moves.Max(move => move.Rating.Depth) : 1;
@@ -131,7 +136,7 @@ namespace MyChessEngineBase
             if (color == Color.White)
             {
                 bool atLeastOneMove = _Moves.Any();
-                bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory);
+                bool allMovesAreBlackVictory = _Moves.All(move => move.Rating.Situation == Situation.BlackVictory && move.Rating.Depth <= 2);
                 if (!check && !atLeastOneMove)
                     return Move.CreateNoMove(new BoardRating { Situation = Situation.StaleMate, Evaluation = Evaluation.WhiteStaleMate });
 
@@ -141,7 +146,7 @@ namespace MyChessEngineBase
             else
             {
                 bool atLeastOneMove = _Moves.Any();
-                bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory);
+                bool allMovesAreWhiteVictory = _Moves.All(move => move.Rating.Situation == Situation.WhiteVictory && move.Rating.Depth <= 2);
                 if (!check && !atLeastOneMove)
                     return Move.CreateNoMove(new BoardRating { Situation = Situation.StaleMate, Evaluation = Evaluation.BlackStaleMate });
 

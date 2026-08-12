@@ -44,6 +44,41 @@ namespace MyIntegerChessEngine
         // 1000 keeps every win rating above any reachable material rating.
         public const int WinDepthValue = 1000;
 
+        // Evaluation bonus per threatened field at the leaf evaluation.
+        // The count is bounded by the 64 board fields, so the term always
+        // stays below one pawn: it never outweighs material and only
+        // decides between moves of equal material. 0 turns the threat-field
+        // evaluation off completely.
+        // static readonly instead of const: the JIT still folds it, but the
+        // on/off branch does not trigger an unreachable-code warning.
+        public static readonly int ThreatFieldValue = 1;
+
+        // Piece geometry, single source for move generation, threat
+        // marking/counting and move ordering. The element order is load-bearing:
+        // move generation order breaks ties between equally rated moves.
+        public static readonly int[,] KnightDeltas =
+        {
+            { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
+            { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
+        };
+
+        public static readonly int[,] StraightDirections =
+        {
+            { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
+        };
+
+        public static readonly int[,] DiagonalDirections =
+        {
+            { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 }
+        };
+
+        // Diagonals first, then straights - the order queen and king use
+        public static readonly int[,] AllDirections =
+        {
+            { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 },
+            { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
+        };
+
         public static int PieceValue(int pieceType)
         {
             return pieceType switch

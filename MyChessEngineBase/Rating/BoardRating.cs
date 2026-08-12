@@ -74,14 +74,28 @@ namespace MyChessEngineBase.Rating
 
             if (x.Weight > y.Weight)
                 return 1;
-            if (x.Weight < y.Weight) 
+            if (x.Weight < y.Weight)
                 return -1;
 
-            if (x.Depth < y.Depth)
-                return 1;
-            if (x.Depth > y.Depth) 
-                return -1;
-            
+            // Equal weight: in winning lines the faster win (smaller depth) is
+            // better - direct king kill > mate in one > mate in two - while in
+            // losing lines the later loss (larger depth) is better, so the
+            // loser defends the king instead of grabbing material.
+            if (x.Weight >= 0)
+            {
+                if (x.Depth < y.Depth)
+                    return 1;
+                if (x.Depth > y.Depth)
+                    return -1;
+            }
+            else
+            {
+                if (x.Depth > y.Depth)
+                    return 1;
+                if (x.Depth < y.Depth)
+                    return -1;
+            }
+
             return 0;
         }
     }
@@ -105,12 +119,23 @@ namespace MyChessEngineBase.Rating
             if (x.Weight > y.Weight)
                 return -1;
 
-            if (x.Depth < y.Depth)
-                return 1;
-            
-            if (x.Depth > y.Depth) 
-                return -1;
-            
+            // Equal weight: faster win for black (weight <= 0), later loss
+            // for black (weight > 0), mirroring WhiteBoardRatingComparer.
+            if (x.Weight <= 0)
+            {
+                if (x.Depth < y.Depth)
+                    return 1;
+                if (x.Depth > y.Depth)
+                    return -1;
+            }
+            else
+            {
+                if (x.Depth > y.Depth)
+                    return 1;
+                if (x.Depth < y.Depth)
+                    return -1;
+            }
+
             return 0;
         }
     }

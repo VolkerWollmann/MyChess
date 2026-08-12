@@ -235,6 +235,37 @@ namespace EngineUnitTests
         }
 
         [TestMethod]
+        public void CalculateTwoMoveMatePart2()
+        {
+            ChessEngine chessEngine = new ChessEngine();
+
+            chessEngine.SetPiece(new King(Color.White, "G6", MoveType.Normal, 1));
+            chessEngine.SetPiece(new Rook(Color.White, "D5", 1));
+            chessEngine.SetPiece(new Knight(Color.White, "E2"));
+            chessEngine.SetPiece(new King(Color.Black, "H8", MoveType.Normal, 1));
+            chessEngine.SetPiece(new Rook(Color.Black, "E4", 1));
+
+            chessEngine.ColorToMove = Color.White;
+
+            // 1. Rd8+ Re8 (forced) 2. Rxe8#
+            Move move = chessEngine.CalculateMoveWithDepth(6);
+
+            Assert.AreEqual("D5", move.Start.ToString());
+            Assert.AreEqual("D8", move.End.ToString());
+            Assert.AreEqual(Situation.WhiteVictory, move.Rating.Situation);
+
+            chessEngine.ExecuteMove(move);
+
+            Move moveBlack = chessEngine.CalculateMoveWithDepth(6);
+
+            // Defend the king -> black must block the check with the rook,
+            // capturing the knight (E4xE2) would leave the king to be killed
+            Assert.AreEqual("E4", moveBlack.Start.ToString());
+            Assert.AreEqual("E8", moveBlack.End.ToString());
+            Assert.AreEqual(Situation.WhiteVictory, moveBlack.Rating.Situation);
+        }
+
+        [TestMethod]
         public void CalculateTwoMoveMateWithDepth8()
         {
             ChessEngine chessEngine = new ChessEngine();

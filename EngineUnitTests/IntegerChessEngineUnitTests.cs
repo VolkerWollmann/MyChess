@@ -354,7 +354,37 @@ namespace EngineUnitTests
 
             Assert.AreEqual("C4", move.Start.ToString());
             Assert.AreEqual("B3", move.End.ToString());
-            Assert.AreEqual(-Constants.PawnValue, move.Rating.Value);
+
+            // The won pawn plus the threat-field difference, which stays below a pawn
+            Assert.IsLessThan(Constants.PawnValue, Math.Abs(move.Rating.Value - (-Constants.PawnValue)),
+                $"Rating {move.Rating.Value} must be -PawnValue plus a sub-pawn threat-field bonus");
+        }
+
+        [TestMethod]
+        public void CalculateMovePrefersMoreThreatenedFieldsOnEqualMaterial()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "E1");
+            chessEngine.SetPiece(PieceFactory.WhiteKnight(), "B1");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "E8");
+
+            chessEngine.ColorToMove = Constants.White;
+
+            // All moves keep the material at +KnightValue; the knight jump to the
+            // central field C3 threatens the most fields (8, of which 6 do not
+            // overlap with the king's) and must win the equal-material tie.
+            // Even depth: the leaves have white to move again, so the leaf
+            // evaluation counts the white ("for me") threatened fields.
+            Move move = chessEngine.CalculateMove(2);
+
+            Assert.AreEqual("B1", move.Start.ToString());
+            Assert.AreEqual("C3", move.End.ToString());
+
+            // Material plus a positive sub-pawn threat-field bonus
+            Assert.IsGreaterThan(Constants.KnightValue, move.Rating.Value);
+            Assert.IsLessThan(Constants.KnightValue + Constants.PawnValue, move.Rating.Value);
         }
 
         [TestMethod]

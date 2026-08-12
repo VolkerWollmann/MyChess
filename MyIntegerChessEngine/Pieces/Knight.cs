@@ -6,12 +6,6 @@ namespace MyIntegerChessEngine.Pieces
 {
     internal static class Knight
     {
-        static readonly int[,] Delta = new int[,]
-        {
-            { -2, -1 }, { -2,  1 }, {  2, -1 }, { 2, 1 },
-            { -1, -2 }, {  1, -2 }, { -1,  2 }, { 1, 2 }
-        };
-
         internal static MoveList GetThreatenMoveList(Board board, Position position)
         {
             return GetMoveList(board, position);
@@ -21,9 +15,9 @@ namespace MyIntegerChessEngine.Pieces
         {
             var result = new MoveList();
             Piece knight = board.GetPiece(position);
-            for (int i= 0; i < Delta.GetLength(0); i++)
+            for (int i= 0; i < Constants.KnightDeltas.GetLength(0); i++)
             {
-                Position targetPosition = position.GetDeltaPosition(Delta[i,0], Delta[i,1]);
+                Position targetPosition = position.GetDeltaPosition(Constants.KnightDeltas[i,0], Constants.KnightDeltas[i,1]);
 
                 Piece pieceAtTarget = board.GetPiece(targetPosition);
                 if (pieceAtTarget.IsBorder)

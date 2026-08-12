@@ -315,16 +315,160 @@ namespace MyIntegerChessEngine
             return moveList;
         }
 
+        #region Threatened fields
+
+        // Distinct fields marked by the last MarkThreatenedFields call and the
+        // color they were marked for. At a leaf the last marking is always the
+        // parent's GetMoveList - for the opponent of the parent, i.e. exactly
+        // the side to move at the leaf - so the leaf evaluation reads the count
+        // for free instead of sweeping the board again (one ply stale: the
+        // parent's own move is not reflected in it).
+        private int LastThreatMarkColor = -1;
+        private int LastThreatMarkCount;
+
         /// Marks all fields on the threat plane where an actual or possible beat
-        /// by <paramref name="color"/> can happen.
+        /// by <paramref name="color"/> can happen and remembers the distinct
+        /// field count for the threat-field evaluation.
         public void MarkThreatenedFields(int color)
         {
             for (int column = 0; column < ChessEngineConstants.Length; column++)
             for (int row = 0; row < ChessEngineConstants.Length; row++)
                 Field[Constants.ThreatPlane, column + 2, row + 2] = 0;
 
+            int count = 0;
             foreach (Move move in GetThreatenMoveList(color))
-                Field[Constants.ThreatPlane, move.End.Column + 2, move.End.Row + 2] = 1;
+            {
+                if (Field[Constants.ThreatPlane, move.End.Column + 2, move.End.Row + 2] == 0)
+                {
+                    Field[Constants.ThreatPlane, move.End.Column + 2, move.End.Row + 2] = 1;
+                    count++;
+                }
+            }
+
+            LastThreatMarkColor = color;
+            LastThreatMarkCount = count;
+        }
+
+        /// Threat-field term of the side to move, weighted with ThreatFieldValue:
+        /// positive white threat count or negative black threat count. Bounded
+        /// below one pawn, so with equal material the move threatening more own
+        /// fields wins, but material always rules. The count remembered by the
+        /// parent's MarkThreatenedFields is reused when it fits (free, one ply
+        /// stale); otherwise the board is counted directly.
+        internal int GetThreatFieldRating()
+        {
+            if (Constants.ThreatFieldValue == 0)
+                return 0;
+
+            int count = LastThreatMarkColor == ColorToMove
+                ? LastThreatMarkCount
+                : CountThreatenedFields(ColorToMove);
+
+            return ColorToMove == Constants.White
+                ? Constants.ThreatFieldValue * count
+                : -Constants.ThreatFieldValue * count;
+        }
+
+        /// Number of distinct fields threatened by <paramref name="color"/>.
+        /// Marks the transient threat plane with raw integer math instead of
+        /// building move lists, so it is cheap enough for every leaf evaluation.
+        /// Same semantics as the piece threaten lists: own fields excluded,
+        /// enemy fields included, slider rays pass through the enemy king.
+        private int CountThreatenedFields(int color)
+        {
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+                Field[Constants.ThreatPlane, column + 2, row + 2] = 0;
+
+            for (int column = 2; column < 2 + ChessEngineConstants.Length; column++)
+            for (int row = 2; row < 2 + ChessEngineConstants.Length; row++)
+            {
+                int pieceValue = Field[Constants.BroadPlane, column, row];
+                if (pieceValue == Constants.NoPiece || (pieceValue & Constants.ColorMask) != color)
+                    continue;
+
+                switch (pieceValue & Constants.PieceMask)
+                {
+                    case Constants.Pawn:
+                        int pawnDirection = color == Constants.White ? 1 : -1;
+                        MarkThreat(color, column - 1, row + pawnDirection);
+                        MarkThreat(color, column + 1, row + pawnDirection);
+                        break;
+
+                    case Constants.Knight:
+                        for (int i = 0; i < Constants.KnightDeltas.GetLength(0); i++)
+                            MarkThreat(color, column + Constants.KnightDeltas[i, 0], row + Constants.KnightDeltas[i, 1]);
+                        break;
+
+                    case Constants.Bishop:
+                        for (int i = 0; i < Constants.DiagonalDirections.GetLength(0); i++)
+                            MarkThreatRay(color, column, row, Constants.DiagonalDirections[i, 0], Constants.DiagonalDirections[i, 1]);
+                        break;
+
+                    case Constants.Rook:
+                        for (int i = 0; i < Constants.StraightDirections.GetLength(0); i++)
+                            MarkThreatRay(color, column, row, Constants.StraightDirections[i, 0], Constants.StraightDirections[i, 1]);
+                        break;
+
+                    case Constants.Queen:
+                        for (int i = 0; i < Constants.AllDirections.GetLength(0); i++)
+                            MarkThreatRay(color, column, row, Constants.AllDirections[i, 0], Constants.AllDirections[i, 1]);
+                        break;
+
+                    case Constants.King:
+                        for (int i = 0; i < Constants.AllDirections.GetLength(0); i++)
+                            MarkThreat(color, column + Constants.AllDirections[i, 0], row + Constants.AllDirections[i, 1]);
+                        break;
+                }
+            }
+
+            int count = 0;
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+                count += Field[Constants.ThreatPlane, column + 2, row + 2];
+
+            LastThreatMarkColor = color;
+            LastThreatMarkCount = count;
+
+            return count;
+        }
+
+        /// Marks a single threatened field (padded grid coordinates)
+        /// unless it is a border field or occupied by an own piece.
+        private void MarkThreat(int color, int column, int row)
+        {
+            int target = Field[Constants.BroadPlane, column, row];
+            if (target == Constants.BoardBorder)
+                return;
+            if (target != Constants.NoPiece && (target & Constants.ColorMask) == color)
+                return;
+
+            Field[Constants.ThreatPlane, column, row] = 1;
+        }
+
+        /// Marks a slider ray (padded grid coordinates): stops at the border or
+        /// an own piece, includes an enemy piece and passes through the enemy king.
+        private void MarkThreatRay(int color, int column, int row, int deltaColumn, int deltaRow)
+        {
+            int targetColumn = column + deltaColumn;
+            int targetRow = row + deltaRow;
+
+            while (true)
+            {
+                int target = Field[Constants.BroadPlane, targetColumn, targetRow];
+                if (target == Constants.BoardBorder)
+                    return;
+                if (target != Constants.NoPiece && (target & Constants.ColorMask) == color)
+                    return;
+
+                Field[Constants.ThreatPlane, targetColumn, targetRow] = 1;
+
+                if (target != Constants.NoPiece && (target & Constants.PieceMask) != Constants.King)
+                    return;
+
+                targetColumn += deltaColumn;
+                targetRow += deltaRow;
+            }
         }
 
         public bool IsThreatened(Position position)
@@ -351,6 +495,139 @@ namespace MyIntegerChessEngine
 
             return moveList;
         }
+
+        internal MoveList GetThreatenMoveList(Piece piece, Position position)
+        {
+            return piece.PieceType switch
+            {
+                Constants.Pawn => Pawn.GetThreatenMoveList(this, position),
+                Constants.Knight => Knight.GetThreatenMoveList(this, position),
+                Constants.Bishop => Bishop.GetThreatenMoveList(this, position),
+                Constants.Rook => Rook.GetThreatenMoveList(this, position),
+                Constants.Queen => Queen.GetThreatenMoveList(this, position),
+                Constants.King => King.GetThreatenMoveList(this, position),
+                _ => new MoveList()
+            };
+        }
+
+        /// True if the king of <paramref name="color"/> stands on a threatened field.
+        /// Reads the threat plane as marked by the last MarkThreatenedFields call.
+        public bool IsKingThreatened(int color)
+        {
+            for (int column = 0; column < ChessEngineConstants.Length; column++)
+            for (int row = 0; row < ChessEngineConstants.Length; row++)
+            {
+                Position position = new Position(column, row);
+                Piece piece = GetPiece(position);
+
+                if (piece.PieceType == Constants.King && !piece.IsEmpty && piece.IntColor == color)
+                    return IsThreatened(position);
+            }
+
+            return false;
+        }
+
+        /// Number of fields the piece would threaten from <paramref name="position"/>,
+        /// counted on the current board without executing the move. Cheap ordering
+        /// heuristic: the vacated start square and the captured victim are ignored.
+        private int CountPieceThreatsFrom(Piece piece, Position position)
+        {
+            int column = position.Column + 2;
+            int row = position.Row + 2;
+            int color = piece.IntColor;
+
+            switch (piece.PieceType)
+            {
+                case Constants.Pawn:
+                    int pawnDirection = color == Constants.White ? 1 : -1;
+                    return CountThreat(color, column - 1, row + pawnDirection)
+                           + CountThreat(color, column + 1, row + pawnDirection);
+
+                case Constants.Knight:
+                {
+                    int count = 0;
+                    for (int i = 0; i < Constants.KnightDeltas.GetLength(0); i++)
+                        count += CountThreat(color, column + Constants.KnightDeltas[i, 0], row + Constants.KnightDeltas[i, 1]);
+                    return count;
+                }
+
+                case Constants.Bishop:
+                {
+                    int count = 0;
+                    for (int i = 0; i < Constants.DiagonalDirections.GetLength(0); i++)
+                        count += CountThreatRay(color, column, row, Constants.DiagonalDirections[i, 0], Constants.DiagonalDirections[i, 1]);
+                    return count;
+                }
+
+                case Constants.Rook:
+                {
+                    int count = 0;
+                    for (int i = 0; i < Constants.StraightDirections.GetLength(0); i++)
+                        count += CountThreatRay(color, column, row, Constants.StraightDirections[i, 0], Constants.StraightDirections[i, 1]);
+                    return count;
+                }
+
+                case Constants.Queen:
+                {
+                    int count = 0;
+                    for (int i = 0; i < Constants.AllDirections.GetLength(0); i++)
+                        count += CountThreatRay(color, column, row, Constants.AllDirections[i, 0], Constants.AllDirections[i, 1]);
+                    return count;
+                }
+
+                case Constants.King:
+                {
+                    int count = 0;
+                    for (int i = 0; i < Constants.AllDirections.GetLength(0); i++)
+                        count += CountThreat(color, column + Constants.AllDirections[i, 0], row + Constants.AllDirections[i, 1]);
+                    return count;
+                }
+            }
+
+            return 0;
+        }
+
+        /// 1 if the field (padded grid coordinates) is threatenable
+        /// (no border, no own piece), otherwise 0.
+        private int CountThreat(int color, int column, int row)
+        {
+            int target = Field[Constants.BroadPlane, column, row];
+            if (target == Constants.BoardBorder)
+                return 0;
+            if (target != Constants.NoPiece && (target & Constants.ColorMask) == color)
+                return 0;
+
+            return 1;
+        }
+
+        /// Counts a slider ray (padded grid coordinates) like MarkThreatRay:
+        /// stops at the border or an own piece, includes an enemy piece and
+        /// passes through the enemy king.
+        private int CountThreatRay(int color, int column, int row, int deltaColumn, int deltaRow)
+        {
+            int count = 0;
+            int targetColumn = column + deltaColumn;
+            int targetRow = row + deltaRow;
+
+            while (true)
+            {
+                int target = Field[Constants.BroadPlane, targetColumn, targetRow];
+                if (target == Constants.BoardBorder)
+                    return count;
+                if (target != Constants.NoPiece && (target & Constants.ColorMask) == color)
+                    return count;
+
+                count++;
+
+                if (target != Constants.NoPiece && (target & Constants.PieceMask) != Constants.King)
+                    return count;
+
+                targetColumn += deltaColumn;
+                targetRow += deltaRow;
+            }
+        }
+
+        #endregion
 
         /// Material rating: white pieces count positive, black pieces negative.
         /// A missing king turns the state into WhiteLoss/BlackLoss.
@@ -491,8 +768,14 @@ namespace MyIntegerChessEngine
             if (rating.State == GameState.WhiteLoss)
                 return (null, new Rating(-Constants.KingValue - (depth + 2) * Constants.WinDepthValue, rating.State));
 
+            // Only the side to move at the leaf is counted: at fixed search depth
+            // every leaf has the same side to move, so the values stay comparable
+            // across the tree - an even root depth counts the own threats ("for
+            // me"), an odd one the opponent's ("against me"). The count itself is
+            // free: GetThreatFieldRating reuses the marking the parent's
+            // GetMoveList already made for exactly this color.
             if (depth <= 0)
-                return (null, rating);
+                return (null, new Rating(rating.Value + GetThreatFieldRating(), rating.State));
 
             bool white = ColorToMove == Constants.White;
             Move? bestMove = null;
@@ -544,46 +827,21 @@ namespace MyIntegerChessEngine
             return (bestMove, bestRating)!;
         }
 
-        /// Captures first, most valuable victim first; alpha-beta cuts earlier this way.
+        /// Captures first, most valuable victim first; equal captures and quiet
+        /// moves are ordered by the fields the moved piece threatens from its
+        /// target square, so lines that raise the threat-field evaluation are
+        /// searched first and alpha-beta cuts earlier. Piece values are multiples
+        /// of 100 and a single piece threatens at most 27 fields, so the capture
+        /// priority can never collide with the threat count.
         /// OrderByDescending is stable, ties keep the move generation order.
         private Move[] OrderMoves(MoveList moves)
         {
             return moves.OrderByDescending(move =>
             {
                 Piece victim = GetPiece(move.End);
-                return victim.IsEmpty ? 0 : Constants.PieceValue(victim.PieceType);
+                int victimValue = victim.IsEmpty ? 0 : Constants.PieceValue(victim.PieceType);
+                return victimValue + CountPieceThreatsFrom(move.Piece, move.End);
             }).ToArray();
-        }
-
-        /// True if the king of <paramref name="color"/> stands on a threatened field.
-        /// Reads the threat plane as marked by the last MarkThreatenedFields call.
-        public bool IsKingThreatened(int color)
-        {
-            for (int column = 0; column < ChessEngineConstants.Length; column++)
-            for (int row = 0; row < ChessEngineConstants.Length; row++)
-            {
-                Position position = new Position(column, row);
-                Piece piece = GetPiece(position);
-
-                if (piece.PieceType == Constants.King && !piece.IsEmpty && piece.IntColor == color)
-                    return IsThreatened(position);
-            }
-
-            return false;
-        }
-
-        internal MoveList GetThreatenMoveList(Piece piece, Position position)
-        {
-            return piece.PieceType switch
-            {
-                Constants.Pawn => Pawn.GetThreatenMoveList(this, position),
-                Constants.Knight => Knight.GetThreatenMoveList(this, position),
-                Constants.Bishop => Bishop.GetThreatenMoveList(this, position),
-                Constants.Rook => Rook.GetThreatenMoveList(this, position),
-                Constants.Queen => Queen.GetThreatenMoveList(this, position),
-                Constants.King => King.GetThreatenMoveList(this, position),
-                _ => new MoveList()
-            };
         }
 
         internal void SetEnPassantMarking(Position position, int ply)
@@ -611,6 +869,8 @@ namespace MyIntegerChessEngine
             MaterialValue = 0;
             WhiteKings = 0;
             BlackKings = 0;
+            LastThreatMarkColor = -1;
+            LastThreatMarkCount = 0;
             InitBorder();
         }
 
@@ -689,6 +949,8 @@ namespace MyIntegerChessEngine
             newBoard.MaterialValue = MaterialValue;
             newBoard.WhiteKings = WhiteKings;
             newBoard.BlackKings = BlackKings;
+            newBoard.LastThreatMarkColor = LastThreatMarkColor;
+            newBoard.LastThreatMarkCount = LastThreatMarkCount;
 
             return newBoard;
         }

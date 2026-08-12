@@ -20,12 +20,8 @@ namespace MyIntegerChessEngine.Pieces
         {
             MoveList moveList = new MoveList();
             Piece queen = board.GetPiece(position);
-            
-            int[,] directions = new int[,]
-            {
-                { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 },
-                { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
-            };
+
+            int[,] directions = Constants.AllDirections;
 
             for (int i = 0; i < directions.GetLength(0); i++)
             {
