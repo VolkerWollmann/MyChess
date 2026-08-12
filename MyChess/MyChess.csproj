@@ -11,6 +11,8 @@
     <ProjectReference Include="..\MyChessEngineBase\MyChessEngineBase.csproj" />
     <ProjectReference Include="..\MyChessEngine\MyChessEngine.csproj" />
     <ProjectReference Include="..\MyIntegerChessEngine\MyIntegerChessEngine.csproj" />
+    <ProjectReference Include="..\MyTranspositionChessEngine\MyTranspositionChessEngine.csproj" />
+    <ProjectReference Include="..\MyBitboardChessEngine\MyBitboardChessEngine.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,6 +18,8 @@
             <MenuItem Header="_Engine">
                 <MenuItem Name="ChessEngineCommand" Header="_ChessEngine" IsChecked="True" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.ChessEngineCommand}" />
                 <MenuItem Name="IntegerChessEngineCommand" Header="_IntegerChessEngine" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.IntegerChessEngineCommand}" />
+                <MenuItem Name="TranspositionChessEngineCommand" Header="_TranspositionChessEngine" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.TranspositionChessEngineCommand}" />
+                <MenuItem Name="BitboardChessEngineCommand" Header="_BitboardChessEngine" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.BitboardChessEngineCommand}" />
             </MenuItem>
             <MenuItem Header="_Test">
                 <MenuItem Name="Test1Command" Header="_Test1" Click="MenuCommand_Click" Tag="{x:Static myChessCommon:ChessGameConstants.Test1Command}" />

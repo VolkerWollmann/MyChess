@@ -26,6 +26,8 @@ namespace MyChess.Controls
         {
             ChessEngineCommand.IsChecked = engineTag == ChessGameConstants.ChessEngineCommand;
             IntegerChessEngineCommand.IsChecked = engineTag == ChessGameConstants.IntegerChessEngineCommand;
+            TranspositionChessEngineCommand.IsChecked = engineTag == ChessGameConstants.TranspositionChessEngineCommand;
+            BitboardChessEngineCommand.IsChecked = engineTag == ChessGameConstants.BitboardChessEngineCommand;
         }
 
         private void MenuCommand_Click(object sender, RoutedEventArgs e)

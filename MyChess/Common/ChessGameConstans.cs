@@ -9,5 +9,7 @@
         public const string MoveCommand = "MoveCommand";
         public const string ChessEngineCommand = "ChessEngineCommand";
         public const string IntegerChessEngineCommand = "IntegerChessEngineCommand";
+        public const string TranspositionChessEngineCommand = "TranspositionChessEngineCommand";
+        public const string BitboardChessEngineCommand = "BitboardChessEngineCommand";
     }
 }

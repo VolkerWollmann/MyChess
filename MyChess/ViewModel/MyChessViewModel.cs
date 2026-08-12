@@ -10,6 +10,8 @@ using MyChessEngine;
 using MyChessEngineBase;
 using MyChessEngineBase.Interfaces;
 using IntegerChessEngineAdapter = MyIntegerChessEngine.IntegerChessEngineAdapter;
+using TranspositionChessEngineAdapter = MyTranspositionChessEngine.TranspositionChessEngineAdapter;
+using BitboardChessEngineAdapter = MyBitboardChessEngine.BitboardChessEngineAdapter;
 
 namespace MyChess.ViewModel
 {
@@ -100,17 +102,25 @@ namespace MyChess.ViewModel
 
         private void SelectEngine(string engineTag)
         {
-            ChessEngine = engineTag == ChessGameConstants.IntegerChessEngineCommand
-                ? new IntegerChessEngineAdapter()
-                : new ChessEngine();
+            ChessEngine = engineTag switch
+            {
+                ChessGameConstants.IntegerChessEngineCommand => new IntegerChessEngineAdapter(),
+                ChessGameConstants.TranspositionChessEngineCommand => new TranspositionChessEngineAdapter(),
+                ChessGameConstants.BitboardChessEngineCommand => new BitboardChessEngineAdapter(),
+                _ => new ChessEngine()
+            };
 
             Menu.SetSelectedEngine(engineTag);
 
             New();
 
-            EngineOutput.Text = "Engine: " + (engineTag == ChessGameConstants.IntegerChessEngineCommand
-                ? "IntegerChessEngine"
-                : "ChessEngine");
+            EngineOutput.Text = "Engine: " + engineTag switch
+            {
+                ChessGameConstants.IntegerChessEngineCommand => "IntegerChessEngine",
+                ChessGameConstants.TranspositionChessEngineCommand => "TranspositionChessEngine",
+                ChessGameConstants.BitboardChessEngineCommand => "BitboardChessEngine",
+                _ => "ChessEngine"
+            };
         }
 
         private async void Command(object sender, ChessMenuEventArgs e)
@@ -146,6 +156,8 @@ namespace MyChess.ViewModel
 
                 case ChessGameConstants.ChessEngineCommand:
                 case ChessGameConstants.IntegerChessEngineCommand:
+                case ChessGameConstants.TranspositionChessEngineCommand:
+                case ChessGameConstants.BitboardChessEngineCommand:
                     SelectEngine(e.Tag);
                     break;
 
