@@ -480,12 +480,16 @@ namespace MyIntegerChessEngine
         {
             Rating rating = GetRating();
 
-            // A captured king ends the line; the depth bonus prefers the faster win
-            // (and for the loser the later loss).
+            // A captured king ends the line. Win/loss ratings are depth-dominated
+            // and material-free: a faster win (for the loser a later loss) always
+            // outranks any material gain, so the loser defends the king instead of
+            // grabbing pieces. The +2 charges the capture to the illegal move two
+            // plies further up: a direct king kill outranks the checkmate that a
+            // legal defense would only postpone to the same node.
             if (rating.State == GameState.BlackLoss)
-                return (null, new Rating(rating.Value + depth, rating.State));
+                return (null, new Rating(Constants.KingValue + (depth + 2) * Constants.WinDepthValue, rating.State));
             if (rating.State == GameState.WhiteLoss)
-                return (null, new Rating(rating.Value - depth, rating.State));
+                return (null, new Rating(-Constants.KingValue - (depth + 2) * Constants.WinDepthValue, rating.State));
 
             if (depth <= 0)
                 return (null, rating);
@@ -526,8 +530,8 @@ namespace MyIntegerChessEngine
                 if (IsKingThreatened(ColorToMove))
                 {
                     return white
-                        ? (null, new Rating(rating.Value - Constants.KingValue - depth, GameState.WhiteLoss))
-                        : (null, new Rating(rating.Value + Constants.KingValue + depth, GameState.BlackLoss));
+                        ? (null, new Rating(-Constants.KingValue - depth * Constants.WinDepthValue, GameState.WhiteLoss))
+                        : (null, new Rating(Constants.KingValue + depth * Constants.WinDepthValue, GameState.BlackLoss));
                 }
 
                 return (null, new Rating(0, GameState.Remis));

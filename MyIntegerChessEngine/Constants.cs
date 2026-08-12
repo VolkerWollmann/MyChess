@@ -38,6 +38,12 @@ namespace MyIntegerChessEngine
         public const int QueenValue = 900;
         public const int KingValue = 10000;
 
+        // Weight of one ply of depth in win/loss ratings. Win ratings are
+        // depth-dominated and material-free, so the ranking is always
+        // direct king kill > mate in one > mate in two > ... > material win.
+        // 1000 keeps every win rating above any reachable material rating.
+        public const int WinDepthValue = 1000;
+
         public static int PieceValue(int pieceType)
         {
             return pieceType switch

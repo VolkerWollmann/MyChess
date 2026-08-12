@@ -417,6 +417,39 @@ namespace EngineUnitTests
             Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
         }
 
+        [TestMethod]
+        public void CalculateTwoMoveMatePart2()
+        {
+            IntegerChessEngine chessEngine = new IntegerChessEngine();
+            chessEngine.Clear();
+
+            chessEngine.SetPiece(PieceFactory.WhiteKing(CastleType.None), "G6");
+            chessEngine.SetPiece(PieceFactory.WhiteRook(), "D5");
+            chessEngine.SetPiece(PieceFactory.WhiteKnight(),"E2");
+            chessEngine.SetPiece(PieceFactory.BlackKing(CastleType.None), "H8");
+            chessEngine.SetPiece(PieceFactory.BlackRook(), "E4");
+
+
+            chessEngine.ColorToMove = Constants.White;
+
+            // 1. Rd8+ Re8 (forced) 2. Rxe8#
+            Move move = chessEngine.CalculateMove(8);
+
+            Assert.AreEqual("D5", move.Start.ToString());
+            Assert.AreEqual("D8", move.End.ToString());
+            Assert.AreEqual(GameState.BlackLoss, move.Rating.State);
+
+            chessEngine.ExecuteMove(move);
+
+            Move moveBlack = chessEngine.CalculateMove(8);
+
+            // Defend the king -> black must block the check with the rook,
+            // capturing the knight (E4xE2) would leave the king to be killed
+            Assert.AreEqual("E4", moveBlack.Start.ToString());
+            Assert.AreEqual("E8", moveBlack.End.ToString());
+            Assert.AreEqual(GameState.BlackLoss, moveBlack.Rating.State);
+        }
+
         /// The search executes and undoes moves on the live board; afterwards every
         /// plane except the transient threat plane must be exactly as before.
         [TestMethod]
